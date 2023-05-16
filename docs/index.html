@@ -41,10 +41,18 @@
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
           document.getElementById("main").innerHTML = xhr.responseText;
+          executeLoadedScripts();
         }
       };
       xhr.open("GET", pageUrl, true);
       xhr.send();
+    }
+
+    function executeLoadedScripts() {
+      var scripts = document.getElementById("main").getElementsByTagName("script");
+      for (var i = 0; i < scripts.length; i++) {
+        eval(scripts[i].innerHTML);
+      }
     }
   </script>
 </head>

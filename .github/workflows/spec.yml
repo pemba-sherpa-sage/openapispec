@@ -49,6 +49,7 @@ jobs:
                   echo "title: ${name}" >> ${oasDir}/main/${name}.md
                   echo "---" >> ${oasDir}/main/${name}.md
                   echo "{% include _include/main/${name}.html %}" >> ${oasDir}/main/${name}.md
+                  ls ${oasDir}/main/
                   uniqueDirectories+=("$parentDir")
               fi
           done

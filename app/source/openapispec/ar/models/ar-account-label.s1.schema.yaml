@@ -5,7 +5,7 @@ description: AR account labels provide more descriptive names for accounts.
 properties:
   key:
     type: string
-    description: System-assigned key for the AR account label.
+    description: System-assigned key for the AR account label. test
     x-mappedTo: RECORDNO
     readOnly: true
     example: '8'

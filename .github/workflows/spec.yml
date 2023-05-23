@@ -26,10 +26,14 @@ jobs:
           node-version: '12.x'
       - name: Install recocly/cli
         run: npm install -g @redocly/cli@latest
+      - name: Fetch Branch
+        run: git fetch origin main        
       - name: Show Changed Files
         run: |
-          changedDir=$(git diff --name-only --relative=app/source/openapispec/ ${{ github.base_ref }} ${{ github.head_ref }} | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
-          echo ${changedDir}
+          git fetch origin pull/${{ github.event.pull_request.number }}/merge
+          changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
+          #changedDirs=("ap" "co")
+          echo ${changedDirs}
           oasDir="app/source/openapispec"
           uniqueDirectories=()
           for changedDir in $changedDirs

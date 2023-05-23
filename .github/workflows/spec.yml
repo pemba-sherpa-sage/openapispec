@@ -63,6 +63,8 @@ jobs:
       - run: |
           git config --global user.name pemba sherpa
           git config --global user.email pemba.sherpa@github.com
+          ls
+          ls app/source/openapispec
           cp -a app/source/openapispec/main/*.html hyde/_include/main/
           cp -a app/source/openapispec/main/*.md hyde/docs/
           cd hyde

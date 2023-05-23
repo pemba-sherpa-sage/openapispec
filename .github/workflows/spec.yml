@@ -20,65 +20,65 @@ jobs:
       - name: Get the Branch Name
         run: |
           echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-          echo "PR branach name: $ {{ github.head_ref }}"
+          echo "PR branach name: ${{github.head_ref}}"
           echo "Pr#: ${{github.event.pull_request.number}}"
       - name: Install Node
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Install recocly/cli
-        run: npm install -g @redocly/cli@latest
-      - name: Fetch Branch
-        run: git fetch origin main        
-      - name: Show Changed Files
-        run: |
-          git fetch origin pull/${{ github.event.pull_request.number }}/merge
-          changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
-          #changedDirs=("ap" "co")
-          echo ${changedDirs}
-          oasDir="app/source/openapispec"
-          uniqueDirectories=()
-          for changedDir in $changedDirs
-          do
-              parentDir=$(dirname "app/source/openapispec/${changedDir}")
-              if [[ ! " ${uniqueDirectories[@]} " =~ " ${parentDir} " ]]; then
-                  echo "Processing changes in $parentDir \n"
-                  name=$(basename "$parentDir")
-                  # rm -rf ${parentDir}/docs
-                  # rm -rf ${oasDir}/main/${name}.html
-                  redocly bundle ${parentDir}/paths/*.yaml --output "${parentDir}/docs"
-                  redocly join ${parentDir}/docs/*.yaml --output "${parentDir}/docs/${name}.openapi.yaml" --without-x-tag-groups
-          #        redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${parentDir}/docs/${name}.html"
-                  redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${oasDir}/main/${name}.html"
-                  echo "Creating markdown files for each openapi spec"
-                  echo "---" > ${oasDir}/main/${name}.md
-                  echo "layout: default" >> ${oasDir}/main/${name}.md
-                  echo "title: ${name}" >> ${oasDir}/main/${name}.md
-                  echo "---" >> ${oasDir}/main/${name}.md
-                  echo "{% include _includes/main/${name}.html %}" >> ${oasDir}/main/${name}.md
-                  ls ${oasDir}/main/
-                  uniqueDirectories+=("$parentDir")
-              fi
-          done
-      - name: checkout destination repo
-        uses: actions/checkout@v2
-        with: 
-          token: ${{ secrets.GH_ACTION_TOKEN }}
-          repository: pemba-sherpa-sage/hyde
-          path: hyde
-      - run: |
-          git config --global user.name pemba sherpa
-          git config --global user.email pemba.sherpa@github.com
-          ls
-          echo "---------"
-          ls app/source/openapispec/main
-          mkdir -p hyde/_includes/main/
-          mkdir -p hyde/docs/
-          cp -a app/source/openapispec/main/*.html hyde/_includes/main/
-          cp -a app/source/openapispec/main/*.md hyde/docs/
-          cd hyde
-          git add .
-          git commit -m "Add changes"
-          git push
+#       - name: Install recocly/cli
+#         run: npm install -g @redocly/cli@latest
+#       - name: Fetch Branch
+#         run: git fetch origin main        
+#       - name: Show Changed Files
+#         run: |
+#           git fetch origin pull/${{ github.event.pull_request.number }}/merge
+#           changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
+#           #changedDirs=("ap" "co")
+#           echo ${changedDirs}
+#           oasDir="app/source/openapispec"
+#           uniqueDirectories=()
+#           for changedDir in $changedDirs
+#           do
+#               parentDir=$(dirname "app/source/openapispec/${changedDir}")
+#               if [[ ! " ${uniqueDirectories[@]} " =~ " ${parentDir} " ]]; then
+#                   echo "Processing changes in $parentDir \n"
+#                   name=$(basename "$parentDir")
+#                   # rm -rf ${parentDir}/docs
+#                   # rm -rf ${oasDir}/main/${name}.html
+#                   redocly bundle ${parentDir}/paths/*.yaml --output "${parentDir}/docs"
+#                   redocly join ${parentDir}/docs/*.yaml --output "${parentDir}/docs/${name}.openapi.yaml" --without-x-tag-groups
+#           #        redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${parentDir}/docs/${name}.html"
+#                   redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${oasDir}/main/${name}.html"
+#                   echo "Creating markdown files for each openapi spec"
+#                   echo "---" > ${oasDir}/main/${name}.md
+#                   echo "layout: default" >> ${oasDir}/main/${name}.md
+#                   echo "title: ${name}" >> ${oasDir}/main/${name}.md
+#                   echo "---" >> ${oasDir}/main/${name}.md
+#                   echo "{% include _includes/main/${name}.html %}" >> ${oasDir}/main/${name}.md
+#                   ls ${oasDir}/main/
+#                   uniqueDirectories+=("$parentDir")
+#               fi
+#           done
+#       - name: checkout destination repo
+#         uses: actions/checkout@v2
+#         with: 
+#           token: ${{ secrets.GH_ACTION_TOKEN }}
+#           repository: pemba-sherpa-sage/hyde
+#           path: hyde
+#       - run: |
+#           git config --global user.name pemba sherpa
+#           git config --global user.email pemba.sherpa@github.com
+#           ls
+#           echo "---------"
+#           ls app/source/openapispec/main
+#           mkdir -p hyde/_includes/main/
+#           mkdir -p hyde/docs/
+#           cp -a app/source/openapispec/main/*.html hyde/_includes/main/
+#           cp -a app/source/openapispec/main/*.md hyde/docs/
+#           cd hyde
+#           git add .
+#           git commit -m "Add changes"
+#           git push
  
           

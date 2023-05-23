@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  title: contract
+  description: contract API
+  version: '1.0'
+  contact:
+    name: Niraj
+    email: niraj.kumar@sage.com
+tags:
+  - name: Contracts
+    description: The contract is the container for the products or services that are provided to a selected customer. It can control settings such as renewals and terms, capture compliance information, and record the transaction history for all contract lines and expenses.
+
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract:
+    get:
+      summary: List contracts
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each contract. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contracts
+      tags:
+        - Contracts
+      operationId: get-objects-contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contracts
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of contracts:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: '84'
+                        href: "/objects/contract/84"
+                      - key: '107'
+                        id: '107'
+                        href: "/objects/contract/107"
+                      - key: '108'
+                        id: '108'
+                        href: "/objects/contract/108"
+                      - key: '56'
+                        id: '56'
+                        href: "/objects/contract/56"
+                    'ia::meta':
+                      totalCount: 4
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a contract
+      description: |-
+        Creates a new contract. 
+
+        `id` is required if document sequencing is not enabled for contracts. If document sequencing is enabled, you can provide an `id` value to use instead of the document sequence value.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Add Contracts
+      tags:
+        - Contracts
+      operationId: post-objects-contract
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/contract'
+                - $ref: '#/components/schemas/contractRequiredProperties'
+            examples:
+              Create a contract:
+                value:
+                  id: ProjectTime_Completed_Flows34_45_4
+                  startDate: '2023-01-01'
+                  endDate: '2023-12-31'
+                  name: ProjectTime_Completed_Flows
+                  customer:
+                    key: '47'
+                  billTo:
+                    id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                  shipTo:
+                    id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                    exchangeRateType: Intacct Daily Rate
+                  location:
+                    id: LOC-USA-0011
+                  department:
+                    id: DEPT-USA-0011
+                  paymentTerm:
+                    name: N30
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New contract:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: /objects/contract/124
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/contract/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a contract
+      description: Returns detailed information for a specified contract.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contracts
+      tags:
+        - Contracts
+      operationId: get-objects-contract-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: contract
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Contract detail:
+                  value:
+                    'ia::result':
+                      key: '12'
+                      parent:
+                        key: null
+                        id: null
+                      description: Completed new status for the billing
+                      id: ProjectTime_Completed_Flows
+                      state: notRenewed
+                      termType: Termed
+                      startDate: 01/01/2018
+                      endDate: 04/30/2018
+                      cancellationDate: null
+                      name: ProjectTime_Completed_Flows
+                      customer:
+                        key: '250'
+                        id: CUS-RT-0011
+                        name: Ability Software
+                        href: /objects/customer/250
+                      contacts:
+                        billTo:
+                          key: '1482'
+                          id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                          href: /objects/contact/1482
+                        shipTo:
+                          key: '1482'
+                          id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                          href: /objects/contact/1482
+                      billingFrequency: monthly
+                      paymentTerm:
+                        key: '16'
+                        name: N30
+                        href: /objects/ap-term/16
+                      renewal: true
+                      renewed:
+                        key: null
+                        id: null
+                      renewalTemplate: RC_24M_Price_SO
+                      renewTermLength: 24
+                      renewTermPeriod: Months
+                      billingPriceList:
+                        key: '1'
+                        name: SoftwarePackagePL
+                        href: /objects/billing-price-list/1
+                      meaPriceList:
+                        key: '12'
+                        name: CONMEA_FVPriceBand_Amount_USD
+                        href: /objects/mea-price-list/12
+                      billingHold: ''
+                      revenueHold: null
+                      cashReceiptHold: null
+                      expenseHold: null
+                      currency:
+                        baseCurrency: USD
+                        txnCurrency: USD
+                        exchangeRateType: Intacct Daily Rate
+                      location:
+                        key: '120'
+                        id: LOC-USA-0011
+                        name: 106-Columbus
+                        href: /objects/location/120
+                      department:
+                        key: 246
+                        id: DEPT-USA-0011
+                        name: 08420-Applied Case Studies
+                        href: /objects/department/246
+                      billInAdvanceLength: null
+                      billInAdvancePeriod: ''
+                      renewalBillInAdvanceLength: null
+                      renewalBillInAdvancePeriod: ''
+                      audit:
+                        createdDateTime: '2019-02-22T09:41:25Z'
+                        modifiedDateTime: '2021-12-20T08:31:25Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      status: active
+                      contractType:
+                        key: '2'
+                        name: Service
+                        href: /objects/contract-type/2
+                      deferEstimatedTimeBasedRevenueBy: ''
+                      total: 0
+                      billed: 0
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a contract
+      description: Updates an existing contract by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Edit Contract
+      tags:
+        - Contracts
+      operationId: patch-objects-contract-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/contract'
+            examples:
+              Update location and billTo contact:
+                value:
+                  location:
+                    key: '6'
+                  contacts:
+                    billTo:
+                      id: Joshua Thomson
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              example:
+                Contract updated:
+                  value:
+                    'ia::result':
+                      key: '121'
+                      id: '121'
+                      href: /objects/contract/121
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a contract
+      description: |-
+        Deletes a contract. You can delete a contract if there are no related records. For example, you can delete a contract if there are no contract lines, no expense lines, no signed-off compliance tasks, no notes, and so on. If there are related records, delete each record and then delete the contract.
+
+        If you cannot delete a related record, cancel the contract instead.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Delete Contracts
+      tags:
+        - Contracts
+      operationId: delete-objects-contract-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract:
+      $ref: ../models/contract.s1.schema.yaml
+    contractRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

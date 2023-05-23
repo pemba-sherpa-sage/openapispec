@@ -1,0 +1,35 @@
+fields:
+  id:
+    uiType: number
+    uiLabel: 'Sandbox ID'
+  name:
+    uiType: text
+    uiLabel: 'Name'
+  state:
+    uiType: enum
+    uiLabel: 'State'
+    enumsLabels:
+        -
+            label: Ready
+            value: ready
+        -
+            label: In Progress
+            value: inProgress
+        -
+            label: Pending
+            value: pending
+        -
+            label: Failed
+            value: failed
+  audit.createdDateTime:
+    uiType: text
+    uiLabel: 'Created'
+  audit.modifiedDateTime:
+    uiType: text
+    uiLabel: 'Modified'
+  expirationDate:
+    uiType: text
+    uiLabel: 'Expiring'
+  lastRefreshedDate:
+    uiType: text
+    uiLabel: 'Last refresh'

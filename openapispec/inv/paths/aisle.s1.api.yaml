@@ -1,0 +1,246 @@
+openapi: 3.0.0
+info:
+  title: aisle
+  description: aisle API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Aisles
+    description: An aisle is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/aisle:
+    get:
+      summary: List aisles
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each aisle. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Aisles
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Aisles
+      operationId: get-objects-aisle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of aisle objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List aisles:
+                  value:
+                    'ia::result':
+                      - key: '145'
+                        id: A12
+                        href: /objects/aisle/145
+                      - key: '146'
+                        id: A14
+                        href: /objects/aisle/146
+                      - key: '147'
+                        id: A16
+                        href: /objects/aisle/147
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an aisle
+      description: Creates a new aisle.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Aisles
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Aisles
+      operationId: post-objects-aisle
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/aisle'
+                - $ref: '#/components/schemas/aisleRequiredProperties'
+            examples:
+              Create an aisle:
+                value:
+                  id: A12
+                  description: Aisle 12 Dishwashers
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New aisle
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an aisle:
+                  value:
+                    'ia::result':
+                      key: '145'
+                      id: AD12
+                      href: /objects/aisle/145
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/aisle/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '145'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the aisle.
+    get:
+      summary: Get an aisle
+      description: Returns detailed information for a specified aisle.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Aisles
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Aisles
+      operationId: get-objects-aisle-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the aisle
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/aisle'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an aisle:
+                  value:
+                    'ia::result':
+                      key: '145'
+                      id: A12
+                      description: Aisle 12 of dishwashers
+                      audit:
+                        createdDateTime: '2021-05-07T01:15:23Z'
+                        modifiedDateTime: '2021-05-07T01:15:23Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                      href: /objects/aisle/145
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an aisle
+      description: Updates an existing aisle by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Aisles
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Aisles
+      operationId: patch-objects-aisle-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/aisle'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Aisle 1 dishwashers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated aisle
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '145'
+                      id: A12
+                      href: /objects/aisle/145
+                    'ia::meta':
+                      totalCount: 1         
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an aisle
+      description: Deletes an aisle. You can delete an aisle if it is not being used and you no longer need it. Deleted aisles cannot be recovered.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Aisles
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Aisles
+      operationId: delete-objects-aisle-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'      
+components:
+  schemas:
+    aisle:
+      $ref: ../models/aisle.s1.schema.yaml
+    aisleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

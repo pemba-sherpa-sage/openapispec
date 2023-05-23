@@ -1,0 +1,26 @@
+key: standard-cost-type::systemStandardCostTypeFW1
+id: systemStandardCostTypeFW1
+object: standard-cost-type
+name: All
+description: Specifies all active standard cost types
+query:
+  object: standard-cost-type
+  fields:
+    - key
+    - id
+    - name
+    - description
+    - parent.id
+    - costUnitDescription
+    - glAccount.id
+    - accumulationType.id
+    - item.id
+    - status
+  filters:
+    - $eq:
+        status: "active"
+  orderBy:
+    - id: asc
+    - status: desc
+contexts:
+  - __default

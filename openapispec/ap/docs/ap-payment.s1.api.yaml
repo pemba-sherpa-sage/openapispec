@@ -1,0 +1,2020 @@
+openapi: 3.0.0
+info:
+  title: ap-payment
+  description: ap-payment API
+  version: '1.0'
+  contact:
+    name: Lingaraj Dhabale
+    email: lingaraj.dhabale@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AP payments
+    description: An AP payment is a transaction that records a payment against an AP bill or AP adjustment. The AP payment object gives you access to payment details for each payment entry.
+paths:
+  /objects/ap-payment:
+    get:
+      summary: List AP payments
+      description: Returns a collection with a key, ID, and link for each AP payment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP payments
+      operationId: get-objects-ap-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-payment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AP payments:
+                  value:
+                    ia::result:
+                      - key: 1718,
+                        id: 1718,
+                        href: /objects/ap-payment/1718
+                      - key: 1717,
+                        id: 1717,
+                        href: /objects/ap-payment/1717
+                      - key: 3228,
+                        id: 3228,
+                        href: /objects/ap-payment/3228
+                    ia::meta:
+                      totalCount: 3,
+                      start: 1,
+                      pageSize: 100,
+                      next: 101,
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AP payment
+      description: Creates a new AP payment.
+      tags:
+        - AP payments
+      operationId: post-objects-ap-payment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-payment.s1.schema'
+                - $ref: '#/components/schemas/ap-paymentRequiredProperties'
+            examples:
+              Create an AP payment submit action:
+                value:
+                  financialAccount:
+                    entityId: Visdb
+                  paymentDate: '2023-04-04'
+                  action: draft
+                  description: description
+                  documentNumber: '123'
+                  documentId: '123'
+                  baseCurrency:
+                    currency: USD
+                  txnCurrency:
+                    currency: USD
+                  paymentMethod: creditCard
+                  vendor:
+                    id: '201'
+                  details:
+                    - txnCurrency:
+                        paymentAmount: '10.00'
+                        inlineAmount: '10.00'
+                        adjustmentAmount: '10.00'
+                        postedAdvanceAmount: '10.00'
+                      bill:
+                        key: '3318'
+                      apDebitAdjustment:
+                        key: '3319'
+                      apDebitAdjustmentLine:
+                        key: '30854'
+                      apAdvance:
+                        key: '3320'
+                      apAdvanceLine:
+                        key: '30856'
+                      inlineBill:
+                        key: '3321'
+                      inlineBillLine:
+                        key: '30866'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create an AP payment:
+                  value:
+                    ia::result:
+                      id: 3323,
+                      key: 3323,
+                      href: /objects/ap-payment/3323
+                    ia::meta:
+                      totalCount: 1,
+                      totalSuccess: 1,
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ap-payment/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AP payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AP payment
+      description: Returns detailed information for a specified AP payment.
+      tags:
+        - AP payments
+      operationId: get-objects-ap-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ap-payment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AP payment:
+                  value:
+                    ia::result:
+                      id: '3302'
+                      key: '3302'
+                      paymentSummary:
+                        id: '1843'
+                        key: '1843'
+                        name: 'Payments: 2023/03/30 04:08:58:5637 Batch'
+                        postingDate: '2023-03-21'
+                        href: /objects/ap-summary/1843
+                      recordType: pp
+                      financialAccount:
+                        entityId: Visdb
+                        entityType: cc
+                        name: VISA
+                        currency: USD
+                      state: Completed
+                      paymentMethod: creditCard
+                      vendor:
+                        entity: V201
+                        id: '201'
+                        name: PG & E
+                      documentNumber: '123'
+                      description: Payment for 2023-03-21
+                      documentId: Paid For PrjUS_InvWParent_4
+                      txnDate: '2023-03-21'
+                      txnPaidDate: '2023-03-21'
+                      baseCurrency:
+                        currency: USD
+                        totalAmount: '10'
+                        totalSelected: '0'
+                        totalPaid: '10'
+                        totalDue: '0'
+                      txnCurrency:
+                        currency: USD
+                        totalAmount: '10'
+                        totalSelected: '0'
+                        totalPaid: '10'
+                        totalDue: '0'
+                      exchangeRate:
+                        date: null
+                        typeId: null
+                        rate: null
+                      payToContact:
+                        payTo:
+                          name: PG & E(V201)
+                          key: '6886'
+                          href: /objects/contact/6886
+                      audit:
+                        createdDateTime: '2023-03-29T18:08:57Z'
+                        modifiedDateTime: '2023-03-29T18:08:59Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      cleared: F
+                      clearedDate: null
+                      isInclusiveTax: false
+                      taxSolution:
+                        key: null
+                        id: null
+                        taxCalculationMethod: null
+                      lines:
+                        - id: '30762'
+                          key: '30762'
+                          apPayment:
+                            id: '3302'
+                            key: '3302'
+                            href: /objects/ap-payment/3302
+                          glAccount:
+                            key: '376'
+                            id: '2000.02'
+                            name: Accounts Payable2
+                            href: /objects/gl-account/376
+                          baseCurrency:
+                            amount: '10'
+                            currency: USD
+                            totalPaid: '10'
+                            totalSelected: '0'
+                          txnCurrency:
+                            amount: '10'
+                            currency: USD
+                            totalPaid: '10'
+                            totalSelected: '0'
+                          department:
+                            id: null
+                            name: null
+                          location:
+                            id: '2'
+                            name: India
+                          description: Create_MP_02
+                          exchangeRate:
+                            date: '2023-03-21'
+                            typeId: null
+                            rate: '1'
+                          lineNumber: '1'
+                          paymentLineRecord: pp
+                          bankLocation: '2'
+                          audit:
+                            createdDateTime: '2023-03-29T18:08:57Z'
+                            modifiedDateTime: '2023-03-29T18:08:59Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          taxDetail:
+                            id: null
+                            key: null
+                          isTax: false
+                          dimensions:
+                            nsp::rgldim43731355_10015:
+                              key: null
+                              id: null
+                            nsp::rgldim43731355_10074:
+                              key: null
+                              id: null
+                            nsp::rgldim43731355_10127:
+                              key: null
+                              id: null
+                            nsp::rgldim44774013_10178:
+                              key: null
+                              id: null
+                            nsp::rgldim44774013_10232:
+                              key: null
+                              id: null
+                          href: /objects/ap-payment-line/30762
+                      details:
+                        - id: '1059'
+                          key: '1059'
+                          bill:
+                            id: '3289'
+                            key: '3289'
+                            href: /objects/bill/3289
+                          billLine:
+                            id: '30724'
+                            key: '30724'
+                            href: /objects/bill-line/30724
+                          apCreditAdjustment:
+                            id: null
+                            key: null
+                          apCreditAdjustmentLine:
+                            id: null
+                            key: null
+                          apPayment:
+                            id: '3302'
+                            key: '3302'
+                            href: /objects/ap-payment/3302
+                          apPaymentLine:
+                            id: '30762'
+                            key: '30762'
+                            href: /objects/ap-payment-line/30762
+                          paymentDate: '2023-03-21'
+                          baseCurrency:
+                            paymentAmount: '10'
+                            inlineAmount: null
+                            discountAmount: null
+                            adjustmentAmount: null
+                            postedAdvanceAmount: null
+                          txnCurrency:
+                            paymentAmount: '10'
+                            inlineAmount: null
+                            discountAmount: null
+                            adjustmentAmount: null
+                            postedAdvanceAmount: null
+                            currency: USD
+                          inlineBill:
+                            id: null
+                            key: null
+                          inlineBillLine:
+                            id: null
+                            key: null
+                          apDiscount:
+                            id: null
+                            key: null
+                          apDiscountLine:
+                            id: null
+                            key: null
+                          discountDate: null
+                          apDebitAdjustment:
+                            id: null
+                            key: null
+                          apDebitAdjustmentLine:
+                            id: null
+                            key: null
+                          apAdvance:
+                            id: null
+                            key: null
+                          apAdvanceLine:
+                            id: null
+                            key: null
+                          apPostedAdvance:
+                            id: null
+                            key: null
+                          apPostedAdvanceLine:
+                            id: null
+                            key: null
+                          state: C
+                          moduleKey: 3.AP
+                          audit:
+                            createdDateTime: '2023-03-29T18:08:58Z'
+                            modifiedDateTime: '2023-03-29T18:08:58Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/ap-payment-detail/1059
+                      href: /objects/ap-payment/3302
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP payment
+      description: Updates an existing AP payment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP payments
+      operationId: patch-objects-ap-payment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-payment.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AP payment:
+                value:
+                  description: 'Payment for DOC Number : 22345,'
+                  paymentDate: 2023-04-05,
+                  documentNumber: 22345,
+                  documentId: '22345'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update an AP payment:
+                  value:
+                    ia::result:
+                      id: 3325,
+                      key: 3325,
+                      href: /objects/ap-payment/3325
+                    ia::meta:
+                      totalCount: 1,
+                      totalSuccess: 1,
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AP payment
+      description: Deletes an AP payment.
+      tags:
+        - AP payments
+      operationId: delete-objects-ap-payment-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-payment:
+      $ref: '#/components/schemas/ap-payment.s1.schema'
+    ap-paymentRequiredProperties:
+      type: object
+      required:
+        - financialAccount
+        - paymentDate
+        - paymentMethod
+        - vendor
+        - details
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ap-payment-detail.s1.schema:
+      title: ap-payment-detail
+      x-mappedTo: appymtdetail
+      x-ownedBy: ap-payment
+      type: object
+      description: An AP payment detail object includes an AP bill or AP adjustment credit memo to pay and optional transactions to apply as credits.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AP payment detail.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1083'
+        id:
+          type: string
+          description: Identifier for the AP payment detail. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1083'
+        href:
+          type: string
+          description: URL for the AP payment-detail.
+          readOnly: true
+          example: /objects/ap-payment-detail/1083
+        paymentDate:
+          type: string
+          format: date
+          description: Date the payment was made.
+          readOnly: true
+          x-mappedTo: PAYMENTDATE
+          nullable: false
+          example: '2023-04-04'
+        baseCurrency:
+          type: object
+          description: Grouping all the base currency fields.
+          properties:
+            paymentAmount:
+              type: string
+              description: The amount of the payment in the company's base currency.
+              x-mappedTo: PAYMENTAMOUNT
+              example: '10'
+            inlineAmount:
+              type: string
+              description: Inline transaction base amount.
+              readOnly: true
+              x-mappedTo: INLINEAMOUNT
+              example: '10'
+            discountAmount:
+              type: string
+              description: Discount base amount.
+              readOnly: true
+              x-mappedTo: DISCOUNTAMOUNT
+              example: '10'
+            adjustmentAmount:
+              type: string
+              description: Adjustment transaction base amount.
+              readOnly: true
+              x-mappedTo: ADJUSTMENTAMOUNT
+              example: '10'
+            postedAdvanceAmount:
+              type: string
+              description: Posted advance base amount.
+              readOnly: true
+              x-mappedTo: POSTEDADVANCEAMOUNT
+              example: '10'
+        txnCurrency:
+          type: object
+          description: Grouping all the transaction currency fields.
+          properties:
+            currency:
+              type: string
+              description: Payment currency.
+              readOnly: true
+              x-mappedTo: CURRENCY
+              example: USD
+            paymentAmount:
+              type: string
+              description: The amount of the transaction in the payment currency.
+              x-mappedTo: TRX_PAYMENTAMOUNT
+              nullable: false
+              example: '10'
+            inlineAmount:
+              type: string
+              description: Inline transaction amount.
+              x-mappedTo: TRX_INLINEAMOUNT
+              example: '10'
+            discountAmount:
+              type: string
+              description: Discount transaction amount.
+              readOnly: true
+              x-mappedTo: TRX_DISCOUNTAMOUNT
+              example: '10'
+            adjustmentAmount:
+              type: string
+              description: Adjustment transaction amount.
+              x-mappedTo: TRX_ADJUSTMENTAMOUNT
+              example: '10'
+            postedAdvanceAmount:
+              type: string
+              description: Posted advance transaction amount.
+              x-mappedTo: TRX_POSTEDADVANCEAMOUNT
+              example: '10'
+        discountDate:
+          type: string
+          format: date
+          description: Discount date.
+          x-mappedTo: DISCOUNTDATE
+          example: '2023-04-04'
+        state:
+          type: string
+          description: State of the payment.
+          readOnly: true
+          x-mappedTo: STATE
+          example: D
+        moduleKey:
+          type: string
+          description: Module key.
+          readOnly: true
+          x-mappedTo: MODULEKEY
+          nullable: false
+          example: 3.AP
+        apDebitAdjustment:
+          type: object
+          description: AP adjustment to pay.
+          x-mappedTo: apadjustment
+          x-object: ap-adjustment
+          properties:
+            href:
+              type: string
+              description: URL for the AP adjustment.
+              readOnly: true
+              example: /objects/ap-adjustment/3319
+            key:
+              type: string
+              description: System-assigned key for the AP adjustment.
+              x-mappedTo: ADJUSTMENTKEY
+              example: '3319'
+            id:
+              type: string
+              description: Identifier for the AP adjustment.
+              readOnly: true
+              x-mappedTo: ADJUSTMENTKEY
+              example: '3319'
+        apDebitAdjustmentLine:
+          type: object
+          description: Line item in the AP adjustment.
+          x-mappedTo: apadjustmententry
+          x-object: ap-adjustment-line
+          properties:
+            href:
+              type: string
+              description: URL for the AP adjustment line item.
+              readOnly: true
+              example: /objects/ap-adjustment-line/30854
+            key:
+              type: string
+              description: System-assigned key for the AP adjustment line item.
+              x-mappedTo: ADJUSTMENTENTRYKEY
+              example: '30854'
+            id:
+              type: string
+              description: Identifier for the AP adjustment line item.
+              readOnly: true
+              x-mappedTo: ADJUSTMENTENTRYKEY
+              example: '30854'
+        bill:
+          type: object
+          description: AP bill to pay.
+          x-mappedTo: apbill
+          x-object: bill
+          properties:
+            href:
+              type: string
+              description: URL for the AP bill.
+              readOnly: true
+              example: /objects/bill/3318
+            key:
+              type: string
+              description: System-assigned key for the bill.
+              x-mappedTo: RECORDKEY
+              example: '3318'
+            id:
+              type: string
+              description: ID for the bill.
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '3318'
+        billLine:
+          type: object
+          description: Line item in the AP bill.
+          readOnly: true
+          x-mappedTo: apbillitem
+          x-object: bill-line
+          properties:
+            href:
+              type: string
+              description: URL for the bill line item.
+              readOnly: true
+              example: /objects/bill-line/30844
+            key:
+              type: string
+              description: System-assigned key for the bill line item.
+              x-mappedTo: ENTRYKEY
+              example: '30844'
+            id:
+              type: string
+              description: ID for the bill line item.
+              readOnly: true
+              x-mappedTo: ENTRYKEY
+              example: '30844'
+        apDiscount:
+          type: object
+          description: Discount transaction included in the AP payment details.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the discount.
+              readOnly: true
+              x-mappedTo: DISCOUNTKEY
+              example: '123'
+            id:
+              type: string
+              description: ID for the discount.
+              x-mappedTo: DISCOUNTKEY
+              example: '123'
+        apDiscountLine:
+          type: object
+          description: Line item in the discount.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the discount line item.
+              readOnly: true
+              x-mappedTo: DISCOUNTENTRYKEY
+              example: '12344'
+            id:
+              type: string
+              description: ID for the discount line item.
+              readOnly: true
+              x-mappedTo: DISCOUNTENTRYKEY
+              example: '12344'
+        apAdvance:
+          type: object
+          description: AP Posted advance transaction included in the AP payment details.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AP posted advance.
+              x-mappedTo: ADVANCEKEY
+              example: '3320'
+            id:
+              type: string
+              description: ID for the AP posted advance.
+              readOnly: true
+              x-mappedTo: ADVANCEKEY
+              example: '3320'
+        apAdvanceLine:
+          type: object
+          description: Line item in the AP posted advance.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AP posted advance line item.
+              x-mappedTo: ADVANCEENTRYKEY
+              example: '30856'
+            id:
+              type: string
+              description: ID for the AP posted advance line item.
+              readOnly: true
+              x-mappedTo: ADVANCEENTRYKEY
+              example: '30856'
+        apPostedAdvance:
+          type: object
+          description: Posted advance transaction included in the AP payment details.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the posted advance.
+              readOnly: true
+              x-mappedTo: POSTEDADVANCEKEY
+              example: '3328'
+            id:
+              type: string
+              description: ID for the posted advance.
+              readOnly: true
+              x-mappedTo: POSTEDADVANCEKEY
+              example: '3328'
+        apPostedAdvanceLine:
+          type: object
+          description: Line item in the posted advance.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the posted advance line item.
+              readOnly: true
+              x-mappedTo: POSTEDADVANCEENTRYKEY
+              example: '30916'
+            id:
+              type: string
+              description: ID for the posted advance line item.
+              readOnly: true
+              x-mappedTo: POSTEDADVANCEENTRYKEY
+              example: '30916'
+        apPayment:
+          type: object
+          description: AP payment included in the payment details.
+          x-mappedTo: appymt
+          x-object: ap-payment
+          properties:
+            href:
+              type: string
+              description: URL for the AP payment.
+              readOnly: true
+              example: /objects/ap-payment/3325
+            key:
+              type: string
+              description: System-assigned key for the AP payment.
+              x-mappedTo: PAYMENTKEY
+              example: '3325'
+            id:
+              type: string
+              description: ID for the AP payment.
+              readOnly: true
+              x-mappedTo: PAYMENTKEY
+              example: '3325'
+        apPaymentLine:
+          type: object
+          description: AP payment line included in the payment details.
+          x-mappedTo: appymtentry
+          x-object: ap-payment-line
+          properties:
+            href:
+              type: string
+              description: URL for the AP payment line.
+              readOnly: true
+              example: /objects/ap-payment-line/30917
+            key:
+              type: string
+              description: System-assigned key for the AP payment line.
+              x-mappedTo: PAYMENTENTRYKEY
+              example: '30917'
+            id:
+              type: string
+              description: ID for the AP payment line.
+              readOnly: true
+              x-mappedTo: PAYMENTENTRYKEY
+              example: '30917'
+        inlineBill:
+          type: object
+          x-mappedTo: apbill
+          x-object: bill
+          properties:
+            href:
+              type: string
+              description: URL for the inline bill.
+              readOnly: true
+              example: /objects/bill/3321
+            key:
+              type: string
+              description: Inline transaction record number.
+              x-mappedTo: INLINEKEY
+              example: '3321'
+            id:
+              type: string
+              description: Inline transaction record ID.
+              readOnly: true
+              x-mappedTo: INLINEKEY
+              example: '3321'
+        inlineBillLine:
+          type: object
+          x-mappedTo: apbillitem
+          x-object: bill-line
+          properties:
+            href:
+              type: string
+              description: URL for the inline bill item.
+              readOnly: true
+              example: /objects/bill-line/30866
+            key:
+              type: string
+              description: Inline transaction entry record number.
+              x-mappedTo: INLINEENTRYKEY
+              example: '30866'
+            id:
+              type: string
+              description: Inline transaction entry record ID.
+              readOnly: true
+              x-mappedTo: INLINEENTRYKEY
+              example: '30866'
+        apCreditAdjustment:
+          type: object
+          x-mappedTo: apadjustment
+          x-object: ap-adjustment
+          properties:
+            href:
+              type: string
+              description: URL for the positive adjustment.
+              readOnly: true
+              example: /objects/ap-adjustment/3321
+            key:
+              type: string
+              description: Positive adjustment record number.
+              x-mappedTo: POSADJKEY
+              example: '3321'
+            id:
+              type: string
+              description: Positive adjustment record ID.
+              readOnly: true
+              x-mappedTo: POSADJKEY
+              example: '3321'
+        apCreditAdjustmentLine:
+          type: object
+          x-mappedTo: apadjustmentitem
+          x-object: ap-adjustment-line
+          properties:
+            href:
+              type: string
+              description: URL for the positive adjustment item.
+              readOnly: true
+              example: /objects/ap-adjustment/33213
+            key:
+              type: string
+              description: Positive adjustment record number.
+              x-mappedTo: POSADJENTRYKEY
+              example: '33213'
+            id:
+              type: string
+              description: Positive adjustment record ID.
+              readOnly: true
+              x-mappedTo: POSADJENTRYKEY
+              example: '33213'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    ap-payment-line.s1.schema:
+      title: ap-payment-line
+      x-mappedTo: appymtentry
+      x-ownedBy: ap-payment
+      type: object
+      description: AP payment line items represent entries in an AP payment object.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AP payment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: ID for the AP payment line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the AP payment line item.
+          readOnly: true
+          example: /objects/ap-payment-line/23
+        description:
+          type: string
+          description: Memo or brief description of the AP payment line item.
+          readOnly: true
+          x-mappedTo: ENTRYDESCRIPTION
+          example: Penalty
+        exchangeRate:
+          type: object
+          description: Exchange rate details used to calculate the base amount.
+          readOnly: true
+          title: exchangeRate
+          properties:
+            date:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.
+              readOnly: true
+              x-mappedTo: EXCH_RATE_DATE
+            rate:
+              type: string
+              description: Exchange rate used to calculate the base amount from the transaction amount.
+              readOnly: true
+              x-mappedTo: EXCHANGE_RATE
+              example: 1.0789
+            typeId:
+              type: string
+              description: Exchange rate type used to calculate the base amount from the transaction amount.
+              readOnly: true
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              example: '1'
+        lineNumber:
+          type: string
+          description: Line number of the AP payment line item.
+          readOnly: true
+          x-mappedTo: LINE_NO
+          example: '1'
+        baseCurrency:
+          type: object
+          description: Grouping all the base currency fields.
+          properties:
+            currency:
+              type: string
+              description: Base currency.
+              readOnly: true
+              x-mappedTo: BASECURR
+              example: USD
+            amount:
+              type: string
+              description: Base amount.
+              readOnly: true
+              x-mappedTo: AMOUNT
+              example: '10'
+            totalPaid:
+              type: string
+              description: Total paid for the line item.
+              readOnly: true
+              x-mappedTo: TOTALPAID
+              example: '10'
+            totalSelected:
+              type: string
+              description: Total selected for the line item.
+              readOnly: true
+              x-mappedTo: TOTALSELECTED
+              example: '0'
+        txnCurrency:
+          type: object
+          description: Grouping all the transaction currency fields.
+          properties:
+            currency:
+              type: string
+              description: Transaction currency.
+              readOnly: true
+              x-mappedTo: CURRENCY
+              example: USD
+            amount:
+              type: string
+              description: Transaction amount.
+              readOnly: true
+              x-mappedTo: TRX_AMOUNT
+              example: '10'
+            totalPaid:
+              type: string
+              description: Transaction total paid for the line item.
+              readOnly: true
+              x-mappedTo: TRX_TOTALPAID
+              example: '10'
+            totalSelected:
+              type: string
+              description: Total transaction selected for the line item.
+              readOnly: true
+              x-mappedTo: TRX_TOTALSELECTED
+              example: '0'
+        paymentLineRecord:
+          type: string
+          description: Record type of the line item.
+          readOnly: true
+          x-mappedTo: RECORDTYPE
+          example: pp
+        bankLocation:
+          type: string
+          description: Base location key.
+          readOnly: true
+          x-mappedTo: BASELOCATION
+          example: '2'
+        isTax:
+          type: boolean
+          description: Indicates whether the line item amount includes taxes.
+          readOnly: true
+          x-mappedTo: ISTAX
+          example: F
+          x-mappedToType: string
+          default: 'false'
+        taxDetail:
+          type: object
+          description: Tax category for the line item.
+          x-mappedTo: detail
+          x-object: purchasing-tax-detail
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the tax detail.
+              readOnly: true
+              x-mappedTo: DETAILKEY
+              example: '13'
+            id:
+              type: string
+              description: ID for the tax detail.
+              readOnly: true
+              x-mappedTo: DETAILID
+              example: AUS-TAX
+            href:
+              type: string
+              description: URL for the tax detail.
+              readOnly: true
+              example: /objects/purchasing-tax-detail/13
+        glAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Account key
+              readOnly: true
+              x-mappedTo: ACCOUNTKEY
+              example: 23
+            id:
+              type: string
+              description: Account number
+              readOnly: true
+              x-mappedTo: ACCOUNTNO
+              example: 6330
+            name:
+              type: string
+              description: GL account title
+              readOnly: true
+              x-mappedTo: ACCOUNTTITLE
+              example: Compensation- Salary
+            href:
+              type: string
+              description: GL account URL.
+              readOnly: true
+              example: /objects/gl-account/23
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                department:
+                  type: object
+                  description: Department associated with the AP payment line item.
+                  readOnly: true
+                  x-object: department
+                  x-mappedTo: department
+                  properties:
+                    key:
+                      type: string
+                      description: System-assigned key for the department.
+                      readOnly: true
+                      x-mappedTo: DEPARTMENTKEY
+                      example: '12'
+                    id:
+                      type: string
+                      description: Identifier for the department.
+                      readOnly: true
+                      x-mappedTo: DEPARTMENTID
+                      example: '12'
+                    name:
+                      type: string
+                      description: Name of the department.
+                      readOnly: true
+                      x-mappedTo: DEPARTMENTNAME
+                      example: Accounts
+                    href:
+                      type: string
+                      description: URL for the department.
+                      readOnly: true
+                      example: /objects/department/12
+                location:
+                  type: object
+                  description: Location associated with the AP payment line item.
+                  x-mappedTo: location
+                  x-object: location
+                  properties:
+                    key:
+                      type: string
+                      description: System-assigned key for the location.
+                      readOnly: true
+                      x-mappedTo: LOCATIONKEY
+                      example: '22'
+                    id:
+                      type: string
+                      description: Identifier for the location.
+                      readOnly: true
+                      x-mappedTo: LOCATIONID
+                      example: LOC-22
+                    name:
+                      type: string
+                      description: Name of the location.
+                      readOnly: true
+                      x-mappedTo: LOCATIONNAME
+                      example: India
+                    href:
+                      type: string
+                      description: URL for the location.
+                      readOnly: true
+                      example: /objects/location/22
+        apPayment:
+          type: object
+          description: Header level details for the AP payment's line entries.
+          x-mappedTo: appymt
+          x-object: ap-payment
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AP payment.
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '3220'
+            id:
+              type: string
+              description: ID for the AP payment.
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '3220'
+            href:
+              type: string
+              description: URL for the AP payment.
+              readOnly: true
+              example: /objects/ap-payment/3220
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    ap-payment.s1.schema:
+      title: ap-payment
+      x-mappedTo: appymt
+      type: object
+      description: An AP payment is a transaction that records a payment against an AP bill or AP adjustment.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AP payment.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Identifier for the AP payment. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the AP payment.
+          readOnly: true
+          example: /objects/ap-payment/23
+        recordType:
+          type: string
+          description: Record type.
+          readOnly: true
+          x-mappedTo: RECORDTYPE
+          example: pp
+        financialAccount:
+          type: object
+          description: Financial entity from which the payment will be paid.
+          nullable: false
+          properties:
+            entityId:
+              type: string
+              description: ID of the financial entity.
+              x-mappedTo: FINANCIALENTITY
+              example: Visdb
+            entityType:
+              type: string
+              description: Type of the financial entity.
+              readOnly: true
+              x-mappedTo: FINANCIALENTITYTYPE
+              example: cc
+            name:
+              type: string
+              description: Name of the financial entity.
+              readOnly: true
+              x-mappedTo: FINANCIALACCOUNTNAME
+              example: VISA
+            currency:
+              type: string
+              description: Currency of the financial entity.
+              readOnly: true
+              x-mappedTo: FINANCIALACCOUNTCURRENCY
+              example: USD
+        action:
+          type: string
+          description: The action state of the AP payment. The default action state is `submit`.
+          x-mappedTo: ACTION
+          enum:
+            - draft
+            - submit
+          x-mappedToValues:
+            - Draft
+            - Submit
+        state:
+          type: string
+          description: State of the AP payment.
+          readOnly: true
+          x-mappedTo: STATE
+          enum:
+            - Partially approved
+            - Submitted
+            - Voided
+            - Confirmed
+            - Approved
+            - Draft
+            - Declined
+            - Delivered
+            - Print voided
+            - Deleted
+            - Quick delivery
+          x-mappedToValues:
+            - PA
+            - S
+            - V
+            - C
+            - A
+            - D
+            - U
+            - P
+            - VP
+            - X
+            - Q
+          example: Approved
+        documentNumber:
+          type: string
+          description: Reference number for the AP payment.
+          x-mappedTo: DOCNUMBER
+          example: '123123'
+        description:
+          type: string
+          description: Description of the AP payment.
+          x-mappedTo: DESCRIPTION
+          example: This is a test Description
+        documentId:
+          type: string
+          description: Document ID for the AP payment.
+          x-mappedTo: DESCRIPTION2
+          example: Prim-Vendor-Invoice-VI#0008#doc
+        txnDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date the AP payment was created.
+          readOnly: true
+          x-mappedTo: WHENCREATED
+        txnPaidDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date the AP payment transaction was paid.
+          readOnly: true
+          x-mappedTo: WHENPAID
+        paymentDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date the AP payment was fully paid.
+          x-mappedTo: PAYMENTDATE
+          nullable: false
+        baseCurrency:
+          type: object
+          description: Grouping all the base currency fields.
+          properties:
+            currency:
+              type: string
+              description: The company's base currency.
+              x-mappedTo: BASECURR
+              example: USD
+            totalAmount:
+              type: string
+              description: Total amount.
+              readOnly: true
+              x-mappedTo: TOTALENTERED
+              example: '10'
+            totalSelected:
+              type: string
+              description: Total selected.
+              readOnly: true
+              x-mappedTo: TOTALSELECTED
+              example: '0'
+            totalPaid:
+              type: string
+              description: Total paid.
+              readOnly: true
+              x-mappedTo: TOTALPAID
+              example: '10'
+            totalDue:
+              type: string
+              description: Amount due.
+              readOnly: true
+              x-mappedTo: TOTALDUE
+              example: '0'
+        txnCurrency:
+          type: object
+          description: Grouping all the transaction currency fields.
+          properties:
+            currency:
+              type: string
+              description: The currency in which the payment was made.
+              x-mappedTo: CURRENCY
+              example: USD
+            totalAmount:
+              type: string
+              description: Total transaction amount.
+              readOnly: true
+              x-mappedTo: TRX_TOTALENTERED
+              example: '10'
+            totalSelected:
+              type: string
+              description: Total transaction amount selected.
+              readOnly: true
+              x-mappedTo: TRX_TOTALSELECTED
+              example: '0'
+            totalPaid:
+              type: string
+              description: Total transaction amount paid.
+              readOnly: true
+              x-mappedTo: TRX_TOTALPAID
+              example: '10'
+            totalDue:
+              type: string
+              description: Transaction amount due.
+              readOnly: true
+              x-mappedTo: TRX_TOTALDUE
+              example: '0'
+        cleared:
+          type: string
+          description: Reconciliation status.
+          readOnly: true
+          x-mappedTo: CLEARED
+          example: F
+        clearedDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Reconciliation date.
+          readOnly: true
+          x-mappedTo: CLRDATE
+        isInclusiveTax:
+          type: boolean
+          description: Indicates whether the transaction is tax inclusive.
+          readOnly: true
+          x-mappedTo: INCLUSIVETAX
+          example: 'false'
+          x-mappedToType: string
+          default: 'false'
+        paymentSummary:
+          type: object
+          description: AP summary the payment is part of. Summaries are collections of transactions grouped together for processing.
+          x-mappedTo: APPAYMENTBATCH
+          x-object: ap-summary
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the summary.
+              x-mappedTo: PRBATCHKEY
+              readOnly: true
+              example: '399'
+            id:
+              type: string
+              description: Identifier for the summary.
+              readOnly: true
+              x-mappedTo: PRBATCHKEY
+              example: '399'
+            name:
+              type: string
+              description: Name of the summary.
+              readOnly: true
+              x-mappedTo: PRBATCH
+              example: Hidden AP Batch
+            postingDate:
+              type: string
+              format: date
+              description: GL posting date.
+              readOnly: true
+              x-mappedTo: WHENPOSTED
+              example: '2022-07-21'
+            href:
+              type: string
+              description: URL for the summary.
+              readOnly: true
+              example: /objects/ap-summary/399
+        exchangeRate:
+          type: object
+          description: Exchange rate details used to calculate the base amount.
+          title: exchangeRate
+          properties:
+            date:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.
+              x-mappedTo: EXCH_RATE_DATE
+            rate:
+              type: string
+              description: Exchange rate used to calculate the base amount from the transaction amount.
+              readOnly: true
+              x-mappedTo: EXCHANGE_RATE
+              example: '1.0789'
+            typeId:
+              type: string
+              description: Exchange rate type used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              example: '1'
+        paymentProvider:
+          type: object
+          description: Payment provider who processed the payment.
+          x-mappedTo: paymentprovider
+          x-object: payment-provider
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the payment provider.
+              x-mappedTo: PROVIDERKEY
+              readOnly: true
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the payment provider.
+              readOnly: true
+              x-mappedTo: PROVIDERID
+              example: CSI
+            href:
+              type: string
+              description: URL for the payment provider.
+              readOnly: true
+              example: /objects/payment-provider/1
+        paymentMethod:
+          type: string
+          description: Payment method for the payment.
+          x-mappedTo: PAYMENTMETHOD
+          nullable: false
+          example: null
+          enum:
+            - printedCheck
+            - creditCard
+            - eft
+            - cash
+            - onlineChargeCard
+            - onlineACHDebit
+            - manualCheck
+            - ach
+          x-mappedToValues:
+            - Printed Check
+            - Credit Card
+            - EFT
+            - Cash
+            - Online Charge Card
+            - Online ACH Debit
+            - Manual Check
+            - ACH
+        payToContact:
+          type: object
+          title: CONTACT
+          properties:
+            payTo:
+              type: object
+              title: payTo
+              x-object: contact
+              x-mappedTo: contact
+              properties:
+                href:
+                  type: string
+                  description: URL for the pay-to contact.
+                  readOnly: true
+                  example: /objects/contact/23
+                key:
+                  type: string
+                  description: Pay-to contact key.
+                  readOnly: true
+                  x-mappedTo: BILLTOPAYTOKEY
+                  example: '6886'
+                id:
+                  type: string
+                  description: Pay-to contact ID.
+                  readOnly: true
+                  x-mappedTo: BILLTOPAYTOID
+                  example: '6886'
+                name:
+                  type: string
+                  description: Pay-to contact name.
+                  readOnly: true
+                  x-mappedTo: BILLTOPAYTOCONTACTNAME
+                  example: PG & E(V201)
+        taxSolution:
+          type: object
+          description: Tax solution used to calculate and capture taxes on the payment.
+          x-object: tax-solution
+          x-mappedTo: taxsolution
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the tax solution.
+              readOnly: true
+              x-mappedTo: TAXSOLUTIONKEY
+            id:
+              type: string
+              description: ID for the tax solution.
+              readOnly: true
+              x-mappedTo: TAXSOLUTIONID
+            taxCalculationMethod:
+              type: string
+              description: Tax method used for the payment.
+              readOnly: true
+              x-mappedTo: TAXMETHOD
+            href:
+              type: string
+              description: URL for the tax solution.
+              readOnly: true
+        vendor:
+          type: object
+          description: Vendor to receive the payment.
+          x-mappedTo: vendor
+          x-object: vendor
+          nullable: false
+          properties:
+            href:
+              type: string
+              description: URL for the vendor.
+              readOnly: true
+              example: /objects/vendor/201
+            entity:
+              type: string
+              description: Vendor entity.
+              readOnly: true
+              x-mappedTo: ENTITY
+              example: V201
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              readOnly: true
+              x-mappedTo: VENDORKEY
+              example: '201'
+            id:
+              type: string
+              description: ID for the vendor.
+              x-mappedTo: VENDORID
+              example: '201'
+            name:
+              type: string
+              description: Name of the vendor.
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: PG & E
+        details:
+          type: array
+          x-mappedTo: PYMTDETAILS
+          x-object: ap-payment-detail
+          nullable: false
+          items:
+            $ref: '#/components/schemas/ap-payment-detail.s1.schema'
+        lines:
+          type: array
+          x-mappedTo: ITEMS
+          x-object: ap-payment-line
+          items:
+            readOnly: true
+            $ref: '#/components/schemas/ap-payment-line.s1.schema'
+        audit:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/audit.s1.schema'
+            - type: object
+              properties:
+                createdDateTime:
+                  type: string
+                  x-mappedTo: AUWHENCREATED
+                  description: Time of the submission.
+                  format: date-time
+                  example: '2014-01-08T11:28:12Z'
+                  readOnly: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

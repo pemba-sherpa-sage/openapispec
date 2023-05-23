@@ -1,0 +1,306 @@
+openapi: 3.0.0
+info:
+  title: sandbox
+  description: sandbox API
+  version: '1.0'
+  contact:
+    name: Vlad Nicolae
+    email: vlad.nicolae@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Sandboxes
+    description: Sandboxes description
+paths:
+  /objects/sandbox:
+    get:
+      summary: List sandboxes
+      description: Returns a collection with a key, ID, and link for each sandbox.
+      tags:
+        - Sandboxes
+      operationId: get-objects-sandbox
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of sandbox objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: '1'
+                        href: /objects/sandbox/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/sandbox/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/sandbox/3
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/sandbox/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the sandbox.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '10'
+    get:
+      summary: Get a sandbox
+      description: Returns detailed information for a particular sandbox.
+      tags:
+        - Sandboxes
+      operationId: get-objects-sandbox-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the sandbox
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/sandbox.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '10'
+                      id: '10'
+                      name: Company_title-sandbox
+                      description: Sandbox description
+                      state: pending
+                      expirationDate: '2022-09-01'
+                      lastRefreshedDate: '2022-06-22'
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      href: /objects/sandbox/10
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a sandbox
+      description: Deletes a sandbox.
+      tags:
+        - Sandboxes
+      operationId: delete-objects-sandbox-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    sandbox:
+      $ref: '#/components/schemas/sandbox.s1.schema'
+    sandboxRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    sandbox.s1.schema:
+      title: sandbox
+      x-mappedTo: sandbox
+      type: object
+      description: List of the Sandboxes
+      properties:
+        key:
+          type: string
+          description: Sandbox Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '10'
+        id:
+          type: string
+          description: Sandbox ID
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '10'
+        name:
+          type: string
+          description: Sandbox Name
+          x-mappedTo: NAME
+          example: Company_title-sandbox
+        description:
+          type: string
+          description: Sandbox Description
+          x-mappedTo: DESCRIPTION
+          example: Sandbox description
+        state:
+          type: string
+          description: Sandbox State
+          x-mappedTo: STATE
+          example: Pending
+          enum:
+            - ready
+            - inProgress
+            - pending
+            - failed
+          x-mappedToValues:
+            - Ready
+            - In Progress
+            - Pending
+            - Failed
+          default: pending
+        expirationDate:
+          type: string
+          description: Expiring
+          format: date
+          x-mappedTo: WHENEXPIRES
+          example: '2014-01-08'
+        lastRefreshedDate:
+          type: string
+          description: Last refresh
+          format: date
+          x-mappedTo: WHENREFRESHED
+          example: '2014-01-08'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

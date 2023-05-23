@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: vendor-account-number
+  description: vendor-account-number API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Vendor account numbers
+    description: Models an account number associated with a vendor.
+paths:
+  /objects/vendor-account-number:
+    get:
+      summary: List vendor account numbers
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each vendor account number. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Vendor account numbers
+      operationId: get-objects-vendor-account-number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-account-number objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/vendor-account-number/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the vendor account number.
+        in: path
+        required: true
+        schema:
+          type: string
+        example: 1
+    get:
+      summary: Get a vendor account number
+      description: Returns detailed information for a specified vendor account number.
+      tags:
+        - Vendor account numbers
+      operationId: get-objects-vendor-account-number-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of a vendor-account-number
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/vendor-account-number.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    vendor-account-number:
+      $ref: '#/components/schemas/vendor-account-number.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    vendor-account-number.s1.schema:
+      title: vendor-account-number
+      x-mappedTo: vendoracctnolochead
+      type: object
+      x-ownedBy: vendor
+      description: Models an account number associated with a vendor.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor account number.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the vendor account number.
+          x-mutable: false
+          x-mappedTo: RECORDNO
+          example: '1'
+        locationId:
+          type: string
+          description: Location for the vendor account number.
+          x-mappedTo: LOCATION
+          example: Los Gatos Office
+        accountNumber:
+          type: string
+          description: Vendor account number.
+          x-mappedTo: ACCOUNTNO
+          example: VAN-5134986722
+        href:
+          type: string
+          description: URL of the vendor account number.
+          readOnly: true
+          example: /objects/vendor-account-number/1
+        vendor:
+          title: vendorreference
+          type: object
+          description: Vendor the account number is associated with.
+          x-mappedTo: vendor
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the vendor.
+              x-mappedTo: VENDORID
+              example: '1'
+            href:
+              type: string
+              description: URL of the vendor.
+              readOnly: true
+              example: /objects/vendor/1
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

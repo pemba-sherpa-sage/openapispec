@@ -1,0 +1,130 @@
+title: location-group
+x-mappedTo: locationgroup
+type: object
+description: A specified set of locations, or a set of locations that meet certain criteria.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the location group.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '33'
+  id:
+    type: string
+    description: Location group ID. Displayed together with the group name in Sage Intacct (_ID_--_Name_). Location group IDs cannot be changed.
+    x-mappedTo: ID
+    example: WH1
+  href:
+    type: string
+    description: Endpoint for the location group.
+    readOnly: true
+    example: /objects/location-group/33
+  name:
+    type: string
+    description: Location group name. Displayed together with the group ID in Sage Intacct (_ID_--_Name_).
+    x-mappedTo: NAME
+    example: Western Region Warehouses
+  description:
+    type: string
+    description: Description of the location group.
+    x-mappedTo: DESCRIPTION
+    example: Western Region Warehouses
+  primaryContact:
+    type: object
+    description: Default contact for this group
+    x-object: contact
+    x-mappedTo: groupcontact
+    properties:
+      key:
+        type: string
+        x-mappedTo: PRIMARYCONTACTKEY
+        example: '7'
+      id:
+        type: string
+        x-mappedTo: CONTACTINFO.CONTACTNAME
+        readOnly: true
+        example: Jeff Pinkerton
+      href:
+        type: string
+        readOnly: true
+        example: /objects/contact/7
+  groupType:
+    type: string
+    description: |
+      Group membership type. The group type and options that you select determine which locations will be included in report data when you filter on this location group.
+
+      If you are creating financial reports that show locations in rows or columns, your selection will also determine the column headings and row headings that will appear, and the order in which they will be listed.
+
+      * `specific` - Specify the locations to include and their order in the `members` array.
+      * `all` - All locations that match the `memberFilter` criteria.
+    x-mappedTo: GROUPTYPE
+    example: specific
+    enum:
+      - all
+      - specific
+    x-mappedToValues:
+      - ALL
+      - SPECIFIC
+    default: all
+  sortOrder:
+    type: string
+    description: Sort order for locations that match the `memberFilter`. Only applicable when `groupType` = `all`.
+    x-mappedTo: SORTORDER
+    example:
+    enum:
+      - ascending
+      - descending
+    x-mappedToValues:
+      - ASC
+      - DESC
+    default: ascending
+  maxMatches:
+    type: string
+    description: The maximum number of locations that match the `memberFilter` to include in the location group. Only applicable when `groupType` = `all`.
+    x-mappedTo: RESTRICTTO
+    example:
+  memberFilter:
+    type: array
+    title: memberFilter
+    description: One or more filters to select the locations to include in the location group.
+    nullable: true
+    x-mappedTo: MEMBERFILTERS
+    items:
+      title: children
+      properties:
+        field:
+          type: string
+          description: Location field to filter on, such as ID or Country Code.
+          x-mappedTo: FIELD
+          example: STATUS
+        operator:
+          type: string
+          description: Comparison operator.
+          x-mappedTo: OPERATOR
+          example: '!='
+        value:
+          type: string
+          description: Value to compare against.
+          x-mappedTo: VALUE
+          example: inactive
+  glAccountGroup:
+    type: object
+    description: Location report structure that controls how this location group is used in reports. If not specified, the group can be used only for filtering reports.
+    x-mappedTo: glacctgrp
+    x-object: gl-account-group
+    properties:
+      key:
+        type: string
+        x-mappedTo: GLACCTGRP.RECORDNO
+        example: '145'
+      id:
+        type: string
+        x-mappedTo: DIMGRPCOMP
+        readOnly: true
+        example: Los Angeles
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account-group/145
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

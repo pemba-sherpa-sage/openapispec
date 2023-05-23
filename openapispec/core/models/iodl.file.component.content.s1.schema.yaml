@@ -1,0 +1,17 @@
+title: content
+type: object
+properties:
+  type:
+    x-mappedTo: content.type
+    type: string
+  data:
+    x-mappedTo: content.data
+    type: string
+  tokens:
+    x-mappedTo: content.tokens
+    type: array
+    items:
+      type: string
+  tokenMap:
+    x-mappedTo: content.tokenMap
+    type: object

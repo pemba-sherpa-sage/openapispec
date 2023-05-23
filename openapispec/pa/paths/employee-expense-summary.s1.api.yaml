@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Employee expense summary
+  description: Employee expense summary API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Employee expense summary
+    description: Payment Batches of all payment processed in the system.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-expense-summary:
+    get:
+      summary: Get collection of employee expense summaries
+      description: 'Returns a collection with a key, ID, and link for each employee expense summary (batch).'
+      tags:
+        - Employee expense summary
+      operationId: get-objects-employee-expense-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee expense summary objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of employee expense summary objects:
+                  value:
+                    'ia::result':
+                      - key: '13'
+                        id: '13'
+                        title: Expenses - Expenses (USD)- 2021/09/01 Batch
+                        href: /objects/employee-expense-summary/13
+                      - key: '15'
+                        id: '15'
+                        title: Expenses - - Expenses (USD)- 2021/06/01 Batch
+                        href: /objects/employee-expense-summary/15
+                      - key: '16'
+                        id: '16'
+                        title: Expenses - - Expenses (USD)- 2022/01/01 Batch
+                        href: /objects/employee-expense-summary/16
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee expense summary
+      description: Creates a new employee expense summary.
+      tags:
+        - Employee expense summary
+      operationId: post-objects-employee-expense-summary
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-summary'
+                - $ref: '#/components/schemas/employeeExpenseSummaryRequiredProperties'
+            examples:
+              Creates an employee expense summary:
+                value:
+                  title: Expenses - Expenses (USD) 2021/09/01 Batch
+                  postingDate: '2021-01-23'
+                  total: '100'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee expense summary
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee-expense-summary:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      href: /objects/employee-expense-summary/10
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-expense-summary/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee expense summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee expense summary
+      description: Returns detailed information for a particular employee expense summary.
+      tags:
+        - Employee expense summary
+      operationId: get-objects-employee-expense-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee expense summary
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-expense-summary'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee expense summary:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: '18'
+                      title: Expense Reports for 2017 Week 03
+                      postingDate: '2017-01-20'
+                      total: '0'
+                      open: open
+                      systemgenerated: 'false'
+                      href: /objects/employee-expense-summary/18
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee expense summary
+      description: Updates an existing employee expense summary by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee expense summary
+      operationId: patch-objects-employee-expense-summary-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-summary'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an employee expense summary:
+                value:
+                  title: Expense batch
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee expense summary
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated employee expense summary:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: /objects/employee-expense-summary/124
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee expense summary
+      description: Deletes an employee expense summary.
+      tags:
+        - Employee expense summary
+      operationId: delete-objects-employee-expense-summary-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-expense-summary:
+      $ref: ../models/employee-expense-summary.s1.schema.yaml
+    employeeExpenseSummaryRequiredProperties:
+      type: object
+      required:
+        - title
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

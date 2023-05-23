@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: paas.trigger.intacct-api
+  description: Trigger Intacct API service
+  version: '1.0-internal'
+  contact:
+    name: Jean-Francois Ngo
+    email: jean-francois.ngo@sage.com
+tags:
+  - name: paas.trigger.intacct-api
+    description: Trigger Intacct API service
+paths:
+  /services/paas/trigger/intacct-api:
+    post:
+      summary: Intacct API
+      description: Trigger intacct API
+      tags:
+        - paas.trigger.intacct-api
+      operationId: post-services-paas-trigger-intacct-api
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paas.trigger.intacct-api-req'
+            examples:
+              example-1:
+                value:
+                  rawData: {"userId": 1/}
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paas.trigger.intacct-api-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      result:
+
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    paas.trigger.intacct-api-req:
+      description: Read intacct API request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        rawData:
+          type: object
+          description: Raw Data
+          x-mappedTo: rawData
+    paas.trigger.intacct-api-resp:
+      description: Read intacct api response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        result:
+          type: string
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  
+
+

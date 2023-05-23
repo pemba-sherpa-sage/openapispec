@@ -1,0 +1,18 @@
+key: ar-tax-schedule::active
+id: active
+object: ar-tax-schedule
+name: Active
+description: Specifies active ar-tax-schedules
+query:
+  object: ar-tax-schedule
+  fields:
+    - name
+    - description
+    - taxSolution.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default

@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: purchasing-price-schedule
+  description: purchasing-price-schedule API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Purchasing price schedules
+    description: |
+      Purchasing price schedules are pricing groups that you can assign to one or more vendors. Discount items by assigning a vendor to a price schedule associated with a price list that contains different discounts for various items. Or define a price schedule with a 10% discount off all items and assign that price schedule to the vendor. See [Price schedules &mdash; Purchasing](https://www.intacct.com/ia/docs/en_US/help_action/Purchasing/Setting_up_Purchasing/Price_lists/price-schedules-po-ns.htm?tocpath=Applications%7CPurchasing%7CSetup%7CPrice%20lists%7C_____4) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-price-schedule:
+    get:
+      summary: List purchasing price schedules
+      description: |
+        Returns a collection with a key, ID, and link for each purchasing price schedule. This operation is mostly for use in testing; use query to find objects that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Project Manager, Employee, Warehouse
+            permissions: List, View Price Schedules
+            configuration: Purchasing is configured with Price schedules set to true
+      tags:
+        - Purchasing price schedules
+      operationId: get-objects-purchasing-price-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-price-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List purchasing price schedules:
+                  value:
+                    'ia::result':
+                      - key: '3'
+                        id: Robotic Price Schedule
+                        href: /objects/purchasing-price-schedule/3
+                      - key: '5'
+                        id: Acme Price Schedule
+                        href: /objects/purchasing-price-schedule/5
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a purchasing price schedule
+      description: Creates a new purchasing price schedule.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Price Schedules
+            configuration: Purchasing is configured with Price schedules set to true
+      tags:
+        - Purchasing price schedules
+      operationId: post-objects-purchasing-price-schedule
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-price-schedule'
+                - $ref: '#/components/schemas/purchasing-price-scheduleRequiredProperties'
+            examples:
+              Create a purchasing price schedule:
+                value:
+                  id: Acme Price Schedule
+                  description: Acme Discount Schedule
+                  discountPercent: '10'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New purchasing-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a purchasing price schedule:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      id: Acme Price Schedule
+                      href: /objects/purchasing-price-schedule/3
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-price-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the purchasing price schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a purchasing price schedule
+      description: Returns detailed information for a specified purchasing price schedule.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Project Manager, Employee, Warehouse
+            permissions: List, View Price Schedules
+            configuration: Purchasing is configured with Price schedules set to true
+      tags:
+        - Purchasing price schedules
+      operationId: get-objects-purchasing-price-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-price-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a purchasing price schedule:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      id: Acme Price Schedule
+                      description: Acme Discount Schedule
+                      discountPercent: '10'
+                      status: active
+                      href: /objects/purchasing-price-schedule/3
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a purchasing price schedule
+      description: Updates an existing purchasing price schedule by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Price Schedules
+            configuration: Purchasing is configured with Price schedules set to true
+      tags:
+        - Purchasing price schedules
+      operationId: patch-objects-purchasing-price-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-price-schedule'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  discountPercent: '15'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated purchasing-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      id: Acme Price Schedule
+                      href: /objects/purchasing-price-schedule/3
+                    'ia::meta':
+                      totalCount: 1  
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a purchasing price schedule
+      description: |
+        Deletes a purchasing price schedule. A price schedule can be deleted if it is no longer in use and it needs to be removed from the system.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Price Schedules
+            configuration: Purchasing is configured with Price schedules set to true
+      tags:
+        - Purchasing price schedules
+      operationId: delete-objects-purchasing-price-schedule-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-price-schedule:
+      $ref: ../models/purchasing-price-schedule.s1.schema.yaml
+    purchasing-price-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

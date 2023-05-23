@@ -1,0 +1,123 @@
+title: item-vendor
+x-mappedTo: itemvendor
+x-ownedBy : item
+type: object
+description: 
+properties:
+  key:
+    type: string
+    description: System-assigned key for the itemvendor.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Item/vendor info Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: Endpoint for the itemvendor.
+    readOnly: true
+    example: /objects/itemvendor/23
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+  printAs:
+    type: string
+    description: Print AS
+    x-mappedTo: PRINTAS
+  item:
+    type: object
+    x-mappedTo: item
+    x-object: item
+    properties:
+      id:
+        type: string
+        description: Item ID
+        x-mappedTo: ITEMID
+        example:
+      key:
+        type: string
+        description: Item key
+        x-mappedTo: ITEMKEY
+        example:
+      href:
+        type: string
+        description: Endpoint for the item.
+        readOnly: true
+        example: /objects/item/23
+  vendor:
+    type: object
+    description: Vendor
+    x-object: vendor
+    properties:
+      id:
+        type: string
+        description: Vendor ID
+        x-mappedTo: VENDORID
+        example:
+      key:
+        type: string
+        description: Vendor key
+        x-mappedTo: VENDORKEY
+        example:
+      href:
+        type: string
+        description: Endpoint for the vendor.
+        readOnly: true
+        example: /objects/vendor/23
+  stockNumber:
+    type: string
+    description: Stock number
+    x-mappedTo: STOCKNO
+    example: 
+  leadTime:
+    type: string
+    description: Lead time (days)
+    x-mappedTo: LEAD_TIME
+    example: 
+  economicOrderQuantity:
+    type: integer
+    description: Economic order quantity
+    x-mappedTo: ECONOMIC_ORDER_QTY
+    example: 
+  minimumOrderQuantity:
+    type: integer
+    description: Minimum order quantity
+    x-mappedTo: MIN_ORDER_QTY
+    example: 
+  bestCost:
+    type: string
+    description: Best cost
+    x-mappedTo: BEST_COST
+    example: 
+  lastCost:
+    type: string
+    description: Last cost
+    x-mappedTo: LAST_COST
+    example: 
+  uom:
+    type: string
+    description: Units of measure
+    x-mappedTo: UOM
+    example: 
+  conversionFactor:
+    type: number
+    description: Number of base units
+    x-mappedTo: CONVFACTOR
+    example: 
+  forecastDemandInLeadTime:
+    type: integer
+    description: Demand forecast during lead time
+    x-mappedTo: FORECAST_DEMAND_IN_LEAD_TIME
+    example: 
+  isPreferredVendor:
+    type: boolean
+    description: Preferred vendor
+    x-mappedTo: PREFERRED_VENDOR
+    example: 
+    x-mappedToType: string
+    default: false

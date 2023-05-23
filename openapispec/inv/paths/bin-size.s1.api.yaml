@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  title: bin-size
+  description: bin-size API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Bin sizes
+    description: A bin size in an attribute you can assign to a bin to help determine whether the bin is suitable for storing certain items.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/bin-size:
+    get:
+      summary: List all bin sizes
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each bin size. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bin Sizes
+            configuration: Advanced workflows is enabled.
+      tags:
+        - Bin sizes
+      operationId: get-objects-bin-size
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bin-size objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bin sizes:
+                  value:
+                    'ia::result':
+                      - key: '1322'
+                        id: BS14
+                        href: /objects/bin-size/1322
+                      - key: '1323'
+                        id: BS13
+                        href: /objects/bin-size/1323
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bin size
+      description: Creates a new bin size.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Bin Sizes
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin sizes
+      operationId: post-objects-bin-size
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin-size'
+                - $ref: '#/components/schemas/bin-sizeRequiredProperties'
+            examples:
+              Create a bin size:
+                value:
+                  id: BS12
+                  description: Bin size 12
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bin-size
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a bin size:
+                  value:
+                    'ia::result':
+                      key: '1323'
+                      id: BS12
+                      href: /objects/bin-size/1323
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/bin-size/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '1324'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the bin size.
+    get:
+      summary: Get a bin size
+      description: Returns detailed information for a specified bin size.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bin Sizes
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin sizes
+      operationId: get-objects-bin-size-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bin-size
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bin-size'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a bin size:
+                  value:
+                    'ia::result':
+                      key: '1324'
+                      id: BS132
+                      description: Bin size 132
+                      audit:
+                        createdDateTime: '2021-05-07T01:15:23Z'
+                        modifiedDateTime: '2021-05-07T01:15:23Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                      href: /objects/bin-size/1324
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a bin size
+      description: Updates an existing bin size by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Bin Sizes
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin sizes
+      operationId: patch-objects-bin-size-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin-size'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Bin size 1-updated
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bin-size
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '1324'
+                      id: BS132
+                      href: /objects/bin-size/1324
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bin size
+      description: Deletes a bin size. You can delete a bin size if it is not being used and you no longer need it.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Bin Sizes
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin sizes
+      operationId: delete-objects-bin-size-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bin-size:
+      $ref: ../models/bin-size.s1.schema.yaml
+    bin-sizeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

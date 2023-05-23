@@ -1,0 +1,390 @@
+openapi: 3.0.0
+info:
+  title: ar-payment
+  description: ar-payment API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+tags:
+  - name: AR payments
+    description: An AR payment is a transaction used to record a payment against an AR invoice or an AR adjustment/debit memo.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-payment:
+    get:
+      summary: List AR payments
+      description: Returns a collection with a key, ID, and link for each AR payment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR payments
+      operationId: get-objects-ar-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-payment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR payments:
+                  value:
+                    "ia::result":
+                      - key: "212"
+                        id: "212"
+                        href: "/objects/ar-payment/212"
+                      - key: "201"
+                        id: "201"
+                        href: "/objects/ar-payment/201"
+                    "ia::meta":
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an ar payment
+      description: Creates a new ar payment.
+      tags:
+        - AR payments
+      operationId: post-objects-ar-payment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-payment'
+                - $ref: '#/components/schemas/ar-paymentRequiredProperties'
+            examples:
+              Create an AR payment:
+                value:
+                  financialEntity:
+                    entityId: "BOA"
+                  paymentMethod: "cash"
+                  customer:
+                    id: "1"
+                  documentNumber: ""
+                  paymentSummary:
+                    receiptDate: "2023-03-23"
+                  paidDate: "2023-03-23"
+                  txnCurrency: "MXN"
+                  baseAmountToPay: "0.06"
+                  txnAmountToPay: "1"
+                  paymentDetails:
+                    - arInvoice:
+                        id: "2085"
+                        entry:
+                          id: "4313"
+                      txnPaymentAmount: "1"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-payment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AR payment:
+                  value:
+                    "ia::result":
+                      id: "2096"
+                      key: "2096"
+                      href: "/objects/ar-payment/2096"
+                    "ia::meta":
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-payment/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the ar payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR payment
+      description: Returns detailed information for a specified AR payment.
+      tags:
+        - AR payments
+      operationId: get-objects-ar-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-payment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-payment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR payment:
+                  value:
+                    "ia::result":
+                      id: "464"
+                      key: "464"
+                      paymentSummary:
+                        key: "281"
+                        title: "Receipts(Bank-BOA): 2025/10/10 Batch"
+                        receiptDate: "2025-10-10"
+                        batch: "Receipts(Bank-BOA): 2025/10/10 Batch"
+                        undepositedGLAccountNo: null
+                      recordType: "rp"
+                      financialEntity:
+                        entityId: "BOA"
+                        entityType: "ba"
+                        name: "Bank of America"
+                        currency: "USD"
+                      state: null
+                      paymentMethod: "cash"
+                      customer:
+                        id: "1"
+                        name: "Power Aerospace Materials"
+                      documentNumber: null
+                      description: null
+                      audit:
+                        createdDateTime: "2025-10-10T00:00:00Z"
+                        modifiedDateTime: "2022-12-12T06:51:22Z"
+                        createdBy: "1"
+                        modifiedBy: "1"
+                      paidDate: "2019-03-20"
+                      baseTotalPaid: "10"
+                      txnTotalPaid: "10"
+                      baseCurrency: "USD"
+                      exchangeRate:
+                        date: null
+                        typeId: null
+                        rate: null
+                      baseTotalAmount: "10"
+                      baseAmountDue: "0"
+                      txnTotalAmount: "10.00"
+                      txnAmountDue: "0.00"
+                      contacts:
+                        payTo:
+                          id: null
+                          key: null
+                      bankReconciliationStatus: "false"
+                      bankReconciliationDate: null
+                      referenceNumber: null
+                      attachment:
+                        id: null
+                        key: null
+                      nsp::arpayment_cns_case:
+                        key: null
+                        id: null
+                      lines:
+                        - id: "1011"
+                          key: "1011"
+                          arPayment:
+                             key: "464"
+                             href: "/objects/ar-payment/464"
+                          glAccount:
+                            key: "36"
+                            id: "1200"
+                            name: "Accounts Receivable"
+                            href: "/objects/gl-account/36"
+                          baseAmount: "10"
+                          txnAmount: "10.00"
+                          dimensions:
+                            department:
+                              key: null
+                              id: null
+                              name: null
+                            location:
+                              key: "1"
+                              id: "1"
+                              name: "United States of America"
+                              href: "/objects/location/1"
+                            project:
+                              key: null
+                              id: null
+                              name: null
+                            customer:
+                              key: "1"
+                              id: "1"
+                              name: "Power Aerospace Materials"
+                              href: "/objects/customer/1"
+                            vendor:
+                              key: null
+                              id: null
+                              name: null
+                            employee:
+                              key: null
+                              id: null
+                              name: null
+                            item:
+                              key: null
+                              id: null
+                              name: null
+                            class:
+                              key: null
+                              id: null
+                              name: null
+                            nsp::rgldim43491134_10019:
+                              key: null
+                              id: null
+                          memo: null
+                          exchangeRate:
+                            date: "10/10/2025"
+                            typeId: null
+                            rate: "1"
+                          txnCurrency: "USD"
+                          baseCurrency: "USD"
+                          lineNumber: 1
+                          baseTotalPaid: "10"
+                          txnTotalPaid: "10"
+                          baseTotalSelected: "0"
+                          txnTotalSelected: "0"
+                          recordType: "rp"
+                          offsetGLAccount:
+                            key: "9"
+                            href: "/objects/gl-account/9"
+                          audit:
+                            createdDateTime: "2022-12-12T06:51:21Z"
+                            modifiedDateTime: "2022-12-12T06:51:22Z"
+                            createdBy: "1"
+                            modifiedBy: "1"
+                          href: "/objects/ar-payment-line/1011"
+                      paymentDetails:
+                          - id: "127"
+                            key: "127"
+                            arInvoice:
+                              id: "406"
+                              key: "406"
+                              entry:
+                                id: "886"
+                                key: "886"
+                              href: "/objects/ar-invoice/406"
+                            positiveAdjustment:
+                              key: null
+                              entry:
+                                id: null
+                                key: null
+                            inlineTxn:
+                              key: null
+                              entry:
+                                id: null
+                                key: null
+                              baseAmount: null
+                              txnAmount: null
+                            postedAdvance:
+                              key: null
+                              entry:
+                                id: null
+                                key: null
+                              baseAmount: null
+                              txnAmount: null
+                            postedOverPayment:
+                              key: null
+                              entry:
+                                id: null
+                                key: null
+                              baseAmount: null
+                              txnAmount: null
+                            arAdjustment:
+                              key: null
+                              entry:
+                                id: null
+                                key: null
+                              baseAmount: null
+                              txnAmount: null
+                            arPayment:
+                              id: "464"
+                              key: "464"
+                              entry:
+                                id: "1011"
+                                key: "1011"
+                              href: "/objects/ar-payment/464"
+                            paymentDate: "2019-03-20"
+                            basePaymentAmount: "10"
+                            txnPaymentAmount: "10.00"
+                            bankCurrency: "USD"
+                            audit:
+                              createdDateTime: "2022-12-12T06:51:21Z"
+                              modifiedDateTime: "2022-12-12T06:51:21Z"
+                              createdBy: "1"
+                              modifiedBy: "1"
+                            href: "/objects/ar-payment-detail/127"
+                      href: "/objects/ar-payment/464"
+                    "ia::meta":
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR payment
+      description: Updates an existing AR payment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR payments
+      operationId: patch-objects-ar-payment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-payment'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR payment: { }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-payment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an AR payment: { }
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-payment:
+      $ref: ../models/ar-payment.s1.schema.yaml
+    ar-paymentRequiredProperties:
+      type: object
+      required:
+        - paymentMethod
+        - txnCurrency
+        - paymentSummary
+        - customer
+        - paymentDetails
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

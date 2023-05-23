@@ -1,0 +1,157 @@
+title: order-entry-billing-schedule
+x-mappedTo: BILLINGSCHEDULE
+type: object
+description: This object provides order entry billing schedule information, including billing template details.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the order entry billing schedule.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: ID for the order entry billing schedule. This value is the same as key for this object and can be ignored. Use key for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the order entry billing schedule.
+    readOnly: true
+    example: /objects/order-entry-billing-schedule/23
+  billingTemplate:
+    type: object
+    description: Project billing template associated with the billing schedule.
+    x-mappedTo: billingtemplate
+    x-object: project-billing-template
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the billing template.
+        x-mappedTo: BILLINGTEMPLATEKEY
+        example:
+      id:
+        type: string
+        description: ID for the billing template.
+        x-mappedTo: BILLINGTEMPLATEKEY
+        example:
+      templateId:
+        type: string
+        description: Short and descriptive identifier for the billing template.
+        x-mappedTo: TEMPLATEID
+        example:
+      href:
+        type: string
+        description: URL for the project billing template.
+        readOnly: true
+        example: /objects/project-billing-template/23
+      description:
+        type: string
+        description: Description of the project billing template.
+        x-mappedTo: DESCRIPTION
+        example:
+      billingMethod:
+        type: string
+        description: Indicates whether to bill services by percent completed or by milestone.
+        x-mappedTo: BILLINGMETHOD
+        example:
+        enum:
+          - 'percentCompleted'
+          - 'milestone'
+        x-mappedToValues:
+          - 'Percent Completed'
+          - 'Milestone'
+      calculateOn:
+        type: string
+        description: Indicates whether to calculate billing on a project basis or a task basis.
+        x-mappedTo: CALCULATEON
+        example:
+  orderEntryDocument:
+    type: object
+    description: Order entry document associated with the billing schedule.
+    x-mappedTo: sodocument
+    x-object: order-entry-document
+    properties:
+      key:
+        type: string
+        x-mappedTo: DOCHDRKEY
+        description: Key for the document header.
+        readOnly: true
+      id:
+        type: string
+        description: Name or other unique identifier for the order entry document.
+        x-mappedTo: DOCID
+        example:
+      href:
+        type: string
+        description: URL for the order entry document.
+        readOnly: true
+        example: /objects/order-entry-document/23
+      sourceTransaction:
+        type: string
+        description: Source transaction.
+        x-mappedTo: SOURCETRANSACTION
+        example:
+      sourceTransactionDate:
+        type: string
+        description: Source transaction date.
+        x-mappedTo: SOURCETRANSDATE
+        example:
+  orderEntryDocumentLine:
+    type: object
+    description: Line item in the associated order entry document.
+    x-mappedTo: sodocumententry
+    x-object: order-entry-document-line
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the document line item.
+        x-mappedTo: DOCENTRYKEY
+        example:
+      id:
+        type: string
+        description: ID for the document line item.
+        x-mappedTo: RECORDNO
+        example:
+      href:
+        type: string
+        description: URL for the document line item.
+        readOnly: true
+        example: /objects/order-entry-document-line/23
+      projectKey:
+        type: string
+        description: Project key
+        x-mappedTo: PROJECTKEY
+        example:
+      taskKey:
+        type: string
+        description: Task key
+        x-mappedTo: TASKKEY
+        example:
+      transactionValue:
+        type: string
+        description: Amount of the line item.
+        x-mappedTo: TRX_VALUE
+        example:
+      lineNumber:
+        type: string
+        description: Line number
+        x-mappedTo: LINE_NO
+        example:
+  status:
+    type: string
+    description: Status of the billing schedule.
+    x-mappedTo: STATUS
+    example:
+    enum:
+      - 'notStarted'
+      - 'inProgress'
+      - 'completed'
+      - 'closed'
+    x-mappedToValues:
+      - 'Not Started'
+      - 'In Progress'
+      - 'Completed'
+      - 'Closed'
+    default: 'notStarted'

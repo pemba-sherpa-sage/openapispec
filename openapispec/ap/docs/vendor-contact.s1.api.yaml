@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: vendor-contact
+  description: vendor-contact API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Vendor contacts
+    description: Contact information for a vendor.
+paths:
+  /objects/vendor-contact/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor contact.
+    options:
+      summary: Get a vendor contact
+      description: Returns detailed information for a specified vendor contact.
+      tags:
+        - Vendor contacts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/vendor-contact.s1.schema'
+components:
+  schemas:
+    vendor-contact:
+      $ref: '#/components/schemas/vendor-contact.s1.schema'
+    vendor-contactRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - id
+        vendor:
+          required:
+            - id
+      required:
+        - name
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    vendor-contact.s1.schema:
+      title: vendor-contact
+      x-mappedTo: vendorentitycontacts
+      x-ownedBy: vendor
+      type: object
+      description: Contact information for a vendor.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor contact information.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the vendor contact information.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        name:
+          type: string
+          description: Category name for the vendor contact information.
+          x-mappedTo: CATEGORYNAME
+          example: Main Office
+        contact:
+          type: object
+          description: Contact to associate with the vendor.
+          x-object: contact
+          x-mappedTo: vcontact
+          properties:
+            id:
+              type: string
+              description: Contact Name
+              x-mappedTo: CONTACT.NAME
+              example: Jeffrey Palms
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        vendor:
+          title: vendorreference
+          type: object
+          description: Vendor for this contact.
+          x-mappedTo: vendor
+          x-object: vendor
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

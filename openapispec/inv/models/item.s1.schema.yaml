@@ -1,0 +1,161 @@
+title: item
+x-mappedTo: item
+type: object
+description: Items are goods, services, or kits that you purchase from vendors or sell to customers.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the item.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the item.
+    x-mappedTo: ITEMID
+    x-mutable: false
+  name:
+    type: string
+    description: Unique name for the item.
+    x-mappedTo: NAME
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  itemType:
+    type: string
+    x-mutable: false
+    enum:
+      - 'inventory'
+      - 'nonInventory'
+      - 'purchaseOnlyNonInventory'
+      - 'salesOnlyNonInventory'
+      - 'kit'
+      - 'stockableKit'
+    x-mappedToValues:
+      - 'Inventory'
+      - 'Non-Inventory'
+      - 'Non-Inventory (Purchase only)'
+      - 'Non-Inventory (Sales only)'
+      - 'Kit'
+      - 'Stockable Kit'
+    description: The type for the item. Item type determines where the item will be available. 
+    x-mappedTo: ITEMTYPE
+  description:
+    type: string
+    description: Detailed description of the item. Useful to distinguish similar items.
+    x-mappedTo: EXTENDED_DESCRIPTION
+  costMethod:
+    type: string
+    enum:
+      - 'standard'
+      - 'average'
+      - 'FIFO'
+      - 'LIFO'
+    x-mappedToValues:
+      - 'Standard'
+      - 'Average'
+      - 'FIFO' 
+      - 'LIFO'
+    description: Cost method used to determine the cost of inventory. 
+    x-mappedTo: COST_METHOD
+  unitOfMeasure:
+    type: object
+    description: Unit of measure for the item.
+    x-object: unit-of-measure
+    x-mappedTo: uom
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the unit of measure.
+        x-mappedTo: UOMGRPKEY
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier for the unit of measure.
+        x-mappedTo: UOMGRP
+      href:
+        type: string
+        description: URL for the unit of measure.
+        readOnly: true
+  notes:
+    type: string
+    description: Notes or detailed information not captured elsewhere.
+    x-mappedTo: NOTE
+  productLine:
+    type: object
+    x-object: product-line
+    x-mappedTo: productLine
+    properties:
+      id:
+        type: string
+        description: ID of the product line to which the item belongs.
+        x-mappedTo: PRODUCTLINEID
+  inventory:
+    type: object
+    title: inventory
+    properties:
+      shippingWeight:
+        type: number
+        description: Total shipping weight for the item.
+        x-mappedTo: SHIP_WEIGHT
+      glGroup:
+        type: object
+        description: The GL group to which the item belongs.
+        title: glGroup
+        x-object: item-gl-group
+        x-mappedTo: itemglgroup
+        properties:
+          id:
+            type: string
+            description: Unique identifier for the GL group.
+            x-mappedTo: GLGROUP
+  purchasing:
+    type: object
+    title: purchasing
+    properties:
+      standardCost:
+        type: string
+        description: Standard cost value for the item.
+        x-mappedTo: STANDARD_COST
+  sales:
+    type: object
+    title: sales
+    properties:
+      isTaxable:
+        type: boolean
+        description: Set to `true` if the sale of the item is taxable.
+        x-mappedTo: TAXABLE
+        x-mappedToType: string
+      basePrice:
+        type: number
+        description: Base price for the item.
+        x-mappedTo: BASEPRICE
+      taxGroup:
+        type: object
+        description: The tax group to assign the item to.
+        title: taxGroup
+        x-object: item-tax-group
+        x-mappedTo: itemtaxgroup
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the tax group.
+            x-mappedTo: TAXGROUPKEY
+            readOnly: true
+          id:
+            type: string
+            description: Unique identifier for the tax group.
+            x-mappedTo: TAXGROUP.NAME
+          href:
+            type: string
+            description: URL for the tax group.
+            readOnly: true
+  warehouseInfo:
+    type: array
+    x-mappedTo: WAREHOUSE_INFO
+    x-object: item-warehouse-inventory
+    items:
+      $ref: item-warehouse-inventory.s1.schema.yaml
+         
+        
+      
+     
+  

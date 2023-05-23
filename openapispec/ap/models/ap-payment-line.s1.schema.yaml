@@ -1,0 +1,277 @@
+title: ap-payment-line
+x-mappedTo: appymtentry
+x-ownedBy: ap-payment
+type: object
+description: AP payment line items represent entries in an AP payment object.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP payment line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: ID for the AP payment line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the AP payment line item.
+    readOnly: true
+    example: /objects/ap-payment-line/23
+  description:
+    type: string
+    description: Memo or brief description of the AP payment line item.
+    readOnly: true
+    x-mappedTo: ENTRYDESCRIPTION
+    example: 'Penalty'
+  exchangeRate:
+    type: object
+    description: Exchange rate details used to calculate the base amount.
+    readOnly: true
+    title: exchangeRate
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.
+        readOnly: true
+        x-mappedTo: EXCH_RATE_DATE
+      rate:
+        type: string
+        description: Exchange rate used to calculate the base amount from the transaction amount.
+        readOnly: true
+        x-mappedTo: EXCHANGE_RATE
+        example: 1.0789
+      typeId:
+        type: string
+        description: Exchange rate type used to calculate the base amount from the transaction amount.
+        readOnly: true
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        example: '1'
+  lineNumber:
+    type: string
+    description: Line number of the AP payment line item.
+    readOnly: true
+    x-mappedTo: LINE_NO
+    example: '1'
+  baseCurrency:
+    type: object
+    description: Grouping all the base currency fields.
+    properties:
+      currency:
+        type: string
+        description: Base currency.
+        readOnly: true
+        x-mappedTo: BASECURR
+        example: 'USD'
+      amount:
+        type: string
+        description: Base amount.
+        readOnly: true
+        x-mappedTo: AMOUNT
+        example: '10'
+      totalPaid:
+        type: string
+        description: Total paid for the line item.
+        readOnly: true
+        x-mappedTo: TOTALPAID
+        example: '10'
+      totalSelected:
+        type: string
+        description: Total selected for the line item.
+        readOnly: true
+        x-mappedTo: TOTALSELECTED
+        example: '0'
+  txnCurrency:
+    type: object
+    description: Grouping all the transaction currency fields.
+    properties:
+      currency:
+        type: string
+        description: Transaction currency.
+        readOnly: true
+        x-mappedTo: CURRENCY
+        example: 'USD'
+      amount:
+        type: string
+        description: Transaction amount.
+        readOnly: true
+        x-mappedTo: TRX_AMOUNT
+        example: '10'
+      totalPaid:
+        type: string
+        description: Transaction total paid for the line item.
+        readOnly: true
+        x-mappedTo: TRX_TOTALPAID
+        example: '10'
+      totalSelected:
+        type: string
+        description: Total transaction selected for the line item.
+        readOnly: true
+        x-mappedTo: TRX_TOTALSELECTED
+        example: '0'
+  paymentLineRecord:
+    type: string
+    description: Record type of the line item.
+    readOnly: true
+    x-mappedTo: RECORDTYPE
+    example: 'pp'
+  bankLocation:
+    type: string
+    description: Base location key.
+    readOnly: true
+    x-mappedTo: BASELOCATION
+    example: '2'
+  isTax:
+    type: boolean
+    description: Indicates whether the line item amount includes taxes.
+    readOnly: true
+    x-mappedTo: ISTAX
+    example: F
+    x-mappedToType: string
+    default: 'false'
+  taxDetail:
+    type: object
+    description: Tax category for the line item.
+    x-mappedTo: detail
+    x-object: purchasing-tax-detail
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax detail.
+        readOnly: true
+        x-mappedTo: DETAILKEY
+        example: '13'
+      id:
+        type: string
+        description: ID for the tax detail.
+        readOnly: true
+        x-mappedTo: DETAILID
+        example: 'AUS-TAX'
+      href:
+        type: string
+        description: URL for the tax detail.
+        readOnly: true
+        example: /objects/purchasing-tax-detail/13
+  glAccount:
+    type: object
+    x-mappedTo: glaccount
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: Account key
+        readOnly: true
+        x-mappedTo: ACCOUNTKEY
+        example: 23
+      id:
+        type: string
+        description: Account number
+        readOnly: true
+        x-mappedTo: ACCOUNTNO
+        example: 6330
+      name:
+        type: string
+        description: GL account title
+        readOnly: true
+        x-mappedTo: ACCOUNTTITLE
+        example: 'Compensation- Salary'
+      href:
+        type: string
+        description: GL account URL.
+        readOnly: true
+        example: /objects/gl-account/23
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          department:
+            type: object
+            description: Department associated with the AP payment line item.
+            readOnly: true
+            x-object: department
+            x-mappedTo: department
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the department.
+                readOnly: true
+                x-mappedTo: DEPARTMENTKEY
+                example: '12'
+              id:
+                type: string
+                description: Identifier for the department.
+                readOnly: true
+                x-mappedTo: DEPARTMENTID
+                example: '12'
+              name:
+                type: string
+                description: Name of the department.
+                readOnly: true
+                x-mappedTo: DEPARTMENTNAME
+                example: 'Accounts'
+              href:
+                type: string
+                description: URL for the department.
+                readOnly: true
+                example: /objects/department/12
+          location:
+            type: object
+            description: Location associated with the AP payment line item.
+            x-mappedTo: location
+            x-object: location
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the location.
+                readOnly: true
+                x-mappedTo: LOCATIONKEY
+                example: '22'
+              id:
+                type: string
+                description: Identifier for the location.
+                readOnly: true
+                x-mappedTo: LOCATIONID
+                example: LOC-22
+              name:
+                type: string
+                description: Name of the location.
+                readOnly: true
+                x-mappedTo: LOCATIONNAME
+                example: 'India'
+              href:
+                type: string
+                description: URL for the location.
+                readOnly: true
+                example: /objects/location/22
+  apPayment:
+    type: object
+    description: Header level details for the AP payment's line entries.
+    x-mappedTo: appymt
+    x-object: ap-payment
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the AP payment.
+        readOnly: true
+        x-mappedTo: RECORDKEY
+        example: '3220'
+      id:
+        type: string
+        description: ID for the AP payment.
+        readOnly: true
+        x-mappedTo: RECORDKEY
+        example: '3220'
+      href:
+        type: string
+        description: URL for the AP payment.
+        readOnly: true
+        example: /objects/ap-payment/3220
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

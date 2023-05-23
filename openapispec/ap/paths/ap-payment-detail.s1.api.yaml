@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: ap-payment-detail
+  description: ap-payment-detail API
+  version: '1.0'
+  contact:
+    name: Lingaraj Dhabale
+    email: lingaraj.dhabale@sage.com
+tags:
+  - name: AP payment details
+    description: An AP payment detail object includes an AP bill or AP adjustment credit memo to pay and optional transactions to apply as credits.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ap-payment-detail:
+    get:
+      summary: List AP payment details
+      description: Returns a collection with a key, ID, and link for each AP payment detail. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP payment details
+      operationId: get-objects-ap-payment-detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-payment-detail objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AP payment details:
+                  value:
+                    'ia::result':
+                      - key: '367'
+                        id: '367'
+                        href: /objects/ap-payment-detail/367
+                      - key: '1043'
+                        id: '1043'
+                        href: /objects/ap-payment-detail/1043
+                      - key: '1203'
+                        id: '1203'
+                        href: /objects/ap-payment-detail/1203
+                    'ia::meta':
+                      totalCount: 509
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400error'
+        '401':
+          description: Unauthorized
+  '/objects/ap-payment-detail/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AP payment detail.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get AP payment details
+      description: Returns detailed information for a specified AP payment detail object.
+      tags:
+        - AP payment details
+      operationId: get-objects-ap-payment-detail-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-payment-detail
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-payment-detail'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AP payment detail:
+                  value:
+                    'ia::result':
+                      id: '1133'
+                      key: '1133'
+                      bill:
+                        id: '2570'
+                        key: '2570'
+                        href: /objects/bill/2570
+                      billLine:
+                        id: '25392'
+                        key: '25392'
+                        href: /objects/bill-line/25392
+                      apCreditAdjustment:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-adjustment/25394
+                      apCreditAdjustmentLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-adjustment-line/25394
+                      apPayment:
+                        id: '3346'
+                        key: '3346'
+                        href: /objects/ap-payment/3346
+                      apPaymentLine:
+                        id: '31060'
+                        key: '31060'
+                        href: /objects/ap-payment-line/31060
+                      paymentDate: '2023-04-12'
+                      baseCurrency:
+                        paymentAmount: '100'
+                        inlineAmount: null
+                        discountAmount: null
+                        adjustmentAmount: null
+                        postedAdvanceAmount: null
+                      txnCurrency:
+                        paymentAmount: '100'
+                        inlineAmount: '10'
+                        discountAmount: '10'
+                        adjustmentAmount: '10'
+                        postedAdvanceAmount: '10'
+                        currency: USD
+                      inlineBill:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/bill/25394
+                      inlineBillLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/bill-line/25394
+                      apDiscount:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-discount/25394
+                      apDiscountLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-discount-line/25394
+                      discountDate: '2023'
+                      apDebitAdjustment:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-adjustment/25394
+                      apDebitAdjustmentLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-adjustment-line/25394
+                      apAdvance:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-advance/25394
+                      apAdvanceLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-advance-line/25394
+                      apPostedAdvance:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-posted-advance/25394
+                      apPostedAdvanceLine:
+                        id: '25394'
+                        key: '25394'
+                        href: /objects/ap-posted-advance-line/25394
+                      state: C
+                      moduleKey: 3.AP
+                      audit:
+                        createdDateTime: '2023-04-12T07:05:13Z'
+                        modifiedDateTime: '2023-04-12T07:05:13Z'
+                        createdBy: '71'
+                        modifiedBy: '71'
+                      href: /objects/ap-payment-detail/1133
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-payment-detail:
+      $ref: ../models/ap-payment-detail.s1.schema.yaml
+    ap-payment-detailRequiredProperties:
+      type: object
+      required:
+        - moduleKey
+        - paymentDate
+        - txnPaymentAmount
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,38 @@
+title: labor-class
+x-mappedTo: laborclass
+type: object
+description: User-defined labor class that can be used in timesheets.
+properties:
+  key:
+    type: string
+    description: Labor Class Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Labor Class ID
+    x-mappedTo: LABORCLASSID
+    x-mutable: false
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples:
+  - key: '21'
+    id: LC001
+    name: Labor Class 1
+    description: This is first class labor
+    status: active
+    audit:
+      createdDateTime: '2014-01-08T11:28:12Z'
+      modifiedDateTime: '2014-01-08T11:28:12Z'
+      createdBy: '1'
+      modifiedBy: '95'

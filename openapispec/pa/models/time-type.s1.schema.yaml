@@ -1,0 +1,112 @@
+title: time-type
+x-mappedTo: timetype
+type: object
+description: List of time types.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the time-type.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Same as name field.
+    x-mappedTo: NAME
+    readOnly: true
+    example: 'Overtime'
+  name:
+    type: string
+    description: Time type name.
+    x-mutable: false
+    x-mappedTo: NAME
+    example: 'Overtime'
+    nullable: false
+  href:
+    type: string
+    description: Endpoint for the time-type.
+    readOnly: true
+    example: '/objects/time-type/23'
+  earningType:
+    type: object
+    x-mappedTo: earningtype
+    x-object: earning-type
+    properties:
+      href:
+        type: string
+        description: Endpoint for the earningtype.
+        readOnly: true
+        example: '/objects/earning-type/23'
+      key:
+        type: string
+        description: Earning type key.
+        x-mappedTo: EARNINGTYPEKEY
+        example: '23'
+      id:
+        type: string
+        description: Earning type.
+        x-mappedTo: EARNINGTYPENAME
+        example: 'Salary'
+        readOnly: true
+      name:
+        type: string
+        description: Earning type name.
+        x-mappedTo: EARNINGTYPENAME
+        example: 'Salary'
+        readOnly: true
+  glAccount:
+    type: object
+    x-mappedTo: glaccount
+    x-object: gl-account
+    properties:
+      href:
+        type: string
+        description: Endpoint for the glaccount.
+        readOnly: true
+        example: '/objects/gl-account/12'
+      key:
+        type: string
+        description: Time type GL account key.
+        x-mappedTo: ACCOUNTKEY
+        example: '12'
+      id:
+        type: string
+        description: Time type GL account number.
+        x-mappedTo: ACCOUNTNO
+        example: '5001'
+        readOnly: true
+      name:
+        type: string
+        description: Time type GL account name.
+        x-mappedTo: ACCOUNTTITLE
+        example: 'Labor'
+        readOnly: true
+  offsetGLAccount:
+    type: object
+    x-mappedTo: offsetaccount
+    x-object: gl-account
+    properties:
+      href:
+        type: string
+        description: Endpoint for the offsetaccount.
+        readOnly: true
+        example: '/objects/gl-account/23'
+      key:
+        type: string
+        x-mappedTo: OFFSETACCOUNTKEY
+        description: Time type Offset account key.
+        example: '23'
+      id:
+        type: string
+        description: Time type Offset account number.
+        x-mappedTo: OFFSETACCOUNTNO
+        example: '5002'
+        readOnly: true
+      name:
+        type: string
+        description: Time type Offset account name.
+        x-mappedTo: OFFSETACCOUNTTITLE
+        example: 'Labor Offset'
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

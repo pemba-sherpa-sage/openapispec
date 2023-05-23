@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: Employee expense type
+  description: Employee expense type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Employee expense type
+    description: User-defined Employee expense type that is applied to the line items in an expense report or expense adjustment.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-expense-type:
+    get:
+      summary: Get collection of employee expense types
+      description: 'Returns a collection with a key, ID, and link for each employee expense type.'
+      tags:
+        - Employee expense type
+      operationId: get-objects-employee-expense-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee expense type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of employee expense types:
+                  value:
+                    'ia::result':
+                      - key: '46'
+                        id: '46'
+                        name: Travel
+                        href: /objects/employee-expense-type/46
+                      - key: '44'
+                        id: '44'
+                        name: Transporation
+                        href: /objects/employee-expense-type/44
+                      - key: '40'
+                        id: '40'
+                        name: Compensation
+                        href: /objects/employee-expense-type/40
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee expense type
+      description: Creates a new employee expense type.
+      tags:
+        - Employee expense type
+      operationId: post-objects-employee-expense-type
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-type'
+                - $ref: '#/components/schemas/employee-expense-typeRequiredProperties'
+            examples:
+              Creates an employee expense type:
+                value:
+                  id: '1'
+                  name: travel
+                  status: active
+                  description: Travel expenses
+                  glAccount:
+                    id: '5500'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee expense type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee expense type:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      href: /objects/employee-expense-type/10
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-expense-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee expense type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee expense type
+      description: Returns detailed information for a particular employee expense type.
+      tags:
+        - Employee expense type
+      operationId: get-objects-employee-expense-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee expense type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-expense-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee expense type:
+                  value:
+                    'ia::result':
+                      item:
+                        key: '47'
+                        id: '47'
+                        name: travel
+                      audit:
+                        createdDateTime: '2021-09-02T08:09:12Z'
+                        modifiedDateTime: '2021-09-02T08:09:12Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      name: 'Airfare'
+                      description: 'Airfare'
+                      glAccount:
+                        id: 5500--Commissions Paid
+                        name: Commissions Paid
+                      status: active
+                      offsetGLAccount:
+                        id: 6000 -- Offset
+                        name: offset account
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee expense type
+      description: Updates an existing employee expense type by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee expense type
+      operationId: patch-objects-employee-expense-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an employee expense type:
+                value:
+                  description: Personal travel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee expense type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated employee expense type:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: /objects/employee-expense-type/124
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee expense type
+      description: Deletes an employee expense type.
+      tags:
+        - Employee expense type
+      operationId: delete-objects-employee-expense-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-expense-type:
+      $ref: ../models/employee-expense-type.s1.schema.yaml
+    employee-expense-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

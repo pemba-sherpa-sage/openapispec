@@ -1,0 +1,598 @@
+title: purchasing-document
+type: object
+x-mappedTo: podocument
+properties:
+  key:
+    type: string
+    description: System-assigned key for the purchasing document.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Unique identifier for the purchasing document.
+    readOnly: true
+    x-mappedTo: DOCID
+  href:
+    type: string
+    description: URL for the purchasing document.
+    readOnly: true
+  documentNumber:
+    type: string
+    description: Number for the purchasing document.
+    x-mappedTo: DOCNO
+    x-mutable: false
+  sourceDocumentId:
+    type: string
+    description: The source from which the purchasing document was created.
+    x-mappedTo: CREATEDFROM
+    x-mutable: false
+  state:
+    type: string
+    description: | 
+     State of the purchase.
+      **Valid Values**
+      - submitted <description>
+      - approved
+      - partiallyApproved
+      - declined
+      - draft
+      - pending
+      - closed
+      - inProgress
+      - converted
+      - partiallyConverted
+      - convertedByLine
+      - partiallyConvertedByLine
+      - exception
+    x-mappedTo: STATE
+    enum:
+      - submitted
+      - approved
+      - partiallyApproved
+      - declined
+      - draft
+      - pending
+      - closed
+      - inProgress
+      - converted
+      - partiallyConverted
+      - convertedByLine
+      - partiallyConvertedByLine
+      - exception
+    x-mappedToValues:
+      - Submitted
+      - Approved
+      - Partially Approved
+      - Declined
+      - Draft
+      - Pending
+      - Closed
+      - In Progress
+      - Converted
+      - Partially Converted
+      - Converted By Line
+      - Partially Converted By Line
+      - Exception
+  audit:
+    type: object
+    allOf:
+      - $ref: ../../common/models/audit.s1.schema.yaml
+      - type: object
+        properties:
+          createdDateTime:
+            type: string
+            x-mappedTo: AUWHENCREATED
+            description: Time of the submission.
+            format: date-time
+            example: 2014-01-08T11:28:12Z
+            readOnly: true
+  createdDate:
+    type: string
+    description: Date the purchasing document was created.
+    format: date
+    x-mappedTo: WHENCREATED
+  dueDate:
+    type: string
+    description: Due date for the purchasing document.
+    x-mappedTo: WHENDUE
+    format: date
+  referenceNumber:
+    type: string
+    description: Reference number for the purchasing document.
+    x-mappedTo: PONUMBER
+  txnName:
+    type: string
+    description: Type of the associated transaction.
+    x-mappedTo: DOCPARID
+    x-useForDocType: true
+  txnDefinition:
+    type: object
+    description: Associated transaction definition.
+    x-object: txn-definition
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the transaction.
+        x-mappedTo: DOCPARKEY
+      id:
+        type: string
+        description: Identifier for the transaction.
+        x-mappedTo: DOCPARID
+      documentType:
+        type: string
+        description: Type of transaction.
+        x-mappedTo: DOCPARID
+        x-useForDocType: true
+      href:
+        type: string
+        description: URL for the transaction.
+        readOnly: true
+  notes:
+    type: string
+    description: Notes about the purchasing document.
+    x-mappedTo: NOTE
+  warehouseLocation:
+    type: string
+    description: Location of the associated warehouse.
+    x-mappedTo: WAREHOUSE.LOCATIONID
+  shippingMethod:
+    type: object
+    description: Shipping method for the order. 
+    x-object: shipping-method
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the shipping method.
+        x-mappedTo: SHIPVIAKEY
+      id:
+        type: string
+        description: Identifier for the shipping method.
+        x-mappedTo: SHIPVIA
+      href:
+        type: string
+        description: URL for the shipping method.
+  printedByUser:
+    type: object
+    description: User who printed the document. 
+    x-object: user
+    properties:
+      id:
+        type: string
+        description: Identifier for the user. 
+        x-mappedTo: PRINTEDUSERID
+      name:
+        type: string
+        description: User name.
+        x-mappedTo: PRINTEDBY
+  contacts:
+    type: object
+    description: Contacts for the order entry document. 
+    title: contacts
+    properties:
+      primary:
+        type: object
+        description: Primary contact
+        x-object: contact
+        x-mappedTo: CONTACT
+        properties:
+          key:
+            type: string
+            x-mappedTo: CONTACTKEY
+            readOnly: true
+          id:
+            type: string
+            x-mappedTo: CONTACT.CONTACTNAME
+          href:
+            type: string
+            readOnly: true
+      shipTo:
+        type: object
+        description: Ship To contact
+        x-object: contact
+        x-mappedTo: SHIPTO
+        properties:
+          key:
+            type: string
+            x-mappedTo: SHIPTOKEY
+            readOnly: true
+          id:
+            type: string
+            x-mappedTo: SHIPTO.CONTACTNAME
+          href:
+            type: string
+            readOnly: true
+      billTo:
+        type: object
+        description: Bill To contact
+        x-object: contact
+        x-mappedTo: BILLTO
+        properties:
+          key:
+            type: string
+            x-mappedTo: BILLTOKEY
+            readOnly: true
+          id:
+            type: string
+            x-mappedTo: BILLTO.CONTACTNAME
+          href:
+            type: string
+            readOnly: true
+      deliverTo:
+        type: object
+        description: Deliver To contact
+        x-object: contact
+        x-mappedTo: DELIVERTO
+        properties:
+          key:
+            type: string
+            x-mappedTo: DELIVERTOKEY
+            readOnly: true
+          id:
+            type: string
+            x-mappedTo: DELIVERTO.CONTACTNAME
+          href:
+            type: string
+            readOnly: true
+  memo:
+    type: string
+    description: Free text printed on document
+    x-mappedTo: MESSAGE
+  isBackordered:
+    type: boolean
+    description: Back ordered. Is this required for all 3 documents?
+    readOnly: true
+    x-mappedTo: BACKORDER
+    x-mappedToType: string
+    enum:
+      - true
+      - false
+    x-mappedToValues:
+      - 'Yes'
+      - 'No'
+    default: false
+  subTotal:
+    type: string
+    readOnly: true
+    description: Subtotal
+    x-mappedTo: SUBTOTAL
+  total:
+    type: string
+    readOnly: true
+    description: Total
+    x-mappedTo: TOTAL
+  baseCurrency:
+    type: string
+    description: Base currency
+    x-mappedTo: BASECURR
+  subTotalInTxnCurrency:
+    type: string
+    readOnly: true
+    description: Transaction subtotal
+    x-mappedTo: TRX_SUBTOTAL
+  totalInTxnCurrency:
+    type: string
+    readOnly: true
+    description: Transaction total
+    x-mappedTo: TRX_TOTAL
+  txnCurrency:
+    type: string
+    description: Transaction currency
+    x-mappedTo: CURRENCY
+  exchangeRate:
+    type: object
+    properties:
+      date:
+        type: string
+        description: Exchange rate date
+        format: date
+        x-mappedTo: EXCHRATEDATE
+      id:
+        type: string
+        description: Exchange rate type id
+        x-mappedTo: EXCH_RATE_TYPE_ID
+      name:
+        type: string
+        description: Exchange rate type
+        x-mappedTo: EXCHRATETYPES.NAME
+      rate:
+        type: number
+        description: Exchange rate
+        x-mappedTo: EXCHRATE
+  salesContract:
+    type: string
+    description: Sales contract?? Is it a reference to contracts??
+    x-mappedTo: SALESCONTRACT
+  usedAsContract:
+    type: string
+    description: Used as contract ???
+    x-mappedTo: USEDASCONTRACT
+  isSystemGeneratedDocument:
+    type: boolean
+    readOnly: true
+    description: System generated
+    x-mappedTo: SYSTEMGENERATED
+    x-mappedToType: string
+  postingDate:
+    type: string
+    format: date
+    description: GL posting date
+    x-mappedTo: WHENPOSTED
+  taxsolution:
+    type: object
+    x-mappedTo: taxsolution
+    x-object: tax-solution
+    properties:
+      key:
+        type: string
+        description: Tax solution key
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: Tax solution id
+        x-mappedTo: TAXSOLUTIONID
+      href:
+        readOnly: true
+        type: string
+      taxCalculationMethod:
+        type: string
+        description: Tax calculation method
+        x-mappedTo: TAXMETHOD
+        enum:
+          - noTax
+          - simpleTax
+          - advancedTax
+          - avaTax
+          - VAT
+        x-mappedToValues:
+          - None
+          - Simple tax
+          - Advanced tax
+          - Avalara
+          - VAT or GST
+      showMultilineTax:
+        type: boolean
+        x-mappedTo: SHOWMULTILINETAX
+        x-mappedToType: string
+  requestedDeliveryDate:
+    type: string
+    description: Need by date
+    format: date
+    x-mappedTo: NEEDBYDATE
+  canCancelAfterDate:
+    type: string
+    description: Cancel After date
+    format: date
+    x-mappedTo: CANCELAFTERDATE
+  doNotShipBeforeDate:
+    type: string
+    description: Do not ship before date
+    format: date
+    x-mappedTo: DONOTSHIPBEFOREDATE
+  doNotShipAfterDate:
+    type: string
+    description: Do Not Ship after date
+    format: date
+    x-mappedTo: DONOTSHIPAFTERDATE
+  retainagePercent:
+    type: number
+    description: Default retainage percent
+    x-mappedTo: RETAINAGEPERCENTAGE
+  scope:
+    type: string
+    description: Scope ???
+    x-mappedTo: SCOPE
+  inclusions:
+    type: string
+    description: Inclusions
+    x-mappedTo: INCLUSIONS
+  exclusions:
+    type: string
+    description: Inclusions
+    x-mappedTo: EXCLUSIONS
+  terms:
+    type: string
+    description: Terms
+    x-mappedTo: TERMS
+  scheduledStartDate:
+    type: string
+    description: Scheduled start date
+    format: date
+    x-mappedTo: SCHEDULESTARTDATE
+  scheduledCompletionDate:
+    type: string
+    description: Scheduled completion date
+    format: date
+    x-mappedTo: SCHEDULEDCOMPLETIONDATE
+  actualStartDate:
+    type: string
+    description: Actual Start date
+    format: date
+    x-mappedTo: ACTUALSTARTDATE
+  actualCompletionDate:
+    type: string
+    description: Actual completion date
+    format: date
+    x-mappedTo: ACTUALCOMPLETIONDATE
+  revisedCompletionDate:
+    type: string
+    description: Revised completion date
+    format: date
+    x-mappedTo: REVISEDCOMPLETIONDATE
+  substantialCompletionDate:
+    type: string
+    description: Substantial completion date
+    format: date
+    x-mappedTo: SUBSTANTIALCOMPLETIONDATE
+  noticeToProceedDate:
+    type: string
+    description: Notice to proceeed date
+    format: date
+    x-mappedTo: NOTICETOPROCEED
+  responseDueDate:
+    type: string
+    description: Response due date
+    format: date
+    x-mappedTo: RESPONSEDUE
+  executedOnDate:
+    type: string
+    description: Executed on date
+    format: date
+    x-mappedTo: EXECUTEDON
+  scheduleImpactNotes:
+    type: string
+    description: Schedule Impact details
+    x-mappedTo: SCHEDULEIMPACT
+  internalReference:
+   $ref: ../../common/models/internal-document.s1.schema.yaml
+  externalReference:
+   $ref: ../../common/models/external-document.s1.schema.yaml
+  performanceBond:
+    type: object
+    properties:
+      required:
+        type: boolean
+        description: Is Required?
+        x-mappedTo: PERFORMANCEBONDREQUIRED
+      received:
+        type: boolean
+        description: Has been received
+        x-mappedTo: PERFORMANCEBONDRECEIVED
+      amount:
+        type: string
+        description: Amount
+        x-mappedTo: PERFORMANCEBONDAMOUNT
+      company:
+        type: object
+        properties:
+          key:
+            type: string
+            description: key
+            x-mappedTo: PERFORMANCESURETYCOMPANYKEY
+          id:
+            type: string
+            description: id
+            x-mappedTo: PERFORMANCESURETYCOMPANY
+          name:
+            type: string
+            description: name
+            x-mappedTo: PERFORMANCESURETYCOMPANYNAME
+  paymentBond:
+    type: object
+    properties:
+      required:
+        type: boolean
+        description: Is Required?
+        x-mappedTo: PAYMENTBONDREQUIRED
+      received:
+        type: boolean
+        description: Has been received
+        x-mappedTo: PAYMENTBONDRECEIVED
+      amount:
+        type: string
+        description: Amount
+        x-mappedTo: PAYMENTBONDAMOUNT
+      company:
+        type: object
+        properties:
+          key:
+            type: string
+            description: key
+            x-mappedTo: PAYMENTSURETYCOMPANYKEY
+          id:
+            type: string
+            description: id
+            x-mappedTo: PAYMENTSURETYCOMPANY
+          name:
+            type: string
+            description: name
+            x-mappedTo: PAYMENTSURETYCOMPANYNAME
+  revision:
+    type: object
+    properties:
+      documentHasChanged:
+        type: boolean
+        description: Changes have been applied
+        x-mappedTo: HASCHANGE
+        readOnly: true
+      revisedTotal:
+        type: string
+        description: Revised Total
+        x-mappedTo: REVISEDTOTAL
+      revistedSubTotal:
+        type: string
+        description: Revised Sub Total
+        x-mappedTo: REVISEDSUBTOTAL
+      revisedTotalInTxnCurrency:
+        type: string
+        description: Revised Total in transaction currency
+        x-mappedTo: TRX_REVISEDTOTAL
+      revistedSubTotalInTxnCurrency:
+        type: string
+        description: Revised Sub Total in transaction currency
+        x-mappedTo: TRX_REVISEDSUBTOTAL
+      changeLogNumber:
+        type: number
+        description: Document change log number
+        x-mappedTo: CHANGELOGNUMBER
+  enableDocumentChange:
+    type: string
+    x-mappedTo: ENABLEDOCCHANGE
+    description: |
+      Allow changes to document
+      ** Valid values **
+        - no <description>
+        - yes <description>
+        - changeOrder <description>
+    enum:
+      - 'no'
+      - 'yes'
+      - changeOrder
+    x-mappedToValues:
+      - No Change
+      - Enable Change
+      - Change Order
+  vendor:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Vendor key ??? Is this vendor??
+        x-mappedTo: CUSTREC
+        readOnly: true
+      id:
+        type: string
+        description: Vendor Id
+        x-mappedTo: CUSTVENDID
+        x-mutable: false
+      name:
+        type: string
+        description: Vendor Name
+        x-mappedTo: CUSTVENDNAME
+      href:
+        readOnly: true
+        type: string
+  INVOICERUNKEY:
+    type: integer
+    description: Invoicerunkey ????
+    x-mappedTo: INVOICERUNKEY
+  deliveryDuedate:
+    type: string
+    format: date
+    description: Promised by date
+    x-mappedTo: PROMISEDDATE
+  contractStartDate:
+    type: string
+    format: date
+    description: Contract start date
+    x-mappedTo: CONTRACTSTARTDATE
+  contractEndDate:
+    type: string
+    format: date
+    description: Contract end date
+    x-mappedTo: CONTRACTENDDATE
+  lines:
+    type: array
+    x-mappedTo: ENTRIES
+    x-object: purchasing-document-line
+    items:
+      $ref: ./purchasing-document-line.s1.schema.yaml

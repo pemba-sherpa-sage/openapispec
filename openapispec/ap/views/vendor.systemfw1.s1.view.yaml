@@ -1,0 +1,26 @@
+key: vendor::systemVendorFW1
+id: systemVendorFW1
+object: vendor
+name: All
+description: Specifies all active contacts
+query:
+  object: vendor
+  fields:
+    - id
+    - name
+    - contacts.default.mailingAddress.addressLine1
+    - contacts.default.mailingAddress.city
+    - contacts.default.mailingAddress.state
+    - contacts.default.mailingAddress.postCode
+    - contacts.default.mailingAddress.country
+    - totalDue
+    - status
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+    - $eq:
+        isOneTimeUse: false
+contexts:
+  - __default

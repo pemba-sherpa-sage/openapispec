@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/activities/apbatch/view
+    POST:
+      - ap/activities/apbatch/create
+    PATCH:
+      - ap/activities/apbatch/edit
+    DELETE:
+      - ap/activities/apbatch/delete
+s1:
+  hash: '0'
+  type: rootObject

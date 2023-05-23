@@ -1,0 +1,18 @@
+title: order-entry-subtotal-template
+type: object
+description: Order Entry Subtotal Template
+x-mappedTo: sosubtotaltemplate
+properties:
+  key:
+    type: string
+    description: key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: id
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    readOnly: true

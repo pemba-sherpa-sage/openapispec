@@ -1,0 +1,52 @@
+title: contact-tax-group
+type: object
+description: Contact tax groups enable taxes to be applied to customers, vendors, and their contacts, according to their jurisdictions.
+x-mappedTo: taxgroup
+properties:
+  key:
+    type: string
+    description: System-assigned key for the contact tax group.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique name for the contact tax group.
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    description: URL for the contact tax group.
+    readOnly: true
+  groupType:
+# only contact is allowed in the schema file as it has a dbfilter in it 
+    type: string
+    enum:
+      - 'contact'
+        #      - 'item'
+        #      - 'accountLabel'
+    x-mappedToValues:
+      - 'Contact'
+        #      - 'Item'
+        #      - 'Account Label'
+    description: Tax group type.
+    x-mappedTo: GROUPTYPE
+  taxSolution:
+    type: object
+    description: Tax solution associated with this contact tax group. Different tax solutions are available for different countries, for example, Australia GST, South Africa VAT, UK Vat.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: ID for the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+      href:
+        type: string
+        description: URL for the tax solution.
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

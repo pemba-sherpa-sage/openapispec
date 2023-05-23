@@ -1,0 +1,241 @@
+openapi: 3.0.0
+info:
+  title: purchasing-tax-schedule-map
+  description: A Purchasing tax schedule map associates a tax schedule with vendors (through a contact tax group) and items (through an item tax group). These maps drive the taxes that are applied to a line item. The tax schedule contains the tax detail records, which define the amount of tax to apply.
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Purchasing tax schedule maps
+    description: A Purchasing tax schedule map associates a tax schedule with vendors (through a contact tax group) and items (through an item tax group). These maps drive the taxes that are applied to a line item. The tax schedule contains the tax detail records, which define the amount of tax to apply.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-tax-schedule-map:
+    get:
+      summary: List Purchasing tax schedule maps
+      description: 'Returns a collection with a key, ID, and link for each Purchasing tax schedule map.'
+      tags:
+        - Purchasing tax schedule maps
+      operationId: get-objects-purchasing-tax-schedule-map
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-tax-schedule-map objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Purchasing tax schedule maps:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: '2'
+                        href: /objects/purchasing-tax-schedule-map/2
+                      - key: '15'
+                        id: '15'
+                        href: /objects/purchasing-tax-schedule-map/15
+                      - key: '12'
+                        id: '12'
+                        href: /objects/purchasing-tax-schedule-map/12
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Purchasing tax schedule map
+      description: Creates a new Purchasing tax schedule map.
+      tags:
+        - Purchasing tax schedule maps
+      operationId: post-objects-purchasing-tax-schedule-map
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-tax-schedule-map'
+                - $ref: '#/components/schemas/purchasing-tax-schedule-mapRequiredProperties'
+            examples:
+              Creates a/an Purchasing tax schedule map:
+                value:
+                  taxSchedule:
+                    name: Alabama Tax
+                  itemTaxGroup:
+                    id: Auto Tax Group
+                  contactTaxGroup:
+                    id: Contact Auto Tax
+                  txnDefinition:
+                    id: Purchase Order
+                  taxSolution:
+                    id: United Kingdom - VAT
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New purchasing-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New Purchasing tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: '2'
+                      href: /objects/purchasing-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-tax-schedule-map/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Purchasing tax schedule map.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '2'
+    get:
+      summary: Get a/an Purchasing tax schedule map
+      description: Returns detailed information for a particular Purchasing tax schedule map.
+      tags:
+        - Purchasing tax schedule maps
+      operationId: get-objects-purchasing-tax-schedule-map-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-tax-schedule-map'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Purchasing tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: '2'
+                      txnDefinition:
+                        id: Purchase Order
+                        key: '114'
+                        href: /objects/purchasing-txn-definition/114
+                      itemTaxGroup:
+                        id: Auto Tax Group
+                        key: '1'
+                        href: /objects/item-tax-group/1
+                      contactTaxGroup:
+                        id: Auto Contact Tax
+                        key: '7'
+                        href: /objects/contact-tax-group/7
+                      taxSchedule:
+                        name: Tax Arkansas
+                        key: '4'
+                        id: '4'
+                        href: /objects/purchasing-tax-schedule/4
+                      isSystemGenerated: false
+                      taxSolution:
+                        id: United Kingdom - VAT
+                        key: '1'
+                        href: /objects/tax-solution/1
+                      href: /objects/purchasing-tax-schedule-map/7
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Purchasing tax schedule map
+      description: Updates an existing Purchasing tax schedule map by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Purchasing tax schedule maps
+      operationId: patch-objects-purchasing-tax-schedule-map-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-tax-schedule-map'
+                - type: object
+                  properties:
+                    id:
+                      example: '2'
+                      readOnly: true
+            examples:
+              Updates a/an Purchasing tax schedule map:
+                value:
+                  contactTaxGroup:
+                    id: Contact Tax Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated purchasing-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated Purchasing tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      href: /objects/purchasing-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Purchasing tax schedule map
+      description: Deletes a/an Purchasing tax schedule map.
+      tags:
+        - Purchasing tax schedule maps
+      operationId: delete-objects-purchasing-tax-schedule-map-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-tax-schedule-map:
+      $ref: ../models/purchasing-tax-schedule-map.s1.schema.yaml
+    purchasing-tax-schedule-mapRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

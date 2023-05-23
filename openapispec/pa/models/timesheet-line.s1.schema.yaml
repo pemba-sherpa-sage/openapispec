@@ -1,0 +1,421 @@
+title: timesheet-line
+x-mappedTo: timesheetentry
+x-ownedBy: timesheet
+type: object
+description: A single timesheet entry, including customer, project, number of hours, billing rates, and cost rates.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the timesheet entry.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1411'
+  id:
+    type: string
+    description: This value is the same as the 'key' value for this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1411'
+  href:
+    type: string
+    description: Endpoint for the timesheet entry.
+    readOnly: true
+    example: '/objects/timesheet-line/1411'
+  timesheet:
+    type: object
+    description: The timesheet that the entry belongs to.
+    x-object: timesheet
+    x-mappedTo: timesheet
+    properties:
+      key:
+        type: string
+        description: The timesheet that the entry belongs to.
+        example: '11'
+        x-mappedTo: TIMESHEETKEY
+      id:
+        type: string
+        description: ID of Timesheet.
+        example: '11'
+        x-mappedTo: TIMESHEETKEY
+        readOnly: true
+      href:
+        type: string
+        description: Endpoint of the timesheet
+        example: '/objects/timesheet/11'
+        readOnly: true
+  entryDate:
+    type: string
+    format: date
+    description: Date of the timesheet entry.
+    x-mappedTo: ENTRYDATE
+    example: '2023-04-01'
+    nullable: false
+  quantity:
+    type: number
+    description: Number of hours or quantity.
+    x-mappedTo: QTY
+    example: 6
+    nullable: false
+  lineNumber:
+    type: integer
+    description: Line number to add entry to.
+    x-mappedTo: LINENO
+    readOnly: true
+    example: 1
+  description:
+    type: string
+    description: Description.
+    x-mappedTo: DESCRIPTION
+    example: 'Week of 04/01/23'
+  notes:
+    type: string
+    description: Notes
+    x-mappedTo: NOTES
+    example: 'Talked to client regarding project'
+  state:
+    type: string
+    description: State
+    x-mappedTo: STATE
+    readOnly: true
+    example: 'approved'
+    enum:
+      - 'submitted'
+      - 'approved'
+      - 'partiallyApproved'
+      - 'declined'
+      - 'draft'
+      - 'saved'
+      - 'readyForApproval'
+    x-mappedToValues:
+      - 'Submitted'
+      - 'Approved'
+      - 'Partially Approved'
+      - 'Declined'
+      - 'Draft'
+      - 'Saved'
+      - 'Ready For Approval'
+  timeType:
+    type: object
+    description: Time type
+    x-object: time-type
+    properties:
+      key:
+        type: string
+        description: Time type key
+        x-mappedTo: TIMETYPEKEY
+        example: '1'
+      id:
+        type: string
+        description: Time type ID.
+        x-mappedTo: TIMETYPENAME
+        readOnly: true
+        example: 'Salaries At Root'
+      name:
+        type: string
+        description: Time type name.
+        x-mappedTo: TIMETYPENAME
+        example: 'Salaries At Root'
+        readOnly: true
+      href:
+        type: string
+        example: '/objects/time-type/1'
+        readOnly: true
+  isBillable:
+    type: boolean
+    description: Set to 'true' if time can be billed to the customer.
+    x-mappedTo: BILLABLE
+    example: true
+    x-mappedToType: string
+  isBilled:
+    type: string
+    description: Billed.
+    x-mappedTo: BILLED
+    example: 'false'
+    enum:
+      - 'true'
+      - 'false'
+      - 'partial'
+    default: 'false'
+    readOnly: true
+  statisticalJournal:
+    type: object
+    x-object: statistical-journal
+    properties:
+      key:
+        type: string
+        description: Statistical journal key.
+        x-mappedTo: STATJOURNALKEY
+        example: '7483'
+        readOnly: true
+      id:
+        type: string
+        description: Statistical journal ID.
+        x-mappedTo: STATJOURNAL
+        example: 'TSSJ'
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/statistical-journal/7483'
+  billableUtilizedGLAccount:
+    type: object
+    x-mappedTo: billuacct
+    x-object: statistical-gl-account
+    properties:
+      key:
+        type: string
+        description: GL Account Key for Billable Utilized entry.
+        x-mappedTo: BILLUACCTKEY
+        readOnly: true
+        example: '8293'
+      id:
+        type: string
+        description: GL Account ID for Billable Utilized entry
+        x-mappedTo: BILLUACCT
+        readOnly: true
+        example: '9293'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/statistical-gl-account/8293'
+  nonBillableUtilizedGLAccount:
+    type: object
+    x-mappedTo: nonbilluacct
+    x-object: statistical-gl-account
+    properties:
+      key:
+        type: string
+        description: GL Account Key for Non-Billable Utilized entry.
+        x-mappedTo: NONBILLUACCTKEY
+        readOnly: true
+        example: '8294'
+      id:
+        type: string
+        description: GL Account ID for Non-Billable Utilized entry.
+        x-mappedTo: NONBILLUACCT
+        readOnly: true
+        example: '9294'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/statistical-gl-account/8294'
+  billableNonUtilizedGLAccount:
+    type: object
+    x-mappedTo: billnuacct
+    x-object: statistical-gl-account
+    properties:
+      key:
+        type: string
+        description: GL Account Key for Billable Non-Utilized entry.
+        x-mappedTo: BILLNUACCTKEY
+        readOnly: true
+        example: '8295'
+      id:
+        type: string
+        description: GL Account ID for Billable Non-Utilized entry.
+        x-mappedTo: BILLNUACCT
+        readOnly: true
+        example: '9295'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/statistical-gl-account/8295'
+  nonBillableNonUtilizedGLAccount:
+    type: object
+    x-mappedTo: nonbillnuacct
+    x-object: statistical-gl-account
+    properties:
+      key:
+        type: string
+        description: GL Account Key for Non-Billable Non-Utilized entry.
+        x-mappedTo: NONBILLNUACCTKEY
+        readOnly: true
+        example: '8296'
+      id:
+        type: string
+        description: GL Account ID for Non-Billable Non-Utilized entry.
+        x-mappedTo: NONBILLNUACCT
+        readOnly: true
+        example: '9296'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/statistical-gl-account/8296'
+  hours:
+    type: object
+    properties:
+      billable:
+        type: number
+        description: Billable hours.
+        x-mappedTo: BILLABLE_QTY
+        example: 8
+        readOnly: true
+      nonBillable:
+        type: number
+        description: Non-billable hours.
+        x-mappedTo: NON_BILLABLE_QTY
+        example: 2
+        readOnly: true
+      approved:
+        type: number
+        description: Approved hours.
+        x-mappedTo: APPROVED_QTY
+        example: 10
+        readOnly: true
+      approvedBillable:
+        type: number
+        description: Approved billable hours.
+        x-mappedTo: APPROVED_BILLABLE_QTY
+        example: 8
+        readOnly: true
+      approvedNonBillable:
+        type: number
+        description: Approved non-billable hours.
+        x-mappedTo: APPROVED_NON_BILLABLE_QTY
+        example: 2
+        readOnly: true
+      utilized:
+        type: number
+        description: Utilized hours.
+        x-mappedTo: UTILIZED_QTY
+        example: 10
+        readOnly: true
+      nonUtilized:
+        type: number
+        description: Non-utilized hours.
+        x-mappedTo: NON_UTILIZED_QTY
+        example: 4
+        readOnly: true
+      approvedUtilized:
+        type: number
+        description: Approved utilized hours
+        x-mappedTo: APPROVED_UTILIZED_QTY
+        example: 3
+        readOnly: true
+      approvedNonUtilized:
+        type: number
+        description: Approved non-utilized hours
+        x-mappedTo: APPROVED_NON_UTILIZED_QTY
+        example: 2
+        readOnly: true
+  externalPayroll:
+    type: object
+    properties:
+      costRate:
+        type: number
+        description: External cost rate
+        x-mappedTo: EXTCOSTRATE
+        example: 1
+      billingRate:
+        type: number
+        description: External billing rate
+        x-mappedTo: EXTBILLRATE
+        example: 1
+      amount:
+        type: string
+        description: Labor Amount
+        x-mappedTo: EXTAMOUNT
+        example: '90'
+      employerTaxes:
+        type: number
+        description: Employer taxes
+        x-mappedTo: EXTEMPLOYERTAXES
+        example: 15
+      fringes:
+        type: number
+        description: Fringes
+        x-mappedTo: EXTFRINGES
+        example: 10
+      cashFringes:
+        type: number
+        description: Cash fringes
+        x-mappedTo: EXTCASHFRINGES
+        example: 2
+  laborClass:
+    type: object
+    description: Labor class used to track the timesheet.
+    x-mappedTo: laborclass
+    x-object: labor-class
+    properties:
+      key:
+        type: string
+        description: System-assigned key for a class dimension associated with the timesheet.
+        x-mappedTo: LABORCLASSKEY
+        readOnly: true
+        example: '15'
+      id:
+        type: string
+        description: Unique identifier for a class dimension associated with the timesheet.
+        x-mappedTo: LABORCLASSID
+        readOnly: true
+        example: 'LC001'
+      name:
+        type: string
+        description: Class name associated with the timesheet.
+        x-mappedTo: LABORCLASSNAME
+        readOnly: true
+        example: 'Labor Class'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/labor-class/15'
+  laborShift:
+    type: object
+    description: Labor shift to track the timesheet.
+    x-mappedTo: laborshift
+    x-object: labor-shift
+    properties:
+      key:
+        type: string
+        description: System-assigned key for a labor shift  associated with the timesheet.
+        x-mappedTo: LABORSHIFTKEY
+        readOnly: true
+        example: '18'
+      id:
+        type: string
+        description: Unique identifier for a labor shift associated with the timesheet.
+        x-mappedTo: LABORSHIFTID
+        readOnly: true
+        example: 'LS001'
+      name:
+        type: string
+        description: Labor shift associated with the timesheet.
+        x-mappedTo: LABORSHIFTNAME
+        readOnly: true
+        example: 'Labor Shift'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/labor-shift/18'
+  laborUnion:
+    type: object
+    description: Labor union to track the timesheet.
+    x-mappedTo: laborunion
+    x-object: labor-union
+    properties:
+      key:
+        type: string
+        description: System-assigned key for a labor union associated with the timesheet.
+        x-mappedTo: LABORUNIONKEY
+        readOnly: true
+        example: '20'
+      id:
+        type: string
+        description: Unique identifier for a labor union associated with the timesheet.
+        x-mappedTo: LABORUNIONID
+        readOnly: true
+        example: 'LU001'
+      name:
+        type: string
+        description: Labor union associated with the timesheet.
+        x-mappedTo: LABORUNIONNAME
+        readOnly: true
+        example: 'Labor Union'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/labor-union/20'
+  dimensions:
+    $ref: ../../common/references/dimensionref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

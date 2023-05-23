@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  title: tax-authority
+  description: tax-authority API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Tax authorities
+    description: |
+      Tax authorities are agencies for whom you collect sales tax or other taxes. For example, in the United States, you might report and pay any tax you owe to city, county, and state agencies. Tax authorities are shared across Accounts Payable, Accounts Receivable, Order Entry, and Purchasing. See [Tax authorities&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-authorities.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/tax-authority:
+    get:
+      summary: List Tax Authorities
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each tax authority. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Receivable, Order Entry, Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Authority
+      tags:
+        - Tax authorities
+      operationId: get-objects-tax-authority
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of tax-authority objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of tax authorities:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: Alaska
+                        href: /objects/tax-authority/2
+                      - key: '5'
+                        id: California
+                        href: /objects/tax-authority/5
+                      - key: '3'
+                        id: Arizona
+                        href: /objects/tax-authority/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a tax authority
+      description: Creates a new tax authority.
+      x-documentationFlags:
+        subscription: Accounts Receivable, Order Entry, Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Tax Authority
+      tags:
+        - Tax authorities
+      operationId: post-objects-tax-authority
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tax-authority'
+                - $ref: '#/components/schemas/tax-authorityRequiredProperties'
+            examples:
+              Create a tax authority:
+                value:
+                  id: Texas
+                  description: 'Texas tax authority'
+                  vendorId: 'Vendor_Visa_C'
+                  parent:
+                    id: '5'  
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Create a tax-authority
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a tax authority:
+                  value:
+                    'ia::result':
+                      key: '105'
+                      id: Texas
+                      href: /objects/tax-authority/105
+                    'ia::meta':
+                      totalCount: 1
+  
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/tax-authority/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the tax authority.
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 105
+    get:
+      summary: Get a tax authority
+      description: Returns detailed information for a specified tax authority.
+      x-documentationFlags:
+        subscription: Accounts Receivable, Order Entry, Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Authority
+      tags:
+        - Tax authorities
+      operationId: get-objects-tax-authority-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the tax-authority
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/tax-authority'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a tax authority:
+                  value:
+                    'ia::result':
+                      key: '105'
+                      id: Texas
+                      description: 'Texas tax authority'
+                      vendorId: 'Vendor_Visa_C'
+                      parent:
+                        name: California
+                        href: /objects/tax-authority/24
+                      href: /objects/tax-authority/105
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a tax authority
+      description: Updates an existing tax authority by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Receivable, Order Entry, Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Tax Authority
+      tags:
+        - Tax authorities
+      operationId: patch-objects-tax-authority-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tax-authority'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Updated description
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated tax-authority
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '105'
+                      id: Texas
+                      href: /objects/tax-authority/105
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a tax authority
+      description: Delete a tax authority that is no longer in use. After a tax authority is deleted, it can't be recovered.
+      x-documentationFlags:
+        subscription: Accounts Receivable, Order Entry, Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Tax Authority
+      tags:
+        - Tax authorities
+      operationId: delete-objects-tax-authority-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    tax-authority:
+      $ref: ../models/tax-authority.s1.schema.yaml
+    tax-authorityRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

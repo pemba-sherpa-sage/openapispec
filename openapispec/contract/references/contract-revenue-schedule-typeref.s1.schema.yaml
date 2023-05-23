@@ -1,0 +1,22 @@
+type: object
+title: contract-revenue-schedule
+x-object: contract-revenue-schedule
+properties:
+  key:
+    type: string
+    description: Contract revenue schedule system-assigned key.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Contract revenue schedule unique identifier.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  href:
+    type: string
+    description: Contract revenue schedule URL.
+    readOnly: true
+    example: /objects/contract-revenue-schedule/145
+examples: []

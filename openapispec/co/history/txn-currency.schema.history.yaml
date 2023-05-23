@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/trxcurrencies/view
+    POST:
+      - co/lists/trxcurrencies/create
+    PATCH:
+      - co/lists/trxcurrencies/edit
+    DELETE:
+      - co/lists/trxcurrencies/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,25 @@
+title: shipping-method
+x-mappedTo: shipmethod
+type: object
+description: List of Accounts Receivable shipping methods.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the shipping method.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Name or description of the shipping method.
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    description: URL for the shipping method.
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  daysInTransit:
+    type: integer
+    description: Estimated number of days to ship goods from the warehouse to the customer.
+    x-mappedTo: DAYSINTRANSIT

@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/billbacktemplate/view
+    POST:
+      - ar/lists/billbacktemplate/create
+    PATCH:
+      - ar/lists/billbacktemplate/edit
+    DELETE:
+      - ar/lists/billbacktemplate/delete
+s1:
+  hash: '0'
+  type: rootObject
+  

@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ee/lists/timesheet/view
+      - pa/lists/timesheet/view
+    POST:
+      - ee/lists/timesheet/create
+      - pa/lists/timesheet/create
+    PATCH:
+      - ee/lists/timesheet/edit
+      - pa/lists/timesheet/edit
+    DELETE:
+      - ee/lists/timesheet/delete
+      - pa/lists/timesheet/delete
+s1:
+  hash: '0'
+  type: rootObject

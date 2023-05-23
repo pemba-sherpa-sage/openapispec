@@ -1,0 +1,71 @@
+title: ar-account-label
+x-mappedTo: araccountlabel
+type: object
+description: AR account labels provide more descriptive names for accounts.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AR account label.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '8'
+  id:
+    type: string
+    description: Name or other unique identifier for the account label. This unique identifier cannot be modified.
+    x-mappedTo: ACCOUNTLABEL
+    x-mutable: false
+    example: Software
+  description:
+    type: string
+    description: A note about the purpose and use of the account label.
+    x-mappedTo: DESCRIPTION
+    example: Software sales
+  href:
+    type: string
+    description: URL for the AR account label.
+    readOnly: true
+    example: /objects/ar-account-label/8
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+    description: Status of the account label.
+    default: active
+  glAccount:
+    type: object
+    description: General ledger account this AR account label is assigned to.
+    x-object: gl-account
+    x-mappedTo: GLACCOUNT
+    properties:
+      id:
+        type: string
+        description: General ledger account number.
+        x-mappedTo: GLACCOUNTNO
+        example: '1501'
+      key:
+        type: string
+        description: System-assigned key for the general ledger account.
+        x-mappedTo: GLACCOUNTRECORDNO
+        example: '356'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account/356
+  offsetGLAccount:
+    type: object
+    description: The general ledger account where the system posts offsets to this label.
+    x-object: gl-account
+    x-mappedTo: OFFSETGLACCOUNT
+    properties:
+      id:
+        type: string
+        description: Account number for the offset general ledger account.
+        x-mappedTo: OFFSETGLACCOUNTNO
+        example: '9999'
+      key:
+        type: string
+        description: System-assigned key for the offset general ledger account.
+        x-mappedTo: OFFSETGLACCOUNTRECORDNO
+        example: '406'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account/406

@@ -1,0 +1,12 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/contractrevenueschedule/view
+    POST:
+    PATCH:
+      - cn/lists/contractrevenueschedule/edit
+    DELETE:
+      - cn/lists/contractrevenueschedule/delete
+s1:
+  hash: '0'
+  type: rootObject

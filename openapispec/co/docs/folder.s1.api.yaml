@@ -1,0 +1,394 @@
+openapi: 3.0.0
+info:
+  title: folder
+  description: folder API
+  version: '1.0'
+  contact:
+    email: tim.miller@sage.com
+    name: Tim Miller
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Folders
+    description: Folder description -- explain what it's for and how it's used.
+paths:
+  /objects/folder/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the folder.
+    get:
+      summary: Get a folder
+      description: Returns detailed information for a particular folder.
+      tags:
+        - Folders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the folder
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/folder.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: Bills
+                      audit:
+                        createdDate: '2021-09-01'
+                        createdBy: Admin
+                        modifiedBy: Admin
+                        modifiedDate: '2021-09-01'
+                      description: Annual bills folder
+                      status: active
+                      href: /objects/folder/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-folder-key
+    delete:
+      summary: Delete a folder
+      description: Deletes a folder.
+      tags:
+        - Folders
+      operationId: delete-objects-folder-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a folder
+      description: Updates an existing folder by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Folders
+      operationId: patch-objects-folder-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated folder
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: Bills
+                      href: /objects/folder/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/folder.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  description: Added new bill
+  /objects/folder:
+    get:
+      summary: List folders
+      description: Returns a collection with a key, ID, and link for each folder.
+      tags:
+        - Folders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of folder objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: Bills
+                        href: /objects/folder/1
+                      - key: '2'
+                        id: Credits
+                        href: /objects/folder/2
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-folder
+    post:
+      summary: Create a folder
+      description: Creates a new folder.
+      tags:
+        - Folders
+      operationId: post-objects-folder
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New folder
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: Bills
+                      href: /objects/folder/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/folder.s1.schema'
+                - $ref: '#/components/schemas/folderRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: Bills
+                  description: Annual bills folder
+                  status: active
+components:
+  schemas:
+    folder:
+      $ref: '#/components/schemas/folder.s1.schema'
+    folderRequiredProperties:
+      type: object
+      required:
+        - id
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    folder.s1.schema:
+      title: folder
+      x-mappedTo: supportingdocumentgrps
+      type: object
+      description: folder for attachments
+      properties:
+        key:
+          type: string
+          description: Attachment Folders Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Attachment Folders ID
+          x-mappedTo: NAME
+          x-mutable: false
+          example: fld1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Text files
+        parent:
+          type: object
+          description: Parent folder
+          x-object: folder
+          properties:
+            key:
+              type: string
+              x-mappedTo: GROUPRECORDKEY
+              example: '3'
+            id:
+              type: string
+              x-mappedTo: GROUPKEY
+              readOnly: true
+              example: fld3
+            href:
+              type: string
+              readOnly: true
+              example: /objects/folder/3
+        href:
+          type: string
+          readOnly: true
+          example: /objects/folder/1
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

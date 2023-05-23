@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: shipping-method
+  description: shipping-method API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Shipping methods
+    description: A shipping method is a specific way to transport goods, such as UPS or FedEx.
+paths:
+  /objects/shipping-method/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the shipping method.
+    get:
+      summary: Get a shipping method
+      description: Returns detailed information for a specified shipping method.
+      tags:
+        - Shipping methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the shipping-method
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/shipping-method.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod-key
+    delete:
+      summary: Delete a shipping method
+      description: Deletes a shipping method.
+      tags:
+        - Shipping methods
+      operationId: delete-objects-shipmethod-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a shipping method
+      description: Updates an existing shipping method by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Shipping methods
+      operationId: patch-objects-shipmethod-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated shipping-method
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/shipping-method.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/shipping-method:
+    get:
+      summary: List shipping methods
+      description: Returns a collection with a key, ID, and link for each shipping method. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Shipping methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of shipping-method objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod
+    post:
+      summary: Create a shipping method
+      description: Creates a new shipping method.
+      tags:
+        - Shipping methods
+      operationId: post-objects-shipmethod
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New shipping-method
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/shipping-method.s1.schema'
+                - $ref: '#/components/schemas/shipping-methodRequiredProperties'
+            examples: {}
+components:
+  schemas:
+    shipping-method:
+      $ref: '#/components/schemas/shipping-method.s1.schema'
+    shipping-methodRequiredProperties:
+      type: object
+      required:
+        - id
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    shipping-method.s1.schema:
+      title: shipping-method
+      x-mappedTo: shipmethod
+      type: object
+      description: List of Accounts Receivable shipping methods.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the shipping method.
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Name or description of the shipping method.
+          x-mappedTo: NAME
+          x-mutable: false
+        href:
+          type: string
+          description: URL for the shipping method.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        daysInTransit:
+          type: integer
+          description: Estimated number of days to ship goods from the warehouse to the customer.
+          x-mappedTo: DAYSINTRANSIT
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

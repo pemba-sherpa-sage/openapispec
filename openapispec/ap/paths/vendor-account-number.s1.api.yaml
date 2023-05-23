@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: vendor-account-number
+  description: vendor-account-number API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Vendor account numbers
+    description: Models an account number associated with a vendor.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/vendor-account-number:
+    get:
+      summary: List vendor account numbers
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each vendor account number. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Vendor account numbers
+      operationId: get-objects-vendor-account-number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-account-number objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/vendor-account-number/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the vendor account number.
+        in: path
+        required: true
+        schema:
+          type: string
+        example: 1
+    get:
+      summary: Get a vendor account number
+      description: Returns detailed information for a specified vendor account number.
+      tags:
+        - Vendor account numbers
+      operationId: get-objects-vendor-account-number-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of a vendor-account-number
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor-account-number'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    vendor-account-number:
+      $ref: ../models/vendor-account-number.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  title: unit-of-measure
+  description: unit-of-measure API
+  version: '1.0'
+  contact:
+    email: mahesh.yallure@sage.com
+    name: Mahesh Yallure
+tags:
+  - name: Units of measure
+    description: | 
+     Units of measure are provided for items handled under Inventory Control, Order Entry, and Purchasing. Intacct places related units of measure into groups.
+     For example, the Count group includes related units of each, pair, and dozen. 
+     
+     You cannot edit or delete the unit of measure (UOM) groups that are provided with Intacct. Use the Intacct UOM groups as is and create custom UOM groups. 
+     For more information, see [About unit of measure groups](https://www.intacct.com/ia/docs/en_US/help_action/Order_Entry/Setting_up_Order_Entry/UOM_groups/about-UOM-groups-OE.htm).
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/unit-of-measure:
+    get:
+      summary: List all units of measure
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each unit of measure group. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Units of Measure
+      tags:
+        - Units of measure
+      operationId: get-objects-unit-of-measure
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of unit of measure objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List unit of measure groups:
+                  value:
+                    'ia::result':
+                      - key: '17'
+                        id: Data storage
+                        href: /objects/unit-of-measure/17
+                      - key: '11'
+                        id: Count
+                        href: /objects/unit-of-measure/11
+                      - key: '12'
+                        id: Length
+                        href: /objects/unit-of-measure/12
+                      - key: '13'
+                        id: Weight
+                        href: /objects/unit-of-measure/13
+                      - key: '14'
+                        id: Volume
+                        href: /objects/unit-of-measure/14
+                      - key: '15'
+                        id: Area
+                        href: /objects/unit-of-measure-detail/15
+                      - key: '16'
+                        id: Time
+                        href: /objects/unit-of-measure/16 
+                    'ia::meta':
+                      totalCount: 7
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a unit of measure
+      description: Creates a new custom unit of measure group.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Units of Measure
+        configuration: Inventory Control, Order Entry, or Purchasing must be enabled for custom units of measure to add, edit, or delete unit of measure groups.
+      tags:
+        - Units of measure
+      operationId: post-objects-unit-of-measure
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/unit-of-measure'
+                - $ref: '#/components/schemas/unit-of-measureRequiredProperties'
+                - type: object
+                  properties:
+                    defaults:
+                      readOnly: true
+                      example: {} 
+            examples:
+              Create a unit of measure group:
+                value:
+                  id: Data storage
+                  baseUnit: Gigabytes
+                  abbreviation: GB
+                  uomDetail:
+                    - id: Terabytes
+                      abbreviation: TB
+                      conversionFactor: 1000
+                      numberOfDecimalPlaces: 2
+                    - id: Petabytes
+                      abbreviation: PB
+                      conversionFactor: 100000
+                      numberOfDecimalPlaces: 2
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New Unit of measure
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a unit of measure group:
+                  value:
+                    'ia::result':
+                      key: '17'
+                      id: Data storage
+                      href: /objects/unit-of-measure/17
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/unit-of-measure/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the unit of measure group.
+        example: '11'
+    get:
+      summary: Get a unit of measure
+      description: Returns detailed information for a specified unit of measure group.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Units of Measure
+      tags:
+        - Units of measure
+      operationId: get-objects-unit-of-measure-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unit-of-measure'
+              examples:
+                Get a unit of measure:
+                  value:
+                    key: '11'
+                    id: Count
+                    baseUnit: Each
+                    abbreviation: null
+                    defaults:
+                      inventory:
+                        key: '13'
+                        id: Each
+                        href: /objects/unit-of-measure-detail/13
+                      purchaseOrder:
+                        key: '13'
+                        id: Each
+                        href: /objects/unit-of-measure-detail/13
+                      orderEntry:
+                        key: '13'
+                        id: Each
+                        href: /objects/unit-of-measure-detail/13
+                    uomDetails:
+                      - key: '13'
+                        id: Each
+                        abbreviation: null
+                        numberOfDecimalPlaces: null
+                        isBase: true
+                        parent:
+                          key: '11'
+                          id: Count
+                          href: /objects/unit-of-measure/11
+                        conversionFactor: 1
+                        href: /objects/unit-of-measure-detail/13
+                      - key: '14'
+                        id: Pair
+                        abbreviation: null
+                        numberOfDecimalPlaces: null
+                        isBase: false
+                        parent:
+                          key: '11'
+                          id: Count
+                          href: /objects/unit-of-measure/11
+                        conversionFactor: 2
+                        href: /objects/unit-of-measure-detail/14
+                      - key: '15'
+                        id: Dozen
+                        abbreviation: null
+                        numberOfDecimalPlaces: null
+                        isBase: false
+                        parent:
+                          key: '11'
+                          id: Count
+                          href: /objects/unit-of-measure/11
+                        conversionFactor: 12
+                        href: /objects/unit-of-measure-detail/15
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    href: /objects/unit-of-measure/11
+                    audit:
+                      createdDateTime: '2014-01-08T11:28:12Z'
+                      modifiedDateTime: '2014-01-08T11:28:12Z'
+                      createdBy: '1'
+                      modifiedBy: '95'
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update unit of measure
+      description: Updates an existing unit of measure group by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Units of Measure
+        configuration: Inventory Control, Order Entry, or Purchasing must be enabled for custom units of measure to add, edit, or delete unit of measure groups.
+      tags:
+        - Units of measure
+      operationId: patch-objects-unit-of-measure-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/unit-of-measure'
+                - type: object
+                  properties:
+                    id: 
+                      example: Each
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  defaults:
+                    inventory:
+                      key: '3'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '17'
+                      id: Data Storage
+                      href: /objects/unit-of-measure/17
+                    'ia::meta':
+                      totalCount: 1
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      deprecated: true
+    delete:
+      summary: Delete a unit of measure
+      description: Deletes a unit of measure group. You can't delete the unit of measure groups that come with Intacct such as Time, Area, and Count. Only custom unit of measure groups can be deleted.   
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Units of Measure
+        configuration: Inventory Control, Order Entry, or Purchasing must be enabled for custom units of measure to add, edit, or delete unit of measure groups.
+      tags:
+        - Units of measure
+      operationId: delete-objects-unit-of-measure-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    unit-of-measure:
+      $ref: ../models/unit-of-measure.s1.schema.yaml
+    unit-of-measureRequiredProperties:
+      type: object
+      required:
+        - id
+        - baseUnit
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

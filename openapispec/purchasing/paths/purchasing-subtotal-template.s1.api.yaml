@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: purchasing-subtotal-template
+  description: purchasing-subtotal-template API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Purchasing subtotal templates
+    description: Purchasing subtotal template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-subtotal-template:
+    get:
+      summary: List purchasing subtotal templates
+      description: Returns a collection with a key, ID, and link for each purchasing subtotal template.
+      tags:
+        - Purchasing subtotal templates
+      operationId: get-objects-purchasing-subtotal-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-subtotal-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of purchasing subtotal templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an purchasing subtotal template
+      description: Creates a new purchasing subtotal template.
+      tags:
+        - Purchasing subtotal templates
+      operationId: post-objects-purchasing-subtotal-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-subtotal-template'
+                - $ref: '#/components/schemas/purchasing-subtotal-templateRequiredProperties'
+            examples:
+              Creates a/an purchasing subtotal template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New purchasing-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New purchasing subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-subtotal-template/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the purchasing subtotal template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an purchasing subtotal template
+      description: Returns detailed information for a particular purchasing subtotal template.
+      tags:
+        - Purchasing subtotal templates
+      operationId: get-objects-purchasing-subtotal-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-subtotal-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the purchasing subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an purchasing subtotal template
+      description: Updates an existing purchasing subtotal template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Purchasing subtotal templates
+      operationId: patch-objects-purchasing-subtotal-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-subtotal-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an purchasing subtotal template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated purchasing-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated purchasing subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an purchasing subtotal template
+      description: Deletes a/an purchasing subtotal template.
+      tags:
+        - Purchasing subtotal templates
+      operationId: delete-objects-purchasing-subtotal-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-subtotal-template:
+      $ref: ../models/purchasing-subtotal-template.s1.schema.yaml
+    purchasing-subtotal-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

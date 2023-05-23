@@ -1,0 +1,2381 @@
+openapi: 3.0.0
+info:
+  title: vendor
+  description: vendor API
+  version: '1.0'
+  contact:
+    email: ravi.shankarchaudhary@sage.com
+    name: Ravi Shankar Choudhary
+servers:
+  - url: https://dev01.intacct.com/users/anjali.israni/projects.nextgenapi/api/v0
+    description: Development server.
+tags:
+  - name: Vendors
+    description: |
+      Vendors are individuals or companies that you pay for goods and services. When you create a vendor, you provide a name and a unique identifier (unless the company is configured to auto-generate identifiers). 
+      You can also designate a credit limit, set a payment priority, establish the payment method for this vendor, and so forth.
+paths:
+  /objects/vendor/{key}:
+    parameters:
+      - schema:
+          type: string
+          example: '111'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor.
+        example: '111'
+    get:
+      summary: Get a vendor
+      description: Returns detailed information for a specified vendor.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business, Employee, Project Manager, and Warehouse users
+            permissions: List, View Vendors
+      tags:
+        - Vendors
+      operationId: get-objects-vendor-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the vendor
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/vendor.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a vendor:
+                  value:
+                    ia::result:
+                      key: '111'
+                      id: VEND-00010
+                      name: Design Works
+                      status: active
+                      taxId: 12-3456789
+                      nameOn1099: Design Works Inc
+                      creditLimit: 0
+                      isOnHold: true
+                      doNotPay: true
+                      contacts:
+                        primary:
+                          id: Doe, John
+                          name: Doe, John
+                          key: '271'
+                          href: /objects/contact/271
+                        payTo:
+                          id: Ho, Amy
+                          name: Ho, Amy
+                          key: '298'
+                          href: /objects/contact/298
+                        returnTo:
+                          id: Doe, John
+                          name: Doe, John
+                          key: '271'
+                          href: /objects/contact/271
+                        form1099:
+                          id: Ho, Amy
+                          name: Ho, Amy
+                          key: '298'
+                          href: /objects/contact/298
+                      mergePaymentRequests: true
+                      sendPaymentNotification: true
+                      billingType: openItem
+                      paymentPriority: normal
+                      displayTermDiscountOnCheckStub: true
+                      defaultBillPaymentDate: none
+                      displayVendorAccountOnCheckStub: true
+                      enableACHPayments: true
+                      audit:
+                        modifiedDateTime: '2021-03-24T21:16:54Z'
+                        createdDateTime: '2021-03-24T21:16:54Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/vendor/111
+                    ia::meta:
+                      totalCount: 1
+                Get an unrestricted vendor:
+                  value:
+                    ia::result:
+                      key: '69'
+                      id: Vendor_A0000001
+                      name: Vendor_A0000001
+                      form1099:
+                        nameOn1099: ISC 1099
+                        type: MISC
+                        box: '3'
+                      parent:
+                        key: '47'
+                        id: 201--PG & E
+                        name: PG & E
+                        href: /objects/vendor/47
+                      contacts:
+                        default:
+                          mailingAddress:
+                            addressLine1: 300 Park Avenue
+                            addressLine2: Suite 1400
+                            city: San Jose
+                            country: United States
+                            postCode: '95110'
+                            state: California
+                          tax:
+                            isTaxable: true
+                          URL1: https://alice.example.com
+                          URL2: null
+                          companyName: Ecology Corp
+                          email1: alice@example.com
+                          email2: cooper@example.com
+                          fax: '14085555309'
+                          firstName: Alice
+                          id: Vendor_A0000001
+                          lastName: Cooper
+                          middleName: Mary
+                          mobile: '14085554420'
+                          pager: '14085559987'
+                          phone1: '14085551212'
+                          phone2: null
+                          prefix: Ms.
+                          printAs: Alice.Cooper
+                          key: '237'
+                          hideContactList: false
+                          href: /objects/contact/237
+                        primary:
+                          id: 1099 IntCA
+                          key: '206'
+                          href: /objects/contact/206
+                        payTo:
+                          id: 1099 Int
+                          key: '211'
+                          href: /objects/contact/211
+                        returnTo:
+                          id: 111(V111)
+                          key: '748'
+                          href: /objects/contact/748
+                        recipient1099:
+                          id: 123515(V123515)
+                          key: '341'
+                          href: /objects/contact/341
+                      term:
+                        id: Net 60
+                        key: '11'
+                        href: /objects/ap-term/11
+                      vendorAccountNumber: '123456789'
+                      taxId: 111-22-1111
+                      creditLimit: 1000
+                      totalDue: '0'
+                      billingType: openItem
+                      vendorType:
+                        id: Retailer
+                        key: '14'
+                        href: /objects/vendor-type/14
+                      accountGroup:
+                        id: Stationary VGL Group
+                        key: '14'
+                        href: /objects/vendor-account-group/14
+                      priceSchedule:
+                        id: PO Price S
+                      discountPercent: 20
+                      priceList:
+                        id: PO Price List
+                        key: '2'
+                        href: /objects/purchasing-price-list/2
+                      notes: Comments of IN202
+                      accountlabel:
+                        id: Equipment
+                        key: '10'
+                      defaultExpenseGLAccount:
+                        id: 6700.04--CC Other Charges & Fees
+                        name: CC Other Charges & Fees
+                        key: '326'
+                        href: /objects/gl-account/326
+                      paymentPriority: normal
+                      status: active
+                      isOneTimeUse: true
+                      isOnHold: true
+                      audit:
+                        modifiedDateTime: '2022-05-26T04:49:44Z'
+                        createdDateTime: '2018-07-28T19:35:16Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      doNotPay: true
+                      ACH:
+                        enablePayments: true
+                        routingNumber: '123456789'
+                        accountNumber: '987654321'
+                        accountType: checkingAccount
+                        remittanceType: businessCTX
+                      displayTermDiscountOnCheckStub: false
+                      displayVendorAccountOnCheckStub: false
+                      sendPaymentNotification: true
+                      preferredPaymentMethod: printedCheck
+                      restrictions:
+                        restrictionType: ''
+                      mergePaymentRequests: true
+                      overrideOffsetGLAccount:
+                        id: 1000.00--10000
+                        key: 1000.00--10000
+                        name: '10000'
+                        href: /objects/gl-account/1000.00--10000
+                      attachment:
+                        id: Attach-12574
+                        key: Attach-12574
+                        href: /objects/attachment/Attach-12574
+                      defaultLeadTime: 5
+                      retainagePercentage: 10
+                      lastBillCreatedDate: null
+                      lastPaymentMadeDate: null
+                      contactList:
+                        - id: '215'
+                          key: '215'
+                          name: primary
+                          contact:
+                            id: 1099 IntCA
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '216'
+                          key: '216'
+                          name: pay to
+                          contact:
+                            id: 1099 Int
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '217'
+                          key: '217'
+                          name: return to
+                          contact:
+                            id: 111(V111)
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '218'
+                          key: '218'
+                          name: '1099'
+                          contact:
+                            id: 123515(V123515)
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                      vendorAccountNumberList:
+                        - locationId: 1--United States of America
+                          accountNo: '111111111'
+                      vendorEmailTemplates:
+                        - id: '11'
+                          key: '11'
+                          vendor:
+                            key: '69'
+                            id: Vendor_A0000001
+                            href: /objects/vendor/69
+                          txnDefinitionName: Purchase Order
+                          emailTemplate:
+                            id: '5'
+                            key: '5'
+                            name: AP
+                            href: /objects/email-template/5
+                          href: /objects/vendor-email-template/11
+                      vendorPaymentProviders: []
+                      defaultBillPaymentDate: none
+                      href: /objects/vendor/69
+                    ia::meta:
+                      totalCount: 1
+                Get a restricted vendor:
+                  value:
+                    ia::result:
+                      key: '49'
+                      id: '203'
+                      name: NCS, Inc.
+                      form1099:
+                        nameOn1099: null
+                        type: null
+                        box: null
+                      parent:
+                        key: '48'
+                        id: 202--Pac Bell
+                        name: Pac Bell
+                        href: /objects/vendor/48
+                      contacts:
+                        default:
+                          mailingAddress:
+                            addressLine1: '9500'
+                            addressLine2: Arboretum Blvd, Suite 310
+                            city: Austin
+                            country: United States
+                            postCode: '78759'
+                            state: TX
+                          tax:
+                            isTaxable: true
+                          URL1: https://jack.exammple.com
+                          URL2: null
+                          companyName: NCS, Inc.
+                          email1: Henry@example.com
+                          email2: Jack@example.com
+                          fax: '14085555522'
+                          firstName: Jack1
+                          id: NCS, Inc.
+                          lastName: Henry1
+                          middleName: Inc1
+                          mobile: '14085554420'
+                          pager: '14085554400'
+                          phone1: '14085551212'
+                          phone2: null
+                          prefix: null
+                          printAs: Jack Henry & Associates1
+                          key: '217'
+                          hideContactList: true
+                          href: /objects/contact/217
+                        primary:
+                          id: null
+                          key: null
+                        payTo:
+                          id: null
+                          key: null
+                        returnTo:
+                          id: null
+                          key: null
+                        recipient1099:
+                          id: null
+                          key: null
+                      term:
+                        id: Net 60
+                        key: '11'
+                        href: /objects/ap-term/11
+                      vendorAccountNumber: '203'
+                      taxId: 192-35-4308
+                      creditLimit: 350000
+                      totalDue: '0'
+                      billingType: balanceForward
+                      vendorType:
+                        id: Wholesaler
+                        key: '12'
+                      accountGroup:
+                        id: Midwest
+                        key: '5'
+                      priceSchedule:
+                        id: null
+                      discountPercent: null
+                      priceList:
+                        id: null
+                        key: null
+                      notes: None
+                      accountlabel:
+                        id: null
+                        key: null
+                      defaultExpenseGLAccount:
+                        id: 1500--Equipment
+                        name: Equipment
+                        key: '93'
+                        href: /objects/gl-account/93
+                      paymentPriority: normal
+                      status: active
+                      isOneTimeUse: false
+                      isOnHold: false
+                      audit:
+                        modifiedDateTime: '2022-05-26T05:28:54Z'
+                        createdDateTime: '2018-07-28T19:35:15Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      doNotPay: false
+                      ACH:
+                        enablePayments: false
+                        routingNumber: null
+                        accountNumber: null
+                        accountType: ''
+                        remittanceType: ''
+                      displayTermDiscountOnCheckStub: false
+                      displayVendorAccountOnCheckStub: false
+                      sendPaymentNotification: false
+                      preferredPaymentMethod: ''
+                      restrictions:
+                        restrictionType: restricted
+                        locations:
+                          - 1--United States of America1
+                          - 2--India
+                          - 3--United Kingdom
+                          - 1st Level Locations--Level 1 Locations
+                          - 2nd Level Locations--Level 2 Locations
+                        departments:
+                          - 11--Accounting
+                          - 1st Level Depts--Level 1 Departments
+                      mergePaymentRequests: true
+                      overrideOffsetGLAccount:
+                        id: null
+                        key: null
+                        name: null
+                      attachment:
+                        id: null
+                        key: null
+                      defaultLeadTime: null
+                      retainagePercentage: null
+                      lastBillCreatedDate: null
+                      lastPaymentMadeDate: null
+                      contactList: []
+                      vendorAccountNumberList: []
+                      vendorEmailTemplates: []
+                      vendorPaymentProviders: []
+                      defaultBillPaymentDate: none
+                      href: /objects/vendor/49
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a vendor
+      description: Deletes a vendor. You can only delete vendors that aren't tied to any transactions or payments.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Delete Vendors
+      tags:
+        - Vendors
+      operationId: delete-objects-vendor-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response.schema'
+    patch:
+      summary: Update a vendor
+      description: Updates an existing vendor by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Vendors
+      tags:
+        - Vendors
+      operationId: patch-objects-vendor-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  billingType: balanceForward
+              Update multiple values:
+                value:
+                  key: '2'
+                  id: 300--Pac Bell
+                  name: NCS, Inc.
+                  isOneTimeUse: true
+                  href: /objects/vendor/2
+                  status: active
+                  vendorType:
+                    key: '1'
+                    id: Wholesaler
+                    href: /objects/vendor-type/1
+                  parent:
+                    key: '1'
+                    id: 202--Pac Bell
+                    name: Pac Bell
+                    href: /objects/vendor/1
+                  accountGroup:
+                    key: '1'
+                    id: '1'
+                    href: /objects/vendor-account-group/1
+                  accountlabel:
+                    key: '1'
+                    id: Equipment
+                    href: /objects/ap-account-label/1
+                  defaultLeadTime: 5
+                  taxId: '192354308'
+                  form1099:
+                    is1099Eligible: true
+                    nameOn1099: NCS
+                    type: MISC
+                    box: '3'
+                  attachment:
+                    key: '1'
+                    id: '1'
+                    href: /objects/attachment/1
+                  isOnHold: true
+                  doNotPay: true
+                  creditLimit: 10000
+                  retainagePercentage: 20
+                  notes: Make sure to include on 1099
+                  priceList:
+                    key: '1'
+                    id: '1'
+                    href: /objects/purchasing-price-list/1
+                  priceSchedule:
+                    key: '1'
+                    id: '1'
+                    href: /objects/purchasing-price-schedule/1
+                  overrideOffsetGLAccount:
+                    key: '1'
+                    id: '1'
+                    name: 1225--Rent
+                    href: /objects/vendor/1
+                  defaultExpenseGLAccount:
+                    key: '1'
+                    id: 1210--Equipment
+                    name: Equipment
+                    href: /objects/gl-account/1
+                  discountPercent: 20
+                  contacts:
+                    default:
+                      key: '21'
+                      id: 3-Alice
+                      href: /objects/contact/21
+                      lastName: Cooper
+                      firstName: Alice
+                      middleName: Mary
+                      prefix: Miss
+                      printAs: Alice.Cooper
+                      email1: alice@example.com
+                      email2: cooper@example.com
+                      phone1: '14085551212'
+                      phone2: '14085559876'
+                      mobile: '14085554420'
+                      pager: '14085559987'
+                      fax: '14085555309'
+                      URL1: https://alice.example.com
+                      URL2: https://cooper.example.com
+                      companyName: AlcoSoft Inc
+                      mailingAddress:
+                        addressLine1: 300 Park Avenue
+                        addressLine2: Suite 1400
+                        city: San Jose
+                        state: California
+                        postCode: '95110'
+                        country: United States of America
+                      hideContactList: false
+                      tax:
+                        isTaxable: false
+                        group:
+                          key: '1'
+                          id: '1'
+                          href: /objects/contact-tax-group/1
+                    primary:
+                      key: '1'
+                      id: Jeff Pinkerton
+                      href: /objects/contact/1
+                    payTo:
+                      key: '2'
+                      id: Klay Vanderbilt
+                      href: /objects/contact/2
+                    returnTo:
+                      key: '3'
+                      id: Yusuf Pringle
+                      href: /objects/contact/3
+                    recipient1099:
+                      key: '4'
+                      id: Herb Culver
+                      href: /objects/contact/4
+                  contactList:
+                    - key: '1'
+                      id: '1'
+                      name: Main Office
+                      contact:
+                        id: Jeffrey Palms
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      vendor: {}
+                  vendorEmailTemplates:
+                    - key: '1'
+                      id: '1'
+                      href: /objects/vendor-email-template/1
+                      vendor:
+                        key: '1'
+                        id: V-65279
+                        href: /objects/vendor/1
+                      txnDefinitionName: Vendor Invoice
+                      emailTemplate:
+                        key: '1'
+                        id: '1'
+                        name: Vendor Trial
+                        href: /objects/email-template/1
+                  vendorPaymentProviders:
+                    - key: '1'
+                      id: '1'
+                      href: /objects/vendor-payment-provider/1
+                      paymentProvider:
+                        key: '3'
+                        id: CSI
+                        name: CSI
+                        href: /objects/payment-provider/3
+                      vendor:
+                        key: '351'
+                        id: VEN016
+                        name: AAA Consulting
+                        href: /objects/vendor/351
+                      state: requestInitiated
+                      preferredPaymentMethod:
+                        key: '454'
+                        id: '454'
+                        name: Check
+                        href: /objects/provider-payment-method/454
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                  vendorAccountNumberList:
+                    - key: '1'
+                      id: '1'
+                      locationId: Los Gatos Office
+                      accountNo: VAN-5134986722
+                      href: /objects/vendor-account-number/1
+                      vendor:
+                        key: '1'
+                        href: /objects/vendor/1
+                  preferredPaymentMethod: EFT
+                  mergePaymentRequests: true
+                  sendPaymentNotification: true
+                  billingType: openItem
+                  paymentPriority: low
+                  displayTermDiscountOnCheckStub: true
+                  term:
+                    key: '1'
+                    id: Net 60
+                    href: /objects/ap-term/1
+                  defaultBillPaymentDate: none
+                  paymentDateOffset: '4'
+                  impliedDueDate: '2002-08-31'
+                  impliedInvoiceDate: '2002-08-31'
+                  vendorAccountNumber: '203'
+                  displayVendorAccountOnCheckStub: false
+                  totalDue: '100.00'
+                  lastBillCreatedDate: '2002-08-31'
+                  lastPaymentMadeDate: '2002-08-31'
+                  ACH:
+                    enablePayments: false
+                    routingNumber: '061080227'
+                    accountNumber: '7624832485'
+                    accountType: checkingAccount
+                    remittanceType: businessCTX
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - string
+                    departments:
+                      - string
+                  audit:
+                    createdDateTime: '2022-04-20T16:20:00Z'
+                    modifiedDateTime: '2022-04-20T16:20:00Z'
+                    createdBy: '1'
+                    modifiedBy: '95'
+              Update values for a restricted vendor:
+                value:
+                  name: Regulatory Filing Group
+                  parent:
+                    id: 203--Pac Bell
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: '9500'
+                        addressLine2: Arboretum Blvd, Suite 310
+                        city: Austin
+                        country: United States
+                        postCode: '78759'
+                        state: TX
+                      tax:
+                        isTaxable: true
+                      URL1: https://jack.exammple.com
+                      companyName: Jack Henry
+                      email1: Henry@example.com
+                      email2: Jack@example.com
+                      fax: '14085555522'
+                      firstName: Jack
+                      lastName: Henry
+                      middleName: Inc
+                      mobile: '14085554420'
+                      pager: '14085554400'
+                      phone1: '14085551212'
+                      printAs: Jack Henry & Associates
+                      hideContactList: true
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '203'
+                  taxId: 192-35-4308
+                  creditLimit: 350000
+                  billingType: balanceForward
+                  notes: None
+                  defaultExpenseGLAccount:
+                    id: 1500--Equipment
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: false
+                  isOnHold: false
+                  doNotPay: false
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: false
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - 1--United States of America
+                      - 2--India
+                      - 3--United Kingdom
+                      - 1st Level Locations--Level 1 Locations
+                      - 2nd Level Locations--Level 2 Locations
+                    departments:
+                      - 11--Accounting
+                      - 1st Level Depts--Level 1 Departments
+                  mergePaymentRequests: true
+                  defaultBillPaymentDate: none
+                  vendorType:
+                    id: Retailer
+                  accountGroup:
+                    id: Stationary VGL Group
+                  priceSchedule:
+                    id: PO Price S
+                  discountPercent: 20
+                  priceList:
+                    id: PO Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated vendor
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a single value:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: RituDate11-21-2015
+                      href: /objects/vendor/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/vendor:
+    get:
+      summary: List vendors
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each vendor. This operation is mostly for use in testing.
+        Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business, Employee, Project Manager, and Warehouse users
+            permissions: List, View Vendors
+      tags:
+        - Vendors
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List vendors:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: Vend-00001
+                        href: /objects/vendor/84
+                      - key: '85'
+                        id: Vend-00002
+                        href: /objects/vendor/85
+                      - key: '60'
+                        id: Vend-00003
+                        href: /objects/vendor/60
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor
+    post:
+      summary: Create a vendor
+      description: Creates a new vendor. When you add a new vendor, you can provide key descriptive information about that vendor and establish how you want to pay them.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: |
+              List, View, Add, Edit Vendors (Bank Details permissions required to access vendor bank account.) 
+      tags:
+        - Vendors
+      operationId: post-objects-vendor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor.s1.schema'
+                - $ref: '#/components/schemas/vendorRequiredProperties'
+            examples:
+              Create a vendor:
+                value:
+                  id: Vend-00010
+                  name: Design Works
+                  taxId: 12-3456789
+                  nameOn1099: Design Works Inc
+                  creditLimit: 40000
+                  isOnHold: false
+                  doNotPay: false
+                  billingType: openItem
+                  paymentPriority: normal
+                  defaultBillPaymentDate: none
+                  enableACHPayments: false
+              Create an unrestricted vendor:
+                value:
+                  id: Vendor_A0000003
+                  name: Global Networks
+                  form1099:
+                    nameOn1099: ISC 1099
+                    type: MISC
+                    box: '3'
+                  parent:
+                    id: 201--PG & E
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: 300 Park Avenue
+                        addressLine2: Suite 1400
+                        city: San Jose
+                        country: United States
+                        postCode: '95110'
+                        state: California
+                      tax:
+                        isTaxable: true
+                      URL1: https://alice.example.com
+                      URL2: https://gnw.example.com
+                      companyName: Ecology Corporation
+                      email1: alice@example.com
+                      email2: cooper@example.com
+                      fax: '14085555309'
+                      firstName: Cooper
+                      lastName: Alice
+                      middleName: Mary
+                      mobile: '14085554420'
+                      pager: '14085559987'
+                      phone1: '14085551212'
+                      printAs: Cooper.Alice
+                      hideContactList: false
+                    primary:
+                      id: 1099 IntCA
+                    payTo:
+                      id: 1099 Int
+                    returnTo:
+                      id: 111(V111)
+                    recipient1099:
+                      id: 123515(V123515)
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '123456789'
+                  taxId: 111-22-1111
+                  creditLimit: 1000
+                  billingType: openItem
+                  vendorType:
+                    id: Retailer
+                  accountGroup:
+                    id: Stationary VGL Group
+                  priceSchedule:
+                    id: PO Price S
+                  discountPercent: 20
+                  priceList:
+                    id: PO Price List
+                  notes: Comments of IN202
+                  defaultExpenseGLAccount:
+                    id: 6700.04--CC Other Charges & Fees
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: true
+                  isOnHold: true
+                  doNotPay: true
+                  ACH:
+                    enablePayments: true
+                    routingNumber: '123456789'
+                    accountNumber: '987654321'
+                    accountType: checkingAccount
+                    remittanceType: businessCTX
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: true
+                  preferredPaymentMethod: printedCheck
+                  mergePaymentRequests: true
+                  overrideOffsetGLAccount:
+                    id: 1000.00--10000
+                  attachment:
+                    id: Attach-12574
+                  contactList:
+                    - name: primary
+                      contact:
+                        id: 1099 IntCA
+                    - name: pay to
+                      contact:
+                        id: 1099 Int
+                    - name: return to
+                      contact:
+                        id: 111(V111)
+                    - name: '1099'
+                      contact:
+                        id: 123515(V123515)
+                  vendorAccountNumberList:
+                    - locationId: 1--United States of America
+                      accountNo: '111111111'
+                  vendorEmailTemplates:
+                    - vendor:
+                        id: Vendor_A0000003
+                      txnDefinitionName: Purchase Order
+                      emailTemplate:
+                        id: '5'
+                        name: AP
+                  defaultBillPaymentDate: none
+              Create a restricted vendor:
+                value:
+                  id: Vend-00100
+                  name: Regulatory Filing Group
+                  parent:
+                    id: 202--Pac Bell
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: 9500 Arboretum Blvd
+                        addressLine2: Suite 310
+                        city: Austin
+                        country: United States
+                        postCode: '78759'
+                        state: TX
+                      tax:
+                        isTaxable: true
+                      URL1: https://jack.exammple.com
+                      companyName: Jack Henry
+                      email1: Henry@example.com
+                      email2: Jack@example.com
+                      fax: '14085555522'
+                      firstName: Jack
+                      lastName: Henry
+                      middleName: Inc
+                      mobile: '14085554420'
+                      pager: '14085554400'
+                      phone1: '14085551212'
+                      printAs: Jack Henry & Associates
+                      hideContactList: true
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '203'
+                  taxId: 192-35-4308
+                  creditLimit: 350000
+                  billingType: balanceForward
+                  notes: None
+                  defaultExpenseGLAccount:
+                    id: 1500--Equipment
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: false
+                  isOnHold: false
+                  doNotPay: false
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: false
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - 1--United States of America
+                      - 2--India
+                      - 3--United Kingdom
+                      - 1st Level Locations--Level 1 Locations
+                      - 2nd Level Locations--Level 2 Locations
+                    departments:
+                      - 11--Accounting
+                      - 1st Level Depts--Level 1 Departments
+                  mergePaymentRequests: true
+                  defaultBillPaymentDate: none
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New vendor
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create a vendor:
+                  value:
+                    ia::result:
+                      key: '111'
+                      href: /objects/vendor/111
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response.schema'
+components:
+  schemas:
+    vendor:
+      $ref: '#/components/schemas/vendor.s1.schema'
+    vendorRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    contactref.s1.schema:
+      title: contact
+      type: object
+      x-object: contact
+      x-mappedTo: contact
+      properties:
+        key:
+          type: string
+          description: Contact Key
+          readOnly: true
+          x-mappedTo: $$key
+          example: '21'
+        id:
+          type: string
+          description: Contact ID
+          x-mappedTo: $$prefix.CONTACTNAME
+          example: 3-Alice
+        href:
+          type: string
+          readOnly: true
+          example: /objects/contact/21
+        lastName:
+          type: string
+          description: Last Name
+          x-mappedTo: $$prefix.LASTNAME
+          example: Cooper
+        firstName:
+          type: string
+          description: First Name
+          x-mappedTo: $$prefix.FIRSTNAME
+          example: Alice
+        middleName:
+          type: string
+          description: Middle Name
+          x-mappedTo: $$prefix.INITIAL
+          example: Mary
+        prefix:
+          type: string
+          description: Prefix
+          x-mappedTo: $$prefix.PREFIX
+          example: Miss
+        printAs:
+          type: string
+          description: Print As
+          x-mappedTo: $$prefix.PRINTAS
+          example: Alice.Cooper
+        email1:
+          type: string
+          description: Primary Email
+          x-mappedTo: $$prefix.EMAIL1
+          example: alice@example.com
+        email2:
+          type: string
+          description: Secondary Email
+          x-mappedTo: $$prefix.EMAIL2
+          example: cooper@example.com
+        phone1:
+          type: string
+          description: Primary Phone
+          x-mappedTo: $$prefix.PHONE1
+          example: '14085551212'
+        phone2:
+          type: string
+          description: Secondary Phone
+          x-mappedTo: $$prefix.PHONE2
+          example: '14085559876'
+        mobile:
+          type: string
+          description: Mobile
+          x-mappedTo: $$prefix.CELLPHONE
+          example: '14085554420'
+        pager:
+          type: string
+          description: Pager
+          x-mappedTo: $$prefix.PAGER
+          example: '14085559987'
+        fax:
+          type: string
+          description: Fax
+          x-mappedTo: $$prefix.FAX
+          example: '14085555309'
+        URL1:
+          type: string
+          description: Primary URL
+          x-mappedTo: $$prefix.URL1
+          example: https://alice.example.com
+        URL2:
+          type: string
+          description: Secondary URL
+          x-mappedTo: $$prefix.URL2
+          example: https://cooper.example.com
+        companyName:
+          type: string
+          description: Company Name
+          x-mappedTo: $$prefix.COMPANYNAME
+          example: AlcoSoft Inc
+        mailingAddress:
+          type: object
+          description: Mailing Address
+          properties:
+            addressLine1:
+              type: string
+              description: Addess 1
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS1
+              example: 300 Park Avenue
+            addressLine2:
+              type: string
+              description: Addess 2
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS2
+              example: Suite 1400
+            city:
+              type: string
+              description: City
+              x-mappedTo: $$prefix.MAILADDRESS.CITY
+              example: San Jose
+            state:
+              type: string
+              description: State
+              x-mappedTo: $$prefix.MAILADDRESS.STATE
+              example: California
+            postCode:
+              type: string
+              description: Zip or Postal Code
+              x-mappedTo: $$prefix.MAILADDRESS.ZIP
+              example: '95110'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: $$prefix.MAILADDRESS.COUNTRY
+              example: United States of America
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    vendor-contact.s1.schema:
+      title: vendor-contact
+      x-mappedTo: vendorentitycontacts
+      x-ownedBy: vendor
+      type: object
+      description: Contact information for a vendor.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor contact information.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the vendor contact information.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        name:
+          type: string
+          description: Category name for the vendor contact information.
+          x-mappedTo: CATEGORYNAME
+          example: Main Office
+        contact:
+          type: object
+          description: Contact to associate with the vendor.
+          x-object: contact
+          x-mappedTo: vcontact
+          properties:
+            id:
+              type: string
+              description: Contact Name
+              x-mappedTo: CONTACT.NAME
+              example: Jeffrey Palms
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        vendor:
+          title: vendorreference
+          type: object
+          description: Vendor for this contact.
+          x-mappedTo: vendor
+          x-object: vendor
+    vendor-email-template.s1.schema:
+      title: vendor-email-template
+      x-mappedTo: vendoremailtemplate
+      type: object
+      x-ownedBy: vendor
+      description: Vendor email templates can be used to automate standard messages sent to multiple vendors.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Name or other unique identifier for the vendor email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        href:
+          type: string
+          description: URL for the vendor email template.
+          readOnly: true
+          example: /objects/vendor-email-template/1
+        vendor:
+          type: object
+          description: Vendor associated with the email template.
+          x-object: vendor
+          x-mappedTo: vendor
+          title: vendor
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the vendor.
+              x-mappedTo: VENDORID
+              example: V-65279
+            href:
+              type: string
+              description: URL for the vendor.
+              readOnly: true
+              example: /objects/vendor/1
+        txnDefinitionName:
+          type: string
+          description: Type of transaction that will use the email template.
+          x-mappedTo: DOCPARID
+          example: Vendor Invoice
+        emailTemplate:
+          type: object
+          description: Associated email template.
+          x-object: email-template
+          x-mappedTo: emailtemplate
+          title: emailTemplate
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+              example: '1'
+            name:
+              type: string
+              description: Name of the email template.
+              x-mappedTo: EMAILTEMPLATENAME
+              example: Vendor Trial
+            href:
+              type: string
+              description: URL of the email template.
+              readOnly: true
+              example: /objects/email-template/1
+    vendor-payment-provider.s1.schema:
+      title: vendor-payment-provider
+      x-mappedTo: providervendor
+      type: object
+      x-ownedBy: vendor
+      description: Object that links a payment provider to a vendor.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor payment provider.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the vendor payment provider.
+          x-mappedTo: RECORDNO
+          x-mutable: false
+          example: '1'
+        href:
+          type: string
+          readOnly: true
+          example: /objects/vendor-payment-provider/1
+        paymentProvider:
+          type: object
+          x-object: payment-provider
+          x-mappedTo: paymentprovider
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the payment provider.
+              x-mappedTo: PROVIDERKEY
+              readOnly: true
+              example: '3'
+            id:
+              type: string
+              description: Unique identifier for the payment provider.
+              x-mappedTo: PROVIDERID
+              example: CSI
+            name:
+              type: string
+              description: Name of the payment provider.
+              x-mappedTo: PROVIDERNAME
+              example: CSI
+            href:
+              type: string
+              readOnly: true
+              example: /objects/payment-provider/3
+        vendor:
+          type: object
+          x-object: vendor
+          x-mappedTo: vendor
+          title: vendor
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              readOnly: true
+              example: '351'
+            id:
+              type: string
+              description: Unique identifier for the vendor.
+              x-mappedTo: VENDORID
+              example: VEN016
+            name:
+              type: string
+              description: Name of the vendor.
+              x-mappedTo: VENDORNAME
+              example: AAA Consulting
+            href:
+              type: string
+              description: URL of the vendor
+              readOnly: true
+              example: /objects/vendor/351
+        state:
+          type: string
+          readOnly: true
+          enum:
+            - requestInitiated
+            - inProgress
+            - requestReceived
+            - requestFailed
+            - awaitingAuthorization
+            - subscribed
+            - canceled
+            - suspended
+          x-mappedToValues:
+            - Request initiated
+            - In progress
+            - Request received
+            - Request failed
+            - Awaiting authorization
+            - Subscribed
+            - Cancelled
+            - Suspended
+          description: Subscription status provided by the payment provider.
+          example: requestInitiated
+          x-mappedTo: STATE
+        preferredPaymentMethod:
+          type: object
+          x-object: provider-payment-method
+          x-mappedTo: providerpaymentmethod
+          title: preferredPaymentMethod
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the preferred payment method.
+              x-mappedTo: PREFERREDPAYMENTMETHOD
+              example: '454'
+            id:
+              type: string
+              description: Unique ID for the preferred payment method.
+              x-mappedTo: PREFERREDPAYMENTMETHOD
+              example: '454'
+            name:
+              type: string
+              description: Name of the preferred payment method.
+              x-mappedTo: PREFERREDPAYMENTMETHODNAME
+              example: Check
+            href:
+              type: string
+              readOnly: true
+              example: /objects/provider-payment-method/454
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+          x-mappedToValues:
+            - active
+            - inactive
+          description: Subscription status of the vendor payment provider.
+          example: active
+          x-mappedTo: STATUS
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    vendor-account-number.s1.schema:
+      title: vendor-account-number
+      x-mappedTo: vendoracctnolochead
+      type: object
+      x-ownedBy: vendor
+      description: Models an account number associated with a vendor.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor account number.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the vendor account number.
+          x-mutable: false
+          x-mappedTo: RECORDNO
+          example: '1'
+        locationId:
+          type: string
+          description: Location for the vendor account number.
+          x-mappedTo: LOCATION
+          example: Los Gatos Office
+        accountNumber:
+          type: string
+          description: Vendor account number.
+          x-mappedTo: ACCOUNTNO
+          example: VAN-5134986722
+        href:
+          type: string
+          description: URL of the vendor account number.
+          readOnly: true
+          example: /objects/vendor-account-number/1
+        vendor:
+          title: vendorreference
+          type: object
+          description: Vendor the account number is associated with.
+          x-mappedTo: vendor
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the vendor.
+              x-mappedTo: VENDORID
+              example: '1'
+            href:
+              type: string
+              description: URL of the vendor.
+              readOnly: true
+              example: /objects/vendor/1
+    vendor.s1.schema:
+      title: vendor
+      x-mappedTo: vendor
+      type: object
+      description: Vendors
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '518'
+        id:
+          type: string
+          description: |
+            Unique identifier of the vendor.
+            You must specify a unique vendor ID when creating a vendor unless document sequencing is configured, in which case the ID is auto-generated.
+          x-mappedTo: VENDORID
+          x-mutable: false
+          example: V-00014
+        name:
+          type: string
+          description: Name of the vendor.
+          x-mappedTo: NAME
+          example: NCS, Inc.
+        isOneTimeUse:
+          type: boolean
+          description: Set to `true` if this is a one-time use vendor.
+          x-mappedTo: ONETIME
+          x-mappedToType: string
+          default: false
+          example: true
+        href:
+          type: string
+          description: URL of the vendor.
+          readOnly: true
+          example: /objects/vendor/518
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+        vendorType:
+          type: object
+          description: |
+            Optional vendor type, which is a category of vendors used for reporting purposes.
+            **Valid values:** Any vendor type ID defined by the company.
+          x-object: vendor-type
+          x-mappedTo: vendtype
+          properties:
+            key:
+              type: string
+              x-mappedTo: VENDTYPEKEY
+              readOnly: true
+              example: '12'
+            id:
+              type: string
+              x-mappedTo: VENDTYPE
+              example: Wholesaler
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor-type/12
+        parent:
+          type: object
+          description: If this vendor is a subsidiary of another vendor, parent vendor of the subsidiary vendor.
+          x-object: vendor
+          x-mappedTo: PARENT
+          title: parent
+          properties:
+            key:
+              type: string
+              x-mappedTo: PARENTKEY
+              readOnly: true
+              example: '500'
+            id:
+              type: string
+              x-mappedTo: PARENTID
+              example: 202--Pac Bell
+            name:
+              type: string
+              x-mappedTo: PARENTNAME
+              readOnly: true
+              example: Pac Bell
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/500
+        accountGroup:
+          type: object
+          description: General Ledger (GL) account group that this vendor is part of.
+          x-object: vendor-account-group
+          x-mappedTo: GLGROUP
+          title: Vendor GL Group
+          properties:
+            key:
+              type: string
+              x-mappedTo: GLGRPKEY
+              readOnly: true
+              example: '8'
+            id:
+              type: string
+              x-mappedTo: GLGROUP
+              example: OR151
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor-account-group/8
+        accountlabel:
+          type: object
+          description: Account label.
+          x-object: ap-account-label
+          x-mappedTo: ACCOUNTLABEL
+          title: account label
+          properties:
+            key:
+              type: string
+              x-mappedTo: ACCOUNTLABELKEY
+              readOnly: true
+              example: '10'
+            id:
+              type: string
+              x-mappedTo: ACCOUNTLABEL
+              example: Equipment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ap-account-label/10
+        defaultLeadTime:
+          type: integer
+          description: Lead time default (days) for inventory replenishment.
+          x-mappedTo: DEFAULT_LEAD_TIME
+          example: 5
+        taxId:
+          type: string
+          description: Tax ID of the company.
+          x-mappedTo: TAXID
+          example: '192354308'
+        form1099:
+          type: object
+          title: Form1099
+          properties:
+            is1099Eligible:
+              type: boolean
+              description: |
+                Set to `true` if this vendor is 1099 eligible.
+              x-mappedTo: ELIGIBLE1099
+              x-mappedToType: string
+              default: false
+              example: true
+            nameOn1099:
+              type: string
+              description: Vendor name as it should appear on 1099 forms.
+              x-mappedTo: NAME1099
+              example: NCS
+            type:
+              type: string
+              description: |
+                Type of 1099 form for this vendor.
+              x-mappedTo: FORM1099TYPE
+              example: MISC
+            box:
+              type: string
+              description: |
+                Box number for form 1099.
+              x-mappedTo: FORM1099BOX
+              example: '3'
+        attachment:
+          type: object
+          description: Supporting document ID for this attachment.
+          x-object: attachment
+          x-mappedTo: SUPDOCID
+          properties:
+            key:
+              type: string
+              x-mappedTo: SUPDOCID
+              readOnly: true
+              example: '21'
+            id:
+              type: string
+              x-mappedTo: SUPDOCID
+              example: Sales01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/attachment/21
+        isOnHold:
+          type: boolean
+          description: |
+            Set to `true` to prevent anyone from entering transactions against this vendor.
+          x-mappedTo: ONHOLD
+          x-mappedToType: string
+          default: false
+          example: true
+        doNotPay:
+          type: boolean
+          description: |
+            Set to `true` to prevent anyone from paying bills from this vendor.
+          x-mappedTo: DONOTCUTCHECK
+          x-mappedToType: string
+          default: false
+          example: true
+        creditLimit:
+          type: number
+          description: Amount of credit extended by the vendor.
+          x-mappedTo: CREDITLIMIT
+          example: 10000
+        retainagePercentage:
+          type: number
+          description: The percentage of retainage to withhold for this vendor.
+          x-mappedTo: RETAINAGEPERCENTAGE
+          example: 20
+        notes:
+          type: string
+          description: Notes or comments about this vendor.
+          x-mappedTo: COMMENTS
+          example: Make sure to include on form 1099.
+        priceList:
+          type: object
+          description: Price list for this vendor.
+          x-object: purchasing-price-list
+          x-mappedTo: PRICELIST
+          properties:
+            key:
+              type: string
+              x-mappedTo: OEPRCLSTKEY
+              readOnly: true
+              example: '13'
+            id:
+              type: string
+              x-mappedTo: PRICELIST
+              example: Acme Price List
+            href:
+              type: string
+              readOnly: true
+              example: /objects/purchasing-price-list/13
+        priceSchedule:
+          type: object
+          description: Price schedule for this vendor.
+          x-object: purchasing-price-schedule
+          x-mappedTo: PRICESCHEDULE
+          properties:
+            key:
+              type: string
+              x-mappedTo: oepriceschedkey
+              readOnly: true
+              example: '5'
+            id:
+              type: string
+              x-mappedTo: PRICESCHEDULE
+              example: PREF
+            href:
+              type: string
+              readOnly: true
+              example: /objects/purchasing-price-schedule/5
+        overrideOffsetGLAccount:
+          type: object
+          description: Default AP override offset account for this vendor.
+          x-object: gl-account
+          x-mappedTo: OFFSETGLACCOUNTNO
+          properties:
+            key:
+              type: string
+              x-mappedTo: OFFSETGLACCOUNTNO
+              readOnly: true
+              example: '12'
+            id:
+              type: string
+              x-mappedTo: OFFSETGLACCOUNTNO
+              example: '1'
+            name:
+              type: string
+              x-mappedTo: OFFSETGLACCOUNTNOTITLE
+              readOnly: true
+              example: 1225--Rent
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/12
+        defaultExpenseGLAccount:
+          type: object
+          description: Default General Ledger (GL) expense account for bills for this vendor.
+          x-object: gl-account
+          x-mappedTo: apaccount
+          properties:
+            key:
+              type: string
+              x-mappedTo: ACCOUNTKEY
+              readOnly: true
+              example: '6'
+            id:
+              type: string
+              x-mappedTo: APACCOUNT
+              example: 1210--Equipment
+            name:
+              type: string
+              x-mappedTo: APACCOUNTTITLE
+              readOnly: true
+              example: Equipment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/6
+        discountPercent:
+          type: number
+          description: Discount percentage for this vendor.
+          x-mappedTo: DISCOUNT
+          example: 20
+        contacts:
+          type: object
+          title: contacts
+          properties:
+            default:
+              type: object
+              description: |
+                Default contact for this vendor. Used as the default for other vendor contacts, such as `payTo`, that are  not defined.
+              allOf:
+                - $ref: '#/components/schemas/contactref.s1.schema'
+                - type: object
+                  x-object: contact
+                  x-mappedTo: displaycontact
+                  x-mappedToPrefix: DISPLAYCONTACT
+                  x-mappedToKey: DISPLAYCONTACTKEY
+                  properties:
+                    hideContactList:
+                      type: boolean
+                      description: Exclude from the company contact list.
+                      x-mappedTo: HIDEDISPLAYCONTACT
+                      x-mappedToType: string
+                      default: false
+                      example: false
+                    tax:
+                      type: object
+                      title: tax
+                      properties:
+                        isTaxable:
+                          type: boolean
+                          description: Defines whether the contact is taxable.
+                          x-mappedTo: DISPLAYCONTACT.TAXABLE
+                          x-mappedToType: string
+                          default: false
+                          example: false
+                        group:
+                          type: object
+                          x-object: contact-tax-group
+                          x-mappedTo: displaycontact.taxgroup
+                          properties:
+                            key:
+                              type: string
+                              x-mappedTo: TAXGROUPKEY
+                              readOnly: true
+                              example: '6'
+                            id:
+                              type: string
+                              x-mappedTo: TAXGROUP
+                              example: New York
+                            href:
+                              type: string
+                              readOnly: true
+                              example: /objects/contact-tax-group/6
+            primary:
+              type: object
+              description: |
+                Primary contact for this vendor.
+                The primary contact information is used as the default contact information for the vendor unless otherwise specified.
+                The primary contact is the default contact for all transactions if no other vendor contacts are defined.
+              x-object: contact
+              x-mappedTo: primarycontact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: PRIMARYCONTACTKEY
+                  readOnly: true
+                  example: '7'
+                id:
+                  type: string
+                  x-mappedTo: CONTACTINFO.CONTACTNAME
+                  example: Jeff Pinkerton
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/7
+            payTo:
+              type: object
+              description: Default contact when paying by check or creating bills. This contact is required for calculating tax for purchasing.
+              x-object: contact
+              x-mappedTo: paytocontact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: PAYTOKEY
+                  readOnly: true
+                  example: '2'
+                id:
+                  type: string
+                  x-mappedTo: PAYTO.CONTACTNAME
+                  example: Klay Vanderbilt
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/2
+            returnTo:
+              type: object
+              description: Default contact for purchasing transactions and for the return of purchases from purchasing transactions.
+              x-object: contact
+              x-mappedTo: returntocontact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: RETURNTOKEY
+                  readOnly: true
+                  example: '5'
+                id:
+                  type: string
+                  x-mappedTo: RETURNTO.CONTACTNAME
+                  example: Yusuf Pringle
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/5
+            recipient1099:
+              type: object
+              description: Default contact for all 1099 tax transactions and documents.
+              x-object: contact
+              x-mappedTo: contact1099
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: CONTACTKEY1099
+                  readOnly: true
+                  example: '9'
+                id:
+                  type: string
+                  x-mappedTo: CONTACTTO1099.CONTACTNAME
+                  example: Herb Culver
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/9
+        contactList:
+          type: array
+          x-mappedTo: CONTACT_LIST_INFO
+          x-object: vendor-contact
+          items:
+            $ref: '#/components/schemas/vendor-contact.s1.schema'
+        vendorEmailTemplates:
+          type: array
+          x-mappedTo: VENDOREMAILTEMPLATE
+          x-object: vendor-email-template
+          items:
+            $ref: '#/components/schemas/vendor-email-template.s1.schema'
+        vendorPaymentProviders:
+          type: array
+          x-mappedTo: PROVIDERVENDOR
+          x-object: vendor-payment-provider
+          items:
+            $ref: '#/components/schemas/vendor-payment-provider.s1.schema'
+        vendorAccountNumberList:
+          type: array
+          x-mappedTo: VENDOR_ACCTNO_LOC_HEAD
+          x-object: vendor-account-number
+          items:
+            $ref: '#/components/schemas/vendor-account-number.s1.schema'
+        preferredPaymentMethod:
+          type: string
+          description: |
+            Preferred payment method when you select a bill to pay for this vendor.
+          enum:
+            - printedCheck
+            - chargeCard
+            - EFT
+            - cash
+            - ACH
+            - wellsFargoCheck
+            - wellsFargoUSDWire
+            - wellsFargoDomesticACH
+          x-mappedToValues:
+            - Printed Check
+            - Charge Card
+            - EFT
+            - Cash
+            - ACH
+            - WF Check
+            - WF USD Wire
+            - WF Domestic ACH
+          x-mappedTo: PAYMETHODKEY
+          example: EFT
+        mergePaymentRequests:
+          type: boolean
+          description: |
+            If `true`, merge multiple selected bills into one payment request for the vendor. If `false`, have one payment request created for each bill.
+          x-mappedTo: MERGEPAYMENTREQ
+          x-mappedToType: string
+          default: true
+          example: true
+        sendPaymentNotification:
+          type: boolean
+          description: |
+            If `true`, automatically send payment notifications to the email address for the `payTo` contact.
+          x-mappedTo: PAYMENTNOTIFY
+          x-mappedToType: string
+          default: false
+          example: true
+        billingType:
+          type: string
+          description: |
+            Billing type to use on vendor statements.
+
+            **Valid values:**
+            - `openItem` - Shows all bills, adjustments, and payments as line items on a statements.
+            - `balanceForward` - Consolidates previous months bills, adjustments, and payments to a single line item.
+          enum:
+            - openItem
+            - balanceForward
+          x-mappedToValues:
+            - openitem
+            - balanceforward
+          x-mappedTo: BILLINGTYPE
+          example: openItem
+        paymentPriority:
+          type: string
+          description: |
+            Optional default payment priority to assign new bills from this vendor.
+          enum:
+            - urgent
+            - high
+            - normal
+            - low
+          x-mappedToValues:
+            - Urgent
+            - High
+            - Normal
+            - Low
+          x-mappedTo: PAYMENTPRIORITY
+          example: low
+        displayTermDiscountOnCheckStub:
+          type: boolean
+          description: |
+            If `true`, include any associated term discount on check stubs.
+          x-mappedTo: DISPLAYTERMDISCOUNT
+          x-mappedToType: string
+          default: true
+          example: true
+        term:
+          type: object
+          description: AP term or rules this vendor has established for extending credit to you.
+          x-object: ap-term
+          x-mappedTo: TERMNAME
+          properties:
+            key:
+              type: string
+              x-mappedTo: TERMSKEY
+              readOnly: true
+              example: '7'
+            id:
+              type: string
+              x-mappedTo: TERMNAME
+              example: Net 30
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ap-term/7
+        defaultBillPaymentDate:
+          type: string
+          description: |
+            The Default bill payment date defines how the Recommended to pay on date is calculated for vendor bills.
+
+            **Valid values:** 
+            - `none`- Leaves the default unset, which allows you to choose the value from a different date field.
+            - `dueDate` - Calculates the due date based on the selected Term, then adjusts based on the number of days specified as an offset.
+            - `billDate` - Uses the date entered for the bill, adjusted for the number of days specified as an offset. Does not require that a Term be defined.
+            - `discountDate` - Uses the discount details in the specified Term to calculate the discount date. No offset is used.
+          enum:
+            - none
+            - dueDate
+            - billDate
+            - discountDate
+          x-mappedToValues:
+            - None
+            - Due Date
+            - Bill Date
+            - Discount Date
+          x-mappedTo: PAYDATEVALUEOPTIONS
+          example: none
+        operatorPlusMinus:
+          type: string
+          description: The number of days to use as an offset from the default payment date. For example, to set the Recommended pay on date to 5 days before a bill is due, specify `-5`.
+          x-mappedTo: PLUSMINUS
+          example: '-5'
+        offsetDueDays:
+          type: string
+          format: date
+          description: Recommended payment date by Due Date.
+          x-mappedTo: DUEDATEDIFF
+          example: '2022-08-31'
+        offsetBillDays:
+          type: string
+          format: date
+          description: Recommended payment date by Bill Date.
+          x-mappedTo: INVOICEDATEDIFF
+          example: '2022-08-31'
+        vendorAccountNumber:
+          type: string
+          description: |
+            The account number that this vendor has assigned to you.
+          x-mappedTo: VENDORACCOUNTNO
+          x-mappedToType: string
+          example: '203'
+        displayVendorAccountOnCheckStub:
+          type: boolean
+          description: |
+            If `true`, displays the vendor-assigned account number, per entity, on check stubs.
+          x-mappedTo: DISPLOCACCTNOCHECK
+          x-mappedToType: string
+          default: false
+          example: false
+        totalDue:
+          type: string
+          description: Total amount due.
+          x-mappedTo: TOTALDUE
+          readOnly: true
+          example: '100.00'
+        lastBillCreatedDate:
+          type: string
+          format: date
+          description: Date the last bill was created.
+          x-mappedTo: WHENLASTBILLED
+          readOnly: true
+          example: '2022-07-31'
+        lastPaymentMadeDate:
+          type: string
+          format: date
+          description: Date the last payment was made.
+          x-mappedTo: WHENLASTPAID
+          readOnly: true
+          example: '2002-08-31'
+        ACH:
+          type: object
+          title: ACH details for this vendor.
+          properties:
+            enablePayments:
+              type: boolean
+              description: |
+                If `true`, enable ACH payments for this vendor.
+              x-mappedTo: ACHENABLED
+              x-mappedToType: string
+              default: false
+              example: false
+            routingNumber:
+              type: string
+              description: |
+                ACH routing number for this vendor.
+              x-mappedTo: ACHBANKROUTINGNUMBER
+              x-mappedToType: string
+              example: '061080227'
+            accountNumber:
+              type: string
+              description: |
+                ACH account number for this vendor.
+              x-mappedTo: ACHACCOUNTNUMBER
+              x-mappedToType: string
+              example: '7624832485'
+            accountType:
+              type: string
+              description: |
+                ACH account type for this vendor.
+              enum:
+                - checkingAccount
+                - savingsAccount
+              x-mappedToValues:
+                - Checking Account
+                - Savings Account
+              x-mappedTo: ACHACCOUNTTYPE
+              example: checkingAccount
+            remittanceType:
+              type: string
+              description: |
+                ACH account classification for this vendor. Select the classification code that your bank uses for ACH payments.
+
+                **Valid values:**
+                - `businessCTX` - Business account that is a Corporate Trade Exchange (CTX) account.
+                - `personalPPD` - An individual contractor's personal account.
+                - `businessCCD` - Business account that is a Cash Concentration or Disbursement (CCD) corporate account.
+              enum:
+                - businessCTX
+                - personalPPD
+                - businessCCD
+              x-mappedToValues:
+                - CTX
+                - PPD
+                - CCD
+              x-mappedTo: ACHREMITTANCETYPE
+              example: businessCTX
+        restrictions:
+          type: object
+          properties:
+            restrictionType:
+              type: string
+              description: |
+                Restrict vendors to only the top level company or for specific locations and departments.
+                These restriction options are valid only for multi-entity companies that are [configured for restrictions](https://www.intacct.com/ia/docs/en_US/help_action/Multi-entity/Setup/configure-multi-entity.htm).
+                Learn more about [restricting vendors](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Payable/Setup/Vendors/restrict-vendors-in-multi-entity-companies.htm).
+                The following values specify who can view and post transactions against this vendor.
+
+                **Valid values:**
+                - `unrestricted` - The top level and all entities within the multi-entity structure.
+                - `rootOnly` - Only the top level of the multi-entity structure.
+                - `restricted` - Only the chosen locations, location groups, departments, or department groups within the multi-entity structure.
+              enum:
+                - unrestricted
+                - rootOnly
+                - restricted
+              x-mappedToValues:
+                - Unrestricted
+                - RootOnly
+                - Restricted
+              x-mappedTo: OBJECTRESTRICTION
+              example: restricted
+            locations:
+              type: array
+              x-delimiter: '#~#'
+              x-mappedTo: RESTRICTEDLOCATIONS
+              example:
+                - Dallas
+                - Santa Fe
+                - Las Vegas
+              items:
+                type: string
+            departments:
+              type: array
+              x-delimiter: '#~#'
+              x-mappedTo: RESTRICTEDDEPARTMENTS
+              example:
+                - Sales
+                - RDA
+                - BD
+              items:
+                type: string
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.retrieve
+  description: IODL Retrieve service
+  version: 1.0-internal
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.retrieve
+    description: Retrieve IODL in the IODL file service
+paths:
+  /services/iodl/file/store:
+    post:
+      summary: Retrieve IODL
+      description: Retrieve IODL with options to compile, overwrite and cache
+      tags:
+        - iodl.file.anon.retrieve
+      operationId: post-iodl-file-retrieve
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.retrieve-request'
+            examples:
+              example-1:
+                value: null
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.retrieve-response'
+              examples:
+                example-1:
+                  value: null
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.retrieve-request:
+      description: Retrieve IODL request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        prepend:
+          x-mappedTo: prepend
+          type: string
+        append:
+          x-mappedTo: append
+          type: string
+        id:
+          $ref: '#/components/schemas/iodl.file.component.id.s1.schema'
+        options:
+          type: object
+          properties:
+            compile:
+              x-mappedTo: options.compile
+              type: boolean
+              default: true
+            cache:
+              x-mappedTo: options.cache
+              type: boolean
+              default: false
+            sandboxCollection:
+              x-mappedTo: options.sandboxCollection
+              type: string
+    iodl.file.retrieve-response:
+      description: Retrieve IODL response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          x-mappedTo: status
+          type: boolean
+        result:
+          x-mappedTo: result
+          type: array
+          items:
+            type: string
+        tokens:
+          x-mappedTo: tokens
+          type: array
+          items:
+            type: string
+        id:
+          $ref: '#/components/schemas/iodl.file.component.id.s1.schema'
+        content:
+          $ref: '#/components/schemas/iodl.file.component.content.s1.schema'
+    iodl.file.component.id.s1.schema:
+      title: id
+      type: object
+      properties:
+        name:
+          x-mappedTo: id.name
+          type: string
+        version:
+          x-mappedTo: id.version
+          type: string
+        type:
+          x-mappedTo: id.type
+          type: string
+    iodl.file.component.content.s1.schema:
+      title: content
+      type: object
+      properties:
+        type:
+          x-mappedTo: content.type
+          type: string
+        data:
+          x-mappedTo: content.data
+          type: string
+        tokens:
+          x-mappedTo: content.tokens
+          type: array
+          items:
+            type: string
+        tokenMap:
+          x-mappedTo: content.tokenMap
+          type: object
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

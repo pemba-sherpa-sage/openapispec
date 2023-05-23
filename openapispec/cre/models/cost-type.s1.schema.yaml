@@ -1,0 +1,231 @@
+title: cost-type
+x-mappedTo: costtype
+type: object
+description: A dimension used to capture and categorize project cost detail in construction projects.  it's associated with a task, which in turn is associated with a project.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the cost type.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '99'
+  id:
+    type: string
+    description: Cost type ID. Created automatically from the standardCostType `id`.
+    readOnly: true
+    x-mappedTo: COSTTYPEID
+    example: 'EQ'
+  href:
+    type: string
+    description: URL of the cost type.
+    example: /objects/cost-type/2
+    readOnly: true    
+  project:
+    type: object
+    description: Project that will use this cost type.
+    x-mappedTo: project
+    x-object: project
+    properties:
+      key:
+        type: string
+        description: Project record number.
+        x-mappedTo: PROJECTKEY
+        example: '109'
+      id:
+        type: string
+        description: Project ID.
+        x-mappedTo: PROJECTID
+        example: '22-001'
+      name:
+        type: string
+        description: Project name.
+        x-mappedTo: PROJECTNAME
+        example: 'Wallula Heights Conference Center'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project/109
+  task:
+    type: object
+    description: Task that will use this cost type.
+    x-mappedTo: task
+    x-object: task
+    properties:
+      key:
+        type: string
+        description: Task record number.
+        x-mappedTo: TASKKEY
+        example: '1410'
+      id:
+        type: string
+        description: Task ID.
+        x-mappedTo: TASKID
+        example: '3-450'
+      name:
+        type: string
+        description: Task name.
+        x-mappedTo: TASKNAME
+        example: 'Architectural Precast'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/task/1410
+  name:
+    type: string
+    description: Name of the cost type. Does not have to be unique.
+    x-mappedTo: NAME
+    example: 'Equipment'
+  description:
+    type: string
+    description: Cost type description.
+    x-mappedTo: DESCRIPTION
+    example: 'Equipment'
+  accumulationType:
+    type: object
+    description: Accumulation type associated with this cost type.
+    x-mappedTo: accumulationtype
+    x-object: accumulation-type
+    properties:
+      key:
+        type: string
+        description: Accumulation type record number.
+        x-mappedTo: ACCUMULATIONTYPEKEY
+        example: '3'
+      id:
+        type: string
+        description: Accumulation type Id.
+        x-mappedTo: ACCUMULATIONTYPEKEY
+        example: '3'
+      name:
+        type: string
+        description: Accumulation type name to use.
+        x-mappedTo: ACCUMULATIONTYPENAME
+        example: 'Equipment'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/accumulation-type/3
+  costUnitDescription:
+    type: string
+    description: Describes the unit of measure used by this cost type. For example, for a labor cost type the cost unit represents an hour of labor. For a materials cost type, the cost unit could be tons or feet or similar.
+    example: each
+    x-mappedTo: COSTUNITDESCRIPTION
+  glAccount:
+    $ref: ../../common/references/gl-accountref.s1.schema.yaml
+  parent:
+    type: object
+    description: Reference to a parent cost type to group cost types.
+    x-object: cost-type
+    x-mappedTo: costtype
+    properties:
+      key:
+        type: string
+        description: Unique identifier of the parent cost type.
+        x-mappedTo: PARENTKEY
+        example: '1'
+      id:
+        type: string
+        description: ID of a parent cost type if hierarchical cost types are used.
+        readOnly: true
+        x-mappedTo: PARENTID
+        example: 'EQ-GRP'
+      name:
+        type: string
+        description: Parent cost type name.
+        readOnly: true
+        x-mappedTo: PARENTNAME
+        example: 'Equipment Group'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/cost-type/1'
+  item:
+    $ref: ../../common/references/itemref.s1.schema.yaml
+  planned:
+    type: object
+    description: Cost type planned dates.
+    properties:
+      startDate:
+        type: string
+        description: Planned begin date.
+        x-mappedTo: PLANNEDBEGINDATE
+        format: date
+        example: 2023-01-04
+      endDate:
+        type: string
+        format: date
+        description: Planned end date.
+        x-mappedTo: PLANNEDENDDATE
+        example: 2023-02-24
+  actual:
+    type: object
+    description: Cost type actual dates.
+    properties:
+      startDate:
+        type: string
+        format: date
+        description: Actual begin date.
+        x-mappedTo: ACTUALBEGINDATE
+        example: 2023-01-06
+      endDate:
+        type: string
+        format: date
+        description: Actual end date.
+        x-mappedTo: ACTUALENDDATE
+        example: 2023-03-01
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  root:
+    type: object
+    description: The root cost type that this cost type descends from.
+    x-object: cost-type
+    x-mappedTo: costtype
+    properties:
+      key:
+        type: string
+        description: System-assigned unique ID of the root cost type.
+        x-mappedTo: ROOTPARENTKEY
+        example: '13921'
+      id:
+        type: string
+        description: ID of a root cost type if hierarchical cost types are used.
+        readOnly: true
+        x-mappedTo: ROOTPARENTID
+        example: 'EQ'
+      name:
+        type: string
+        description: Root cost type name.
+        readOnly: true
+        x-mappedTo: ROOTPARENTNAME
+        example: 'Equipment'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/cost-type/13921
+  standardCostType:
+    type: object
+    description: The standard cost type that is the template for this cost type.
+    x-object: cost-type
+    x-mappedTo: costtype
+    properties:
+      key:
+        type: string
+        description: Standard cost type record number.
+        x-mappedTo: STANDARDCOSTTYPEKEY
+        example: '1'
+      id:
+        type: string
+        description: Standard cost type ID to use as a template for this cost type.
+        x-mappedTo: STANDARDCOSTTYPEID
+        example: 'EQ'
+      name:
+        type: string
+        description: Standard cost type name to use as a template for this cost type.
+        x-mappedTo: STANDARDCOSTTYPENAME
+        example: 'Equipment'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/cost-type/1'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

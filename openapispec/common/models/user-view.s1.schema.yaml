@@ -1,0 +1,103 @@
+title: user-view
+x-mappedTo: filterview
+type: object
+x-idempotence: true
+description: Filter View.
+properties:
+  key:
+    type: string
+    description: Record Key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Record Id
+    x-mappedTo: RECORDNO
+    readOnly: true
+  name:
+    type: string
+    description: View name
+    x-mappedTo: NAME
+  href:
+    type: string
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  object:
+    type: string
+    description: Object
+    x-mappedTo: OBJECT
+  category:
+    type: string
+    description: View category
+    x-mappedTo: CATEGORY
+    nullable: true
+  viewVersion:
+    type: string
+    description: View Version
+    x-mappedTo: APIVERSION
+  isPublic:
+    type: boolean
+    description: Type of view
+    x-mappedTo: ISPUBLIC
+  context:
+    type: string
+    description: Context of view
+    x-mappedTo: CONTEXT
+  query:
+    type: object
+    description: Query Parameters
+    allOf:
+      - $ref: ../../common/models/query.schema.yaml
+      - type: object
+        x-mappedToType: blob
+        x-mappedTo: QUERYPARAMS
+  metadata:
+    type: object
+    description: Metadata Parameters
+    x-mappedTo: METADATAPARAMS
+    properties:
+      frozenColumnsCount:
+        type: number
+      columns:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Column ID
+              x-mappedTo: id
+              readOnly: true
+            format:
+              type: string
+              description: Column Format
+              x-mappedTo: format
+              readOnly: true
+            size:
+              type: number
+              description: Column Size
+              x-mappedTo: size
+              readOnly: true
+  owner:
+    type: object
+    x-object: user
+    x-mappedTo: userinfo
+    title: owner
+    properties:
+      key:
+        type: string
+        x-mappedTo: OWNER
+        readOnly: true
+      id:
+        type: string
+        x-mappedTo: OWNERID
+      href:
+        type: string
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,24 @@
+type: object
+title: accumulation-type
+#x-object: accumulation-type
+properties:
+  key:
+    type: string
+    description: Accumulation type key
+    x-mappedTo: ACCUMULATIONTYPEKEY
+    example: '2'
+  id:
+    type: string
+    description: Accumulation type id
+    x-mappedTo: ACCUMULATIONTYPENAME
+    example: ACCT-2
+  name:
+    type: string
+    description: Accumulation type name
+    x-mappedTo: ACCUMULATIONTYPENAME
+    example: ACCT-2
+  href:
+    type: string
+    readOnly: true
+    example: /objects/accumulation-type/2
+examples: []

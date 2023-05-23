@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: contract.expense
+  description: contract-expense API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: contract-expense
+    description: contract-expense.
+paths:
+  /services/contract/expense/resume:
+    post:
+      summary: contract-expense resume
+      description: contract-expense resume description - explain what it's for and how it's used.
+      tags:
+        - contract-expenses
+      operationId: post-contract-expense-resume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-resume-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-expense-resume-response'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-resume-request:
+      description: resume request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+        - asOfDate
+      properties:
+        key:
+          type: string
+          description: Contract Expense key
+          x-mappedTo: CONTRACTEXPENSEKEY
+          nullable: false
+          example: '1'
+        asOfDate:
+          type: string
+          format: date
+          description: resume date
+          x-mappedTo: ASOFDATE
+          nullable: false
+          example: '2022-06-30'
+        memo:
+          type: string
+          description: resume date
+          x-mappedTo: MEMO
+          example: test
+    contract-expense-resume-response:
+      description: resume response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

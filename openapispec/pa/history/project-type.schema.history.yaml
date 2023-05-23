@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/projecttype/view
+      - pa/lists/projecttype/view
+    POST:
+      - ar/lists/projecttype/create
+      - pa/lists/projecttype/create
+    PATCH:
+      - ar/lists/projecttype/edit
+      - pa/lists/projecttype/edit
+    DELETE:
+      - ar/lists/projecttype/delete
+      - pa/lists/projecttype/delete
+s1:
+  hash: '0'
+  type: rootObject

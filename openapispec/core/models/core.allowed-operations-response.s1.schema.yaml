@@ -1,0 +1,14 @@
+title: allowed-operations-response
+description: allowed-operations-response
+x-mappedTo: __custom__
+type: array
+items:
+  type: object
+  properties:
+    key:
+      type: string
+    operations:
+      type: array
+      description: list of operations that are relevant for the caller
+      items:
+        type: string

@@ -1,0 +1,287 @@
+openapi: 3.0.0
+info:
+  title: vendor-email-template
+  description: vendor-email-template API
+  version: '1.0'
+  contact:
+    email: tmiller@sage.com
+    name: tmiller
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Vendor email templates
+    description: Vendor email templates can be used to automate standard messages sent to multiple vendors.
+paths:
+  /objects/vendor-email-template/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor email template.
+        example: 2
+    get:
+      summary: Get a vendor email template
+      description: Returns detailed information for a specified vendor email template.
+      tags:
+        - Vendor email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the vendor-email-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/vendor-email-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a vendor email template:
+                  value:
+                    ia::result:
+                      key: '2'
+                      id: '2'
+                      vendor:
+                        key: '894'
+                        id: V1234
+                        href: /objects/vendor/894
+                      txnDefinitionName: Vendor Invoice
+                      emailTemplate:
+                        key: '2'
+                        id: '2'
+                        name: emailTemplate002
+                      href: /objects/vendor-email-template/2
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor-email-template-key
+  /objects/vendor-email-template:
+    get:
+      summary: List vendor email templates
+      description: Returns a collection with a key, ID, and link for each vendor email template. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Vendor email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-email-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List vendor email templates:
+                  value:
+                    ia::result:
+                      - key: '2'
+                        id: '2'
+                        href: /objects/vendor-email-template/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/vendor-email-template/3
+                      - key: '4'
+                        id: '4'
+                        href: /objects/vendor-email-template/4
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor-email-template
+components:
+  schemas:
+    vendor-email-template:
+      $ref: '#/components/schemas/vendor-email-template.s1.schema'
+    vendor-email-templateRequiredProperties:
+      type: object
+      properties:
+        vendor:
+          required:
+            - key
+    vendor-email-template.s1.schema:
+      title: vendor-email-template
+      x-mappedTo: vendoremailtemplate
+      type: object
+      x-ownedBy: vendor
+      description: Vendor email templates can be used to automate standard messages sent to multiple vendors.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the vendor email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Name or other unique identifier for the vendor email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        href:
+          type: string
+          description: URL for the vendor email template.
+          readOnly: true
+          example: /objects/vendor-email-template/1
+        vendor:
+          type: object
+          description: Vendor associated with the email template.
+          x-object: vendor
+          x-mappedTo: vendor
+          title: vendor
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the vendor.
+              x-mappedTo: VENDORID
+              example: V-65279
+            href:
+              type: string
+              description: URL for the vendor.
+              readOnly: true
+              example: /objects/vendor/1
+        txnDefinitionName:
+          type: string
+          description: Type of transaction that will use the email template.
+          x-mappedTo: DOCPARID
+          example: Vendor Invoice
+        emailTemplate:
+          type: object
+          description: Associated email template.
+          x-object: email-template
+          x-mappedTo: emailtemplate
+          title: emailTemplate
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+              example: '1'
+            id:
+              type: string
+              description: Unique identifier for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+              example: '1'
+            name:
+              type: string
+              description: Name of the email template.
+              x-mappedTo: EMAILTEMPLATENAME
+              example: Vendor Trial
+            href:
+              type: string
+              description: URL of the email template.
+              readOnly: true
+              example: /objects/email-template/1
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

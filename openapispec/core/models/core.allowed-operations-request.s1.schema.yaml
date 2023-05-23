@@ -1,0 +1,49 @@
+title: allowed-operations
+description: allowed-operations
+type: object
+x-mappedTo: __custom__
+properties:
+  object:
+    type: string
+    example: vendor
+    description: Object name to query
+    x-mappedTo: object
+  keys:
+    type: array
+    description: array of object keys, valide size is [1, 1000]
+    x-mappedTo: keys
+    items:
+      type: string
+  operations:
+    type: array
+    description: |
+      List of operations that are relevant for the component.
+      'canCreate' and 'canList' are object level operations, they are not included in this service.
+      By default, it includes the following operations:
+          'canView', 'canEdit', 'canDelete'.
+      This list can be extended by the compoments if needed.
+    x-mappedTo: operations
+    items:
+      type: string
+  options:
+    type: object
+    description: Options for the API call
+    properties:
+      includePrivate:
+        type: boolean
+        x-mappedTo: options.includePrivate
+      moduleKey:
+        type: string
+        x-mappedTo: options.moduleKey
+examples:
+  - object: vendor
+    keys:
+      - 1
+      - 6
+      - 65
+    operations:
+      - canView
+      - canEdit
+      - canDelete
+    options:
+      includePrivate: true

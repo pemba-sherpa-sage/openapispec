@@ -1,0 +1,183 @@
+title: ap-term
+x-mappedTo: apterm
+type: object
+description: An Accounts Payable (AP) term is a rule that a vendor establishes for extending credit to your company.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP term.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the AP term.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'Net 60'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  description:
+    type: string
+    description: A note about the purpose and use of the AP term.
+    x-mappedTo: DESCRIPTION
+    example: '60 Days term'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  due:
+    type: object
+    description: Define the calculation for the due date by specifying the number of days and either the date or month to reference.
+    title: due
+    properties:
+      days:
+        type: integer
+        description: The number of days used to calculate the due date.
+        x-mappedTo: DUEDATE
+        example: 60
+      from:
+        type: string
+        enum:
+          - 'fromBillDate'
+          - 'ofTheMonthOfBillDate'
+          - 'ofNextMonthFromBillDate'
+          - 'of2ndMonthFromBillDate'
+          - 'of3rdMonthFromBillDate'
+          - 'of4thMonthFromBillDate'
+          - 'of5thMonthFromBillDate'
+          - 'of6thMonthFromBillDate'
+          - 'afterEndOfMonthOfBillDate'
+          - 'fromBillDateExtendingToEOM'
+        x-mappedToValues:
+          - 'from invoice/bill date'
+          - 'of the month of invoice/bill date'
+          - 'of next month from invoice/bill date'
+          - 'of 2nd month from invoice/bill date'
+          - 'of 3rd month from invoice/bill date'
+          - 'of 4th month from invoice/bill date'
+          - 'of 5th month from invoice/bill date'
+          - 'of 6th month from invoice/bill date'
+          - 'after end of month of invoice/bill date'
+          - 'from invoice/bill date extending to eom'
+        description: The date or month to reference to calculate the due date. 
+        x-mappedTo: DUEFROM
+        example: 'fromBillDate'
+  discount:
+    type: object
+    description: Terms of the discount extended by the vendor.
+    title: discount
+    properties:
+      days:
+        type: integer
+        description: Number of days from the specified date that the discount is valid.
+        x-mappedTo: DISCDATE
+        example: 30
+      amount:
+        type: integer
+        description: Amount of the discount.
+        x-mappedTo: DISCAMOUNT
+        example: 4
+      from:
+        type: string
+        enum:
+          - 'fromBillDate'
+          - 'ofTheMonthOfBillDate'
+          - 'ofNextMonthFromBillDate'
+          - 'of2ndMonthFromBillDate'
+          - 'of3rdMonthFromBillDate'
+          - 'of4thMonthFromBillDate'
+          - 'of5thMonthFromBillDate'
+          - 'of6thMonthFromBillDate'
+          - 'afterEndOfMonthOfBillDate'
+          - 'fromBillDateExtendingToEOM'
+        x-mappedToValues:
+          - 'from invoice/bill date'
+          - 'of the month of invoice/bill date'
+          - 'of next month from invoice/bill date'
+          - 'of 2nd month from invoice/bill date'
+          - 'of 3rd month from invoice/bill date'
+          - 'of 4th month from invoice/bill date'
+          - 'of 5th month from invoice/bill date'
+          - 'of 6th month from invoice/bill date'
+          - 'after end of month of invoice/bill date'
+          - 'from invoice/bill date extending to eom'
+        description: Date used to determine if the discount is valid.  
+        x-mappedTo: DISCFROM
+        example: 'fromBillDate'
+      unit:
+        type: string
+        enum:
+          - 'amount'
+          - 'percentage'
+        x-mappedToValues:
+          - '$'
+          - '%'
+        description: Type of discount.
+        x-mappedTo: DISCPERCAMN
+        example: amount
+      graceDays:
+        type: integer
+        description: Number of days before the vendor withdraws the discount.
+        x-mappedTo: DISCFUDGEDAYS
+        example: 6
+      calculateOn:
+        type: string
+        enum:
+          - 'lineItemsTotal'
+          - 'billTotal'
+        x-mappedToValues:
+          - 'Line items total'
+          - 'Bill total'
+        description: The total to use when calculating the discount.
+        x-mappedTo: DISCCALCON 
+        example: 'billTotal'
+  penalty:
+    type: object
+    title: penalty
+    description: Penalty for paying after the due date.
+    properties:
+      cycle:
+        type: string
+        enum:
+          - 'noPenalty'
+          - 'daily'
+          - 'weekly'
+          - 'biweekly'
+          - 'monthly'
+          - 'bimonthly'
+          - 'quarterly'
+          - 'halfYearly'
+          - 'annually'
+        x-mappedToValues:
+          - 'No Penalty'
+          - 'Daily'
+          - 'Weekly'
+          - 'Biweekly'
+          - 'Monthly'
+          - 'Bimonthly'
+          - 'Quarterly'
+          - 'Half yearly'
+          - 'Annually'
+        description: The time span in which the penalty accrues.
+        x-mappedTo: PEN_TYPES
+        example: 'daily'
+      amount:
+        type: integer
+        description: The penalty amount.
+        x-mappedTo: PENAMOUNT
+        example: 10
+      unit:
+        type: string
+        enum:
+          - 'amount'
+          - 'percentage'
+        x-mappedToValues:
+          - '$'
+          - '%'
+        description: Type of penalty.
+        x-mappedTo: PENPERCAMN
+        example: 'amount'
+      graceDays:
+        type: integer
+        description: The number of days after the due date that the vendor applies the penalty.
+        x-mappedTo: PENFUDGEDAYS
+        example: 1

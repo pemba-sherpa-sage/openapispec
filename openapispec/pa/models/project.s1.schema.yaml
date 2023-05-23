@@ -1,0 +1,851 @@
+title: project
+x-mappedTo: project
+type: object
+description: Use projects to manage, track, and report on work performed by or for your company.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the project. Use this key to refer to the project in all operations.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '83'
+  id:
+    type: string
+    description: Unique identifier for the project. 
+    x-mappedTo: PROJECTID
+    example: 'P-0045'
+  name:
+    type: string
+    description: Project name.
+    x-mappedTo: NAME
+    example: 'Implementation Project'
+  description:
+    type: string
+    description: A brief description of the project.
+    x-mappedTo: DESCRIPTION
+    example: 'Software Implementation Project'
+  projectCurrency:
+    type: string
+    description: Currency used for project budget information.
+    x-mappedTo: CURRENCY
+    example: 'USD'
+  category:
+    type: string
+    description: Project category. Used for filtering and reporting.
+    x-mappedTo: PROJECTCATEGORY
+    example: 'contract'
+    enum:
+      - 'contract'
+      - 'capitalized'
+      - 'internalNonBillable'
+      - 'internalBillable'
+    x-mappedToValues:
+      - 'Contract'
+      - 'Capitalized'
+      - 'Internal Non-billable'
+      - 'Internal Billable'
+  projectStatus:
+    type: object
+    x-object: project-status
+    x-mappedTo: project-status
+    description: Project status
+    properties:
+      key:
+        type: string
+        x-mappedTo: PROJECTSTATUSKEY
+        description: Project status key.
+        example: '1'
+      id:
+        type: string
+        x-mappedTo: PROJECTSTATUS
+        description: Project status Id.
+        readOnly: true
+        example: 'In Progress'
+      name:
+        type: string
+        description: User-specified  project status name used to track and report. Optionally, you can use a status to prevent specific transactions from occurring. For example, tracking projects that are In Progress or Stalled, for example.
+        x-mappedTo: PROJECTSTATUS
+        example: 'In Progress'
+      disableGenerateInvoice:
+        type: boolean
+        description: Reflects the value from the project-status object that indicates whether project invoices can be generated.
+        x-mappedTo: PREVENTGENINVOICE
+        readOnly: true
+        example: false
+        default: false
+      disablePurchasingAPEntry:
+        type: boolean
+        description: Reflects the value from the project-status object that indicates whether AP/PO entries are allowed.
+        x-mappedTo: PREVENTAPPO
+        readOnly: true
+        example: false
+        default: false
+      disableExpenseEntry:
+        type: boolean
+        description: Reflects the value from the project-status object that indicates whether expense entries are allowed.
+        x-mappedTo: PREVENTEXPENSE
+        readOnly: true
+        example: false
+        default: false
+      disableTimesheetEntry:
+        type: boolean
+        description: Reflects the value from the project-status object that indicates whether timesheet entries are allowed.
+        x-mappedTo: PREVENTTIMESHEET
+        readOnly: true
+        example: false
+        default: false
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project-status/1
+  startDate:
+    type: string
+    format: date
+    description: Date on which the project is scheduled to begin.
+    x-mappedTo: BEGINDATE
+    example: '2023-01-23'
+  endDate:
+    type: string
+    format: date
+    description: Date on which the project is scheduled to end.
+    x-mappedTo: ENDDATE
+    example: '2023-04-01'
+  budget:
+    type: object
+    x-mappedTo: glbudgetheader
+    x-object: budget
+    properties:
+      id:
+        type: string
+        description: Unique budget identifier used by revenue recognition to calculate the project cost budget amount.In multi-currency companies, each entity uses a unique  budget identifier.
+        x-mappedTo: BUDGETID
+        readOnly: true
+        example: '1'
+      key:
+        type: string
+        description: System-assigned key for the budget.
+        x-mappedTo: BUDGETKEY
+        example: '1'
+      billingAmount:
+        type: string
+        description: User-specified project budgeted billing amount.
+        x-mappedTo: BUDGETAMOUNT
+        format: decimal-precision-2
+        example: '10000.00'
+      budgetedDuration:
+        type: string
+        description: User-specified project budgeted duration (in hours).
+        x-mappedTo: BUDGETQTY
+        format: decimal-precision-2
+        example: '250'
+      budgetedCost:
+        type: string
+        description: User-specified project budgeted cost.
+        x-mappedTo: BUDGETEDCOST
+        format: decimal-precision-2
+        example: '10000'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/budget/1
+  contractAmount:
+    type: string
+    description: The contracted amount for the project for reporting purposes.
+    x-mappedTo: CONTRACTAMOUNT
+    format: decimal-precision-2
+    example: '15000.00'
+  progress:
+    type: object
+    description: Project progress   
+    properties:
+      estimatedDuration:
+        type: string
+        description: Estimated duration (in hours) to complete the project.
+        x-mappedTo: ESTQTY
+        readOnly: true
+        example: '200'
+      actualDuration:
+        type: string
+        description: Actual duration (in hours) currently submitted for the project.
+        x-mappedTo: ACTUALQTY
+        readOnly: true
+        example: '183'
+      approvedDuration:
+        type: string
+        description: Total approved duration (in hours) for the project.
+        x-mappedTo: APPROVEDQTY
+        readOnly: true
+        example: '175'
+      remainingDuration:
+        type: string
+        description: Remaining duration (in hours) allotted for the project (difference between estimated and actual duration).
+        x-mappedTo: REMAININGQTY
+        readOnly: true
+        example: '8'
+      percentageComplete:
+        type: string
+        description: Calculated percentage completed or how complete the project is (actual duration divided by estimated duration for project tasks).
+        x-mappedTo: PERCENTCOMPLETE
+        readOnly: true
+        example: '35'
+      observedPercentageComplete:
+        type: string
+        description: Latest observed percentage completed or how complete the project is as of a specific date.
+        x-mappedTo: OBSPERCENTCOMPLETE
+        readOnly: true
+        example: '50'
+  billingType:
+    type: string
+    description: Billing type specifies how the project will be invoiced.
+    x-mappedTo: BILLINGTYPE
+    example: 'timeAndMaterial'
+    enum:
+      - 'timeAndMaterial'
+      - 'fixedFee'
+      - 'fixedFeeAndExpenses'
+    x-mappedToValues:
+      - 'Time & Material'
+      - 'Fixed Fee'
+      - 'Fixed Fee & Expenses'
+  salesOrderNumber:
+    type: string
+    description: Sales order number for the project, for reference.
+    x-mappedTo: SONUMBER
+    example: 'SO-5478'
+  purchaseOrderNumber:
+    type: string
+    description: Purchase order number for the project, for reference.
+    x-mappedTo: PONUMBER
+    example: 'PO-7829'
+  purchaseOrderAmount:
+    type: string
+    description: Project purchase order amount, for reference.
+    x-mappedTo: POAMOUNT
+    format: decimal-precision-2
+    example: '4500.00'
+  purchaseQuoteNumber:
+    type: string
+    description: Project purchase quote number, for reference.
+    x-mappedTo: PQNUMBER
+    example: '1453'
+  salesforceKey:
+    type: string
+    description: Salesforce key
+    x-mappedTo: SFDCKEY
+    readOnly: true
+    example: '1'
+  documentNumber:
+    type: string
+    description: An external reference number that can be used to report on the project in custom reports.
+    x-mappedTo: DOCNUMBER
+    example: '1453'
+  parent:
+    type: object
+    description: The parent project if this project is the child of another, larger project.
+    x-mappedTo: project
+    x-object: project
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the parent project.
+        x-mappedTo: PARENTKEY
+        example: '10'
+      id:
+        type: string
+        description: Unique identifier of the parent project.
+        x-mappedTo: PARENTID
+        readOnly: true
+        example: 'P-0040'
+      name:
+        type: string
+        description: Parent project name.
+        x-mappedTo: PARENTNAME
+        readOnly: true
+        example: 'NET-XML30-2'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project/1
+  invoiceWithParent:
+    type: boolean
+    description: Set to `true` to include the project's transactions in invoices for the parent project.  
+    x-mappedTo: INVOICEWITHPARENT
+    example: true
+    x-mappedToType: string
+    default: false
+  customer:
+    type: object
+    description: The customer associated with the project.
+    x-mappedTo: customer
+    x-object: customer
+    properties:
+      key:
+        type: string
+        description: System-assigned key for a customer assigned to a project.
+        x-mappedTo: CUSTOMERKEY
+        example: '13'
+      id:
+        type: string
+        description: Unique identifier of a customer assigned to the project.
+        x-mappedTo: CUSTOMERID
+        readOnly: true
+        example: '113'
+      name:
+        type: string
+        description: Name of the customer assigned to a project.
+        x-mappedTo: CUSTOMERNAME
+        readOnly: true
+        example: 'Software company'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/customer/1
+  salesContact:
+    type: object
+    description: The sales contact for the project.
+    x-mappedTo: salescontact
+    x-object: employee
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the sales contact employee.
+        x-mappedTo: SALESCONTACTKEY
+        example: '10'
+      id:
+        type: string
+        description: Unique identifier of a sales contact assigned to the project.
+        x-mappedTo: SALESCONTACTID
+        readOnly: true
+        example: '100'
+      name:
+        type: string
+        description: Sales contact name, if any, for the project.
+        x-mappedTo: SALESCONTACTNAME
+        readOnly: true
+        example: 'John'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/employee/1
+  projectType:
+    type: object
+    description: Project type, used to categorize and report on projects.
+    x-mappedTo: projecttype
+    x-object: project-type
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the project type.
+        x-mappedTo: PROJECTTYPEKEY
+        example: '3'
+      id:
+        type: string
+        description: User-specified name for the project type; used to categorize and report on the projects.
+        x-mappedTo: PROJECTTYPE
+        readOnly: true
+        example: 'Internal'
+      name:
+        type: string
+        description: User-specified name for the project type; used to categorize and report on the projects.
+        x-mappedTo: PROJECTTYPE
+        readOnly: true
+        example: 'Internal'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project-type/1
+  manager:
+    type: object
+    description: Project manager employee for the project. Project managers usually approve timesheets and expense reports. Project managers can also run and view project reports.
+    x-mappedTo: manager
+    x-object: employee
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the project manager employee.
+        x-mappedTo: MANAGERKEY
+        example: '10'
+      id:
+        type: string
+        description: Unique identifier for the project manager employee.
+        x-mappedTo: MANAGERID
+        readOnly: true
+        example: 'E10'
+      name:
+        type: string
+        description: Name of the project manager employee.
+        x-mappedTo: MANAGERCONTACTNAME
+        readOnly: true
+        example: 'Bob'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/employee/1
+  department:
+    type: object
+    description: The department associated with this project. The project department overrides any department associated with an employee on a timesheet. If a project department is not set, the employee department is used.
+    x-mappedTo: projdept
+    x-object: department
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the department.
+        x-mappedTo: PROJECTDEPTKEY
+        example: '10'
+      id:
+        type: string
+        description: Unique identifier for the department.
+        x-mappedTo: DEPARTMENTID
+        readOnly: true
+        example: '20'
+      name:
+        type: string
+        description: Name for the department.
+        x-mappedTo: DEPARTMENTNAME
+        readOnly: true
+        example: 'Sales'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/department/1
+  location:
+    type: object
+    description: The location associated with this project. The project location overrides any location associated with an employee on a timesheet. If a project location is not set, the employee location is used.    
+    x-mappedTo: location
+    x-object: location
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the project location.
+        x-mappedTo: PROJECTLOCATIONKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the project location.
+        x-mappedTo: LOCATIONID
+        readOnly: true
+        example: '1'
+      name:
+        type: string
+        description: Name for the project location.
+        x-mappedTo: LOCATIONNAME
+        readOnly: true
+        example: 'US'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/location/1
+  paymentTerm:
+    type: object
+    description: The Accounts Receivable payment terms for the project. The payment terms are included on the invoice header. If project payment terms are not set, the customer's terms are used.
+    x-mappedTo: arterm
+    x-object: ar-term
+    properties:
+      key:
+        type: string
+        description: System-assigned key for project payment terms.
+        x-mappedTo: TERMSKEY
+        example: '10'
+      id:
+        type: string
+        description: Payment term name or identifier.
+        x-mappedTo: TERMNAME
+        readOnly: true
+        example: '10'
+      name:
+        type: string
+        description: Payment term name or identifier.
+        x-mappedTo: TERMNAME
+        readOnly: true
+        example: 'Net 60'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/ar-term/1
+  customerUser:
+    type: object
+    description: A Sage Intacct user assigned as a customer representative with the ability to approve timesheets for the project.
+    x-mappedTo: userinfomst
+    x-object: user
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the user.
+        x-mappedTo: CUSTUSERKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the user with access to the project.
+        x-mappedTo: CUSTUSERID
+        readOnly: true
+        example: 'Admin'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/user/1
+  class:
+    type: object
+    description: Class dimension used to track the project.
+    x-mappedTo: class
+    x-object: class
+    properties:
+      key:
+        type: string
+        description: System-assigned key for a class dimension associated with the project.
+        x-mappedTo: CLASSKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for a class dimension associated with the project.
+        x-mappedTo: CLASSID
+        readOnly: true
+        example: '10'
+      name:
+        type: string
+        description: Class name associated with the project. 
+        x-mappedTo: CLASSNAME
+        readOnly: true
+        example: 'Construction'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/class/1
+  userRestrictions:
+    type: string
+    description: User restrictions for entering project time and expenses (overrides default user restrictions for the Projects application).
+    x-mappedTo: USERRESTRICTIONS
+    example: 'systemDefault'
+    enum:
+      - 'systemDefault'
+      - 'anyUser'
+      - 'projectUsers'
+      - 'projectTaskUsers'
+    x-mappedToValues:
+      - 'System Default'
+      - 'Any User'
+      - 'Project Users'
+      - 'Project Task Users'
+    default: 'systemDefault'
+  isBillableEmployeeExpense:
+    type: boolean
+    description: Set to `true` to bill employee expenses for the project.
+    x-mappedTo: BILLABLEEXPDEFAULT
+    example: true
+    x-mappedToType: string
+    default: false
+  isBillablePurchasingAPExpense:
+    type: boolean
+    description: Set to `true` to bill project purchases entered through Accounts Payable or Purchasing.
+    x-mappedTo: BILLABLEAPPODEFAULT
+    example: true
+    x-mappedToType: string
+    default: false
+  ratesAndPricing:
+    type: object
+    description: Rates and Pricing     
+    properties:
+      laborPricing:
+        type: string
+        description: Billing pricing option. 
+        x-mappedTo: BILLINGPRICING
+        example: 'billingRate'
+        enum:
+          - 'billingRate'
+          - 'costPlusFee'
+        x-mappedToValues:
+          - 'Billing rate'
+          - 'Cost plus fee'
+        default: 'billingRate'
+      laborMarkup:
+        type: string
+        description: Project-specific default rate to calculate labor pricing when labor pricing option is set to cost plus fee.
+        x-mappedTo: BILLINGRATE
+        example: '10'
+      expensePricing:
+        type: string
+        description: Expense pricing option.
+        x-mappedTo: EXPENSEPRICING
+        example: 'billingRate'
+        enum:
+          - 'billingRate'
+          - 'costPlusFee'
+        x-mappedToValues:
+          - 'Billing rate'
+          - 'Cost plus fee'
+        default: 'costPlusFee'
+      expenseMarkup:
+        type: string
+        description: Project-specific default rate to calculate expense pricing when expense pricing option is set to cost plus fee.
+        x-mappedTo: EXPENSERATE
+        example: '10'
+      defaultRate:
+        type: string
+        description: Project-specific default rate to calculate AP/PO pricing when generating project invoices.
+        x-mappedTo: POAPRATE
+        example: '12'
+  contacts:
+    type: object
+    description: Contacts associated with the project.
+    properties:
+      primary:
+        type: object
+        description: The person others can turn to with questions and information about the project.
+        x-mappedTo: primarycontact
+        x-object: contact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the project primary contact.
+            x-mappedTo: CONTACTKEY
+            example: '1'
+          id:
+            type: string
+            description: Name of the project primary contact.
+            x-mappedTo: CONTACTINFO.CONTACTNAME
+            readOnly: true
+            example: '1'
+          name:
+            type: string
+            description: Name of the project primary contact.
+            x-mappedTo: CONTACTINFO.CONTACTNAME
+            example: 'Dave'
+            readOnly: true
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/1
+      billTo:
+        type: object
+        description: The person or organization responsible for paying project invoices. If not set, the customer contact will be used for billing.
+        x-mappedTo: billtocontact
+        x-object: contact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the bill-to contact.
+            x-mappedTo: BILLTOKEY
+            example: '1'
+          id:
+            type: string
+            description: System-assigned ID for the bill-to contact.
+            x-mappedTo: BILLTO.CONTACTNAME
+            readOnly: true
+            example: '1'
+          name:
+            type: string
+            description: Name of the bill-to contact.
+            x-mappedTo: BILLTO.CONTACTNAME
+            example: 'Larry'
+            readOnly: true
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/1
+      shipTo:
+        type: object
+        x-mappedTo: shiptocontact
+        x-object: contact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the Ship to contact
+            x-mappedTo: SHIPTOKEY
+            example: '1'
+          id:
+            type: string
+            description: Name of the person or organization that is the ship-to contact (blank if shipping to the customer contact).
+            x-mappedTo: SHIPTO.CONTACTNAME
+            readOnly: true
+            example: '1'
+          name:
+            type: string
+            description: Name of the person or organization that is the ship-to contact (blank if shipping to the customer contact).
+            x-mappedTo: SHIPTO.CONTACTNAME
+            example: 'Larry'
+            readOnly: true
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/1
+  invoiceMessage:
+    type: string
+    description: Message to appear on invoices.
+    x-mappedTo: INVOICEMESSAGE
+    example: 'Invoice for project'
+  invoiceCurrency:
+    type: string
+    description: Currency to use when generating invoices for the project.
+    x-mappedTo: INVOICECURRENCY
+    example: 'USD'
+  billingOverMax:
+    type: string
+    description: Billing control to prevent or warn of billings that exceed the project's budgeted billing amount.
+    x-mappedTo: BILLINGOVERMAX
+    example: 'preventBilling'
+    enum:
+      - 'doNothing'
+      - 'issueAWarningMessage'
+      - 'preventBilling'
+    x-mappedToValues:
+      - 'Do nothing'
+      - 'Issue a warning message'
+      - 'Prevent billing'
+    default: 'doNothing'
+  excludeExpenses:
+    type: boolean
+    description: Set to `true` to exclude employee, Accounts Payable (AP), and purchase order expenses from the over-budget calculation
+    x-mappedTo: EXCLUDEEXPENSES
+    example: false
+    x-mappedToType: string
+    default: false
+  contract:
+    type: object
+    description: The contract that this project is associated with.
+    x-mappedTo: contract
+    x-object: contract
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the contract associated with the project.
+        x-mappedTo: CONTRACTKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the contract associated with the project.
+        x-mappedTo: CONTRACTID
+        readOnly: true
+        example: 'CON-002'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/contract/1
+  attachment:
+    type: object
+    description: Documents associated with the project, such as statements of work, specifications, or agreements.
+    x-mappedTo: supdoc
+    x-object: attachment
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPDOCID
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Attachment
+        x-mappedTo: SUPDOCID
+        example: '1'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/attachment/1
+  rootProject:
+    type: object
+    description: The top-level project that this project descends from.
+    x-mappedTo: rootparent
+    x-object: project
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the top parent project.
+        x-mappedTo: ROOTPARENTKEY
+        readOnly: true
+        example: '12'
+      id:
+        type: string
+        description: Unique identifier for the top parent project.
+        x-mappedTo: ROOTPARENTID
+        readOnly: true
+        example: '12'
+      name:
+        type: string
+        description: Name of the top parent project.
+        x-mappedTo: ROOTPARENTNAME
+        readOnly: true
+        example: 'PRJ-RT-0001'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project/1
+  grant:
+    type: object
+    description: Grant-related fields.
+    properties:
+      CFDA:
+        type: string
+        description: Classification in the Catalog of Federal Domestic Assistance.
+        x-mappedTo: CFDA
+        example: 'Academic Exchange Programs'
+      fundedProjectName:
+        type: string
+        description: External name of the project receiving the funding.
+        x-mappedTo: FUNDEDNAME
+        example: 'Undergraduate Programs'
+      agency:
+        type: string
+        description: Funding agency
+        x-mappedTo: AGENCY
+        example: 'US government'
+      payer:
+        type: string
+        description: Funding source 
+        x-mappedTo: PAYER
+        example: 'federal'
+        enum:
+          - 'federal'
+          - 'thirdParty'
+        x-mappedToValues:
+          - 'Federal'
+          - 'Third-party'
+      otherId:
+        type: string
+        description: Another external identifier for the funding.
+        x-mappedTo: FUNDINGOTHERID
+        example: 'Other'
+      assistanceType:
+        type: string
+        description: Assistance provided to identify the type of funding (Cash or Non-Cash)
+        x-mappedTo: ASSISTANCETYPE
+        example: 'cash'
+        enum:
+          - 'cash'
+          - 'nonCash'
+        x-mappedToValues:
+          - 'Cash'
+          - 'Non-Cash'
+      revenueRestriction:
+        type: string
+        description: Field to indicate if there is a restriction on the received grant revenue.
+        x-mappedTo: REVRESTRICTION
+        example: 'time'
+        enum:
+          - 'purpose'
+          - 'time'
+          - 'NA'
+        x-mappedToValues:
+          - 'Purpose'
+          - 'Time'
+          - 'NA'
+      restrictionExpiry:
+        type: string
+        description: Duration of time-based restriction (in years)
+        x-mappedTo: RESTRICTIONEXPIRY
+        example: '1'
+      restrictionExpirationDate:
+        type: string
+        description: Date when first restriction expires on time-based restricted funding.
+        x-mappedTo: RESTRICTIONEXPIRATIONDATE
+        format: date
+        example: '2021-01-23'
+      isTimeSatisfactionScheduled:
+        type: boolean
+        description: Indicates that the release of restriction has been scheduled for time-based restrictions. 
+        x-mappedTo: TIMESATISFACTIONSCHEDULED
+        example: false
+        x-mappedToType: string
+        default: false
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

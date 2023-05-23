@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-schedule post-line
+  description: API to post contract-expense-schedule-lines
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract expense schedules
+    description: contract expense schedules
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/expense-schedule/post-line:
+    post:
+      summary: Post contract expense schedule line
+      description: Posts a single contract revenue schedule line.
+      tags:
+        - Contract expense schedules
+      operationId: contract-expense-schedule-post-line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-schedule-post-line-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-schedule-post-line-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-schedule-post-line-request:
+      $ref: ../references/contract-schedule-post-line-request.typeref.yaml
+    contract-expense-schedule-post-line-response:
+      $ref: ../references/contract-schedule-post-line-response.typeref.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

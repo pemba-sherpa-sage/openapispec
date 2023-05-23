@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: subledger-record-line
+  description: subledger-record-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Subledger record lines
+    description: Subledger record line description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/subledger-record-line:
+    get:
+      summary: List subledger record lines
+      description: Returns a collection with a key, ID, and link for each subledger record line.
+      tags:
+        - Subledger record lines
+      operationId: get-objects-subledger-record-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of subledger-record-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Subledger record lines: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an subledger record line
+      description: Creates a new subledger record line.
+      tags:
+        - Subledger record lines
+      operationId: post-objects-subledger-record-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record-line'
+                - $ref: '#/components/schemas/subledger-record-lineRequiredProperties'
+            examples:
+              Creates a/an subledger record line: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New subledger-record-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/subledger-record-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the subledger record line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an subledger record line
+      description: Returns detailed information for a particular subledger record line.
+      tags:
+        - Subledger record lines
+      operationId: get-objects-subledger-record-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the subledger-record-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/subledger-record-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the subledger record line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an subledger record line
+      description: Updates an existing subledger record line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Subledger record lines
+      operationId: patch-objects-subledger-record-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an subledger record line: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated subledger-record-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated subledger record line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an subledger record line
+      description: Deletes a/an subledger record line.
+      tags:
+        - Subledger record lines
+      operationId: delete-objects-subledger-record-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    subledger-record-line:
+      $ref: ../models/subledger-record-line.s1.schema.yaml
+    subledger-record-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

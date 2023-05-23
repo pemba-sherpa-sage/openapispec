@@ -1,0 +1,23 @@
+title: lot-category
+x-mappedTo: lotcategory
+type: object
+description: Lot categories group a specific set of items that have something in common.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the lot category.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Unique ID for the lot category.
+    x-mappedTo: LOTID
+  name:
+    type: string
+    description: Name of the lot category.
+    x-mappedTo: LOTNAME
+  href:
+    type: string
+    description: URL for the lot category.
+    readOnly: true
+    example: '/objects/lot-cotegory/1'

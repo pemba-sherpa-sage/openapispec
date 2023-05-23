@@ -1,0 +1,328 @@
+openapi: 3.0.0
+info:
+  title: Task
+  description: Task API
+  version: '1.0'
+  contact:
+    name: suresh adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Tasks
+    description: |-
+      A unit of work to be performed for a project. Use tasks to:
+
+      - Track project work by task and assigned resources.
+      - Identify which tasks are billable to the customer.
+      - Enter estimated and planned hours, track percent completed as the task progresses, and create recurring schedules.
+      - Create task dependencies so one task doesn't start until another finishes.
+      - Set other optional information, such as the priority or status of the task.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/task:
+    get:
+      summary: List tasks
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each task. This operation is mostly for use in testing; use query to find tasks that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Tasks
+      tags:
+        - Tasks
+      operationId: get-objects-task
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of task objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of tasks:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/task/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/task/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/task/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a task
+      description: Creates a new project task.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Tasks
+      tags:
+        - Tasks
+      operationId: post-objects-task
+      requestBody:
+        description: New task definition
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/task'
+                - $ref: '#/components/schemas/taskRequiredProperties'
+            examples:
+              Creates a task:
+                value:
+                  id: Task-1
+                  name: General Overhead
+                  project:
+                    id: NET-XML30-1
+                  status: planned
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New task
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New task:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: '6'
+                      href: /objects/task/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/task/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the task.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a task
+      description: Returns detailed information for a specified task.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Tasks
+      tags:
+        - Tasks
+      operationId: get-objects-task-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the task
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/task'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the task:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: '1'
+                      parent:
+                        key: '11'
+                        id: '11'
+                        href: /objects/task/1234
+                      name: Project Task
+                      project:
+                        key: '1'
+                        id: NET-XML30-1
+                        name: Created by XML 3.0
+                        startDate: '2023-02-25'
+                        endDate: '2023-04-25'
+                        href: /objects/project/56
+                      customer:
+                        key: '1'
+                        id: '101'
+                        name: Corley Energy
+                        href: /objects/customer/41
+                      productionUnits:
+                        original: 10
+                        revision: 5
+                        approvedChange: 0
+                        other: 0
+                        forecast: 0
+                        pendingChange: 0
+                        total: 0
+                        description: Production Units
+                      item:
+                        key: '311'
+                        id: Project Item 1
+                        name: Extension pack
+                        href: /objects/item/311
+                      planned:
+                        startDate: '2023-02-25'
+                        endDate: '2023-06-25'
+                      actual:
+                        startDate: '2023-02-25'
+                        endDate: '2023-11-25'
+                      duration:
+                        planned: 100
+                        estimated: 100
+                        actual: 0
+                        remaining: 0
+                        approved: 0
+                        plannedBillable: 0
+                        estimatedBillable: 0
+                        actualBillable: 0
+                        approvedBillable: 0
+                      percentComplete: 25
+                      description: Task Description
+                      isMilestone: false
+                      isUtilized: false
+                      isBillable: false
+                      wbsCode: '1'
+                      priority: 1
+                      status: inProgress
+                      timeType:
+                        key: '2'
+                        name: overtime
+                      class:
+                        id: '1'
+                        name: class
+                        key: '1'
+                      audit:
+                        createdDateTime: '2021-08-12T17:25:29Z'
+                        modifiedDateTime: '2021-08-12T17:25:29Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      dependentOn:
+                        key: '1'
+                        id: '1'
+                        name: '1'
+                      root:
+                        key: '1'
+                        id: ID1
+                        name: Task 1
+                        href: /objects/task/1
+                      standardTask:
+                        key: '1'
+                        id: '1'
+                        name: '1'
+                      attachment:
+                        id: '1'
+                      href: /objects/task/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a task
+      description: Updates an existing task by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Tasks
+      tags:
+        - Tasks
+      operationId: patch-objects-task-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/task'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a task:
+                value:
+                  status: completed
+                  duration: 
+                    actual: 27
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated task
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated task:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: '6'
+                      href: /objects/task/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a task
+      description: Deletes a task.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Tasks
+      tags:
+        - Tasks
+      operationId: delete-objects-task-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    task:
+      $ref: ../models/task.s1.schema.yaml
+    taskRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

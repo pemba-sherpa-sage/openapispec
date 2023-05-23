@@ -1,0 +1,49 @@
+title: vendor-type
+x-mappedTo: vendtype
+type: object
+description: Vendor types organize vendors into categories that are used for reporting.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor type.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '14'
+  id:
+    type: string
+    description: Name or other unique identifier for the vendor type.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'Retail'
+  href:
+    type: string
+    description: URL for the vendor type.
+    readOnly: true
+    example: /objects/vendor-type/14
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  parent:
+    type: object
+    description: Parent of the vendor type.
+    x-object: vendor-type
+    x-mappedTo: PARENT
+    title: parent
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent vendor type.
+        x-mappedTo: PARENT.RECORDNO
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Name or other unique identifier for the parent vendor type. 
+        x-mappedTo: PARENT.NAME
+        example: 'Wholesaler'
+      href:
+        type: string
+        description: URL for the parent vendor type.
+        readOnly: true
+        example: /objects/vendor-type/1
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

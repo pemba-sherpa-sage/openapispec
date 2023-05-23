@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+  title: Vendor payment provider
+  description: vendor payment provider API
+  version: '1.0'
+  contact:
+    email: rakesh.kumar@sage.com
+    name: rakesh.kumar
+tags:
+  - name: Vendor payment providers
+    description: |
+      Models a payment provider associated with a vendor. You can link a vendor with a payment provider using the create and update operations for this object.
+      Payment provider services, like Vendor Payments powered by CSI and Amex Credit Card, are only for US vendors accepting USD. See [Compare payment methods](https://www.intacct.com/ia/docs/en_US/help_action/Cash_Management/Payment_Methods/select-a-payment-method.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/vendor-payment-provider:      
+    get:
+      summary: List vendor payment providers
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each vendor payment provider. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Administration, Accounts Payable, Sage Cloud Services, Outbound Payment Services
+        userPermissions:
+          - userType: Business user with admin permissions
+            permissions: List, View Application Subscriptions and Vendors
+      tags:
+        - Vendor payment providers
+      operationId: get-objects-vendor-payment-provider
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List vendor payment providers
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List vendor payment providers:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/vendor-payment-provider/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/vendor-payment-provider/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/vendor-payment-provider/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a vendor payment provider
+      description: Creates a new vendor payment provider.
+      x-documentationFlags:
+        subscription: Administration, Accounts Payable, Sage Cloud Services, Outbound Payment Services
+        userPermissions:
+          - userType: Business user with admin permissions
+            permissions: List, View, Subscribe, Configure Application Subscriptions<br />    
+             List, View, Edit Vendors
+      tags:
+        - Vendor payment providers
+      operationId: post-objects-vendor-payment-provider
+      requestBody:
+        description: Create a vendor payment provider
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-payment-provider'
+                - $ref: '#/components/schemas/vendor-payment-providerRequiredProperties'
+            examples:
+              Create a vendor payment provider:
+                value:
+                  paymentProvider:
+                    id: CSI
+                  vendor:
+                    id: PV001
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New vendor payment provider
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a vendor payment provider:
+                  value:
+                    'ia::result':
+                      key: '111'
+                      href: /objects/vendor-payment-provider/111
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/vendor-payment-provider/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the vendor payment provider.
+        in: path
+        required: true
+        example: '1'
+        schema:
+          type: string
+
+    get:
+      summary: Get a vendor payment provider
+      description: Returns detailed information for a specified vendor payment provider.
+      x-documentationFlags:
+        subscription: Administration, Accounts Payable, Sage Cloud Services, Outbound Payment Services
+        userPermissions:
+          - userType: Business user with admin permissions
+            permissions: List, View Application Subscriptions and Vendors
+      tags:
+        - Vendor payment providers
+      operationId: get-objects-vendor-payment-provider-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of a vendor payment provider
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor-payment-provider'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a vendor payment provider:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: '1'
+                      paymentProvider:
+                        key: '3'
+                        id: CSI
+                        name: CSI
+                        href: /objects/payment-provider/3
+                      vendor:
+                        key: '111'
+                        id: VEND-00010
+                        name: Design Works
+                        href: /objects/vendor/111
+                      state: subscribed
+                      message: 44299680-351-1628136894
+                      status: active
+                      audit:
+                        createdDateTime: '2021-08-05T04:14:56Z'
+                        modifiedDateTime: '2021-09-29T06:43:06Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      preferredPaymentMethod:
+                        key: '454'
+                        id: '454'
+                        name: Check
+                        href: /objects/provider-payment-method/454
+                      href: /objects/vendor-payment-provider/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a vendor payment provider
+      description: Updates an existing vendor payment provider by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Administration, Accounts Payable, Sage Cloud Services, Outbound Payment Services
+        userPermissions:
+          - userType: Business user with admin permissions
+            permissions: List, View, Subscribe, Configure Application Subscriptions<br />    
+             List, View, Edit Vendors
+      tags:
+        - Vendor payment providers
+      operationId: patch-objects-vendor-payment-provider-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-payment-provider'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Update a vendor payment provider
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: '1'
+                      href: /objects/vendor-payment-provider/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    vendor-payment-provider:
+      $ref: ../models/vendor-payment-provider.s1.schema.yaml
+    vendor-payment-providerRequiredProperties:
+      type: object
+      required:
+        - paymentProvider
+        - vendor
+        - status
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

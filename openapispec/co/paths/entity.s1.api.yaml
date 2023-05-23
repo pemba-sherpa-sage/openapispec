@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: entity
+  description: Entity API
+  version: '1.0'
+  contact:
+    email: dylan.holt@sage.com
+    name: Dylan Holt
+tags:
+  - name: Entities
+    description: In a multi-entity shared company, entities represent a separate tax identification or a separately secured, fully balancing set of books. Entities typically represent divisions, franchises, affiliates, associations, locations, chapters, self-balancing funds or subsidiaries, with a shared chart of accounts.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/entity:
+    get:
+      summary: List entities
+      description: |-
+        Returns up to 100 entities from the collection with a key, ID, and link for each entity. This operation is mostly for use in testing; use the query service to find entities that meet specific criteria and to specify the properties that you want in the response.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of entity objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: 
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/entity/1
+                      - key: '96'
+                        id: id164
+                        href: /objects/entity/96
+                      - key: '21'
+                        id: FR
+                        href: /objects/entity/21
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-entity
+  '/objects/entity/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the entity.
+        in: path
+        schema:
+          type: string
+        required: true
+        example: '291'
+    get:
+      summary: Get an entity
+      description: Returns detailed information for a specified entity.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the entity
+                properties:
+                  'ia::result':
+                    $ref: ../models/entity.s1.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: 
+                Entity details:
+                  value:
+                    'ia::result':
+                      key: '102'
+                      id: id1644570423
+                      name: Paris
+                      status: active
+                      audit: 
+                        createdDateTime: 2022-02-11T09:07:07Z
+                        modifiedDateTime: 2022-02-11T09:07:07Z
+                        createdBy: '110'
+                        modifiedBy: '110'
+                      reportPrintAs: Report Location entity Title
+                      taxId: null
+                      href: /objects/entity/102
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-entity-key
+components:
+  schemas:
+    entity:
+      $ref: ../models/entity.s1.schema.yaml
+    entityRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: core.validation.check
+  description: Expose entity validation functionality through API
+  version: '1.0'
+  contact:
+    name: Cristian Nicolae Nicorici
+    email: cristian.nicorici@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: EntityValidation
+    description: REST API endpoint to perform validations on entities
+paths:
+  /services/core/validation/check:
+    post:
+      summary: Perform validation for create
+      operationId: post-validation-services
+      description: Validation endpoint for create or update
+      tags:
+        - EntityValidation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/core.validation-request.schema.s1'
+            examples:
+              example-request:
+                value:
+                  object: vendor
+                  method: POST
+                  data:
+                    - id: '100'
+                      name: Vendor 100
+                    - id: '101'
+                      name: Vendor 101
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Object validated
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/core.validation-response.schema.s1'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                vendor-example-response:
+                  value:
+                    ia::result:
+                      object: vendor
+                      method: POST
+                      data:
+                        - id: '100'
+                          name: Vendor 100
+                    ia::meta:
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'
+  schemas:
+    core.validation-request.schema.s1:
+      title: validation request
+      description: Validate set of object type, specifying the method of the operation
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        object:
+          type: string
+          x-mappedTo: object
+          nullable: false
+          description: Object name to validate
+          example: vendor
+        method:
+          type: string
+          x-mappedTo: method
+          enum:
+            - POST
+            - PATCH
+          example: PATCH
+          default: POST
+        data:
+          type: array
+          x-mappedTo: data
+          nullable: false
+          description: List of object to validate
+          example:
+            - id: '100'
+              name: Vendor 100
+            - id: '101'
+              name: Vendor 101
+            - id: '102'
+              name: Vendor 102
+          items:
+            type: object
+      required:
+        - object
+        - data
+    core.validation-response.schema.s1:
+      title: validation response
+      description: The object validation result
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+        successes:
+          type: array
+          items:
+            type: object
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO

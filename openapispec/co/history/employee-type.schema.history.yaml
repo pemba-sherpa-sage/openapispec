@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/employeetype/view
+      - ee/lists/employeetype/view
+    POST:
+      - co/lists/employeetype/create
+      - ee/lists/employeetype/create
+    PATCH:
+      - co/lists/employeetype/edit
+      - ee/lists/employeetype/edit
+    DELETE:
+      - co/lists/employeetype/delete
+      - ee/lists/employeetype/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: paas.trigger.update-related
+  description: Trigger Update Related service
+  version: 1.0-internal
+  contact:
+    name: Jean-Francois Ngo
+    email: jean-francois.ngo@sage.com
+tags:
+  - name: paas.trigger.update-related
+    description: Trigger Update Related service
+paths:
+  /services/paas/trigger/update-related:
+    post:
+      summary: Update Related
+      description: Trigger update related
+      tags:
+        - paas.trigger.update-related
+      operationId: post-services-paas-trigger-update-related
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paas.trigger.update-related-req'
+            examples:
+              example-1:
+                value:
+                  objectName: CLASS
+                  objectDefinitionKey: 5020
+                  objectKeys:
+                    - 1
+                  eventDefinitionKeys:
+                    - 1
+                    - 2
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paas.trigger.update-related-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      result: null
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    paas.trigger.update-related-req:
+      description: Read update related request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        objectName:
+          type: string
+          description: Object Name
+          x-mappedTo: objName
+        objectDefinitionKey:
+          type: integer
+          description: Object Definition Key
+          x-mappedTo: objDefKey
+        objectKeys:
+          type: object
+          description: Array of object record
+          x-mappedTo: objKeys
+        eventDefinitionKeys:
+          type: object
+          description: Array of event record
+          x-mappedTo: eventDefKeys
+    paas.trigger.update-related-resp:
+      description: Read update related response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        result:
+          type: string
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

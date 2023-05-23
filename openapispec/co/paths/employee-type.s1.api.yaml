@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: employee-type
+  description: employee-type API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Employee types
+    description: Employee type description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/employee-type/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the employee type.
+    get:
+      summary: Get an employee type
+      description: Returns detailed information for a particular employee type.
+      tags:
+        - Employee types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee-type'
+        '400':
+          description: Bad Request
+      operationId: get-objects-employee-type-key
+components:
+  schemas:
+    employee-type:
+      $ref: ../models/employee-type.s1.schema.yaml

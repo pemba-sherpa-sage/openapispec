@@ -1,0 +1,296 @@
+openapi: 3.0.0
+info:
+  title: role-assignment
+  description: role-assignment API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Role assignments
+    description: Role assignment description -- explain what it's for and how it's used.
+paths:
+  /objects/role-assignment:
+    get:
+      summary: List role assignments
+      description: Returns a collection with a key, ID, and link for each role assignment.
+      tags:
+        - Role assignments
+      operationId: get-objects-role-assignment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of role-assignment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of role assignments: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/role-assignment/{key}:
+    parameters:
+      - name: key
+        description: system-assigned unique key for the role assignment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an role assignment
+      description: Returns detailed information for a particular role assignment.
+      tags:
+        - Role assignments
+      operationId: get-objects-role-assignment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the role-assignment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/role-assignment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the role assignment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    role-assignment:
+      $ref: '#/components/schemas/role-assignment.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    role-assignment.s1.schema:
+      title: role-assignment
+      x-mappedTo: roleassignment
+      type: object
+      description: List of users and groups assigned to roles.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the role-assignment.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Role assignments ID.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the role-assignment.
+          readOnly: true
+          example: /objects/role-assignment/23
+        user:
+          type: object
+          x-mappedTo: userinfo
+          x-object: user
+          properties:
+            key:
+              type: string
+              description: User key.
+              x-mappedTo: USER_GROUP_KEY
+              example: '10'
+            id:
+              type: string
+              description: User id. Same as key.
+              x-mappedTo: USER_GROUP_KEY
+              example: '10'
+            href:
+              type: string
+              description: URL for the user.
+              readOnly: true
+              example: /objects/user/10
+        userGroup:
+          type: object
+          x-mappedTo: usergroup
+          x-object: user-group
+          properties:
+            key:
+              type: string
+              description: User group key.
+              x-mappedTo: USER_GROUP_KEY
+              example: '21'
+            id:
+              type: string
+              description: User group id. Same as key.
+              x-mappedTo: USER_GROUP_KEY
+              example: '21'
+            href:
+              type: string
+              description: URL for the user group.
+              readOnly: true
+              example: /objects/user-group/21
+        relationshipType:
+          type: string
+          description: Relationship type for the assigned role.
+          x-mappedTo: TYPE
+          example: user
+          enum:
+            - user
+            - group
+          x-mappedToValues:
+            - U
+            - G
+        role:
+          type: object
+          x-mappedTo: roles
+          x-object: role
+          properties:
+            key:
+              type: string
+              description: Role key.
+              x-mappedTo: ROLEKEY
+              example: '23'
+            roleName:
+              type: string
+              description: Role name.
+              x-mappedTo: ROLENAME
+              example: Employee - Partial Access
+            href:
+              type: string
+              description: Endpoint for the roles.
+              readOnly: true
+              example: /objects/roles/23
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

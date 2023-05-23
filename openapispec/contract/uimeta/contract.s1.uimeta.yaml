@@ -1,0 +1,328 @@
+contract :
+fields:
+    key:
+        uiType: integer
+        uiLabel: Key
+    id:
+        uiType: text
+        uiLabel: 'Contract ID'
+    name:
+        uiType: text
+        uiLabel: 'Contract name'
+    description:
+        uiType: multitext
+        uiLabel: Description
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+    state:
+        uiType: enum
+        uiLabel: State
+        enumsLabels:
+            -
+                label: Draft
+                value: draft
+            -
+                label: 'In progress'
+                value: inProgress
+            -
+                label: Renewed
+                value: renewed
+            -
+                label: Cancelled
+                value: canceled
+            -
+                label: 'Not renewed'
+                value: notRenewed
+    startDate:
+        uiType: date
+        uiLabel: 'Start date'
+    endDate:
+        uiType: date
+        uiLabel: 'End date'
+    cancelDate:
+        uiType: date
+        uiLabel: 'Cancel date'
+    billingFrequency:
+        uiType: webcombo
+        uiLabel: 'Billing frequency'
+        enumsLabels:
+            -
+                label: Monthly
+                value: monthly
+            -
+                label: Quarterly
+                value: quarterly
+            -
+                label: Annually
+                value: annually
+    termType:
+        uiType: radio
+        uiLabel: 'Term type'
+        enumsLabels:
+            -
+                label: Termed
+                value: termed
+            -
+                label: Evergreen
+                value: evergreen
+    renewTermLength:
+        uiType: integer
+        uiLabel: 'Renewal term length'
+    renewTermPeriod:
+        uiType: enum
+        uiLabel: 'Renewal term period'
+        enumsLabels:
+            -
+                label: Years
+                value: years
+            -
+                label: Months
+                value: months
+            -
+                label: Days
+                value: days
+    billingHold:
+        uiType: enum
+        uiLabel: 'Billing hold'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    revenueHold:
+        uiType: enum
+        uiLabel: 'Revenue hold'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+#    cashReceiptHold:
+#        uiType: enum
+#        uiLabel: 'Hold for cash receipt'
+#        enumsLabels:
+#            -
+#                label: 'true'
+#                value: true
+#            -
+#                label: 'false'
+#                value: false
+    expenseHold:
+        uiType: enum
+        uiLabel: 'Expense hold'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    renewalTemplate:
+        uiType: ptr
+        uiLabel: 'Renewal template'
+    renewal:
+        uiType: checkbox
+        uiLabel: Renew
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    billInAdvanceLength:
+        uiType: integer
+        uiLabel: 'Bill in advance'
+    billInAdvancePeriod:
+        uiType: enum
+        uiLabel: 'Bill in advance term'
+        enumsLabels:
+            -
+                label: ''
+                value: none
+            -
+                label: Days
+                value: days
+            -
+                label: Months
+                value: months
+    renewalBillInAdvanceLength:
+        uiType: integer
+        uiLabel: 'Bill in advance for Renewal'
+    renewalBillInAdvancePeriod:
+        uiType: enum
+        uiLabel: 'Bill in advance term for Renewal'
+        enumsLabels:
+            -
+                label: ''
+                value: none
+            -
+                label: Days
+                value: days
+            -
+                label: Months
+                value: months
+    deferEstimatedTimeBasedRevenueBy:
+        uiType: enum
+        uiLabel: 'Defer estimated time-based revenue by'
+        enumsLabels:
+            -
+                label: ''
+                value: none
+            -
+                label: 'Project and Item'
+                value: 'Project and Item'
+            -
+                label: 'Project and Task'
+                value: 'Project and Task'
+    total:
+        uiType: currency
+        uiLabel: Total
+    billed:
+        uiType: currency
+        uiLabel: Billed
+groups:
+    contacts:
+        fields: {  }
+        refs:
+            shipTo:
+                fields:
+                    key:
+                        uiType: integer
+                        uiLabel: 'Ship-to contact key'
+                    id:
+                        uiType: ptr
+                        uiLabel: 'Ship to'
+            billTo:
+                fields:
+                    key:
+                        uiType: integer
+                        uiLabel: 'Bill-to contact key'
+                    id:
+                        uiType: ptr
+                        uiLabel: 'Bill to'
+    currency:
+        fields:
+            exchangeRateDate:
+                uiType: ''
+                uiLabel: ''
+            exchangeRateType:
+                uiType: ptr
+                uiLabel: 'Exchange rate type'
+            exchangeRate:
+                uiType: ''
+                uiLabel: ''
+            baseCurrency:
+                uiType: ptr
+                uiLabel: 'Base currency'
+            txnCurrency:
+                uiType: ptr
+                uiLabel: 'Currency'
+    audit:
+        fields:
+            createdDateTime:
+                uiType: timestamp
+                uiLabel: 'When created'
+            modifiedDateTime:
+                uiType: timestamp
+                uiLabel: 'When modified'
+            createdBy:
+                uiType: ptr
+                uiLabel: 'Created by'
+            modifiedBy:
+                uiType: ptr
+                uiLabel: 'Modified by'
+refs:
+    parent:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Parent key'
+            id:
+                uiType: ptr
+                uiLabel: 'Original contract'
+    customer:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Customer key'
+            id:
+                uiType: ptr
+                uiLabel: Customer
+            name:
+                uiType: text
+                uiLabel: 'Customer'
+    paymentTerm:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Term key'
+            name:
+                uiType: ptr
+                uiLabel: 'Payment term'
+    billingPriceList:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Price list key'
+            name:
+                uiType: ptr
+                uiLabel: 'Billing price list'
+    meaPriceList:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Fair value price list key'
+            name:
+                uiType: ptr
+                uiLabel: 'Fair value price list'
+    location:
+        fields:
+            key:
+                uiType: null
+                uiLabel: 'Location key'
+            id:
+                uiType: ptr
+                uiLabel: 'Location/Entity'
+            name:
+                uiType: text
+                uiLabel: 'Location name'
+    department:
+        fields:
+            key:
+                uiType: null
+                uiLabel: 'Department key'
+            id:
+                uiType: ptr
+                uiLabel: Department
+            name:
+                uiType: text
+                uiLabel: 'Department name'
+    renewed:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Renewed contract key'
+            id:
+                uiType: ptr
+                uiLabel: 'Renewal source'
+    contractType:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Contract type key'
+            name:
+                uiType: ptr
+                uiLabel: 'Contract type'

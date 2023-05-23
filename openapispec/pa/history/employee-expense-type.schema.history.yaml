@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ee/lists/eeaccountlabel/view
+    POST:
+      - ee/lists/eeaccountlabel/create
+    PATCH:
+      - ee/lists/eeaccountlabel/edit
+    DELETE:
+      - ee/lists/eeaccountlabel/delete
+s1:
+  hash: '0'
+  type: rootObject

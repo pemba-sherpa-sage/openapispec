@@ -1,0 +1,50 @@
+title: accumulation-type
+x-mappedTo: accumulationtype
+type: object
+description: Accumulation Type
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the accumulation type. Used to identify the accumulation type in URLs or JSON bodies for all operations on the accumulation type.
+    readOnly: true
+    example: '1'
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Accumulation type ID.
+    readOnly: true
+    example: '1'
+    x-mappedTo: RECORDNO
+  href:
+    type: string
+    description: URL of the standard cost type.
+    example: /objects/accumulation-type/1
+    readOnly: true    
+  name:
+    type: string
+    description: Accumulation type name
+    example: 'Labor'
+    x-mappedTo: NAME
+  costCategory:
+    type: string
+    description: Standard construction project cost category to be used for this accumulation type.
+    example: 'labor'
+    x-mappedTo: COSTCATEGORY
+    enum:
+      - 'material'
+      - 'labor'
+      - 'equipment'
+      - 'subcontract'
+      - 'overhead'
+      - 'other'
+    x-mappedToValues:
+      - 'Material'
+      - 'Labor'
+      - 'Equipment'
+      - 'Subcontract'
+      - 'Overhead'
+      - 'Other'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

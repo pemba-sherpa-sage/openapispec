@@ -1,0 +1,13 @@
+type: object
+title: contract-schedule-reallocate-response
+description: reallocate response
+x-mappedTo: __custom__
+properties:
+  status:
+    type: string
+    description: status
+    x-mappedTo: STATUS
+    example: completed
+    enum:
+      - completed
+examples: []

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/location/view
+    POST:
+      - co/lists/location/create
+    PATCH:
+      - co/lists/location/edit
+    DELETE:
+      - co/lists/location/delete
+s1:
+  hash: '0'
+  type: rootObject

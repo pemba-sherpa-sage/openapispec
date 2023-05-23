@@ -1,0 +1,1068 @@
+openapi: 3.0.0
+info:
+  title: vendor
+  description: vendor API
+  version: '1.0'
+  contact:
+    email: ravi.shankarchaudhary@sage.com
+    name: Ravi Shankar Choudhary
+tags:
+  - name: Vendors
+    description: |
+      Vendors are individuals or companies that you pay for goods and services. When you create a vendor, you provide a name and a unique identifier (unless the company is configured to auto-generate identifiers). 
+      You can also designate a credit limit, set a payment priority, establish the payment method for this vendor, and so forth.
+servers:
+  - url: 'https://dev01.intacct.com/users/anjali.israni/projects.nextgenapi/api/v0'
+    description: Development server.
+paths:
+  '/objects/vendor/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '111'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor.
+        example: '111'
+    get:
+      summary: Get a vendor
+      description: Returns detailed information for a specified vendor.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business, Employee, Project Manager, and Warehouse users
+            permissions: List, View Vendors
+      tags:
+        - Vendors
+      operationId: get-objects-vendor-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the vendor
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a vendor:
+                  value:
+                    'ia::result':
+                      key: '111'
+                      id: VEND-00010
+                      name: Design Works
+                      status: active
+                      taxId: 12-3456789
+                      nameOn1099: Design Works Inc
+                      creditLimit: 0
+                      isOnHold: true
+                      doNotPay: true
+                      contacts:
+                        primary:
+                          id: 'Doe, John'
+                          name: 'Doe, John'
+                          key: '271'
+                          href: /objects/contact/271
+                        payTo:
+                          id: 'Ho, Amy'
+                          name: 'Ho, Amy'
+                          key: '298'
+                          href: /objects/contact/298
+                        returnTo:
+                          id: 'Doe, John'
+                          name: 'Doe, John'
+                          key: '271'
+                          href: /objects/contact/271
+                        form1099:
+                          id: 'Ho, Amy'
+                          name: 'Ho, Amy'
+                          key: '298'
+                          href: /objects/contact/298
+                      mergePaymentRequests: true
+                      sendPaymentNotification: true
+                      billingType: openItem
+                      paymentPriority: normal
+                      displayTermDiscountOnCheckStub: true
+                      defaultBillPaymentDate: none
+                      displayVendorAccountOnCheckStub: true
+                      enableACHPayments: true
+                      audit:
+                        modifiedDateTime: '2021-03-24T21:16:54Z'
+                        createdDateTime: '2021-03-24T21:16:54Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/vendor/111
+                    'ia::meta':
+                      totalCount: 1
+                Get an unrestricted vendor:
+                  value:
+                    'ia::result':
+                      key: '69'
+                      id: Vendor_A0000001
+                      name: Vendor_A0000001
+                      form1099:
+                        nameOn1099: ISC 1099
+                        type: MISC
+                        box: '3'
+                      parent:
+                        key: '47'
+                        id: 201--PG & E
+                        name: PG & E
+                        href: /objects/vendor/47
+                      contacts:
+                        default:
+                          mailingAddress:
+                            addressLine1: 300 Park Avenue
+                            addressLine2: Suite 1400
+                            city: San Jose
+                            country: United States
+                            postCode: '95110'
+                            state: California
+                          tax:
+                            isTaxable: true
+                          URL1: 'https://alice.example.com'
+                          URL2: null
+                          companyName: Ecology Corp
+                          email1: alice@example.com
+                          email2: cooper@example.com
+                          fax: '14085555309'
+                          firstName: Alice
+                          id: Vendor_A0000001
+                          lastName: Cooper
+                          middleName: Mary
+                          mobile: '14085554420'
+                          pager: '14085559987'
+                          phone1: '14085551212'
+                          phone2: null
+                          prefix: 'Ms.'
+                          printAs: Alice.Cooper
+                          key: '237'
+                          hideContactList: false
+                          href: /objects/contact/237
+                        primary:
+                          id: 1099 IntCA
+                          key: '206'
+                          href: /objects/contact/206
+                        payTo:
+                          id: 1099 Int
+                          key: '211'
+                          href: /objects/contact/211
+                        returnTo:
+                          id: 111(V111)
+                          key: '748'
+                          href: /objects/contact/748
+                        recipient1099:
+                          id: 123515(V123515)
+                          key: '341'
+                          href: /objects/contact/341
+                      term:
+                        id: Net 60
+                        key: '11'
+                        href: /objects/ap-term/11
+                      vendorAccountNumber: '123456789'
+                      taxId: 111-22-1111
+                      creditLimit: 1000
+                      totalDue: '0'
+                      billingType: openItem
+                      vendorType:
+                        id: Retailer
+                        key: '14'
+                        href: /objects/vendor-type/14
+                      accountGroup:
+                        id: Stationary VGL Group
+                        key: '14'
+                        href: /objects/vendor-account-group/14
+                      priceSchedule:
+                        id: PO Price S
+                      discountPercent: 20
+                      priceList:
+                        id: PO Price List
+                        key: '2'
+                        href: /objects/purchasing-price-list/2
+                      notes: Comments of IN202
+                      accountlabel:
+                        id: Equipment
+                        key: '10'
+                      defaultExpenseGLAccount:
+                        id: 6700.04--CC Other Charges & Fees
+                        name: CC Other Charges & Fees
+                        key: '326'
+                        href: /objects/gl-account/326
+                      paymentPriority: normal
+                      status: active
+                      isOneTimeUse: true
+                      isOnHold: true
+                      audit:
+                        modifiedDateTime: '2022-05-26T04:49:44Z'
+                        createdDateTime: '2018-07-28T19:35:16Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      doNotPay: true
+                      ACH:
+                        enablePayments: true
+                        routingNumber: '123456789'
+                        accountNumber: '987654321'
+                        accountType: checkingAccount
+                        remittanceType: businessCTX
+                      displayTermDiscountOnCheckStub: false
+                      displayVendorAccountOnCheckStub: false
+                      sendPaymentNotification: true
+                      preferredPaymentMethod: printedCheck
+                      restrictions:
+                        restrictionType: ''
+                      mergePaymentRequests: true
+                      overrideOffsetGLAccount:
+                        id: 1000.00--10000
+                        key: 1000.00--10000
+                        name: '10000'
+                        href: /objects/gl-account/1000.00--10000
+                      attachment:
+                        id: Attach-12574
+                        key: Attach-12574
+                        href: /objects/attachment/Attach-12574
+                      defaultLeadTime: 5
+                      retainagePercentage: 10
+                      lastBillCreatedDate: null
+                      lastPaymentMadeDate: null
+                      contactList:
+                        - id: '215'
+                          key: '215'
+                          name: primary
+                          contact:
+                            id: 1099 IntCA
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '216'
+                          key: '216'
+                          name: pay to
+                          contact:
+                            id: 1099 Int
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '217'
+                          key: '217'
+                          name: return to
+                          contact:
+                            id: 111(V111)
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                        - id: '218'
+                          key: '218'
+                          name: '1099'
+                          contact:
+                            id: 123515(V123515)
+                          audit:
+                            modifiedDateTime: '2022-05-26T04:49:44Z'
+                            createdDateTime: '2022-05-26T04:49:44Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                      vendorAccountNumberList:
+                        - locationId: 1--United States of America
+                          accountNo: '111111111'
+                      vendorEmailTemplates:
+                        - id: '11'
+                          key: '11'
+                          vendor:
+                            key: '69'
+                            id: Vendor_A0000001
+                            href: /objects/vendor/69
+                          txnDefinitionName: Purchase Order
+                          emailTemplate:
+                            id: '5'
+                            key: '5'
+                            name: AP
+                            href: /objects/email-template/5
+                          href: /objects/vendor-email-template/11
+                      vendorPaymentProviders: []
+                      defaultBillPaymentDate: none
+                      href: /objects/vendor/69
+                    'ia::meta':
+                      totalCount: 1
+                Get a restricted vendor:
+                  value:
+                    'ia::result':
+                      key: '49'
+                      id: '203'
+                      name: 'NCS, Inc.'
+                      form1099:
+                        nameOn1099: null
+                        type: null
+                        box: null
+                      parent:
+                        key: '48'
+                        id: 202--Pac Bell
+                        name: Pac Bell
+                        href: /objects/vendor/48
+                      contacts:
+                        default:
+                          mailingAddress:
+                            addressLine1: '9500'
+                            addressLine2: 'Arboretum Blvd, Suite 310'
+                            city: Austin
+                            country: United States
+                            postCode: '78759'
+                            state: TX
+                          tax:
+                            isTaxable: true
+                          URL1: 'https://jack.exammple.com'
+                          URL2: null
+                          companyName: 'NCS, Inc.'
+                          email1: Henry@example.com
+                          email2: Jack@example.com
+                          fax: '14085555522'
+                          firstName: Jack1
+                          id: 'NCS, Inc.'
+                          lastName: Henry1
+                          middleName: Inc1
+                          mobile: '14085554420'
+                          pager: '14085554400'
+                          phone1: '14085551212'
+                          phone2: null
+                          prefix: null
+                          printAs: Jack Henry & Associates1
+                          key: '217'
+                          hideContactList: true
+                          href: /objects/contact/217
+                        primary:
+                          id: null
+                          key: null
+                        payTo:
+                          id: null
+                          key: null
+                        returnTo:
+                          id: null
+                          key: null
+                        recipient1099:
+                          id: null
+                          key: null
+                      term:
+                        id: Net 60
+                        key: '11'
+                        href: /objects/ap-term/11
+                      vendorAccountNumber: '203'
+                      taxId: 192-35-4308
+                      creditLimit: 350000
+                      totalDue: '0'
+                      billingType: balanceForward
+                      vendorType:
+                        id: Wholesaler
+                        key: '12'
+                      accountGroup:
+                        id: Midwest
+                        key: '5'
+                      priceSchedule:
+                        id: null
+                      discountPercent: null
+                      priceList:
+                        id: null
+                        key: null
+                      notes: None
+                      accountlabel:
+                        id: null
+                        key: null
+                      defaultExpenseGLAccount:
+                        id: 1500--Equipment
+                        name: Equipment
+                        key: '93'
+                        href: /objects/gl-account/93
+                      paymentPriority: normal
+                      status: active
+                      isOneTimeUse: false
+                      isOnHold: false
+                      audit:
+                        modifiedDateTime: '2022-05-26T05:28:54Z'
+                        createdDateTime: '2018-07-28T19:35:15Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      doNotPay: false
+                      ACH:
+                        enablePayments: false
+                        routingNumber: null
+                        accountNumber: null
+                        accountType: ''
+                        remittanceType: ''
+                      displayTermDiscountOnCheckStub: false
+                      displayVendorAccountOnCheckStub: false
+                      sendPaymentNotification: false
+                      preferredPaymentMethod: ''
+                      restrictions:
+                        restrictionType: restricted
+                        locations:
+                          - 1--United States of America1
+                          - 2--India
+                          - 3--United Kingdom
+                          - 1st Level Locations--Level 1 Locations
+                          - 2nd Level Locations--Level 2 Locations
+                        departments:
+                          - 11--Accounting
+                          - 1st Level Depts--Level 1 Departments
+                      mergePaymentRequests: true
+                      overrideOffsetGLAccount:
+                        id: null
+                        key: null
+                        name: null
+                      attachment:
+                        id: null
+                        key: null
+                      defaultLeadTime: null
+                      retainagePercentage: null
+                      lastBillCreatedDate: null
+                      lastPaymentMadeDate: null
+                      contactList: []
+                      vendorAccountNumberList: []
+                      vendorEmailTemplates: []
+                      vendorPaymentProviders: []
+                      defaultBillPaymentDate: none
+                      href: /objects/vendor/49
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a vendor
+      description: Deletes a vendor. You can only delete vendors that aren't tied to any transactions or payments.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Delete Vendors
+      tags:
+        - Vendors
+      operationId: delete-objects-vendor-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+    patch:
+      summary: Update a vendor
+      description: Updates an existing vendor by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Vendors
+      tags:
+        - Vendors
+      operationId: patch-objects-vendor-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  billingType: balanceForward
+              Update multiple values:
+                value:
+                  key: '2'
+                  id: 300--Pac Bell
+                  name: 'NCS, Inc.'
+                  isOneTimeUse: true
+                  href: /objects/vendor/2
+                  status: active
+                  vendorType:
+                    key: '1'
+                    id: Wholesaler
+                    href: /objects/vendor-type/1
+                  parent:
+                    key: '1'
+                    id: 202--Pac Bell
+                    name: Pac Bell
+                    href: /objects/vendor/1
+                  accountGroup:
+                    key: '1'
+                    id: '1'
+                    href: /objects/vendor-account-group/1
+                  accountlabel:
+                    key: '1'
+                    id: Equipment
+                    href: /objects/ap-account-label/1
+                  defaultLeadTime: 5
+                  taxId: '192354308'
+                  form1099:
+                    is1099Eligible: true
+                    nameOn1099: NCS
+                    type: MISC
+                    box: '3'
+                  attachment:
+                    key: '1'
+                    id: '1'
+                    href: /objects/attachment/1
+                  isOnHold: true
+                  doNotPay: true
+                  creditLimit: 10000
+                  retainagePercentage: 20
+                  notes: Make sure to include on 1099
+                  priceList:
+                    key: '1'
+                    id: '1'
+                    href: /objects/purchasing-price-list/1
+                  priceSchedule:
+                    key: '1'
+                    id: '1'
+                    href: /objects/purchasing-price-schedule/1
+                  overrideOffsetGLAccount:
+                    key: '1'
+                    id: '1'
+                    name: 1225--Rent
+                    href: /objects/vendor/1
+                  defaultExpenseGLAccount:
+                    key: '1'
+                    id: 1210--Equipment
+                    name: Equipment
+                    href: /objects/gl-account/1
+                  discountPercent: 20
+                  contacts:
+                    default:
+                      key: '21'
+                      id: 3-Alice
+                      href: /objects/contact/21
+                      lastName: Cooper
+                      firstName: Alice
+                      middleName: Mary
+                      prefix: Miss
+                      printAs: Alice.Cooper
+                      email1: alice@example.com
+                      email2: cooper@example.com
+                      phone1: '14085551212'
+                      phone2: '14085559876'
+                      mobile: '14085554420'
+                      pager: '14085559987'
+                      fax: '14085555309'
+                      URL1: 'https://alice.example.com'
+                      URL2: 'https://cooper.example.com'
+                      companyName: AlcoSoft Inc
+                      mailingAddress:
+                        addressLine1: 300 Park Avenue
+                        addressLine2: Suite 1400
+                        city: San Jose
+                        state: California
+                        postCode: '95110'
+                        country: United States of America
+                      hideContactList: false
+                      tax:
+                        isTaxable: false
+                        group:
+                          key: '1'
+                          id: '1'
+                          href: /objects/contact-tax-group/1
+                    primary:
+                      key: '1'
+                      id: Jeff Pinkerton
+                      href: /objects/contact/1
+                    payTo:
+                      key: '2'
+                      id: Klay Vanderbilt
+                      href: /objects/contact/2
+                    returnTo:
+                      key: '3'
+                      id: Yusuf Pringle
+                      href: /objects/contact/3
+                    recipient1099:
+                      key: '4'
+                      id: Herb Culver
+                      href: /objects/contact/4
+                  contactList:
+                    - key: '1'
+                      id: '1'
+                      name: Main Office
+                      contact:
+                        id: Jeffrey Palms
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      vendor: {}
+                  vendorEmailTemplates:
+                    - key: '1'
+                      id: '1'
+                      href: /objects/vendor-email-template/1
+                      vendor:
+                        key: '1'
+                        id: V-65279
+                        href: /objects/vendor/1
+                      txnDefinitionName: Vendor Invoice
+                      emailTemplate:
+                        key: '1'
+                        id: '1'
+                        name: Vendor Trial
+                        href: /objects/email-template/1
+                  vendorPaymentProviders:
+                    - key: '1'
+                      id: '1'
+                      href: /objects/vendor-payment-provider/1
+                      paymentProvider:
+                        key: '3'
+                        id: CSI
+                        name: CSI
+                        href: /objects/payment-provider/3
+                      vendor:
+                        key: '351'
+                        id: VEN016
+                        name: AAA Consulting
+                        href: /objects/vendor/351
+                      state: requestInitiated
+                      preferredPaymentMethod:
+                        key: '454'
+                        id: '454'
+                        name: Check
+                        href: /objects/provider-payment-method/454
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                  vendorAccountNumberList:
+                    - key: '1'
+                      id: '1'
+                      locationId: Los Gatos Office
+                      accountNo: VAN-5134986722
+                      href: /objects/vendor-account-number/1
+                      vendor:
+                        key: '1'
+                        href: /objects/vendor/1
+                  preferredPaymentMethod: EFT
+                  mergePaymentRequests: true
+                  sendPaymentNotification: true
+                  billingType: openItem
+                  paymentPriority: low
+                  displayTermDiscountOnCheckStub: true
+                  term:
+                    key: '1'
+                    id: Net 60
+                    href: /objects/ap-term/1
+                  defaultBillPaymentDate: none
+                  paymentDateOffset: '4'
+                  impliedDueDate: '2002-08-31'
+                  impliedInvoiceDate: '2002-08-31'
+                  vendorAccountNumber: '203'
+                  displayVendorAccountOnCheckStub: false
+                  totalDue: '100.00'
+                  lastBillCreatedDate: '2002-08-31'
+                  lastPaymentMadeDate: '2002-08-31'
+                  ACH:
+                    enablePayments: false
+                    routingNumber: '061080227'
+                    accountNumber: '7624832485'
+                    accountType: checkingAccount
+                    remittanceType: businessCTX
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - string
+                    departments:
+                      - string
+                  audit:
+                    createdDateTime: '2022-04-20T16:20:00Z'
+                    modifiedDateTime: '2022-04-20T16:20:00Z'
+                    createdBy: '1'
+                    modifiedBy: '95'
+              Update values for a restricted vendor:
+                value:
+                  name: Regulatory Filing Group
+                  parent:
+                    id: 203--Pac Bell
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: '9500'
+                        addressLine2: 'Arboretum Blvd, Suite 310'
+                        city: Austin
+                        country: United States
+                        postCode: '78759'
+                        state: TX
+                      tax:
+                        isTaxable: true
+                      URL1: 'https://jack.exammple.com'
+                      companyName: Jack Henry
+                      email1: Henry@example.com
+                      email2: Jack@example.com
+                      fax: '14085555522'
+                      firstName: Jack
+                      lastName: Henry
+                      middleName: Inc
+                      mobile: '14085554420'
+                      pager: '14085554400'
+                      phone1: '14085551212'
+                      printAs: Jack Henry & Associates
+                      hideContactList: true
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '203'
+                  taxId: 192-35-4308
+                  creditLimit: 350000
+                  billingType: balanceForward
+                  notes: None
+                  defaultExpenseGLAccount:
+                    id: 1500--Equipment
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: false
+                  isOnHold: false
+                  doNotPay: false
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: false
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - 1--United States of America
+                      - 2--India
+                      - 3--United Kingdom
+                      - 1st Level Locations--Level 1 Locations
+                      - 2nd Level Locations--Level 2 Locations
+                    departments:
+                      - 11--Accounting
+                      - 1st Level Depts--Level 1 Departments
+                  mergePaymentRequests: true
+                  defaultBillPaymentDate: none
+                  vendorType:
+                    id: Retailer
+                  accountGroup:
+                    id: Stationary VGL Group
+                  priceSchedule:
+                    id: PO Price S
+                  discountPercent: 20
+                  priceList:
+                    id: PO Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated vendor
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: RituDate11-21-2015
+                      href: /objects/vendor/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/vendor:
+    get:
+      summary: List vendors
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each vendor. This operation is mostly for use in testing.
+        Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business, Employee, Project Manager, and Warehouse users
+            permissions: List, View Vendors
+      tags:
+        - Vendors
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List vendors:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: Vend-00001
+                        href: /objects/vendor/84
+                      - key: '85'
+                        id: Vend-00002
+                        href: /objects/vendor/85
+                      - key: '60'
+                        id: Vend-00003
+                        href: /objects/vendor/60
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor
+    post:
+      summary: Create a vendor
+      description: Creates a new vendor. When you add a new vendor, you can provide key descriptive information about that vendor and establish how you want to pay them.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: |
+              List, View, Add, Edit Vendors (Bank Details permissions required to access vendor bank account.) 
+      tags:
+        - Vendors
+      operationId: post-objects-vendor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor'
+                - $ref: '#/components/schemas/vendorRequiredProperties'
+            examples:
+              Create a vendor:
+                value:
+                  id: Vend-00010
+                  name: Design Works
+                  taxId: 12-3456789
+                  nameOn1099: Design Works Inc
+                  creditLimit: 40000
+                  isOnHold: false
+                  doNotPay: false
+                  billingType: openItem
+                  paymentPriority: normal
+                  defaultBillPaymentDate: none
+                  enableACHPayments: false
+              Create an unrestricted vendor:
+                value:
+                  id: Vendor_A0000003
+                  name: Global Networks
+                  form1099:
+                    nameOn1099: ISC 1099
+                    type: MISC
+                    box: '3'
+                  parent:
+                    id: 201--PG & E
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: 300 Park Avenue
+                        addressLine2: Suite 1400
+                        city: San Jose
+                        country: United States
+                        postCode: '95110'
+                        state: California
+                      tax:
+                        isTaxable: true
+                      URL1: 'https://alice.example.com'
+                      URL2: 'https://gnw.example.com'
+                      companyName: Ecology Corporation
+                      email1: alice@example.com
+                      email2: cooper@example.com
+                      fax: '14085555309'
+                      firstName: Cooper
+                      lastName: Alice
+                      middleName: Mary
+                      mobile: '14085554420'
+                      pager: '14085559987'
+                      phone1: '14085551212'
+                      printAs: Cooper.Alice
+                      hideContactList: false
+                    primary:
+                      id: 1099 IntCA
+                    payTo:
+                      id: 1099 Int
+                    returnTo:
+                      id: 111(V111)
+                    recipient1099:
+                      id: 123515(V123515)
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '123456789'
+                  taxId: 111-22-1111
+                  creditLimit: 1000
+                  billingType: openItem
+                  vendorType:
+                    id: Retailer
+                  accountGroup:
+                    id: Stationary VGL Group
+                  priceSchedule:
+                    id: PO Price S
+                  discountPercent: 20
+                  priceList:
+                    id: PO Price List
+                  notes: Comments of IN202
+                  defaultExpenseGLAccount:
+                    id: 6700.04--CC Other Charges & Fees
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: true
+                  isOnHold: true
+                  doNotPay: true
+                  ACH:
+                    enablePayments: true
+                    routingNumber: '123456789'
+                    accountNumber: '987654321'
+                    accountType: checkingAccount
+                    remittanceType: businessCTX
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: true
+                  preferredPaymentMethod: printedCheck
+                  mergePaymentRequests: true
+                  overrideOffsetGLAccount:
+                    id: 1000.00--10000
+                  attachment:
+                    id: Attach-12574
+                  contactList:
+                    - name: primary
+                      contact:
+                        id: 1099 IntCA
+                    - name: pay to
+                      contact:
+                        id: 1099 Int
+                    - name: return to
+                      contact:
+                        id: 111(V111)
+                    - name: '1099'
+                      contact:
+                        id: 123515(V123515)
+                  vendorAccountNumberList:
+                    - locationId: 1--United States of America
+                      accountNo: '111111111'
+                  vendorEmailTemplates:
+                    - vendor:
+                        id: Vendor_A0000003
+                      txnDefinitionName: Purchase Order
+                      emailTemplate:
+                        id: '5'
+                        name: AP
+                  defaultBillPaymentDate: none
+              Create a restricted vendor:
+                value:
+                  id: Vend-00100
+                  name: Regulatory Filing Group
+                  parent:
+                    id: 202--Pac Bell
+                  contacts:
+                    default:
+                      mailingAddress:
+                        addressLine1: '9500 Arboretum Blvd'
+                        addressLine2: 'Suite 310'
+                        city: Austin
+                        country: United States
+                        postCode: '78759'
+                        state: TX
+                      tax:
+                        isTaxable: true
+                      URL1: 'https://jack.exammple.com'
+                      companyName: Jack Henry
+                      email1: Henry@example.com
+                      email2: Jack@example.com
+                      fax: '14085555522'
+                      firstName: Jack
+                      lastName: Henry
+                      middleName: Inc
+                      mobile: '14085554420'
+                      pager: '14085554400'
+                      phone1: '14085551212'
+                      printAs: Jack Henry & Associates
+                      hideContactList: true
+                  term:
+                    id: Net 60
+                  vendorAccountNumber: '203'
+                  taxId: 192-35-4308
+                  creditLimit: 350000
+                  billingType: balanceForward
+                  notes: None
+                  defaultExpenseGLAccount:
+                    id: 1500--Equipment
+                  paymentPriority: normal
+                  status: active
+                  isOneTimeUse: false
+                  isOnHold: false
+                  doNotPay: false
+                  displayTermDiscountOnCheckStub: false
+                  displayVendorAccountOnCheckStub: false
+                  sendPaymentNotification: false
+                  restrictions:
+                    restrictionType: restricted
+                    locations:
+                      - 1--United States of America
+                      - 2--India
+                      - 3--United Kingdom
+                      - 1st Level Locations--Level 1 Locations
+                      - 2nd Level Locations--Level 2 Locations
+                    departments:
+                      - 11--Accounting
+                      - 1st Level Depts--Level 1 Departments
+                  mergePaymentRequests: true
+                  defaultBillPaymentDate: none
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New vendor
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a vendor:
+                  value:
+                    'ia::result':
+                      key: '111'
+                      href: /objects/vendor/111
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+components:
+  schemas:
+    vendor:
+      $ref: ../models/vendor.s1.schema.yaml
+    vendorRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

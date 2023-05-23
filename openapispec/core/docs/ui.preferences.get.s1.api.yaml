@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: ui.preferences.get
+  description: ui preferences service
+  version: 1.0-internal
+  contact:
+    name: Teodor Anton
+    email: teodor.anton@sage.com
+tags:
+  - name: ui.preferences.get
+    description: get ui settings
+paths:
+  /services/ui/preferences/get:
+    post:
+      summary: Retrieve xg ui preferences
+      description: Retrieve xg ui preferences to be used in iodl compilation
+      tags:
+        - ui.preferences.get
+      operationId: post-ui-preferences-get
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ui.preferences.get-request'
+            examples:
+              example-1:
+                value: null
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                title: UI Preferences
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ui.preferences.get-response'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value: null
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ui.preferences.get-request:
+      description: Retrieve ui pref
+      type: object
+      x-mappedTo: __custom__
+    ui.preferences.get-response:
+      description: ui preferences response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        uiSettings:
+          x-mappedTo: uiSettings
+          type: object
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

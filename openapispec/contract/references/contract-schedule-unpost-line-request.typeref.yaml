@@ -1,0 +1,17 @@
+type: object
+title: contract-schedule-unpost-line-request
+description: unpost line request
+x-mappedTo: __custom__
+properties:
+  scheduleLine:
+    type: object
+    required:
+      - key
+    properties:
+      key:
+        type: string
+        description: Key of the contract schedule entry to unpost.
+        x-mappedTo: RECORDNO
+        nullable: false
+        example: '5'
+examples: []

@@ -1,0 +1,246 @@
+title: ar-recurring-invoice
+x-mappedTo: arrecurinvoice
+type: object
+description: Recurring invoices are invoices that repeat at periods and durations defined in a recurrence schedule. 
+properties:
+  key:
+    type: string
+    description: System-assigned key for the recurring invoice.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: ID for the recurring invoice. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  href:
+    type: string
+    description: URL for the recurring invoice.
+    readOnly: true
+  invoiceNumber:
+    type: string
+    description: Each occurrence of the invoice gets an incremented number based on the sequence type defined in Document Numbering on the company setup.
+    x-mappedTo: RECORDID
+    example: 
+  totalEntered:
+    type: string
+    description: Total amount entered.
+    x-mappedTo: TOTALENTERED
+    example: 
+  description:
+    type: string
+    description: Description of the recurring invoice.
+    x-mappedTo: DESCRIPTION
+    example: 
+  referenceNumber:
+    type: string
+    description: This is a number such as a purchase order or account number that may be useful in searches or reports on this invoice.
+    x-mappedTo: DOCNUMBER
+    example:
+  moduleKey:
+    type: string
+    x-mappedTo: MODULEKEY
+    example:
+  term:
+    type: object
+    description: Payment terms, which are used to calculate due date, discounts, and penalties associated with this invoice.
+    x-object: ap-term
+    x-mappedTo: term
+    title: term
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the payment term.
+        x-mappedTo: TERMKEY
+      id:
+        type: string
+        description: Name or other unique identifier for the payment term.
+        x-mappedTo: TERMNAME
+      href:
+        type: string
+        description: URL for the payment term.
+        readOnly: true
+  contract:
+    type: object
+    description: Often, recurring invoices are the result of an ongoing contract.
+    x-object: contract
+    x-mappedTo: CONTRACT
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the contract.
+        x-mappedTo: CONTRACTKEY
+        readOnly: true
+        example: '2'
+      id:
+        type: string
+        description: Unique identifier for the contract.
+        x-mappedTo: CONTRACTID
+        readOnly: true
+        example: CON-2
+      description:
+        type: string
+        description:  Description of the contract.
+        x-mappedTo: CONTRACTDESC
+        example:
+      href:
+        type: string
+        description: URL for the contract.
+        readOnly: true
+        example: /objects/contract/2
+  currency:
+    type: object
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: For multi-currency companies, the company's base currency.
+        x-mappedTo: BASECURR
+      txnCurrency:
+        type: string
+        description: For multi-currency companies, the currency for the invoice.
+        x-mappedTo: CURRENCY
+  notes:
+    type: string
+    description: Message to include on the customer's invoice.
+    x-mappedTo: CUSTMESSAGEID
+    example:
+  txnTotalEntered:
+    type: string
+    description: Transaction currency amount.
+    x-mappedTo: TRX_TOTALENTERED
+    example: 
+  accountType:
+    type: string
+    description: Type of account to which the payment will be deposited.
+    x-mappedTo: ACCOUNTTYPE
+    enum:
+      - 'bank'
+      - 'undepositedFundsAccount'
+    x-mappedToValues:
+      - 'Bank'
+      - 'Undeposited Funds Account'
+  contacts:
+    type: object
+    description: Contacts for the invoice.
+    title: contacts
+    properties:
+      billTo:
+        type: object
+        description: The bill-to contact is used as the address for the invoice.
+        title: billTo
+        x-object: contact
+        x-mappedTo: billto
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: BILLTOPAYTOKEY
+          id:
+            type: string
+            description: Name of the contact.
+            x-mappedTo: BILLTOPAYTOCONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+      shipTo:
+        type: object
+        description: Ship-to contact for the invoice.
+        title: shipTo
+        x-object: contact
+        x-mappedTo: shipto
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: SHIPTORETURNTOKEY
+          id:
+            type: string
+            description: Name of the contact.
+            x-mappedTo: SHIPTOCONTACTNAME
+          href:
+            type: string
+            description: URL of the contact.
+            readOnly: true
+  customer:
+    type: object
+    description: Person to receive the invoice.
+    x-mappedTo: customer
+    x-object: customer
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the customer.
+        x-mappedTo: ENTITY
+        example:
+      id:
+        type: string
+        description: ID for the customer.
+        x-mappedTo: CUSTOMERID
+        example:
+      name:
+        type: string
+        description: Name of the customer.
+        x-mappedTo: CUSTOMERNAME
+        example:
+      href:
+        type: string
+        description: URL for the customer.
+        readOnly: true
+  glAccount:
+    type: object
+    description: GL account for the invoice.
+    x-mappedTo: glaccount
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: GLACCOUNTKEY
+        example:
+      id:
+        type: string
+        description: GL account number.
+        x-mappedTo: GLACCTNO
+        example:
+      name:
+        type: string
+        description: GL account title.
+        x-mappedTo: GLACCTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the GL account.
+        readOnly: true
+  frequency:
+    type: string
+    description: The frequency at which the invoice recurs.
+    x-mappedTo: FREQUENCY
+    enum:
+      - 'none'
+      - 'days'
+      - 'weeks'
+      - 'months'
+      - 'years'
+      - 'endOfMonth'
+    x-mappedToValues:
+      - 'None'
+      - 'Days'
+      - 'Weeks'
+      - 'Months'
+      - 'Years'
+      - 'End Of Month'
+    default: 'days'
+  lines:
+    type: array
+    description: Line items of the invoice.
+    x-mappedTo: ITEMS
+    x-object: ar-recurring-invoice-line
+    items:
+      $ref: ar-recurring-invoice-line.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

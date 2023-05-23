@@ -1,0 +1,213 @@
+title: employee
+x-mappedTo: employee
+type: object
+description: Information about an employee.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the employee.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '3086'
+  id:
+    type: string
+    description: Unique ID of the employee.
+    x-mappedTo: EMPLOYEEID
+    x-mutable: false
+    example: jsmith
+  startDate:
+    type: string
+    format: date
+    example: '2014-01-08'
+    description: Employment start date.
+    x-mappedTo: STARTDATE
+  jobTitle:
+    type: string
+    description: Job title
+    x-mappedTo: TITLE
+    example: VP Sales
+  status:
+    type: string
+    description: Status
+    enum:
+      - active
+      - inactive
+    x-mappedToValues:
+      - active
+      - inactive
+    x-mappedTo: STATUS
+  birthDate:
+    type: string
+    description: Employee date of birth.
+    format: date
+    example: '2014-01-08'
+    x-mappedTo: BIRTHDATE
+  endDate:
+    type: string
+    description: Employment end date.
+    format: date
+    example: '2014-01-08'
+    x-mappedTo: ENDDATE
+  manager:
+    type: object
+    description: Manager of the employee.
+    x-object: employee
+    x-mappedTo: employee
+    properties:
+      key:
+        type: string
+        x-mappedTo: PARENTKEY
+      id:
+        type: string
+        x-mappedTo: SUPERVISORID
+      href:
+        type: string
+  gender:
+    type: string
+    description: Gender
+    x-mappedTo: GENDER
+    enum:
+      - female
+      - male
+    x-mappedToValues:
+      - female
+      - male
+  location:
+    type: object
+    description: Employee location. Required only when an employee is created at the top level in a multi-entity, multi-base-currency company.
+    x-object: location
+    x-mappedTo: location
+    properties:
+      key:
+        type: string
+        x-mappedTo: LOCATIONKEY
+      id:
+        type: string
+        x-mappedTo: LOCATIONID
+      name:
+        type: string
+        x-mappedTo: LOCATIONNAME
+      href:
+        type: string
+  department:
+    type: object
+    description: Department that the employee is associated with.
+    x-object: department
+    x-mappedTo: department
+    properties:
+      key:
+        type: string
+        x-mappedTo: DEPARTMENTKEY
+      id:
+        type: string
+        x-mappedTo: DEPARTMENTID
+      name:
+        type: string
+        x-mappedTo: DEPARTMENTTITLE
+      href:
+        type: string
+  class:
+    type: object
+    description: Class that the employee is associated with.
+    x-object: class
+    x-mappedTo: class
+    properties:
+      key:
+        type: string
+        x-mappedTo: CLASSKEY
+      id:
+        type: string
+        x-mappedTo: CLASSID
+      name:
+        type: string
+        x-mappedTo: CLASSNAME
+      href:
+        type: string
+  defaultCurrency:
+    type: string
+    description: Currency
+    x-mappedTo: CURRENCY
+  primaryContact:
+    type: object
+    description: The contact object that represents the employee.
+    x-object: contact
+    x-mappedTo: contact
+    properties:
+      key:
+        type: string
+        description: System-assigned unique key of the contact.
+        x-mappedTo: CONTACTKEY
+        example: '12345'
+      id:
+        type: string
+        x-mappedTo: PERSONALINFO.CONTACTNAME
+      name:
+        type: string
+        x-mappedTo: PERSONALINFO.CONTACTNAME
+      firstName:
+        type: string
+        x-mappedTo: PERSONALINFO.FIRSTNAME
+      lastName:
+        type: string
+        x-mappedTo: PERSONALINFO.LASTNAME
+      href:
+        type: string
+        description: Endpoint for the contact.
+        example: /objects/contact/12345
+  employeeType:
+    type: object
+    description: employeeType
+    x-object: employee-type
+    x-mappedTo: employeetype
+    properties:
+      key:
+        type: string
+        x-mappedTo: EMPTYPEKEY
+      id:
+        type: string
+        x-mappedTo: EMPLOYEETYPE
+      name:
+        type: string
+        x-mappedTo: EMPLOYEETYPE
+      href:
+        type: string
+  earningType:
+    type: object
+    description: earningType
+    x-object: earning-type
+    x-mappedTo: earningtype
+    properties:
+      key:
+        type: string
+        x-mappedTo: EARNINGTYPEKEY
+      id:
+        type: string
+        x-mappedTo: EARNINGTYPENAME
+      name:
+        type: string
+        x-mappedTo: EARNINGTYPENAME
+      href:
+        type: string
+  SSN:
+    type: string
+    description: Employee social security number. Do not include dashes.
+    example: '078051120'
+    x-mappedTo: SSN
+  terminationType:
+    type: string
+    enum:
+      - ''
+      - voluntary
+      - involuntary
+      - deceased
+      - disability
+      - retired
+    x-mappedToValues:
+      - ''
+      - voluntary
+      - involuntary
+      - deceased
+      - disability
+      - retired
+    description: Termination type
+    x-mappedTo: TERMINATIONTYPE

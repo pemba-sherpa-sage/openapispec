@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: db-server-throttle
+  description: db-server-throttle API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Db server throttle
+    description: Db server throttle description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/db-server-throttle:
+    get:
+      summary: List db server throttles
+      description: 'Returns a collection with a key, ID, and link for each db server throttle.'
+      tags:
+        - Db server throttle
+      operationId: get-objects-db-server-throttle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of db-server-throttle objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of db server throttle:
+                  value:
+                    'ia::result':
+                      - key: '90'
+                        id: dev02
+                        href: /objects/db-server-throttle/90
+                      - key: '24'
+                        id: dev08
+                        href: /objects/db-server-throttle/24
+                      - key: '81'
+                        id: dev25
+                        href: /objects/db-server-throttle/81
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an db server throttle
+      description: Creates a new db server throttle.
+      tags:
+        - Db server throttle
+      operationId: post-objects-db-server-throttle
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/db-server-throttle'
+                - $ref: '#/components/schemas/db-server-throttleRequiredProperties'
+            examples:
+              Creates a/an db server throttle: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New db-server-throttle
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New db server throttle: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/db-server-throttle/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the db server throttle.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '90'
+    get:
+      summary: Get a/an db server throttle
+      description: Returns detailed information for a particular db server throttle.
+      tags:
+        - Db server throttle
+      operationId: get-objects-db-server-throttle-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the db-server-throttle
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/db-server-throttle'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the db server throttle:
+                  value:
+                    'ia::result':
+                      key: '90'
+                      id: dev02
+                      limit: 80
+                      override:
+                        limit: null
+                        endDate: null
+                      notes: null
+                      status: active
+                      audit:
+                        createdDateTime: '2023-03-30T23:58:36Z'
+                        modifiedDateTime: '2023-03-30T23:58:36Z'
+                      href: /objects/db-server-throttle/90
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an db server throttle
+      description: Updates an existing db server throttle by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Db server throttle
+      operationId: patch-objects-db-server-throttle-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/db-server-throttle'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an db server throttle: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated db-server-throttle
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated db server throttle: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an db server throttle
+      description: Deletes a/an db server throttle.
+      tags:
+        - Db server throttle
+      operationId: delete-objects-db-server-throttle-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    db-server-throttle:
+      $ref: ../models/db-server-throttle.s1.schema.yaml
+    db-server-throttleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

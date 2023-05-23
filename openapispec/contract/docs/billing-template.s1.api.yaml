@@ -1,0 +1,459 @@
+openapi: 3.0.0
+info:
+  title: billing-template
+  description: billing-template API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Billing templates
+    description: A billing template defines the rules to use to invoice the flat or fixed amount of a contract line item.
+paths:
+  /objects/billing-template:
+    get:
+      summary: List billing templates
+      description: Returns a collection with a key, ID, and link for each billing template. This operation is mostly for use in testing. Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Billing templates
+      operationId: get-objects-billing-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List billing templates:
+                  value:
+                    ia::result:
+                      - key: '7'
+                        id: BILLINGBEGPERCUST2
+                        href: /objects/billing-template/7
+                      - key: '19'
+                        id: 18M_Straitline_Beg
+                        href: /objects/billing-template/19
+                      - key: '14'
+                        id: 4P_25PER_MBEGIN
+                        href: /objects/billing-template/14
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a billing template
+      description: Creates a new billing template.
+      tags:
+        - Billing templates
+      operationId: post-objects-billing-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billing-template.s1.schema'
+                - $ref: '#/components/schemas/billing-templateRequiredProperties'
+            examples:
+              Create a billing template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billing-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/billing-template/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the billing template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a billing template
+      description: Returns detailed information for a specified billing template.
+      tags:
+        - Billing templates
+      operationId: get-objects-billing-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billing-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/billing-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a billing template:
+                  value:
+                    ia::result:
+                      key: '7'
+                      id: BILLINGBEGPERCUST2
+                      description: Custom percent billing beginning of 3,6,9,12 periods
+                      status: active
+                      method: predefinedPercentages
+                      source: ''
+                      steptemplate: false
+                      href: /objects/billing-template/7
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a billing template
+      description: Updates an existing billing template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Billing templates
+      operationId: patch-objects-billing-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billing-template.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a billing template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated billing-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a billing template
+      description: Deletes a billing template.
+      tags:
+        - Billing templates
+      operationId: delete-objects-billing-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billing-template:
+      $ref: '#/components/schemas/billing-template.s1.schema'
+    billing-templateRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    billing-template-entry.s1.schema:
+      title: billing-template-entry
+      x-mappedTo: contractbillingtemplateentry
+      x-ownedBy: billing-template
+      type: object
+      description: List of contract billing template entries when using predefined percentages.
+      properties:
+        key:
+          type: string
+          description: Contract billing template entry Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        id:
+          type: string
+          description: Contract billing template entry Id
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        periodOffset:
+          type: string
+          description: Number of months offset
+          x-mappedTo: PERIODOFFSET
+          example: '2'
+        percentBilled:
+          type: string
+          description: Percent to bill
+          x-mappedTo: PERCENTBILLED
+          example: '10.12312000'
+        stepPercent:
+          type: string
+          format: decimal-precision-8
+          description: Threshold percentage
+          x-mappedTo: STEPPERCENT
+          example: '90.12312000'
+        contractBillingTemplate:
+          type: object
+          x-mappedTo: contractbillingtemplate
+          x-object: billing-template
+          properties:
+            key:
+              type: string
+              description: Template Key
+              x-mappedTo: TEMPLATEKEY
+              example: '1'
+            id:
+              type: string
+              description: Contract Billing Template ID
+              x-mappedTo: NAME
+              example: 12P_BeginingPeriod
+            href:
+              type: string
+              example: /objects/billing-template/1
+              readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    billing-template.s1.schema:
+      title: billing-template
+      x-mappedTo: contractbillingtemplate
+      type: object
+      description: A billing template defines the rules to use to invoice the flat or fixed amount of a contract line item.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the contract billing template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Name or other unique identifier for the billing template.
+          x-mappedTo: NAME
+          x-mutable: false
+          example: 12P_BeginningPeriod
+        href:
+          type: string
+          description: URL for the billing template.
+          readOnly: true
+        description:
+          type: string
+          description: Description of the billing template.
+          x-mappedTo: DESCRIPTION
+          example: 12P Beginning Period
+        method:
+          type: string
+          description: Template type
+          x-mappedTo: METHOD
+          example: predefinedPercentages
+          enum:
+            - predefinedPercentages
+            - projectPercentComplete
+            - taskPercentComplete
+          x-mappedToValues:
+            - Predefined percentages
+            - Project percent complete
+            - Task percent complete
+          default: predefinedPercentages
+        source:
+          type: string
+          description: Specifies the data source to use to determine the percentage of completeness for the project or task.
+          x-mappedTo: SOURCE
+          example: estimatedHours
+          enum:
+            - estimatedHours
+            - observedPercentCompleted
+            - budgetedHours
+            - plannedHours
+          x-mappedToValues:
+            - Estimated hours
+            - Observed % completed
+            - Budgeted hours
+            - Planned hours
+          default: estimatedHours
+        isStepBilling:
+          type: boolean
+          description: Indicates whether to define billing thresholds to determine the percentage of the flat/fixed amount to invoice.
+          x-mappedTo: STEPTEMPLATE
+          x-mappedToType: string
+          default: false
+          example: false
+        templateEntries:
+          type: array
+          x-mappedTo: TEMPLATEENTRY
+          description: Contract billing template details.
+          x-object: billing-template-entry
+          items:
+            $ref: '#/components/schemas/billing-template-entry.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

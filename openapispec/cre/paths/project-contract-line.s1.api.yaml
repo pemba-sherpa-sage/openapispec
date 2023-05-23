@@ -1,0 +1,628 @@
+openapi: 3.0.0
+info:
+  title: project-contract-line
+  description: project-contract-line API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: Project contract lines
+    description: A project contract line can be added to a project contract. Multiple lines on a contract  allow for different types of billing (lump sum, progress, cost plus, T&M) for each line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-contract-line:
+    get:
+      summary: List project contract lines
+      description: Returns a collection with a key, ID, and link for each project contract line.
+      tags:
+        - Project contract lines
+      operationId: get-objects-project-contract-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-contract-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-result-collection-of-project-contract-lines:
+                  value:
+                    'ia::result':
+                      - key: '7'
+                        id: '7'
+                        href: /objects/project-contract-line/7
+                      - key: '4'
+                        id: '4'
+                        href: /objects/project-contract-line/4
+                      - key: '6'
+                        id: '6'
+                        href: /objects/project-contract-line/6
+                      - key: '2'
+                        id: '2'
+                        href: /objects/project-contract-line/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/project-contract-line/3
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project contract line
+      description: Creates a new project contract line.
+      tags:
+        - Project contract lines
+      operationId: post-objects-project-contract-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-line'
+                - $ref: '#/components/schemas/project-contract-lineRequiredProperties'
+            examples:
+              example-create-project-contract-line:
+                value:
+                  projectContract:
+                    id: BTI-05
+                  id: '002'
+                  name: line 2
+                  description: Contract:BTI-05 - Line 2
+                  contractLineDate: '2021-10-05'
+                  account:
+                    id: '5001'
+                  billing:
+                    billingType: progressBill
+                    maximumBilling: totalPrice
+                    summarizeBill: false
+                  status: active
+                  dimensions:
+                    project:
+                      id: DIM - BTI
+                    item:
+                      id: '12345'
+                  scope: Initial survey
+                  internalReference:
+                    referenceNumber: Ref-BTI-05-004
+                    signedBy:
+                      id: '1'
+                  isBillable: true
+              example-create-project-contract-line-with-lineentry:
+                value:
+                  projectContract:
+                    id: BTI-05
+                  id: '001'
+                  name: line 1
+                  description: Contract:BTI-05 - Line 1
+                  contractLineDate: '2021-10-05'
+                  account:
+                    id: '5001'
+                  billing:
+                    billingType: progressBill
+                    maximumBilling: totalPrice
+                    summarizeBill: false
+                  status: active
+                  dimensions:
+                    project:
+                      id: DIM - BTI
+                    item:
+                      id: '12345'
+                  scope: Initial survey
+                  internalReference:
+                    referenceNumber: Ref-BTI-03-003
+                    signedBy:
+                      id: '1'
+                  isBillable: true
+                  projectContractLineEntries:
+                    - workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '1'
+                      externalUOM: each
+                      unitPrice: '97'
+                      priceMarkupPercent: '5'
+                      memo: null
+                      priceEffectiveDate: '2021-10-14'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-contract-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-create-project-contract-line:
+                  value:
+                    'ia::result':
+                      key: '7'
+                      href: /objects/project-contract-line/7
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-contract-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project contract line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project contract line
+      description: Returns detailed information for a particular project contract line.
+      tags:
+        - Project contract lines
+      operationId: get-objects-project-contract-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-contract-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-contract-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-get-project-contract-line:
+                  value:
+                    ia::result:
+                      key: '4'
+                      id: '003'
+                      projectContract:
+                        key: '1'
+                        id: BTI-01
+                        name: Berkeley Technology Inc - Contract 01[Revised]
+                        href: /objects/project-contract/1
+                      name: 'BTI-01: line 3'
+                      parent:
+                        key: '2'
+                        id: '002'
+                        name: line 2
+                        href: /objects/project-contract-line/2
+                      description: additional services
+                      contractLineDate: '2021-10-05'
+                      account:
+                        key: '207'
+                        id: '5001'
+                        name: Construction
+                        href: /objects/account/207
+                      retainagePercentage: '0.00'
+                      isBillable: true
+                      billingSetup:
+                        billingType: progressBill
+                        maximumBilling: totalPrice
+                        maximumBillingAmount: '0.00'
+                        summarizeBill: false
+                      billing:
+                        billedPrice: '2810.65'
+                        billedNetRetainage: '2810.65'
+                        percentBilled: '50.00'
+                        percentBilledNetRetainage: '50.00'
+                        retainageHeld: '0.00'
+                        retainageReleased: '0.00'
+                        retainageBalance: '0.00'
+                        paymentsReceived: '1000.00'
+                        previouslyAppliedPrice: '0.00'
+                      summary:
+                        originalPrice: '0.00'
+                        revisionPrice: '0.00'
+                        forecastPrice: '0.00'
+                        approvedChangePrice: '0.00'
+                        pendingChangePrice: '210.65'
+                        otherPrice: '0.00'
+                        totalPrice: '0.00'
+                      dimensions:
+                        location:
+                          key: '1'
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        customer:
+                          key: 14
+                          id: BTI
+                          name: Berkeley Technology Inc
+                          href: /objects/customer/14
+                        department:
+                          key: 3
+                          id: '3'
+                          name: Engineering
+                          href: /objects/department/3
+                        project:
+                          key: '1'
+                          id: DIM - BTI
+                          name: Dimensions - Berkeley Technology Inc
+                          href: /objects/project/1
+                        vendor:
+                          key: '43'
+                          id: 1099 Int
+                          name: 1099 Int
+                          href: /objects/vendor/43
+                        employee:
+                          key: '1'
+                          id: '1'
+                          name: Reser
+                          href: /objects/employee/1
+                        item:
+                          key: '18'
+                          id: Implementation
+                          name: Implimentation
+                          href: /objects/item/18
+                        class:
+                          key: '6'
+                          id: '4'
+                          name: Professional Services
+                          href: /objects/class/6
+                        excludeFromGLBudget: false
+                        scope: Initial survey
+                        inclusions: NA
+                        exclusions: NA
+                        terms: Standard
+                        schedule:
+                          scheduledStartDate: '2021-06-12'
+                          actualStartDate: '2021-06-15'
+                          scheduledCompletionDate: '2021-06-21'
+                          revisedCompletionDate: '2021-06-28'
+                          substantialCompletionDate: '2021-06-20'
+                          actualCompletionDate: '2021-06-28'
+                          noticeToProceedDate: '2021-06-01'
+                          responseDueDate: '2021-06-05'
+                          executedOnDate: '2021-06-08'
+                          scheduleImpact: 2 days
+                        internalReference:
+                          referenceNumber: Ref-BTI-03-003
+                          initiatedBy:
+                            key: '2'
+                            id: '2'
+                            name: Hatcher
+                            href: /objects/employee/2
+                          verbalBy:
+                            key: '2'
+                            id: '2'
+                            name: Hatcher
+                            href: /objects/employee/2
+                          issuedBy:
+                            key: '28'
+                            id: '22'
+                            name: Chandler
+                            href: /objects/employee/28
+                          issuedOnDate: '2021-06-10'
+                          approvedBy:
+                            key: '31'
+                            id: '23'
+                            name: Jurasek
+                            href: /objects/employee/31
+                          approvedOnDate: '2021-06-11'
+                          signedBy:
+                            key: '1'
+                            id: '1'
+                            name: Reser
+                            href: /objects/employee/1
+                          signedOnDate: '2021-06-11'
+                          source: None
+                          sourceReferenceNumber: NA
+                        externalReference:
+                          referenceNumber: E-REF-003
+                          verbalBy:
+                            key: '94'
+                            name: Aaron
+                            href: /objects/contact/94
+                          approvedBy:
+                            key: '115'
+                            name: Ashish
+                            href: /objects/contact/115
+                          approvedOnDate: '2021-06-12'
+                          signedBy:
+                            key: '224'
+                            name: Able and Sons, Accountants
+                            href: /objects/contact/224
+                          signedOnDate: '2021-06-15'
+                      attachment:
+                        id: pc-att-1
+                        key: '6'
+                        href: /objects/attachment/6
+                      status: active
+                      audit:
+                        createdDateTime: '2021-12-07T21:26:38Z'
+                        modifiedDateTime: '2021-12-18T00:08:31Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      rateTables:
+                        default:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        timesheet:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        purchasing:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        ap:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        gl:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        creditCard:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        employeeExpense:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                      projectContractLineEntries:
+                        - key: '5'
+                          id: '5'
+                          projectContractLine:
+                            key: '4'
+                            id: '003'
+                            href: /objects/project-contract-line/4
+                          workflowType: pendingChange
+                          dimensions:
+                            location:
+                              key: 1
+                              id: '1'
+                              name: United States of America
+                              href: /objects/location/1
+                            department:
+                              key: 3
+                              id: '3'
+                              name: Engineering
+                              href: /objects/department/3
+                            project:
+                              key: '1'
+                              id: DIM - BTI
+                              name: Dimensions - Berkeley Technology Inc
+                              href: /objects/project/1
+                            customer:
+                              key: '14'
+                              id: BTI
+                              name: Berkeley Technology Inc
+                              href: /objects/customer/14
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                            employee:
+                              key: '27'
+                              id: '12'
+                              name: Eberhardt
+                              href: /objects/employee/27
+                            item:
+                              key: '240'
+                              id: '3'
+                              name: 'Rebar #10'
+                              href: /objects/item/240
+                            class:
+                              key: '6'
+                              id: '4'
+                              name: Professional Services
+                              href: /objects/class/6
+                          quantity: '2.50'
+                          externalUOM: box
+                          unitPrice: '95.75'
+                          price: '191.50'
+                          priceMarkupPercent: '10.00'
+                          priceMarkupAmount: '19.15'
+                          linePrice: '210.65'
+                          memo: '[updated]'
+                          priceEffectiveDate: '2021-10-21'
+                          href: /objects/project-contract-line-entry/5
+                      changeRequestEntries:
+                        - key: '6'
+                          id: '6'
+                          projectContractLine:
+                            key: '4'
+                            id: '003'
+                            href: /objects/project-contract-line/4
+                          workflowType: pendingChange
+                          dimensions:
+                            location:
+                              key: 1
+                              id: '1'
+                              name: United States of America
+                              href: /objects/location/1
+                            department:
+                              key: 3
+                              id: '3'
+                              name: Engineering
+                              href: /objects/department/3
+                            project:
+                              key: '1'
+                              id: DIM - BTI
+                              name: Dimensions - Berkeley Technology Inc
+                              href: /objects/project/1
+                            customer:
+                              key: '14'
+                              id: BTI
+                              name: Berkeley Technology Inc
+                              href: /objects/customer/14
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                            employee:
+                              key: '27'
+                              id: '12'
+                              name: Eberhardt
+                              href: /objects/employee/27
+                            item:
+                              key: '240'
+                              id: '3'
+                              name: 'Rebar #10'
+                              href: /objects/item/240
+                            class:
+                              key: '6'
+                              id: '4'
+                              name: Professional Services
+                              href: /objects/class/6
+                          quantity: '2.50'
+                          externalUOM: box
+                          unitPrice: '100.00'
+                          price: '1000.00'
+                          priceMarkupPercent: '10.00'
+                          priceMarkupAmount: '100.00'
+                          linePrice: '1100.00'
+                          memo: 'change request'
+                          priceEffectiveDate: '2021-10-30'
+                          href: /objects/project-contract-line-entry/6
+                      href: /objects/project-contract-line/4
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project contract line
+      description: Updates an existing project contract line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Project contract lines
+      operationId: patch-objects-project-contract-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-contract-line:
+                value:
+                  name: 'BTI-01: line 1'
+                  description: additional services
+                  dimensions:
+                    vendor:
+                      id: 1099 Int
+                    department:
+                      id: '3'
+                    employee:
+                      id: '1'
+                    class:
+                      id: '4'
+                    item:
+                      id: Implementation
+                  projectContractLineEntries:
+                    - key: '1'
+                      workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '2.5'
+                      externalUOM: box
+                      unitPrice: '95.75'
+                      priceMarkupPercent: '10'
+                      price: '191.50'
+                      priceMarkupAmount: '19.15'
+                      linePrice: '210.65'
+                      memo: updated markup
+                      priceEffectiveDate: '2021-10-21'
+              example-update-project-contract-line-add-line-entry:
+                value:
+                  projectContractLineEntries:
+                    - workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '2'
+                      externalUOM: each
+                      unitPrice: '46'
+                      priceMarkupPercent: '10'
+                      memo: added new charge
+                      priceEffectiveDate: '2021-10-10'
+              example-update-project-contract-line-delete-line-entry:
+                value:
+                  projectContractLineEntries:
+                    - ia::operation: delete
+                      key: '2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-contract-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-update-project-contract-line:
+                  value:
+                    ia::result:
+                      key: '1'
+                      href: /objects/project-contract-line/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project contract line
+      description: Deletes a project contract line.
+      tags:
+        - Project contract lines
+      operationId: delete-objects-project-contract-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract-line:
+      $ref: ../models/project-contract-line.s1.schema.yaml
+    project-contract-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

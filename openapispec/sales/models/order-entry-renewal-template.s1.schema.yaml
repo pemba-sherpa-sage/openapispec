@@ -1,0 +1,349 @@
+title: order-entry-renewal-template
+x-mappedTo: RENEWALMACRO
+type: object
+description: Header information for Order Entry and contract renewal templates.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the order-entry-renewal-template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Order entry renewal template ID.
+    x-mappedTo: MACROID
+    example: 'Sales Renewal Template'
+  href:
+    type: string
+    description: URL for the order-entry-renewal-template.
+    readOnly: true
+    example: /objects/order-entry-renewal-template/23
+  description:
+    type: string
+    description: Description.
+    x-mappedTo: DESCRIPTION
+    example: 'description of an order entry renewal template'
+  salesTxnCreation:
+    type: object
+    properties:
+      createSalesTxn:
+        type: boolean
+        description: Create sales transaction.
+        x-mappedTo: CREATESALESTRANS
+        example: false
+        x-mappedToType: string
+        default: false
+      transactionDefinition:
+        type: object
+        x-mappedTo: sodocumentparams
+        x-object: order-entry-txn-definition
+        properties:
+          href:
+            type: string
+            description: URL for the order-entry-txn-definition.
+            readOnly: true
+            example: /objects/order-entry-txn-definition/23
+          key:
+            type: string
+            description: Sales transaction key.
+            x-mappedTo: SALESDOCRECORDKEY
+            example: '1'
+          id:
+            type: string
+            description: Sales transaction type.
+            x-mappedTo: SALESDOCID
+            example: 'Sales Invoice'
+      daysBeforeAfter:
+        type: integer
+        description: Amount of days before or after the Contract End Date for the SO transaction.
+        x-mappedTo: CREATESALESTRANSWHEN
+        example: 10
+        default: 10
+      beforeAfterContractEndDate:
+        type: string
+        description: After or before Contract End Date for SO transaction.
+        x-mappedTo: CREATESALESTRANSDAYS
+        example: before
+        enum:
+          - before
+          - after
+        x-mappedToValues:
+          - Before
+          - After
+        default: before
+      txnDateOnRenewedDocument:
+        type: string
+        description: Date on renewed document.
+        x-mappedTo: RENEWEDDOCDATE
+        example: calculatedDate
+        enum:
+          - calculatedDate
+          - 'contractEndDate+1'
+        x-mappedToValues:
+          - Calculated Date
+          - 'Contract End Date + 1'
+        default: 'contractEndDate+1'
+      startDateOnRenewedDocument:
+        type: string
+        description: Start date of renewed contract.
+        x-mappedTo: RENSTARTDATEOPT
+        example: sameAsDocumentDate
+        enum:
+          - sameAsDocumentDate
+          - withInheritedOffsetFromParent
+        x-mappedToValues:
+          - Same as Document Date
+          - With Inherited Offset from Parent
+        default: sameAsDocumentDate
+  pricing:
+    type: object
+    properties:
+      pricingType:
+        type: string
+        description: Pricing type.
+        x-mappedTo: PRICINGTYPE
+        example: sameAsOriginal
+        enum:
+          - sameAsOriginal
+          - defaultPricing
+          - markup/markdown
+        x-mappedToValues:
+          - Same as original
+          - Default pricing
+          - Markup / Markdown
+        default: sameAsOriginal
+      markup:
+        type: string
+        description: Pricing markup.
+        x-mappedTo: PRICINGMARKUP
+        example: percentageMarkup
+        enum:
+          - percentageMarkup
+          - percentageDiscount
+          - actualMarkup
+          - actualDiscount
+        x-mappedToValues:
+          - Percentage Markup
+          - Percentage Discount
+          - Actual Markup
+          - Actual Discount
+        default: percentageMarkup
+      markupValue:
+        type: string
+        description: Pricing markup by value.
+        x-mappedTo: PRICINGMARKUPVALUE
+        example: '1.00'
+  notifications:
+    type: object
+    properties:
+      customer:
+        type: object
+        properties:
+          sendToCustomer:
+            type: boolean
+            description: Customer email.
+            x-mappedTo: EMAILTOCUSTOMER
+            example: false
+            x-mappedToType: string
+            default: false
+          contact:
+            type: string
+            description: Contact.
+            x-mappedTo: EMAILCONTACT
+            example: customerContact
+            enum:
+              - customerContact
+              - transactionBillToContact
+              - transactionShipToContact
+            x-mappedToValues:
+              - Customer Contact
+              - Transaction Bill To Contact
+              - Transaction Ship To Contact
+            default: customerContact
+          daysBeforeAfter:
+            type: integer
+            description: When to send email alert to customer.
+            x-mappedTo: EMAILTOCUSTOMERWHEN
+            example: 0
+            default: 0
+          beforeAfterContractRenewalDate:
+            type: string
+            description: After or before for customer for contract renewal alert.
+            x-mappedTo: EMAILTOCUSTOMERDAYS
+            example: before
+            enum:
+              - before
+              - after
+            x-mappedToValues:
+              - Before
+              - After
+            default: before
+          customerEmailTemplate:
+            type: object
+            x-mappedTo: EMAILTEMPLATE
+            x-object: email-template
+            properties:
+              key:
+                type: string
+                description: Customer email template Key.
+                x-mappedTo: CUSTOMEREMAILTEMPLATE
+                example: '1'
+              id:
+                type: string
+                description: Customer email template Id. Same value as key.
+                x-mappedTo: CUSTOMEREMAILTEMPLATE
+                example: '1'
+              href:
+                type: string
+                description: URL for the email template.
+                readOnly: true
+                example: /objects/email-template/23
+      internal:
+        type: object
+        properties:
+          sendToInternal:
+            type: boolean
+            description: Internal email.
+            x-mappedTo: EMAILALERT
+            example: false
+            x-mappedToType: string
+            default: false
+          daysBeforeAfter:
+            type: integer
+            description: When to send email notification.
+            x-mappedTo: EMAILALERTWHEN
+            example: 10
+            default: 10
+          beforeAfterContractRenewalDate:
+            type: string
+            description: After or before for sales team notification.
+            x-mappedTo: EMAILALERTDAYS
+            example: before
+            enum:
+              - before
+              - after
+            x-mappedToValues:
+              - Before
+              - After
+            default: before
+          internalEmailTemplate:
+            type: object
+            x-mappedTo: EMAILTEMPLATE
+            x-object: email-template
+            properties:
+              key:
+                type: string
+                description: internal email template key.
+                x-mappedTo: ALERTEMAILTEMPLATE
+                example: '1'
+              id:
+                type: string
+                description: internal email template Id. Same value as key.
+                x-mappedTo: ALERTEMAILTEMPLATE
+                example: '1'
+              href:
+                type: string
+                description: URL for the email template.
+                readOnly: true
+                example: /objects/email-template/23
+#  can't verify due to Advanced CRM subscription
+#  opportunity:
+#    type: object
+#    properties:
+#      createSalesOpportunity:
+#        type: boolean
+#        description: Create Salesforce opportunity.
+#        x-mappedTo: CREATESALESOPP
+#        example: false
+#        x-mappedToType: string
+#        default: false
+#      daysBeforeAfter:
+#        type: string
+#        description: When to create Salesforce opportunity.
+#        x-mappedTo: CREATESALESOPPWHEN
+#        example: '10'
+#        default: '10'
+#      beforeAfterContractRenewalDate:
+#        type: string
+#        description: Create before or after.
+#        x-mappedTo: CREATESALESOPPDAYS
+#        example: before
+#        enum:
+#          - before
+#          - after
+#        x-mappedToValues:
+#          - Before
+#          - After
+#        default: before
+#      customName:
+#        type: string
+#        description: Renewal name.
+#        x-mappedTo: OPPCUSTOMNAME
+#        example:
+#      inheritProducts:
+#        type: boolean
+#        description: Inherit products from parent sales opportunity.
+#        x-mappedTo: INHERITOPPPRODUCTS
+#        example: false
+#        x-mappedToType: string
+#        default: false
+#      stage:
+#        type: string
+#        description: Stage of opportunity.
+#        x-mappedTo: STAGEOFOPPORTUNITY
+#        example:
+#        enum:
+#        x-mappedToValues:
+  latestVersion:
+    type: string
+    description: Latest version key.
+    x-mappedTo: LATESTVERSIONKEY
+    example: ???
+  transactionType:
+    type: string
+    description: Transaction type.
+    x-mappedTo: TRANSACTIONTYPE
+    example: salesTransaction
+    enum:
+      - salesTransaction
+      - contract
+      - evergreen
+    x-mappedToValues:
+      - Sales Transaction
+      - Contract
+      - Evergreen
+    default: salesTransaction
+  termLength:
+    type: string
+    description: Default renewal term length.
+    x-mappedTo: TERMLENGTH
+    example: '5'
+  termPeriod:
+    type: string
+    description: Default renewal term period.
+    x-mappedTo: TERMPERIOD
+    example: months
+    enum:
+      - years
+      - months
+      - days
+    x-mappedToValues:
+      - Years
+      - Months
+      - Days
+    default: months
+  state:
+    type: string
+    description: Create renewal as.
+    x-mappedTo: RENEWALSTATE
+    example: draft
+    enum:
+      - inProgress
+      - draft
+    x-mappedToValues:
+      - In progress
+      - Draft
+    default: inProgress
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

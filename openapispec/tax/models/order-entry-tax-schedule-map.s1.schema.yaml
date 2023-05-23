@@ -1,0 +1,135 @@
+title: order-entry-tax-schedule-map
+type: object
+x-mappedTo: sotaxschedmap
+properties:
+  key:
+    type: string
+    description: System-assigned key of the Order Entry tax schedule map
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the Order Entry tax schedule map.
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  href:
+    type: string
+    description: URL of the Order Entry tax schedule map.
+    example: /objects/order-entry-tax-schedule-map/7149
+    readOnly: true
+  isSystemGenerated:
+    type: boolean
+    description: If `true`, this is a system generated object.
+    x-mappedTo: SYSGENERATED
+    x-mappedToType: string
+    example: true
+    default: false
+    readOnly: true
+  taxSolution:
+    type: object
+    description: Different tax solutions are available for different countries, for example, Australia GST, South  Africa VAT, UK VAT. The tax schedule map has to be on the same tax solution as that of tax schedule.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+        example: United Kingdom - VAT
+      href:
+        type: string
+        description: URL of the tax solution object.
+        readOnly: true
+        example: /objects/tax-solution/1
+  taxSchedule:
+    type: object
+    description: Tax schedules identify the tax details that are applied when the schedule is referenced by a tax schedule map.
+    x-object: order-entry-tax-schedule
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax schedule.
+        x-mappedTo: TAXSCHEDKEY
+        example: '1'
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier of the tax schedule.
+        x-mappedTo: TAXSCHEDKEY
+        example: '1'
+        readOnly: true
+      name:
+        type: string
+        description: Tax Schedule ID.
+        x-mappedTo: TAXSCHED
+        example: TaxSched-00002
+      href:
+        type: string
+        description: URL of the tax schedule object.
+        readOnly: true
+        example: /objects/order-entry-tax-schedule/1
+  itemTaxGroup:
+    type: object
+    description: Item tax group
+    x-object: item-tax-group
+    properties:
+      key:
+        type: string
+        x-mappedTo: ITEMGROUPKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the item tax group.
+        x-mappedTo: ITEMGROUP
+        example: ABC Tax Group
+      href:
+        type: string
+        description: URL of the item tax group object.
+        readOnly: true
+        example: /objects/item-tax-group/1
+  contactTaxGroup:
+    type: object
+    description: Contact tax group
+    x-object: contact-tax-group
+    properties:
+      key:
+        type: string
+        x-mappedTo: ENTITYGROUPKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the contact tax group.
+        x-mappedTo: ENTITYGROUP
+        example: Auto Contact Tax
+      href:
+        type: string
+        description: URL of the contact tax group object.
+        readOnly: true
+        example: /objects/contact-tax-group/1
+  txnDefinition:
+    type: object
+    description: Order Entry transaction definition
+    x-object: order-entry-txn-definition
+    properties:
+      key:
+        type: string
+        x-mappedTo: DOCTYPEKEY
+        example: '1'
+      id:
+        type: string
+        x-mappedTo: DOCTYPE
+        example: Transaction Document
+      href:
+        type: string
+        description: URL of the transaction definition object.
+        readOnly: true
+        example: /objects/order-entry-txn-definition/1

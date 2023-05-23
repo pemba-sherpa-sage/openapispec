@@ -1,0 +1,20 @@
+title: workflowtyperef
+type: string
+x-mappedTo: WFTYPE
+description: Workflow type to use
+example: 'revision'
+enum: 
+  - 'original' 
+  - 'revision'
+  - 'forecast'
+  - 'approvedChange'
+  - 'pendingChange'
+  - 'other'
+x-mappedToValues: 
+  - 'original' 
+  - 'revision'
+  - 'forecast'
+  - 'approved change'
+  - 'pending change'
+  - 'other'
+default: 'original'

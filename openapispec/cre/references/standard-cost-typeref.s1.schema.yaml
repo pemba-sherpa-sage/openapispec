@@ -1,0 +1,27 @@
+type: object
+title: standard-cost-type
+x-object: standard-cost-type
+properties:
+  key:
+    type: string
+    description: Standard cost type key
+    x-mappedTo: STANDARDCOSTTYPEKEY
+    example: '33'
+    readOnly: true
+  id:
+    type: string
+    description: Standard cost type id
+    x-mappedTo: STANDARDCOSTTYPEID
+    example: LAB
+  name:
+    type: string
+    description: Standard cost type name
+    x-mappedTo: STANDARDCOSTTYPENAME
+    example: LABOR
+    readOnly: true
+  href:
+    type: string
+    description: URL of the standard cost type
+    readOnly: true
+    example: /objects/standard-cost-type/33
+examples: []

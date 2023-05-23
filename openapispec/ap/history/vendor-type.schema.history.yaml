@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/vendtype/view
+    POST:
+      - ap/lists/vendtype/create
+    PATCH:
+      - ap/lists/vendtype/edit
+    DELETE:
+      - ap/lists/vendtype/delete
+s1:
+  hash: '0'
+  type: rootObject

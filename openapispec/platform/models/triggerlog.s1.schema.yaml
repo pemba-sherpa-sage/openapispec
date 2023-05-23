@@ -1,0 +1,141 @@
+title: triggerlog
+x-mappedTo: triggerlogs
+type: object
+description: Triggerlog
+properties:
+  key:
+    type: string
+    description: System-assigned key for the triggerlog.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: 2
+  objectDefinitionId:
+    type: string
+    description: Id of the object definition.
+    x-mappedTo: OBJ_DEF_ID
+    x-mutable: false
+    example: 10034
+  objectDefinitionName:
+    type: string
+    description: Name of the object definition.
+    x-mappedTo: OBJ_DEF_NAME
+    example: building
+  id:
+    type: string
+    description: Id of the trigger.
+    x-mappedTo: TRIGGER_ID
+    x-mutable: false
+    readOnly: true
+    example: 10192
+  triggerName:
+    type: string
+    description: Name of the trigger.
+    x-mappedTo: TRIGGER_NAME
+    example: check test
+  type:
+    type: string
+    enum:
+      - validation
+      - changeWorkflowStatus
+      - updateFieldValue
+      - createActivityTrailRecord
+      - createNewRecord
+      - attachRelatedRecord
+      - runTriggersOnRelatedRecords
+      - sendEmail
+      - createTemplateDocument
+      - httpGet
+      - httpPost
+      - intacctApi
+      - intacctRestApi
+    x-mappedToValues:
+      - Validation
+      - Change Workflow Status
+      - Update Field Value
+      - Create Activity Trail Record
+      - Create New Record
+      - Attach Related Record
+      - Run Triggers on Related Records
+      - Send Email
+      - Create Template Document
+      - HTTP Get
+      - HTTP Post
+      - Intacct API
+      - Intacct REST API
+    description: Type of the trigger related to the log.
+    x-mappedTo: TRIGGER_TYPE
+    example: validation
+  onWhatAction :
+    type: string
+    description: On what action is the trigger going to fire.
+    enum:
+      - workflowAction
+      - afterCreate
+      - afterUpdate
+      - afterDelete
+      - beforeCreate
+      - beforeUpdate
+      - beforeDelete
+    x-mappedToValues:
+      - '0'
+      - '1'
+      - '2'
+      - '4'
+      - '8'
+      - '16'
+      - '32'
+    x-mappedTo: ON_WHAT
+    example: beforeUpdate
+  runType:
+    type: string
+    enum:
+      - online
+      - offline
+    x-mappedToValues:
+      - online
+      - offline
+    description: The state in which the trigger should run (online or offline).
+    x-mappedTo: RUN_TYPE
+    example: online
+  context:
+    type: string
+    enum:
+      - ui
+      - api
+      - csv
+      - portal
+    x-mappedToValues:
+      - ui
+      - api
+      - csv
+      - portal
+    description: Context of the execution of the trigger.
+    x-mappedTo: CONTEXT
+    example: ui
+  status:
+    type: string
+    enum:
+      - success
+      - failed
+    x-mappedToValues:
+      - success
+      - failed
+    description: The status of the trigger's execution.
+    x-mappedTo: RESULT_STATUS
+    example: failed
+  condition:
+    type: string
+    description: Condition for the trigger to fire.
+    x-mappedTo: COND_EXPR
+    example: if({!building.zip!} < 1000){ return 'Zip cannot be lower than 1000'; }
+  message:
+    type: string
+    description: Message of the log.
+    x-mappedTo: MESSAGE
+    example: Zip cannot be lower than 1000
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  href:
+    type: string
+    readOnly: true
+    example: /objects/triggerlog/2

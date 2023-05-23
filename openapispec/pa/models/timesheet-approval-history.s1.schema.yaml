@@ -1,0 +1,171 @@
+title: timesheet-approval-history
+x-mappedTo: timesheetapproval
+type: object
+description: History of employee timesheet approvals.
+properties:
+  key:
+    type: string
+    description: Timesheet approval history Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: Timesheet approval history id
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  href:
+    type: string
+    readOnly: true
+  approvalStage:
+    type: integer
+    description: Approval stage
+    x-mappedTo: APPROVAL_STAGE
+    example: 
+  approvalType:
+    type: string
+    description: Approval type
+    x-mappedTo: APPROVAL_TYPE
+    example: 
+  approvalLevel:
+    type: string
+    description: Approval level
+    x-mappedTo: APPROVAL_LEVEL
+    example: 
+  comments:
+    type: string
+    description: Comments
+    x-mappedTo: COMMENTS
+    example: 
+  eventDate:
+    type: string
+    description: Event date
+    x-mappedTo: EVENTDATE
+    example: 
+  state:
+    type: string
+    description: State
+    x-mappedTo: STATE
+    example: 
+    enum:
+      - 'submitted'
+      - 'pendingApproval'
+      - 'approved'
+      - 'declined'
+    x-mappedToValues:
+      - 'Submitted'
+      - 'Pending Approval'
+      - 'Approved'
+      - 'Declined'
+  timesheet:
+    type: object
+    description: Timesheet
+    x-object: timesheet
+    x-mappedTo: timesheet
+    properties:
+      key:
+        type: string
+        description: Timesheet key
+        example: '1'
+        x-mappedTo: TIMESHEETKEY
+        readOnly: true
+      href:
+        type: string
+        description: URL of the timesheet
+        example: /objects/timesheet/1
+        readOnly: true
+  timesheetLine:
+    type: object
+    description: Timesheet Line
+    x-object: timesheet-line
+    x-mappedTo: timesheetentry
+    properties:
+      key:
+        type: string
+        description: Timesheet entry key
+        example: '1'
+        x-mappedTo: TIMESHEETENTRYKEY
+        readOnly: true
+      lineNumber:
+        type: integer
+        description: Timesheet entry line number
+        x-mappedTo: TSENTRYLINENO
+        example:
+      href:
+        type: string
+        description: URL of the timesheet line
+        example: /objects/timesheet-line/1
+        readOnly: true
+  approvedBy:
+    type: object
+    x-mappedTo: approvedby
+    x-object: user
+    properties:
+      key:
+        type: string
+        readOnly: true
+        description: Approved by key
+        x-mappedTo: APPROVEDBYKEY
+      id:
+        type: string
+        readOnly: true
+        description: Approved by id
+        x-mappedTo: APPROVEDBY
+      href:
+        type: string
+        readOnly: true
+  approver:
+    type: object
+    x-mappedTo: approver
+    x-object: user
+    properties:
+      key:
+        type: string
+        readOnly: true
+        description: Approver key
+        x-mappedTo: APPROVERKEY
+      id:
+        type: string
+        readOnly: true
+        description: Approver id
+        x-mappedTo: APPROVER
+      href:
+        type: string
+        readOnly: true
+  completedBy:
+    type: object
+    x-mappedTo: completedby
+    x-object: user
+    properties:
+      key:
+        type: string
+        readOnly: true
+        description: Completed by key
+        x-mappedTo: COMPLETEDBYKEY
+      id:
+        type: string
+        readOnly: true
+        description: Completed by id
+        x-mappedTo: COMPLETEDBY
+      href:
+        type: string
+        readOnly: true
+  createdBy:
+    type: object
+    x-mappedTo: createdby
+    x-object: user
+    properties:
+      key:
+        type: string
+        readOnly: true
+        description: Created by key
+        x-mappedTo: CREATEDBYKEY
+      id:
+        type: string
+        readOnly: true
+        description: Created by id
+        x-mappedTo: CREATEDBY
+      href:
+        type: string
+        readOnly: true

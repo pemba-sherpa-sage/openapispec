@@ -1,0 +1,12 @@
+title: status
+type: string
+enum:
+  - active
+  - inactive
+x-mappedToValues:
+  - active
+  - inactive
+description: Object status. 
+default: active
+x-mappedTo: STATUS
+example: active

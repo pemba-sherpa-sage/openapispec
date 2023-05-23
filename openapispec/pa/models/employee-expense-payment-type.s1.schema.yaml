@@ -1,0 +1,66 @@
+title: Employee expense payment type
+x-mappedTo: expensepaymenttype
+type: object
+description: User-defined Employee expense payment type that is applied to the line items in an Employee expense report or expense adjustment.
+properties:
+  key:
+    type: string
+    description: Employee expense payment type key. 
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '10'
+  id:
+    type: string
+    description: Employee expense payment type record number. 
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '10'
+  name:
+    type: string
+    description: Employee expense payment type name.
+    x-mappedTo: NAME
+    example: Non Rimburse
+  description:
+    type: string
+    description: Employee expense payment type description.
+    x-mappedTo: DESCRIPTION
+    example: Non Rimbursable payment
+  isNonReimbursable:
+    type: boolean
+    default: false
+    description: Non-reimbursable employee expense payment type. Use false for No, true for Yes. (Default- false)
+    x-mappedTo: NONREIMBURSABLE
+    example: true
+  offsetGLAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: Employee expense payment type offset account key.
+        x-mappedTo: OFFSETACCTKEY
+        readOnly: true
+        example: '70'
+      id:
+        type: string
+        description: Employee expense payment type offset account number.
+        x-mappedTo: OFFSETACCTNO
+        example: '2420'
+      name:
+        type: string
+        description: Employee expense payment type offset account name.
+        x-mappedTo: OFFSETACCTTITLE
+        readOnly: true
+        example: EE-Office Supplies
+      href:
+        type: string
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+    description: Employee expense payment type status. Use active for Active,  use inactive for Inactive. (Default- active)
+    x-mappedTo: STATUS
+    example: active
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,47 @@
+title: product-line
+x-mappedTo: productline
+type: object
+description: Product lines are groups of related products. Using product lines makes it easier to update prices and track inventory movement.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the product line.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '25'
+  id:
+    type: string
+    description: Name or other unique identifier for the product line.
+    x-mappedTo: PRODUCTLINEID
+    x-mutable: false
+    example: Telephones
+  description:
+    type: string
+    description: Description of the product line.
+    x-mappedTo: DESCRIPTION
+    example: Product line for all phones
+  parent:
+    type: object
+    description: If this product line is part of a hierarchy, the parent product line of this product line. 
+    x-object: product-line
+    x-mappedTo: PARENTLINE
+    title: parent
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent product line.
+        x-mappedTo: PARENTKEY
+        example: '28'
+      id:
+        type: string
+        description: Unique identifier for the parent product line.
+        x-mappedTo: PARENTLINE
+        example: Electronics
+      href:
+        type: string
+        readOnly: true
+        example: /objects/product-line/28
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

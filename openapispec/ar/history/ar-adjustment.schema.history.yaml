@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/aradjustment/view
+    POST:
+      - ar/activities/aradjustment/create
+      - ar/lists/aradjustment/create
+    PATCH:
+      - ar/lists/aradjustment/edit
+    DELETE:
+      - ar/lists/aradjustment/delete
+s1:
+  hash: '0'
+  type: rootObject

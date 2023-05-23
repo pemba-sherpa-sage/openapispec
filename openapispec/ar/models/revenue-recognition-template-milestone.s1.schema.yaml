@@ -1,0 +1,58 @@
+title: revenue-recognition-template-milestone
+x-mappedTo: REVRECTEMPLMILESTONE
+x-ownedBy: revenue-recognition-template
+type: object
+description: Milestone information for revenue recognition templates that have a recognition method of percent complete, milestone, or custom.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the revenue recognition template milestone.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Revenue recognition template milestone ID. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the revenue recognition template milestone.
+    readOnly: true
+    example: /objects/revenue-recognition-template-milestone/23
+  template:
+    type: object
+    description: Header level details for the revenue recognition template's milestone entries.
+    x-mappedTo: REVRECTEMPLATE
+    x-object: revenue-recognition-template
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the revenue recognition template.
+        x-mappedTo: TEMPLATEKEY
+        example:
+      id:
+        type: string
+        description: Unique identifier for the revenue recognition template.
+        x-mappedTo: TEMPLATEKEY
+        example:
+      href:
+        type: string
+        description: URL for the revenue recognition template.
+        readOnly: true
+  periodOffset:
+    type: integer
+    description: Determines how many periods in the future to create the potential revenue recognition journal entries in the schedule.
+    x-mappedTo: MPERIODOFFSET
+    example:
+  percentAmount:
+    type: number
+    description: Indicates the percentage of the revenue recognition that should be applied to the corresponding account for the corresponding offset period.
+    x-mappedTo: PERCAMOUNT
+    example:
+  description:
+    type: string
+    description: Description of the milestone.
+    x-mappedTo: DESCRIPTION
+    example:

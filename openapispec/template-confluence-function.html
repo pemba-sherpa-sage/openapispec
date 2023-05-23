@@ -1,0 +1,150 @@
+<ac:layout>
+    <ac:layout-section ac:type="fixed-width" ac:breakout-mode="default">
+        <ac:layout-cell>
+            <ac:structured-macro ac:name="toc" ac:schema-version="1" data-layout="default" ac:macro-id="90c3d709165465ff03369e243bb23129">
+                <ac:parameter ac:name="minLevel">1</ac:parameter>
+                <ac:parameter ac:name="maxLevel">1</ac:parameter>
+            </ac:structured-macro>
+            <h1><strong>Summary</strong></h1>
+        </ac:layout-cell>
+        <ac:layout-cell>
+            <ul>
+                <li>
+                    <p>
+                        Brief overview of the feature with a link back to the requirements doc or other page (typically a PM page).
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Is this a conversion of an existing object (currently exposed in the XML API) to the REST API or is this for a brand
+                        new object?
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Is there anything atypical about this object/feature?
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Does the new object/feature have any impact on existing objects or functions, such as new fields added, or new
+                        relationships? Describe those changes in your design document.
+                    </p>
+                </li>
+            </ul>
+            <h1>Function request</h1>
+            <p>
+                <a href="https://intacct.stoplight.io/docs/ia-nextgen-oas/c2NoOjk2NDI4Nzk-{{ objectName }}">{{ objectName }} request</a>
+            </p>
+            <h1>Function response</h1>
+            <p>
+                <a href="https://intacct.stoplight.io/docs/ia-nextgen-oas/c2NoOjk2NDI4Nzk-{{ objectName }}">{{ objectName }} response</a>
+            </p>
+            <h1>Function overview</h1>
+            <p>
+                <a href="https://intacct.stoplight.io/docs/ia-nextgen-oas/YXBpOjk2NDI5MTk-{{ objectName }}">{{ objectName }}s</a>
+            </p>
+            <h1>Function operation</h1>
+            <p>
+                <a href="https://intacct.stoplight.io/docs/ia-nextgen-oas/b3A6OTY0MjkyMA-create-{{ objectName }}">{{ objectName }}</a>
+            </p>
+            <h1><strong>Error messages</strong></h1>
+            <p/>
+            <h1><strong>Review questions/comments</strong></h1>
+            <table data-layout="default">
+                <colgroup>
+                    <col style="width: 206.0px;"/>
+                    <col style="width: 140.0px;"/>
+                    <col style="width: 207.0px;"/>
+                    <col style="width: 207.0px;"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th><p><strong>Operation</strong></p></th>
+                    <th><p><strong>Schema field</strong></p></th>
+                    <th><p><strong>Open Issue</strong></p></th>
+                    <th><p><strong>Comments</strong></p></th>
+                </tr>
+                <tr>
+                    <td><p/></td>
+                    <td><p/></td>
+                    <td><p/></td>
+                    <td><p/></td>
+                </tr>
+                <tr>
+                    <td><p/></td>
+                    <td><p/></td>
+                    <td><p/></td>
+                    <td><p/></td>
+                </tr>
+                </tbody>
+            </table>
+            <h1><strong>Request Schema Table</strong></h1>
+            <p><strong>Note:</strong> The schemas will be reviewed in Stoplight.</p>
+            <table data-layout="wide">
+                <colgroup>
+                    <col/>
+                    <col style="width: 133.0px;"/>
+                    <col style="width: 242.0px;"/>
+                    <col style="width: 242.0px;"/>
+                    <col style="width: 106.0px;"/>
+                    <col style="width: 98.0px;"/>
+                    <col style="width: 195.0px;"/>
+                    <col style="width: 72.0px;"/>
+                    <col style="width: 78.0px;"/>
+                    <col/>
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th><p><strong>Field Label (used in UI/Reporting)</strong></p></th>
+                    <th><p><strong>Group</strong></p></th>
+                    <th><p><strong>YAML field name (integration name)</strong></p></th>
+                    <th><p><strong>Description</strong></p></th>
+                    <th><p><strong>Example</strong></p></th>
+                    <th><p><strong>Data Type</strong></p></th>
+                    <th><p><strong>Entity File Field</strong></p></th>
+                    <th><p><strong>Editable</strong></p></th>
+                    <th><p><strong>Required</strong></p></th>
+                    <th><p><strong>Notes</strong></p></th>
+                    <th><p><strong>Comments</strong></p></th>
+                </tr>
+                {{ fieldRows }}
+                </tbody>
+            </table>
+            <h1><strong>Response Schema Table</strong></h1>
+            <p><strong>Note:</strong> The schemas will be reviewed in Stoplight.</p>
+            <table data-layout="wide">
+                <colgroup>
+                    <col/>
+                    <col style="width: 133.0px;"/>
+                    <col style="width: 242.0px;"/>
+                    <col style="width: 242.0px;"/>
+                    <col style="width: 106.0px;"/>
+                    <col style="width: 98.0px;"/>
+                    <col style="width: 195.0px;"/>
+                    <col style="width: 72.0px;"/>
+                    <col style="width: 78.0px;"/>
+                    <col/>
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th><p><strong>Field Label (used in UI/Reporting)</strong></p></th>
+                    <th><p><strong>Group</strong></p></th>
+                    <th><p><strong>YAML field name (integration name)</strong></p></th>
+                    <th><p><strong>Description</strong></p></th>
+                    <th><p><strong>Example</strong></p></th>
+                    <th><p><strong>Data Type</strong></p></th>
+                    <th><p><strong>Entity File Field</strong></p></th>
+                    <th><p><strong>Editable</strong></p></th>
+                    <th><p><strong>Required</strong></p></th>
+                    <th><p><strong>Notes</strong></p></th>
+                    <th><p><strong>Comments</strong></p></th>
+                </tr>
+                {{ fieldRows2 }}
+                </tbody>
+            </table>
+        </ac:layout-cell>
+    </ac:layout-section>
+</ac:layout>

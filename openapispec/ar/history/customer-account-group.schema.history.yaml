@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/custglgroup/view
+    POST:
+      - so/lists/custglgroup/create
+    PATCH:
+      - so/lists/custglgroup/edit
+    DELETE:
+      - so/lists/custglgroup/delete
+s1:
+  hash: '0'
+  type: rootObject

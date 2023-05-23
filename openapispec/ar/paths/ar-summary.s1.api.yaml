@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: ar-summary
+  description: ar-summary API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: AR summaries
+    description: Summaries are collections of the same type of transactions, grouped together for processing. Summaries can be either opened or closed. Invoices, adjustments, and deposits can be added to open summaries. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-summary:
+    get:
+      summary: List AR summaries
+      description: Returns a collection with a key, ID, and link for each AR summary. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR summaries
+      operationId: get-objects-ar-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-summary objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR summaries: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR summary
+      description: Creates a new AR summary.
+      tags:
+        - AR summaries
+      operationId: post-objects-ar-summary
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-summary'
+                - $ref: '#/components/schemas/ar-summaryRequiredProperties'
+            examples:
+              Create an AR summary: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-summary
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AR summary: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-summary/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR summary
+      description: Returns detailed information for a specified AR summary.
+      tags:
+        - AR summaries
+      operationId: get-objects-ar-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-summary
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-summary'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR summary: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR summary
+      description: Updates an existing AR summary by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR summaries
+      operationId: patch-objects-ar-summary-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-summary'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR summary: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-summary
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an AR summary: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR summary
+      description: Deletes an AR summary.
+      tags:
+        - AR summaries
+      operationId: delete-objects-ar-summary-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-summary:
+      $ref: ../models/ar-summary.s1.schema.yaml
+    ar-summaryRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

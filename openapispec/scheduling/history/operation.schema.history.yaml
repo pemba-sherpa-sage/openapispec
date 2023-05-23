@@ -1,0 +1,11 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/setup/operation/view
+    POST:
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: rootObject
+  adapter: OperationAdapterS1

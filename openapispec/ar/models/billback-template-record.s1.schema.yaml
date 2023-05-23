@@ -1,0 +1,45 @@
+title: billback-template-record
+x-mappedTo: bbtemplaterecs
+type: object
+description: Billback Template Record
+properties:
+  bill:
+    type: object
+    x-object: bill
+    x-mappedTo: apbill
+    title: invoice
+    properties:
+      key:
+        type: string
+        x-mappedTo: BILLKEY
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+  # invoice:
+  #   type: object
+  #   x-object: invoice
+  #   x-mappedTo: arinvoice
+  #   title: invoice
+  #   properties:
+  #     key:
+  #       type: string
+  #       x-mappedTo: INVOICEKEY
+  #       readOnly: true
+  #     href:
+  #       type: string
+  #       readOnly: true
+  template:
+    type: object
+    x-object: billback-template
+    x-mappedTo: billbacktemplate
+    title: template
+    properties:
+      key:
+        type: string
+        x-mappedTo: TEMPLATEKEY
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+x-internal: true

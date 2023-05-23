@@ -1,0 +1,408 @@
+openapi: 3.0.0
+info:
+  title: preferences.advanced-consolidation
+  description: preferences.advanced-consolidation API
+  version: '1.0'
+  contact:
+    name: Arpit Jain
+    email: arpit.jain@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Advanced consolidation preferences
+    description: Configure preferences for advanced consolidation.
+paths:
+  /services/preferences/advanced-consolidation:
+    get:
+      summary: Get Advanced consolidation preferences
+      description: Returns detailed information for the Advanced consolidation preferences.
+      tags:
+        - Advanced consolidation preferences
+      operationId: get-services-preferences.advanced-consolidation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the preferences.advanced-consolidation
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/preferences.advanced-consolidation.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              example:
+                Advanced consolidation preference:
+                  value:
+                    ia::result:
+                      notificationEmail: arpit.jain@sage.com
+                      consolidatingLocation:
+                        key: '19'
+                        id: FF
+                        name: Frankfurt
+                        href: /objects/location/19
+                      minorityInterestGLAccounts:
+                        interestLiabilityGLAccount:
+                          key: '256'
+                          id: '6252'
+                          name: Entertainment
+                          href: /objects/gl-account/256
+                        incomeOrExpenseGLAccount:
+                          key: '10'
+                          id: '1001'
+                          name: CitiBank
+                          href: /objects/gl-account/10
+                      audit:
+                        createdDateTime: '2023-02-03T11:23:11Z'
+                        modifiedDateTime: '2023-02-03T11:23:11Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /services/preferences/advanced-consolidation
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update Advanced consolidation preferences
+      description: Updates an existing advanced consolidation preferences by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Advanced consolidation preferences
+      operationId: patch-services-preferences.advanced-consolidation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.advanced-consolidation.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Change Advanced consolidation preference:
+                value:
+                  notificationEmail: arpit.jain@sage.com
+                  consolidatingLocation:
+                    key: '19'
+                  minorityInterestGLAccounts:
+                    interestLiabilityGLAccount:
+                      key: '13'
+                    incomeOrExpenseGLAccount:
+                      key: '23'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated preferences.advanced-consolidation
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Advanced consolidation preference updated:
+                  value:
+                    ia::result:
+                      href: /services/preferences/advanced-consolidation
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a Advanced consolidation preferences
+      description: |-
+        Creates a new Advanced consolidation preferences for a company. A company can only create one consolidation 
+        preferences, i.e. This is a one-time task.
+      tags:
+        - Advanced consolidation
+      operationId: post-services-preferences.advanced-consolidation
+      requestBody:
+        description: Create Advanced consolidation preferences object
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.advanced-consolidation.s1.schema'
+                - $ref: '#/components/schemas/preferences.advanced-consolidationRequiredProperties'
+            examples:
+              Create a Advanced consolidation preferences:
+                value:
+                  notificationEmail: arpit.jain@sage.com
+                  consolidatingLocation:
+                    key: '19'
+                  minorityInterestGLAccounts:
+                    interestLiabilityGLAccount:
+                      key: '13'
+                    incomeOrExpenseGLAccount:
+                      key: '23'
+      responses:
+        '201':
+          description: Advanced consolidation preferences created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New Advanced consolidation preferences
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    preferences.advanced-consolidation:
+      $ref: '#/components/schemas/preferences.advanced-consolidation.s1.schema'
+    preferences.advanced-consolidationRequiredProperties:
+      type: object
+      required:
+        - notificationEmail
+        - consolidatingLocation
+        - minorityInterestGLAccounts - interestLiabilityGLAccount - incomeOrExpenseGLAccount
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    preferences.advanced-consolidation.s1.schema:
+      title: preferences.advanced-consolidation
+      x-mappedTo: cssetup
+      type: object
+      description: Service to get and update Advanced consolidation preferences
+      properties:
+        notificationEmail:
+          type: string
+          description: |-
+            Email address for the consolidation notifications. 
+            An email will be sent to this address upon completion of a successful or failed consolidation.
+          x-mappedTo: CONTACTEMAIL
+          nullable: false
+          example: arpit.jain@company.com
+        minorityInterestGLAccounts:
+          type: object
+          description: Minority interest GL accounts. Accounts to which you want minority interest amounts to be assigned.
+          properties:
+            incomeOrExpenseGLAccount:
+              type: object
+              description: The income or expense account for the minority interest GL.
+              x-object: gl-account
+              properties:
+                key:
+                  type: string
+                  description: System-assigned unique key for the Income or expense account
+                  nullable: false
+                  x-mappedTo: EQUITYACCTKEY
+                  example: '123'
+                id:
+                  type: string
+                  description: Unique ID for Income or expense account
+                  x-mappedTo: EQUITYACCTNO
+                  readOnly: true
+                  nullable: false
+                  example: '1000'
+                name:
+                  type: string
+                  description: Name or title of Income or expense account title
+                  x-mappedTo: EQUITYACCTTITLE
+                  readOnly: true
+                  nullable: false
+                  example: Bank of India
+                href:
+                  type: string
+                  description: URL of Income or expense account
+                  readOnly: true
+                  example: /objects/gl-account/9
+            interestLiabilityGLAccount:
+              type: object
+              description: The Interest liability account for the minority interest GL.
+              x-object: gl-account
+              properties:
+                key:
+                  type: string
+                  description: System-assigned unique key for the Liability account
+                  nullable: false
+                  x-mappedTo: LIABACCTKEY
+                  example: '123'
+                id:
+                  type: string
+                  description: Unique ID for Interest liability account
+                  x-mappedTo: LIABACCTNO
+                  readOnly: true
+                  nullable: false
+                  example: '1100'
+                name:
+                  type: string
+                  description: Name or title of Interest liability account
+                  x-mappedTo: LIABACCTTITLE
+                  readOnly: true
+                  nullable: false
+                  example: State Bank Of India
+                href:
+                  type: string
+                  description: URL of Interest liability account
+                  readOnly: true
+                  example: /objects/gl-account/12
+        consolidatingLocation:
+          type: object
+          description: The location to which the consolidated financial data is assigned.
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: System-assigned unique key for the location
+              nullable: false
+              x-mappedTo: LOCATIONKEY
+              example: '123'
+            id:
+              type: string
+              description: Unique identifier for the location
+              x-mappedTo: LOCATIONID
+              readOnly: true
+              nullable: false
+              example: '999'
+            name:
+              type: string
+              description: Name of the location
+              x-mappedTo: LOCATIONNAME
+              readOnly: true
+              nullable: false
+              example: India
+            href:
+              description: URL of consolidating location
+              type: string
+              readOnly: true
+              example: /objects/location/65
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

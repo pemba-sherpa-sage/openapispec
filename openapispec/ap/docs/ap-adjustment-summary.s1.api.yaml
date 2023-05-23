@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: ap-adjustment-summary
+  description: ap-adjustment-summary API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AP adjustment summaries
+    description: Summaries are collections of the same type of transactions grouped together for processing. An AP adjustment summary is a collection of AP adjustments.
+paths:
+  /objects/ap-adjustment-summary:
+    get:
+      summary: List AP adjustment summaries
+      description: Returns a collection with a key, ID, and link for each AP adjustment summary. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP adjustment summaries
+      operationId: get-objects-ap-adjustment-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: ap-adjustment-summary Collection
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ap-adjustment-summary/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AP adjustment summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AP adjustment summary
+      description: Returns detailed information for a specified AP adjustment summary.
+      tags:
+        - AP adjustment summaries
+      operationId: get-objects-ap-adjustment-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-adjustment-summary
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ap-adjustment-summary.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-adjustment-summary:
+      $ref: '#/components/schemas/ap-adjustment-summary.s1.schema'
+    ap-adjustment-summaryRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    ap-adjustment-summary.s1.schema:
+      title: ap-adjustment-summary
+      x-mappedTo: apadjustmentbatch
+      type: object
+      description: Summaries are collections of the same type of transactions grouped together for processing. An AP adjustment summary is a collection of AP adjustments.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AP adjustment summary.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Identifier for the AP adjustment summary.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        name:
+          type: string
+          description: Name of the AP adjustment summary.
+          x-mappedTo: TITLE
+        postingDate:
+          type: string
+          description: Date the AP adjustment summary was created.
+          x-mappedTo: CREATED
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        total:
+          type: string
+          description: Total amount of all AP adjustments in the summary.
+          x-mappedTo: TOTAL
+        state:
+          type: string
+          description: State of the AP adjustment summary, which can be `open` or `closed`.
+          x-mappedTo: OPEN
+          enum:
+            - open
+            - closed
+          x-mappedToValues:
+            - Open
+            - Closed
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

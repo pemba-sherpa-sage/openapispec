@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  title: bin-face
+  description: bin-face API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Bin faces
+    description: A bin face is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find within the warehouse.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/bin-face:
+    get:
+      summary: List bin faces
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each bin face. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bin Faces
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin faces
+      operationId: get-objects-bin-face
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bin-face objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bin faces:
+                  value:
+                    'ia::result':
+                      - key: '12'
+                        id: BF11
+                        href: /objects/bin-face/12
+                      - key: '14'
+                        id: BF22
+                        href: /objects/bin-face/14
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bin face
+      description: Creates a new bin face.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Bin Faces
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin faces
+      operationId: post-objects-bin-face
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin-face'
+                - $ref: '#/components/schemas/bin-faceRequiredProperties'
+            examples:
+              Create a bin face:
+                value:
+                  id: BF2
+                  description: Bin Face 2
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bin-face
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a bin face:
+                  value:
+                    'ia::result':
+                      key: '22'
+                      id: BF2
+                      href: /objects/bin-face/22
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/bin-face/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '1232'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the bin-face.
+    get:
+      summary: Get a bin face
+      description: Returns detailed information for a specified bin face.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bin Faces
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin faces
+      operationId: get-objects-bin-face-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bin-face
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bin-face'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a bin face:
+                  value:
+                    'ia::result':
+                      key: '1232'
+                      id: BF123
+                      description: Bin Face 123
+                      audit:
+                        createdDateTime: '2021-05-07T01:15:23Z'
+                        modifiedDateTime: '2021-05-07T01:15:23Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                      href: /objects/bin-face/1232
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a bin face
+      description: Updates an existing bin face by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Bin Faces
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin faces
+      operationId: patch-objects-bin-face-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin-face'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Bin Face 1-updated
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bin-face
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '1232'
+                      id: BF123
+                      href: /objects/bin-face/1232
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bin face
+      description: Deletes a bin face.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Bin Faces
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bin faces
+      operationId: delete-objects-bin-face-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bin-face:
+      $ref: ../models/bin-face.s1.schema.yaml
+    bin-faceRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

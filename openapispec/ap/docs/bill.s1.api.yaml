@@ -1,0 +1,2086 @@
+openapi: 3.0.0
+info:
+  title: bill
+  description: bill API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Bills
+    description: |
+      A bill is a statement of charges for money owed to a vendor for goods or services. After creating a bill, you can move it along the normal Accounts Payable (AP) workflow. For example, that might mean approving the bill, creating a payment request for the bill, and paying the bill.
+paths:
+  /objects/bill/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the bill.
+    get:
+      summary: Get a bill
+      description: Returns detailed information for a specified bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View Bills
+      tags:
+        - Bills
+      operationId: get-objects-bill-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bill
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/bill.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a bill:
+                  value:
+                    ia::result:
+                      key: '63'
+                      id: '63'
+                      recordType: pi
+                      billNumber: bill_withtax_retainage
+                      state: noValue
+                      vendor:
+                        id: V-00014
+                        name: Pac bell
+                        form1099:
+                          type: NEC
+                          box: 15A
+                          vendorTypeForm1099Type: NEC
+                        vendorDue: -334
+                      referenceNumber: Ref-123
+                      description: This bill contains both tax and retainage.
+                      purchasing:
+                        documentId: Vendor Invoice-root-VI#0031#doc
+                      term:
+                        id: N0
+                        key: '21'
+                        href: /objects/ap-term/21
+                      createdDate: '2022-02-21'
+                      audit:
+                        createdDateTime: '2022-02-21T00:00:00Z'
+                        modifiedDateTime: '2022-02-22T07:59:56Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      postingDate: '2022-02-21'
+                      discountCutoffDate: '2022-02-21'
+                      dueDate: '2022-03-08'
+                      paymentInformation:
+                        fullyPaidDate: '2022-02-21'
+                        totalBaseAmountSelectedForPayment: 0
+                        totalBaseAmountPaid: 0
+                        totalTxnAmountSelectedForPayment: 0
+                        totalTxnAmountPaid: 0
+                      recommendedPaymentDate: '2022-02-26'
+                      paymentPriority: normal
+                      isOnHold: false
+                      currency:
+                        baseCurrency: GBP
+                        txnCurrency: GBP
+                        exchangeRate:
+                          date: '2022-02-21'
+                          typeId: '-1'
+                          rate: 1.0789
+                      totalBaseAmount: 0
+                      totalBaseAmountDue: 0
+                      totalTxnAmount: 0
+                      totalTxnAmountDue: 0
+                      contacts:
+                        payTo:
+                          id: Klay Vanderbilt
+                          key: '226'
+                          tax:
+                            group:
+                              key: '288'
+                              id: Goods Zero Rate - CA
+                            taxId: 252-85-7897
+                          href: /objects/contact/226
+                        returnTo:
+                          id: Yusuf Pringle
+                          key: '226'
+                          href: /objects/contact/226
+                      billSummary:
+                        name: 'AP Purchase Invoices: 2022/02/21 Batch'
+                        key: '280'
+                        id: '66'
+                        isSummaryOpen: open
+                        isSummaryPosted: 'false'
+                        href: /objects/bill-summary/280
+                      recurringSchedule:
+                        key: '20'
+                      isSystemGenerated: F
+                      dueInDays: '8'
+                      isTaxInclusive: true
+                      taxSolution:
+                        key: '2'
+                        id: Australia - GST
+                        showMultiLineTax: true
+                        method: VAT
+                        href: /objects/tax-solution/2
+                      retainage:
+                        defaultPercentage: 2
+                        totalTxnAmountRetained: 0
+                        totalTxnAmountReleased: 0
+                        totalBaseAmountRetained: 0
+                      attachment:
+                        key: '18'
+                        id: Attach-01
+                        href: /objects/attachment/18
+                      smartTransactions:
+                        documentSource: email
+                        fileUpload:
+                          importExceptions: resolve
+                          importIssuesErrorMessage: The vendor A100 is invalid
+                        email:
+                          recipientEmail: joe.smith@abcompany.com
+                          senderEmail: john.doe@acme.com
+                      sourceModule: accountsPayable
+                      location:
+                        key: '4'
+                      lines:
+                        - id: '181'
+                          key: '181'
+                          bill:
+                            id: '63'
+                            key: '63'
+                            href: /objects/bill/63
+                          glAccount:
+                            key: '245'
+                            id: '6000'
+                            name: G&A Salaries
+                            href: /objects/gl-account/245
+                          overriddenOffsetGLAccount:
+                            key: '384'
+                            id: '1234.34'
+                            name: AP ACCOUNT
+                            href: /objects/gl-account/384
+                          accountLabel:
+                            key: '14'
+                            id: Accounting Fees
+                          createdDate: '2022-02-21'
+                          baseAmount: -5
+                          txnAmount: -5
+                          dimensions:
+                            department:
+                              key: '9'
+                              id: '11'
+                              name: Accounting
+                            location:
+                              key: '4'
+                              id: '4'
+                              name: Australia
+                              href: /objects/location/4
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                          baselocation:
+                            name: Australia
+                            key: '4'
+                            href: /objects/location/4
+                          memo: this bill contains both tax and retainage
+                          currency:
+                            exchangeRate:
+                              date: '2021-01-23'
+                              typeId: '1'
+                              rate: 1.0789
+                            txnCurrency: GBP
+                            baseCurrency: GBP
+                          allocation:
+                            name: Alloc1-WBS-US
+                            key: '1'
+                            id: 1
+                          hasForm1099: 'false'
+                          lineNumber: 1
+                          paymentInformation:
+                            totalBaseAmountPaid: -5
+                            totalTxnAmountPaid: -5
+                            totalBaseAmountSelectedForPayment: 0
+                            totalTxnAmountSelectedForPayment: 0
+                          project:
+                            isBillable: false
+                            billed: false
+                          releaseToPay: false
+                          tax:
+                            parentEntryKey: 288
+                            parentTaxEntryKey: 289
+                            isPartialExemption: false
+                          state: A
+                          form1099:
+                            type: NEC
+                            box: A
+                          purchasing:
+                            taxDetail:
+                              id: Stationary Tax
+                              key: '15'
+                            document:
+                              key: '2437'
+                              id: Sales Invoice-INV0110
+                            documentLine:
+                              key: '3'
+                              id: '750'
+                          retainage:
+                            percentage: 2
+                            txnAmountRetained: 10
+                            baseAmountRetained: 10
+                            hasRetainage: true
+                            txnAmountReleased: 5
+                            release: true
+                          isSubTotal: subtotal
+                          href: /objects/bill-line/181
+                      href: /objects/bill/63
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bill
+      description: |
+        Deletes a bill. You can only delete a bill that's in a Posted, Draft, or Declined state. For partially paid bills, first cancel the payment request, which changes the bill's state to Posted. Bills in an Approved state can only be deleted if no payment has been made against them.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, Delete Bills
+      tags:
+        - Bills
+      operationId: delete-objects-bill-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a bill
+      description: Updates an existing bill by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Bills
+      tags:
+        - Bills
+      operationId: patch-objects-bill-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  billNumber: bill10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bill
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a single value:
+                  value:
+                    ia::result:
+                      key: '63'
+                      id: '198376'
+                      href: /objects/bill/63
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/bill:
+    get:
+      summary: List bills
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each bill. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List Bills
+      tags:
+        - Bills
+      operationId: get-objects-bill
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bill objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List bills:
+                  value:
+                    ia::result:
+                      - key: '299'
+                        id: '299'
+                        href: /objects/bill/299
+                      - key: '294'
+                        id: '294'
+                        href: /objects/bill/294
+                      - key: '295'
+                        id: '295'
+                        href: /objects/bill/295
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bill
+      description: |
+        Creates a new bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Add Bills
+      tags:
+        - Bills
+      operationId: post-objects-bill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill.s1.schema'
+                - $ref: '#/components/schemas/billRequiredProperties'
+            examples:
+              Create a bill:
+                value:
+                  billNumber: Bill-001
+                  vendor:
+                    id: 1099 Int
+                  referenceNumber: Ref-123
+                  description: bill - 001 - vendor 1099
+                  term:
+                    id: N15
+                  createdDate: '2022-02-21'
+                  postingDate: '2022-02-21'
+                  discountCutoffDate: '2022-02-21'
+                  dueDate: '2022-03-08'
+                  recommendedPaymentDate: '2022-02-26'
+                  paymentPriority: normal
+                  isOnHold: false
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                    exchangeRate:
+                      date: '2022-02-21'
+                      typeId: '-1'
+                      rate: 1.0679
+                  contacts:
+                    payTo:
+                      id: 1099 Int
+                    returnTo:
+                      id: 1099 Int
+                  isTaxInclusive: false
+                  attachment:
+                    id: '10'
+                  lines:
+                    - glAccount:
+                        id: '6000'
+                      txnAmount: 5
+                      location:
+                        id: '1'
+                      description: bill - 001 - vendor 1099
+                      form1099:
+                        hasForm1099: false
+                      isBillable: false
+                      isPartialExemption: false
+                    - glAccount:
+                        id: '6002'
+                      txnAmount: 15
+                      location:
+                        id: '1'
+                      description: bill - 001 - vendor 1099
+                      form1099:
+                        hasForm1099: false
+                      isBillable: false
+                      isPartialExemption: false
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bill
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create a bill:
+                  value:
+                    ia::result:
+                      key: '299'
+                      id: '299'
+                      href: /objects/bill/299
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bill:
+      $ref: '#/components/schemas/bill.s1.schema'
+    billRequiredProperties:
+      type: object
+      required:
+        - postingDate
+        - dueDate
+        - vendor
+        - lines
+    locationref.s1.schema:
+      title: locationref
+      type: object
+      x-object: location
+      properties:
+        key:
+          type: string
+          description: Location Key
+          x-mappedTo: LOCATIONKEY
+          example: '1'
+        id:
+          type: string
+          description: Location
+          x-mappedTo: LOCATION
+          example: US
+        name:
+          type: string
+          description: Location Name
+          readOnly: true
+          x-mappedTo: LOCATIONNAME
+          example: United States of America
+        href:
+          type: string
+          example: /objects/location/1
+          readOnly: true
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    bill-line.s1.schema:
+      title: bill-line
+      x-mappedTo: apbillitem
+      x-ownedBy: bill
+      type: object
+      description: Line items for an Accounts Payable (AP) bill.
+      properties:
+        id:
+          type: string
+          description: System-assigned ID for the line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '62'
+        key:
+          type: string
+          description: System-assigned key for the line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '62'
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINE_NO
+          readOnly: true
+          example: 1
+        hasForm1099:
+          type: string
+          description: |
+            If the vendor is set up for 1099 tracking and enabled for 1009 flag override, you can set to `true` to enable individual line items for 1099 treatment. If `false`, this line item does not have associated 1099 form type and box values.
+          x-mappedTo: FORM1099
+          example: 'false'
+        form1099:
+          type: object
+          description: Form 1099 information for the line item.
+          title: Form1099
+          properties:
+            type:
+              type: string
+              description: |
+                Type of form 1099.
+              x-mappedTo: FORM1099TYPE
+              example: NEC
+            box:
+              type: string
+              description: |
+                Box value of form 1099.
+              x-mappedTo: FORM1099BOX
+              example: 15A
+        state:
+          type: string
+          description: System-assigned state of the line item.
+          x-mappedTo: STATE
+          readOnly: true
+          example: A
+        createdDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Created Date
+          x-mappedTo: ENTRY_DATE
+          readOnly: true
+        glAccount:
+          type: object
+          description: General Ledger (GL) account associated with the line item.
+          x-object: gl-account
+          x-mappedTo: glaccount
+          title: account
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: ACCOUNTKEY
+              example: '256'
+            id:
+              type: string
+              description: User-assigned number for the GL account.
+              x-mappedTo: ACCOUNTNO
+              example: '6252'
+            name:
+              type: string
+              description: Name of the GL account.
+              x-mappedTo: ACCOUNTTITLE
+              readOnly: true
+              example: Entertainment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/256
+        overriddenOffsetGLAccount:
+          type: object
+          description: An alternative AP account to override the default GL AP account for the bill.
+          x-object: gl-account
+          x-mappedTo: glaccount
+          title: overriddenOffsetAccount
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the account.
+              x-mappedTo: OFFSETACCOUNTKEY
+              example: '384'
+            id:
+              type: string
+              description: Offset account number.
+              x-mappedTo: OFFSETGLACCOUNTNO
+              example: '1234.36'
+            name:
+              type: string
+              description: Offset account name.
+              x-mappedTo: OFFSETGLACCOUNTTITLE
+              readOnly: true
+              example: AP ACCOUNT
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/384
+        accountLabel:
+          type: object
+          description: Meaningful name of AP account.
+          x-object: ap-account-label
+          x-mappedTo: accountlabel
+          title: accountLabel
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the account label.
+              x-mappedTo: ACCOUNTLABELKEY
+              example: '14'
+            id:
+              type: string
+              description: Meaningful name of the account.
+              x-mappedTo: ACCOUNTLABEL
+              example: Accounting Fees
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ap-account-label/14
+        baseAmount:
+          type: number
+          description: Amount for the line item in your company's base currency, which is calculated based on the exchange rate defined in the header.
+          x-mappedTo: AMOUNT
+          readOnly: true
+          example: 100
+        txnAmount:
+          type: number
+          description: For multi-currency companies, provide a transaction amount, which is the amount in the transaction currency.
+          x-mappedTo: TRX_AMOUNT
+          example: 100
+        memo:
+          type: string
+          description: Memo about the line item.
+          x-mappedTo: ENTRYDESCRIPTION
+          example: Service charges
+        allocation:
+          type: object
+          description: Transaction allocation template for the line item, which distributes the bill amount across specified dimensions.
+          title: allocation
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: '1'
+            id:
+              type: integer
+              description: System-assigned ID for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: 1
+            name:
+              type: string
+              description: Identifier of the allocation.
+              x-mappedTo: ALLOCATION
+              readOnly: true
+              example: Alloc1-WBS-US
+        currency:
+          type: object
+          description: Currency details for the bill.
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: Base currency for the company.
+              x-mappedTo: BASECURR
+              readOnly: true
+              example: USD
+            txnCurrency:
+              type: string
+              description: Transaction currency for the bill.
+              x-mappedTo: CURRENCY
+              readOnly: true
+              example: GBP
+            exchangeRate:
+              type: object
+              title: exchangeRate
+              description: Exchange rate details used to calculate the base amount.
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: '2021-01-23'
+                  description: Exchange rate date used to calculate the base amount from the transaction amount.
+                  x-mappedTo: EXCH_RATE_DATE
+                  readOnly: true
+                rate:
+                  type: number
+                  description: Exchange rate used to calculate the base amount from the transaction amount.
+                  x-mappedTo: EXCHANGE_RATE
+                  readOnly: true
+                  example: 1.0789
+                typeId:
+                  type: string
+                  description: Exchange rate type used to calculate the base amount from the transaction amount.
+                  x-mappedTo: EXCH_RATE_TYPE_ID
+                  readOnly: true
+                  example: '-1'
+        paymentInformation:
+          type: object
+          title: paymentInformation
+          description: Payment information for the line item.
+          properties:
+            totalBaseAmountPaid:
+              type: number
+              description: Total base amount that was paid.
+              x-mappedTo: TOTALPAID
+              readOnly: true
+              example: 100
+            totalTxnAmountPaid:
+              type: number
+              description: Total transaction amount that was paid.
+              x-mappedTo: TRX_TOTALPAID
+              readOnly: true
+              example: 100
+            totalBaseAmountSelectedForPayment:
+              type: number
+              description: Total base amount selected for the payment.
+              x-mappedTo: TOTALSELECTED
+              readOnly: true
+              example: 100
+            totalTxnAmountSelectedForPayment:
+              type: number
+              description: Total transaction amount selected for the payment.
+              x-mappedTo: TRX_TOTALSELECTED
+              readOnly: true
+              example: 100
+        releaseToPay:
+          type: boolean
+          description: |
+            If `true`, then this  line item is available for the payment.
+          x-mappedTo: RELEASETOPAY
+          x-mappedToType: string
+          example: true
+          default: false
+        isSubTotal:
+          type: string
+          description: |
+            If set to `S`, this is a subtotal. If set to'T', this is tax.
+          x-mappedTo: SUBTOTAL
+          enum:
+            - subtotal
+            - tax
+          x-mappedToValues:
+            - S
+            - T
+          readOnly: true
+          example: subtotal
+        baselocation:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/locationref.s1.schema'
+            - type: object
+              properties:
+                key:
+                  type: string
+                  description: Base location key.
+                  x-mappedTo: BASELOCATION
+                  example: '4'
+        retainage:
+          type: object
+          description: Retainage information for the line item. (For Construction subscriptions only.) Retainage is a portion of the agreed upon contract price withheld until the work is substantially complete.
+          title: retainage
+          properties:
+            hasRetainage:
+              type: boolean
+              description: If `true`, retainage applies to the line item.
+              x-mappedTo: HASRETAINAGE
+              readOnly: true
+              example: true
+              default: false
+            percentage:
+              type: number
+              description: Retainage percentage for the line item.
+              x-mappedTo: RETAINAGEPERCENTAGE
+              readOnly: true
+              example: 2
+            baseAmountRetained:
+              type: number
+              description: Base amount retained for the line item.
+              x-mappedTo: AMOUNTRETAINED
+              readOnly: true
+              example: 20
+            txnAmountRetained:
+              type: number
+              description: Transaction amount retained for the line item.
+              x-mappedTo: TRX_AMOUNTRETAINED
+              readOnly: true
+              example: 20
+            txnAmountReleased:
+              type: number
+              description: Transaciton amount released for the line item.
+              x-mappedTo: TRX_AMOUNTRELEASED
+              readOnly: true
+              example: 10
+            release:
+              type: boolean
+              description: Indicates whether retainage is released to pay.
+              x-mappedTo: RETAINAGERELEASED
+              x-mappedToType: string
+              readOnly: true
+              example: true
+              default: false
+        project:
+          type: object
+          title: project
+          description: Project-related information for the line item.
+          properties:
+            isBillable:
+              type: boolean
+              description: Indicates whether the line item is marked as billable.
+              x-mappedTo: BILLABLE
+              x-mappedToType: string
+              example: true
+              default: false
+            isBilled:
+              type: boolean
+              description: Indicates whether the line item is billed.
+              x-mappedTo: BILLED
+              x-mappedToType: string
+              readOnly: true
+              example: true
+              default: false
+        purchasing:
+          type: object
+          title: purchasing
+          description: Purchasing information for the line item.
+          properties:
+            taxDetail:
+              type: object
+              description: Tax details from the purchasing module.
+              x-object: purchasing-tax-detail
+              x-mappedTo: taxdetail
+              title: purchasingTaxDetail
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the tax detail.
+                  x-mappedTo: DETAILKEY
+                  example: '15'
+                id:
+                  type: string
+                  description: Identifier of the tax detail.
+                  x-mappedTo: DETAILID
+                  example: Stationary Tax
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/purchasing-tax-detail/15
+            document:
+              type: object
+              x-object: purchasing-document
+              x-mappedTo: primarydoc
+              title: purchasingDocument
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key of the primary purchasing document.
+                  x-mappedTo: PRIMARYDOCKEY
+                  example: '2437'
+                id:
+                  type: string
+                  description: User assigned document number.
+                  x-mappedTo: PRIMARYDOCNO
+                  example: Sales Invoice-INV0110
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/purchasing-document/15
+            documentLine:
+              type: object
+              description: Line details for the purchasing document.
+              x-object: purchasing-document-line
+              x-mappedTo: primarydocline
+              title: purchasingDocumentLine
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the line in the primary document.
+                  x-mappedTo: PRIMARYDOCLINEKEY
+                  example: '750'
+                id:
+                  type: string
+                  description: Number of the line in the primary document.
+                  x-mappedTo: PRIMARYDOCLINENO
+                  example: '3'
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/purchasing-document-line/750
+        tax:
+          type: object
+          title: tax
+          description: Tax details for the line entry.
+          properties:
+            parentEntryKey:
+              type: number
+              description: System-assigned key of the user input line, which is the parent of the tax line entries.
+              x-mappedTo: PARENTENTRY
+              readOnly: true
+              example: 468
+            parentTaxEntryKey:
+              type: number
+              description: System-assigned key of the tax line entry that is the parent of additional tax entries.
+              x-mappedTo: PARENTTAXENTRY
+              readOnly: true
+              example: 469
+            isPartialExemption:
+              type: boolean
+              description: |
+                If `true`, this entry is eligible for partial exemption, which separates the recoverable and non-recoverable portions of the input value added tax (VAT).
+              x-mappedTo: PARTIALEXEMPT
+              x-mappedToType: string
+              example: true
+              default: false
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                location:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+                  x-object: location
+                  x-mappedTo: location
+                  title: location
+                  properties:
+                    key:
+                      type: string
+                      description: System-assigned key for the location.
+                      x-mappedTo: LOCATION#
+                      readOnly: true
+                      example: '4'
+                    id:
+                      type: string
+                      description: Unique identifier of the location.
+                      x-mappedTo: LOCATIONID
+                      example: AU
+                    name:
+                      type: string
+                      description: Name of the location.
+                      x-mappedTo: LOCATIONNAME
+                      readOnly: true
+                      example: Australia
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/location/4
+                department:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+                  x-object: department
+                  x-mappedTo: department
+                  title: department
+                  properties:
+                    key:
+                      type: string
+                      description: System-assigned key for the department.
+                      x-mappedTo: DEPT#
+                      readOnly: true
+                      example: '9'
+                    id:
+                      type: string
+                      description: Unique identifier of the department.
+                      x-mappedTo: DEPARTMENTID
+                      example: '01'
+                    name:
+                      type: string
+                      description: Name of the department.
+                      x-mappedTo: DEPARTMENTNAME
+                      readOnly: true
+                      example: Accounting
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/department/9
+        bill:
+          title: billref
+          type: object
+          description: Header level details for the bill's line entries.
+          x-mappedTo: apbill
+          x-object: bill
+          properties:
+            id:
+              type: string
+              description: System-assigned ID for the bill.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+              example: '19876'
+            key:
+              type: string
+              description: System-assigned key for the bill.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+              example: '19876'
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    bill.s1.schema:
+      title: bill
+      x-mappedTo: apbill
+      type: object
+      description: Bill
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the bill.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '986'
+        id:
+          type: string
+          description: System-assigned ID for the bill.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '986'
+        billNumber:
+          type: string
+          description: |
+            Vendor-assigned identifier for the bill.
+            This is the vendor-assigned number provided on the bill. This number is unique and can be used to look up bill details.
+            You must specify a bill number when creating a bill unless document sequencing is configured, in which case the number is auto-generated.
+          x-mappedTo: RECORDID
+          example: Bill-001
+        state:
+          type: string
+          description: |
+            A bill's state shows the current status of the bill within the workflow. For details about each state, see [Bill state descriptions](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Payable/Bills/bill-state-descriptions.htm).
+          enum:
+            - reversed
+            - reversal
+            - analyzing
+            - partiallyApproved
+            - submitted
+            - declined
+            - noValue
+            - posted
+            - paid
+            - partiallyPaid
+            - selected
+          x-mappedToValues:
+            - Reversed
+            - Reversal
+            - Analyzing
+            - Partially Approved
+            - Submitted
+            - Declined
+            - No Value
+            - Posted
+            - Paid
+            - Partially Paid
+            - Selected
+          x-mappedTo: STATE
+          example: posted
+          readOnly: true
+        recordType:
+          type: string
+          description: The record type for the bill. Accounts Payable bills are record type `pi`.
+          x-mappedTo: RECORDTYPE
+          readOnly: true
+          example: pi
+        vendor:
+          type: object
+          x-object: vendor
+          x-mappedTo: vendor
+          title: vendor
+          description: Vendor to which this bill is linked.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the vendor.
+              x-mappedTo: VENDORKEY
+              readOnly: true
+              example: '15'
+            id:
+              type: string
+              description: Unique identifier of the vendor.
+              x-mappedTo: VENDORID
+              example: V-00014
+            name:
+              type: string
+              description: Name of the vendor.
+              x-mappedTo: VENDORNAME
+              readOnly: true
+              example: Pac bell
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/15
+            vendorDue:
+              type: number
+              description: Total transaction amount due for the vendor.
+              x-mappedTo: TRX_ENTITYDUE
+              readOnly: true
+              example: 100
+            form1099:
+              type: object
+              description: Form 1099 information for the vendor.
+              title: Form1099
+              properties:
+                type:
+                  type: string
+                  description: |
+                    Type of 1099 form for the vendor.
+                  x-mappedTo: FORM1099TYPE
+                  readOnly: true
+                  example: NEC
+                box:
+                  type: string
+                  description: |
+                    Box number for form 1099.
+                  x-mappedTo: FORM1099BOX
+                  readOnly: true
+                  example: 15A
+                vendorTypeForm1099Type:
+                  type: string
+                  description: |
+                    Type of 1099 form for the vendor.
+                  x-mappedTo: VENDTYPE1099TYPE
+                  readOnly: true
+                  example: MISC
+        term:
+          type: object
+          x-object: ap-term
+          x-mappedTo: apterm
+          title: term
+          description: Term details for the bill.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the term.
+              x-mappedTo: TERMKEY
+              example: '16'
+            id:
+              type: string
+              description: Name of the term.
+              x-mappedTo: TERMNAME
+              example: Net 75
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ap-term/16
+        referenceNumber:
+          type: string
+          description: This is a number such as a purchase order or account number that might be useful in searches or reports. This number shows on the GL Details report and prints on the check and vendor Stubs.
+          x-mappedTo: DOCNUMBER
+          example: INV-902852
+        description:
+          type: string
+          description: Additional information about the bill.
+          x-mappedTo: DESCRIPTION
+          example: Annual maintenance charge
+        dueInDays:
+          type: string
+          description: Number of days until due date for the bill.
+          x-mappedTo: DUE_IN_DAYS
+          readOnly: true
+          example: '8'
+        postingDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: GL Posting date of the bill.
+          x-mappedTo: WHENPOSTED
+        discountCutoffDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date after which the discount for the bill is no longer valid.
+          x-mappedTo: WHENDISCOUNT
+        dueDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Due date for the bill.
+          x-mappedTo: WHENDUE
+        recommendedPaymentDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: |
+            Recommended payment date for the bill. If a Default bill payment date is set on the vendor record, Intacct calculates the recommended payment date.
+            You can override the calculated date or, if there is no Default payment date for the vendor, provide a date when you create a bill. 
+          x-mappedTo: RECPAYMENTDATE
+        createdDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date that the bill was created.
+          x-mappedTo: WHENCREATED
+        isOnHold:
+          type: boolean
+          description: Set to `true` to place this bill on hold.
+          x-mappedTo: ONHOLD
+          x-mappedToType: string
+          example: false
+          default: false
+        isTaxInclusive:
+          type: boolean
+          description: Set to `true` if bill amounts already include taxes.
+          x-mappedTo: INCLUSIVETAX
+          x-mappedToType: string
+          example: false
+          default: false
+        paymentPriority:
+          type: string
+          enum:
+            - urgent
+            - high
+            - normal
+            - low
+          x-mappedToValues:
+            - urgent
+            - high
+            - normal
+            - low
+          description: |
+            The payment priority for this bill, which enables you to easily identify and pay the most urgent bills first.
+          x-mappedTo: PAYMENTPRIORITY
+          example: urgent
+        totalBaseAmount:
+          type: number
+          description: Total base amount calculated for the bill. For multi-currency companies, Intacct calculates this amount in your company's base currency by applying the exchange rate to the total transaction amount.
+          x-mappedTo: TOTALENTERED
+          readOnly: true
+          example: 100
+        totalBaseAmountDue:
+          type: number
+          description: For multi-currency companies, the total amount due for the bill in your company's base currency.
+          x-mappedTo: TOTALDUE
+          readOnly: true
+          example: 10
+        totalTxnAmount:
+          type: number
+          description: Total transaction amount of the bill.
+          x-mappedTo: TRX_TOTALENTERED
+          readOnly: true
+          example: 100
+        totalTxnAmountDue:
+          type: number
+          description: Total amount due for the bill.
+          x-mappedTo: TRX_TOTALDUE
+          readOnly: true
+          example: 10
+        isSystemGenerated:
+          type: string
+          readOnly: true
+          description: |
+            If `T`, then this bill record is created by the system internally and not created based on user input.
+          x-mappedTo: SYSTEMGENERATED
+          example: F
+          default: F
+        purchasing:
+          type: object
+          title: purchasing
+          properties:
+            documentId:
+              type: string
+              description: Document ID of the vendor invoice.
+              x-mappedTo: DESCRIPTION2
+              example: Vendor Invoice-root-VI#0031#doc
+        recurringSchedule:
+          type: object
+          description: Recurring schedule used to automate the billing process.
+          title: recurring schedule
+          properties:
+            key:
+              type: string
+              description: System-assigned key to uniquely identify the recurring schedule.
+              x-mappedTo: SCHOPKEY
+              readOnly: true
+              example: '20'
+        contacts:
+          type: object
+          title: contacts
+          properties:
+            payTo:
+              type: object
+              description: Pay to contact information from the vendor record.
+              title: payTo
+              x-object: contact
+              x-mappedTo: paytocontact
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key to uniquely identify the contact.
+                  x-mappedTo: BILLTOPAYTOKEY
+                  example: '416'
+                id:
+                  type: string
+                  description: Name of the contact.
+                  x-mappedTo: BILLTOPAYTOCONTACTNAME
+                  example: Klay Vanderbilt
+                tax:
+                  type: object
+                  title: tax
+                  description: Tax related information for the pay to contact.
+                  properties:
+                    taxId:
+                      type: string
+                      description: Tax Identification Number
+                      x-mappedTo: PAYTO.TAXGROUP.TAXID
+                      x-mappedToType: string
+                      example: 252-85-7897
+                    group:
+                      type: object
+                      description: Contact tax group associated with the pay to contact.
+                      x-object: contact-tax-group
+                      x-mappedTo: payto.taxgroup
+                      properties:
+                        key:
+                          type: string
+                          x-mappedTo: PAYTO.TAXGROUP.RECORDNO
+                          example: '288'
+                        id:
+                          type: string
+                          x-mappedTo: PAYTO.TAXGROUP.NAME
+                          example: Goods Zero Rate - CA
+                        href:
+                          type: string
+                          readOnly: true
+                          example: /objects/contact-tax-group/288
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/416
+            returnTo:
+              type: object
+              description: Return to contact information from the vendor record.
+              title: returnTo
+              x-object: contact
+              x-mappedTo: returntocontact
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key to uniquely identify the contact.
+                  x-mappedTo: SHIPTORETURNTOKEY
+                  example: '416'
+                id:
+                  type: string
+                  description: Name of the contact
+                  x-mappedTo: SHIPTORETURNTOCONTACTNAME
+                  example: Yusuf Pringle
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/416
+        currency:
+          type: object
+          description: Currency details for this bill.
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: Base currency for your company.
+              x-mappedTo: BASECURR
+              example: USD
+            txnCurrency:
+              type: string
+              description: The transaction currency to use for this bill. If this currency is different from the base currency, provide an exchange rate.
+              x-mappedTo: CURRENCY
+              example: USD
+            exchangeRate:
+              type: object
+              description: Exchange rate details used to calculate the base amount.
+              title: exchangeRate
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: '2021-01-23'
+                  description: Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.
+                  x-mappedTo: EXCH_RATE_DATE
+                rate:
+                  type: number
+                  description: Exchange rate used to calculate the base amount from the transaction amount.
+                  x-mappedTo: EXCHANGE_RATE
+                  example: 1.0789
+                typeId:
+                  type: string
+                  description: Exchange rate type used to calculate the base amount from the transaction amount.
+                  x-mappedTo: EXCH_RATE_TYPE_ID
+                  example: '1'
+        taxSolution:
+          type: object
+          description: Tax solution details for this bill.
+          x-object: tax-solution
+          x-mappedTo: taxsolution
+          title: tax-solution
+          properties:
+            key:
+              type: string
+              description: System-assigned key to uniquely identify the tax solution.
+              x-mappedTo: TAXSOLUTIONKEY
+              example: '4'
+            id:
+              type: string
+              description: Name or other unique identifier for the tax solution.
+              x-mappedTo: TAXSOLUTIONID
+              example: Australia GST
+            showMultiLineTax:
+              type: boolean
+              description: Set to `true` to enable multiple taxes per line.
+              x-mappedTo: SHOWMULTILINETAX
+              x-mappedToType: string
+              default: false
+              example: true
+            method:
+              type: string
+              description: Tax method used in this bill.
+              x-mappedTo: TAXMETHOD
+              example: VAT
+            href:
+              type: string
+              readOnly: true
+              example: /objects/tax-solution/4
+        billSummary:
+          type: object
+          description: Summary details for this bill. Summaries are collections of the same types of transactions grouped together for processing.
+          x-object: bill-summary
+          x-mappedTo: apbillbatch
+          title: billSummary
+          properties:
+            key:
+              type: string
+              description: System-assigned key to uniquely identify the summary.
+              x-mappedTo: PRBATCHKEY
+              example: '280'
+            id:
+              type: string
+              description: System-assigned ID for the summary.
+              x-mappedTo: PRBATCHKEY
+              example: '280'
+            name:
+              type: string
+              description: Name of the summary.
+              x-mappedTo: PRBATCH
+              readOnly: true
+              example: 'Bills: 2022/01/01 Batch'
+            isSummaryOpen:
+              type: string
+              description: A summary can be open or closed. Items, such as invoices, can be added to open summaries.
+              x-mappedTo: PRBATCH_OPEN
+              enum:
+                - open
+                - closed
+              x-mappedToValues:
+                - Open
+                - Closed
+              example: open
+              readOnly: true
+            isSummaryPosted:
+              type: string
+              description: If `true`, the summary has been posted to the General Ledger.
+              x-mappedTo: PRBATCH_NOGL
+              readOnly: true
+              example: 'false'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/bill-summary/280
+        sourceModule:
+          type: string
+          description: Source module for the bill.
+          x-mappedTo: SOURCEMODULE
+          enum:
+            - accountsPayable
+            - purchasing
+          x-mappedToValues:
+            - AccountsPayable
+            - Purchasing
+          example: purchasing
+          readOnly: true
+        paymentInformation:
+          type: object
+          title: paymentInformation
+          description: Payment information for the bill.
+          properties:
+            fullyPaidDate:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Date on which the bill was fully paid.
+              x-mappedTo: WHENPAID
+            totalBaseAmountPaid:
+              type: number
+              description: Total base amount that was paid.
+              x-mappedTo: TOTALPAID
+              readOnly: true
+              example: 100
+            totalBaseAmountSelectedForPayment:
+              type: number
+              description: Total base amount selected for the payment.
+              x-mappedTo: TOTALSELECTED
+              readOnly: true
+              example: 100
+            totalTxnAmountSelectedForPayment:
+              type: number
+              description: Total transaction amount selected for the payment.
+              x-mappedTo: TRX_TOTALSELECTED
+              readOnly: true
+              example: 100
+            totalTxnAmountPaid:
+              type: number
+              description: Total transaction amount that was paid.
+              x-mappedTo: TRX_TOTALPAID
+              readOnly: true
+              example: 100
+        retainage:
+          type: object
+          title: retainage
+          description: Retainage information for the bill. (For Construction subscriptions only.) Retainage is a portion of the agreed upon contract price withheld until the work is substantially complete.
+          properties:
+            defaultPercentage:
+              type: number
+              description: Default retainage percentage for the customer.
+              x-mappedTo: RETAINAGEPERCENTAGE
+              readOnly: true
+              example: 5
+            totalTxnAmountRetained:
+              type: number
+              description: Total transaction amount retained.
+              x-mappedTo: TRX_TOTALRETAINED
+              readOnly: true
+              example: 200
+            totalTxnAmountReleased:
+              type: number
+              description: Total transaction amount released.
+              x-mappedTo: TRX_TOTALRELEASED
+              readOnly: true
+              example: 100
+            totalBaseAmountRetained:
+              type: number
+              description: Total base amount retained.
+              x-mappedTo: TOTALRETAINED
+              readOnly: true
+              example: 100
+        billbackTemplate:
+          type: object
+          description: Bill back template for recurring bill back transactions.
+          x-object: billback-template
+          x-mappedTo: BILLBACKTEMPLATE
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the bill back template.
+              x-mappedTo: TEMPLATEID
+              example: '121'
+            id:
+              type: string
+              description: System-assigned ID for the bill back template.
+              x-mappedTo: TEMPLATEID
+              readOnly: true
+              example: '121'
+            enableInterEntityPostings:
+              type: boolean
+              description: Flag used to enable inter entity posting to post directly to the mapped inter-entity offset accounts instead of the AR and AP offset accounts.
+              x-mappedTo: USEIETOFFSET
+              readOnly: true
+              default: true
+              example: true
+            href:
+              type: string
+              readOnly: true
+              example: /objects/billback-template/12
+        smartTransactions:
+          type: object
+          title: Smart transactions
+          description: Smart transactions information for the bill.
+          properties:
+            fileUpload:
+              type: object
+              title: File upload
+              description: Smart transactions information for transactions created using file upload.
+              properties:
+                importExceptions:
+                  type: string
+                  description: Import status for uploaded files.
+                  enum:
+                    - resolve
+                    - completed
+                    - pending
+                    - draftReady
+                  x-mappedToValues:
+                    - Resolve
+                    - Completed
+                    - Pending
+                    - Draft ready
+                  x-mappedTo: UPLOADSTATUS
+                  example: pending
+                importIssuesErrorMessage:
+                  type: string
+                  description: Error message related to file upload.
+                  x-mappedTo: UPLOADFILEISSUE
+                  readOnly: true
+                  example: The vendor A100 is invalid
+            email:
+              type: object
+              title: Email
+              description: Smart transactions information for transactions created using email.
+              properties:
+                recipientEmail:
+                  type: string
+                  description: recipient email
+                  x-mappedTo: RECIPIENTEMAIL
+                  readOnly: true
+                  example: joe.smith@abcompany.com
+                senderEmail:
+                  type: string
+                  description: sender email
+                  x-mappedTo: SENDEREMAIL
+                  readOnly: true
+                  example: john.doe@acme.com
+            documentSource:
+              type: string
+              description: Source of a supporting document.
+              enum:
+                - billUpload
+                - email
+              x-mappedToValues:
+                - Bill upload
+                - Email
+              x-mappedTo: DOCSOURCE
+              example: email
+        attachment:
+          type: object
+          description: Supporting document attached to the bill.
+          x-object: attachment
+          x-mappedTo: SUPDOCID
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the supporting document.
+              x-mappedTo: SUPDOCID
+              example: '18'
+            id:
+              type: string
+              description: System-assigned ID for the supporting document.
+              x-mappedTo: SUPDOCID
+              example: '18'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/attachment/18
+        location:
+          $ref: '#/components/schemas/locationref.s1.schema'
+        lines:
+          type: array
+          description: Line items of the bill
+          x-mappedTo: ITEMS
+          x-object: bill-line
+          items:
+            $ref: '#/components/schemas/bill-line.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

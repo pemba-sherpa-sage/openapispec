@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: file
+  description: file API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Files
+    description: File description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/file/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the file.
+        in: path
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    file:
+      $ref: ../models/file.s1.schema.yaml
+    fileRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

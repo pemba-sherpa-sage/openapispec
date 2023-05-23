@@ -1,0 +1,36 @@
+title: validation request
+description: 'Validate set of object type, specifying the method of the operation'
+type: object
+x-mappedTo: __custom__
+properties:
+  object:
+    type: string
+    x-mappedTo: object
+    nullable: false
+    description: Object name to validate
+    example: vendor
+  method:
+    type: string
+    x-mappedTo: method
+    enum:
+      - POST
+      - PATCH
+    example: PATCH
+    default: POST
+  data:
+    type: array
+    x-mappedTo: data
+    nullable: false
+    description: List of object to validate
+    example:
+      - id: '100'
+        name: Vendor 100
+      - id: '101'
+        name: Vendor 101
+      - id: '102'
+        name: Vendor 102
+    items:
+      type: object
+required:
+  - object
+  - data

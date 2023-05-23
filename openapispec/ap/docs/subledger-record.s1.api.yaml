@@ -1,0 +1,317 @@
+openapi: 3.0.0
+info:
+  title: subledger-record
+  description: subledger-record API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Subledger records
+    description: Subledger record description -- explain what it's for and how it's used.
+paths:
+  /objects/subledger-record:
+    get:
+      summary: List subledger records
+      description: Returns a collection with a key, ID, and link for each subledger record.
+      tags:
+        - Subledger records
+      operationId: get-objects-subledger-record
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of subledger-record objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of subledger records: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an subledger record
+      description: Creates a new subledger record.
+      tags:
+        - Subledger records
+      operationId: post-objects-subledger-record
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record.s1.schema'
+                - $ref: '#/components/schemas/subledger-recordRequiredProperties'
+            examples:
+              Creates a/an subledger record: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New subledger-record
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/subledger-record/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the subledger record.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an subledger record
+      description: Returns detailed information for a particular subledger record.
+      tags:
+        - Subledger records
+      operationId: get-objects-subledger-record-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the subledger-record
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/subledger-record.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an subledger record
+      description: Updates an existing subledger record by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Subledger records
+      operationId: patch-objects-subledger-record-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an subledger record: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated subledger-record
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an subledger record
+      description: Deletes a/an subledger record.
+      tags:
+        - Subledger records
+      operationId: delete-objects-subledger-record-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    subledger-record:
+      $ref: '#/components/schemas/subledger-record.s1.schema'
+    subledger-recordRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    subledger-record-line.s1.schema:
+      title: subledger-record-line
+      x-mappedTo: prentry
+      x-ownedBy: subledger-record
+      type: object
+      description: Subledger record line entry
+      properties:
+        key:
+          type: string
+          description: Subledger record line key
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Subledger record line ID
+          x-mappedTo: NAME
+          x-mutable: false
+        href:
+          type: string
+          readOnly: true
+        subledgerRecord:
+          type: object
+          description: null
+          x-mappedTo: prrecord
+          x-object: subledger-record
+          properties:
+            id:
+              type: string
+              x-mappedTo: RECORDKEY
+              example: null
+            key:
+              type: string
+              x-mappedTo: RECORDKEY
+              example: null
+            href:
+              type: string
+              readOnly: true
+              example: null
+    subledger-record.s1.schema:
+      title: subledger-record
+      x-mappedTo: prrecord
+      type: object
+      description: Subledger record
+      properties:
+        key:
+          type: string
+          description: Subledger record key
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Subledger record ID
+          x-mappedTo: NAME
+          x-mutable: false
+        href:
+          type: string
+          readOnly: true
+        lines:
+          description: null
+          type: array
+          x-mappedTo: ENTRIES
+          x-object: subledger-record-line
+          items:
+            $ref: '#/components/schemas/subledger-record-line.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

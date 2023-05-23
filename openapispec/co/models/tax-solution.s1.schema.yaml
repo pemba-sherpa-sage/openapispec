@@ -1,0 +1,119 @@
+title: tax-solution
+type: object
+x-mappedTo: taxsolution
+description: Definition for how taxes should be captured and reported.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the tax solution.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '200'
+  id:
+    type: string
+    description: Name for the tax solution.
+    x-mappedTo: SOLUTIONID
+    x-mutable: false
+  href:
+    type: string
+    description: Endpoint for the tax solution.
+    readOnly: true
+    example: /objects/tax-solution/200
+  description:
+    type: string
+    description: Description of the tax solution.
+    x-mappedTo: DESCRIPTION
+    example: Oregon sales tax
+  status: 
+    type: string
+    description: Tax solution status.
+    x-mappedTo: STATUS
+    enum:
+      - active
+      - inactive
+      - notConfigured
+    x-mappedToValues:
+      - Active
+      - Inactive
+      - Not configured
+    default: active
+    example: active
+  taxSolutionType:
+    type: string
+    description: Tax solution type
+    x-mappedTo: TYPE
+    example: standard
+    enum:
+      - standard
+      - custom
+    x-mappedToValues:
+      - Standard
+      - Custom
+  taxCalculationMethod:
+    type: string
+    description: Tax calculation method 
+    x-mappedTo: TAXMETHOD
+    enum:
+      - noTax
+      - simpleTax
+      - advancedTax
+      - avaTax
+      - VAT
+    x-mappedToValues:
+      - None
+      - Simple tax
+      - Advanced tax
+      - Avalara
+      - VAT or GST
+    example: simpleTax
+  taxSubmissionStartDate:
+    type: string
+    format: date
+    description: Start date of first tax submission period
+    x-mappedTo: STARTDATE
+    example: '2023-01-01'
+  lastUpdatedTaxDate:
+    type: string
+    format: date
+    description: Last updated date for all the tax objects for this tax solution
+    x-mappedTo: LASTUPDATE
+    example: '2023-01-31'
+  purchaseGLAccount:
+    type: object
+    description: General ledger account for input taxes.
+    x-object: gl-account
+    x-mappedTo: GLACCOUNTPURCHASE
+    properties:
+      #key:
+      #  type: string
+      #  description: need key mapping
+      #  x-mappedTo: 
+      id:
+        type: string
+        description: Account Number
+        x-mappedTo: GLACCOUNTPURCHASE
+      href:
+        type: string
+        description: Endpoint of the GL account.
+        readOnly: true
+        example: /objects/gl-account/12
+  salesGLAccount:
+    type: object
+    description: GL account for output taxes
+    x-object: gl-account
+    x-mappedTo: GLACCOUNTSALE
+    properties:
+      #key:
+      #  type: string
+      #  description: need key mapping
+      #  x-mappedTo: 
+      id:
+        type: string
+        description: Account Number
+        x-mappedTo: GLACCOUNTSALE
+      href:
+        type: string
+        readOnly: true
+        #  there are no audit fields for this object in the entity file
+        #  audit:
+        #    $ref: ../../common/models/audit.s1.schema.yaml

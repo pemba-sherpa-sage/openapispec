@@ -1,0 +1,176 @@
+title: internal-document
+type: object
+properties:
+  referenceNumber:
+    type: string
+    description: Reference number
+    example: INT-01
+    x-mappedTo: INTERNALREFNO
+  initiatedBy:
+    type: object
+    description: Initiated by
+    x-object: employee
+    x-mappedTo: internalinitiated
+    properties:
+      key:
+        type: string
+        description: Employee key
+        example: '2'
+        x-mappedTo: INTERNALINITIATEDBYKEY
+        readOnly: true
+      id:
+        type: string
+        description: Employee id
+        example: 2
+        x-mappedTo: INTERNALINITIATEDBY
+      name:
+        type: string
+        description: Employee name
+        example: Hatcher
+        x-mappedTo: INTERNALINITIATEDBYNAME
+        readOnly: true        
+      href:
+        type: string
+        description: URL of the employee
+        example: /objects/employee/2
+        readOnly: true
+  verbalApprovalBy:
+    type: object
+    description: Verbal approval by
+    x-object: employee
+    x-mappedTo: internalverbal
+    properties:
+      key:
+        type: string
+        description: Employee key
+        example: '2'
+        x-mappedTo: INTERNALVERBALBYKEY
+        readOnly: true
+      id:
+        type: string
+        description: Employee id
+        example: 2
+        x-mappedTo: INTERNALVERBALBY
+      name:
+        type: string
+        description: Employee name
+        example: Hatcher
+        x-mappedTo: INTERNALVERBALBYNAME
+        readOnly: true        
+      href:
+        type: string
+        description: URL of the employee
+        example: /objects/employee/2
+        readOnly: true
+  issuedBy:
+    type: object
+    description: Issued by
+    x-object: employee
+    x-mappedTo: internalissued
+    properties:
+      key:
+        type: string
+        description: Employee key
+        example: '25'
+        x-mappedTo: INTERNALISSUEDBYKEY
+        readOnly: true
+      id:
+        type: string
+        description: Employee id
+        example: 123
+        x-mappedTo: INTERNALISSUEDBY
+      name:
+        type: string
+        description: Employee name
+        example: Marquess
+        x-mappedTo: INTERNALISSUEDBYNAME
+        readOnly: true        
+      href:
+        type: string
+        description: URL of the employee
+        example: /objects/employee/25
+        readOnly: true
+  issuedOnDate:
+    type: string
+    description: Issued on date
+    format: date
+    example: 2021-05-30
+    x-mappedTo: INTERNALISSUEDON
+  approvedBy:
+    type: object
+    description: Approved by
+    x-object: employee
+    x-mappedTo: internalapproved
+    properties:
+      key:
+        type: string
+        description: Employee key
+        example: '1'
+        x-mappedTo: INTERNALAPPROVEDBYKEY
+        readOnly: true
+      id:
+        type: string
+        description: Employee id
+        example: 1
+        x-mappedTo: INTERNALAPPROVEDBY
+      name:
+        type: string
+        description: Employee name
+        example: Reser
+        x-mappedTo: INTERNALAPPROVEDBYNAME
+        readOnly: true        
+      href:
+        type: string
+        description: URL of the employee
+        example: /objects/employee/1
+        readOnly: true
+  approvedOnDate:
+    type: string
+    description: Approved on date
+    format: date
+    example: 2021-10-02
+    x-mappedTo: INTERNALAPPROVEDON        
+  signedBy:
+    type: object
+    description: Signed by
+    x-object: employee
+    x-mappedTo: internalsigned
+    properties:
+      key:
+        type: string
+        description: Employee key
+        example: 32
+        x-mappedTo: INTERNALSIGNEDBYKEY
+        readOnly: true
+      id:
+        type: string
+        description: Employee id
+        example: Robert
+        x-mappedTo: INTERNALSIGNEDBY
+      name:
+        type: string
+        description: Employee name
+        example: Robert
+        x-mappedTo: INTERNALSIGNEDBYNAME
+        readOnly: true        
+      href:
+        type: string
+        description: URL of the employee
+        example: /objects/employee/32
+        readOnly: true
+  signedOnDate:
+    type: string
+    description: Signed on date
+    format: date
+    example: 2021-05-31
+    x-mappedTo: INTERNALSIGNEDON
+  source:
+    type: string
+    description: Internal source
+    example: Internal
+    x-mappedTo: INTERNALSOURCE
+  sourceReferenceNumber:
+    type: string
+    description: Internal source reference number
+    example: REF-INT-01
+    x-mappedTo: INTERNALSOURCEREFNO

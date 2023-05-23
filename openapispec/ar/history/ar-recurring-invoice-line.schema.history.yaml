@@ -1,0 +1,15 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/arrecurinvoice/view
+    POST:
+      - ar/lists/arrecurinvoice/create
+      - ar/quickadds/arrecurinvoice/create
+    PATCH:
+      - ar/lists/arrecurinvoice/edit
+    DELETE:
+      - ar/lists/arrecurinvoice/delete
+s1:
+  hash: '0'
+  type: ownedObject
+  directAccessItemObject: true

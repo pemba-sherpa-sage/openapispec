@@ -1,0 +1,35 @@
+key: order-entry-tax-schedule-map::systemOrderEntryTaxScheduleMapFW1
+id: systemOrderEntryTaxScheduleMapFW1
+object: order-entry-tax-schedule-map
+name: All
+description: Specifies all order-entry-tax-schedule-maps
+query:
+  object: order-entry-tax-schedule-map
+  fields:
+    - txnDefinition.id
+    - itemTaxGroup.id
+    - contactTaxGroup.id
+    - taxSchedule.name
+    - taxSolution.id
+  orderBy:
+    - id: asc
+metadata:
+  frozenColumnsCount: 2
+  columns:
+    - id: "txnDefinition.id"
+      format: "clip"
+      size: 40
+    - id: "itemTaxGroup.id"
+      format: "clip"
+      size: 40
+    - id: "contactTaxGroup.id"
+      format: "clip"
+      size: 40
+    - id: "taxSchedule.name"
+      format: "clip"
+      size: 40
+    - id: "taxSolution.id"
+      format: "clip"
+      size: 40
+contexts:
+  - __default

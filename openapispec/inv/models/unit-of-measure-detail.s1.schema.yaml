@@ -1,0 +1,69 @@
+title: unit-of-measure-detail
+type: object
+description: Unit of measure included in a unit of measure group.
+x-mappedTo: uomdetail
+x-ownedBy: unit-of-measure
+properties:
+  key:
+    type: string
+    description: System-assigned key for this unit of measure.
+    x-mappedTo: RECORDNO
+    example: '59'
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for this unit of measure.
+    x-mappedTo: UNIT
+    example: Hours
+    nullable: false
+  abbreviation:
+    type: string
+    description: Abbreviation for this unit of measure.
+    x-mappedTo: ABBREVIATION
+    example: HR
+  numberOfDecimalPlaces:
+    type: integer
+    description: Allowed number of decimal places for this unit of measure.
+    x-mappedTo: NUMDECIMALS
+    example: 2
+  isBase:
+    type: boolean
+    description: Indicates whether this unit is the base unit of measure for its group.
+    example: true
+    x-mappedTo: ISBASE
+    default: false
+    readOnly: true
+  parent:
+    type: object
+    description: Name of the unit of measure group that includes this unit.
+    x-object: unit-of-measure
+    x-mappedTo: uom
+    properties:
+      key:
+        type: string
+        x-mappedTo: GRPKEY
+        description: System-assigned key for the parent unit of measure group.
+        example: '16'
+      id:
+        type: string
+        x-mappedTo: GROUPNAME
+        description: Name of the parent unit of measure group.
+        example: Time
+        readOnly: true
+      href:
+        type: string
+        description: URL for the parent unit of measure group.
+        readOnly: true
+        example: /objects/unit-of-measure/16
+  conversionFactor:
+    type: number
+    description: Number of base units for this unit of measure.
+    x-mappedTo: CONVFACTOR
+    example: 3600
+  href:
+    type: string
+    description: URL for this unit of measure.
+    readOnly: true
+    example: /objects/unit-of-measure-detail/59
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

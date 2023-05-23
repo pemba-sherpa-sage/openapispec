@@ -1,0 +1,22 @@
+type: object
+title: contract-billing-schedule
+x-object: contract-billing-schedule
+properties:
+  key:
+    type: string
+    description: Contract billing schedule system-assigned key.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Contract billing schedule unique identifier.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  href:
+    type: string
+    description: Contract billing schedule URL.
+    readOnly: true
+    example: /objects/contract-billing-schedule/145
+examples: []

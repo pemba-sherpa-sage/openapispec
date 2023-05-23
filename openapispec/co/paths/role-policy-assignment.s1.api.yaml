@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: role-policy-assignment
+  description: role-policy-assignment API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Role policy assignments
+    description: Role policy assignment description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/role-policy-assignment:
+    get:
+      summary: List role policy assignments
+      description: Returns a collection with a key, ID, and link for each role policy assignment.
+      tags:
+        - Role policy assignments
+      operationId: get-objects-role-policy-assignment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of role-policy-assignment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of role policy assignments: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/role-policy-assignment/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the role policy assignment. 
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an role policy assignment
+      description: Returns detailed information for a particular role policy assignment.
+      tags:
+        - Role policy assignments
+      operationId: get-objects-role-policy-assignment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the role-policy-assignment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/role-policy-assignment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the role policy assignment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    role-policy-assignment:
+      $ref: ../models/role-policy-assignment.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

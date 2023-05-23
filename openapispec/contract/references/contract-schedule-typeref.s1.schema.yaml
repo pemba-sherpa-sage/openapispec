@@ -1,0 +1,29 @@
+type: object
+title: contract-schedule
+properties:
+  key:
+    type: string
+    description: Schedule system-assigned key.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Schedule unique identifier.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '145'
+  cancellationDate:
+    type: string
+    description: Schedule cancellation date.
+    x-mappedTo: CANCELDATE
+    readOnly: true
+    format: date
+    example: '2022-08-13'
+  contract:
+    $ref: ../references/contract-typeref.s1.schema.yaml
+  contractLine:
+    $ref: ../references/contract-schedule-contract-line-typeref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples: []

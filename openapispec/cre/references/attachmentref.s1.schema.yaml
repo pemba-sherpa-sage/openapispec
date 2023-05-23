@@ -1,0 +1,22 @@
+title: attachmentref
+type: object
+description: Supporting document ID.
+x-object: attachment
+x-mappedTo: SUPDOC
+properties:
+  key:
+    type: string
+    description: Attachment key
+    example: 6
+    x-mappedTo: SUPDOCKEY
+    readOnly: true
+  id:
+    type: string
+    description: Attachment id
+    example: att-1
+    x-mappedTo: SUPDOCID
+  href:
+    type: string
+    description: URL of the attachment
+    example: /objects/attachment/6
+    readOnly: true

@@ -1,0 +1,372 @@
+openapi: 3.0.0
+info:
+  title: contract-line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Contract lines
+    description: A contract line is a header containing multiple schedule lines and is tied directly to a contract line.
+
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-line:
+    get:
+      summary: List contract lines
+      description: Returns a collection with a key, ID, and link for each contract line.
+      tags:
+        - Contract lines
+      operationId: get-objects-contract-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/contract-line/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/contract-line/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/contract-line/3
+                    'ia::meta':
+                      totalCount: 215
+                      start: 1
+                      pageSize: 3
+                      next: 4
+                      previous: null
+
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an contract line
+      description: Creates a new contract line.
+      tags:
+        - Contract lines
+      operationId: post-objects-contract-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-line'
+                - $ref: '#/components/schemas/contract-lineRequiredProperties'
+            examples:
+              Creates a/an contract line: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1: 
+                  value:
+                    contract:
+                      id: API_TEST
+                    item:
+                      id: API3.0
+                    dimensions:
+                      location:
+                        id: '1'
+                    startDate: '2022-01-01'
+                    endDate: '2022-12-31'
+                    billing:
+                      quantity: 12
+                      rate: 12
+                      multiplier: 1
+                      discount: 0
+                      method: fixedPrice
+                      amountFrequency: includeWithEveryInvoice
+                      frequency: monthly
+                      flatFixedAmount: 144
+                      baseFlatFixedAmount: 144
+                      totalFlatFixedAmount: 1728
+                      totalBaseFlatFixedAmount: 1728
+                    recurring: false
+                    lineType: sale
+                    revenue:
+                      journal1:
+                        revemnueTemplate:
+                          id: STRAIGHTLINE_MANUAL
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                      journal2:
+                        revemnueTemplate:
+                          id: STRAIGHTLINE_MANUAL
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                    glPostingDate: '2022-01-01'
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/contract-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an contract line
+      description: Returns detailed information for a particular contract line.
+      tags:
+        - Contract lines
+      operationId: get-objects-contract-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the contract line:
+                  value:
+                    'ia::result':
+                      key: '325'
+                      id: '325'
+                      contract:
+                        key: '196'
+                        id: API_TEST
+                        href: /objects/contract/196
+                      currency:
+                        txnCurrency: USD
+                        baseCurrency: USD
+                        exchangeRateDate: '2022-01-01'
+                        exchangeRate: 1
+                      state: inProgress
+                      lineNo: '1'
+                      period: null
+                      startDate: '2022-01-01'
+                      endDate: '2022-12-31'
+                      cancellationDate: null
+                      item:
+                        key: '318'
+                        id: API3.0
+                        name: API Usage
+                        href: /objects/item/318
+                      itemDescription:
+                        API 3.0 support for create/update/delete/read/read by query requests. Billed
+                        based on the API usage
+                      deferralStatus: deferRevenueUntilItemIsDelivered
+                      billing:
+                        quantity: 12
+                        rate: 12
+                        multiplier: 1
+                        discount: 0
+                        billingTemplate:
+                          key: null
+                          id: null
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                        method: fixedPrice
+                        amountFrequency: includeWithEveryInvoice
+                        frequency: monthly
+                        flatFixedAmount: 144
+                        baseFlatFixedAmount: 144
+                        totalFlatFixedAmount: 1728
+                        totalBaseFlatFixedAmount: 1728
+                        resetUsageQty: ''
+                        usageQtyRecurs: null
+                        holdDate: null
+                        resumeDate: '2022-01-01'
+                        memo: null
+                        durationInPeriods: 12
+                        proratePartialPeriods: false
+                        quantityType: ''
+                        committedQtyEndAction: ''
+                        committedQtyExcess: ''
+                      contacts:
+                        billTo:
+                          key: '2074'
+                          href: /objects/contact/2074
+                        shipTo:
+                          key: '2074'
+                          href: /objects/contact/2074
+                      billToSource: contractValue
+                      shipToSource: contractValue
+                      renewal:
+                        renew: false
+                        billingTemplate:
+                          key: null
+                          id: null
+                      recurring: false
+                      lineType: sale
+                      revenue:
+                        journal1:
+                          revemnueTemplate:
+                            key: '5'
+                            id: STRAIGHTLINE_MANUAL
+                            href: /objects/revenue-template/5
+                          startDate: '2022-01-01'
+                          endDate: '2022-12-31'
+                          journalSymbol: LEGACYREVREC
+                        journal2:
+                          revemnueTemplate:
+                            key: null
+                            id: null
+                          startDate: '2022-01-01'
+                          endDate: '2022-12-31'
+                          journalSymbol: ASC606REVREC
+                        totalQuantity: null
+                        holdDate: '2022-01-01'
+                        resumeDate: null
+                        holdMemo: null
+                      dimensions:
+                        location:
+                          key: '1'
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        department:
+                          key: '9'
+                          id: '11'
+                          href: /objects/department/9
+                        task:
+                          key: null
+                          name: null
+                          id: null
+                        project:
+                          key: null
+                          id: null
+                          name: null
+                        customer:
+                          key: '841'
+                          id: CUS-RT-0602
+                          name: Customer-Root-0602
+                          href: /objects/customer/841
+                        vendor:
+                          key: '48'
+                          id: '202'
+                          name: Pac Bell
+                          href: /objects/vendor/48
+                        employee:
+                          key: '1'
+                          id: '1'
+                          name: Reser
+                          href: /objects/employee/1
+                        class:
+                          key: '6'
+                          id: '4'
+                          name: Professional Services
+                          href: /objects/class/6
+                      audit:
+                        createdDateTime: '2022-05-05T09:08:56Z'
+                        modifiedDateTime: '2022-05-06T09:06:43Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      changeType: ''
+                      mrr: false
+                      priceCalculationMemo: null
+                      deliveryStatus: delivered
+                      deliveryDate: '2022-01-01'
+                      glPostingDate: '2022-01-01'
+                      expenseHoldDate: null
+                      expenseResumeDate: null
+                      postMemo: null
+                      href: /objects/contract-line/325
+                    'ia::meta':
+                      totalCount: 1
+
+
+
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an contract line
+      description: Updates an existing contract line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract lines
+      operationId: patch-objects-contract-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an contract line:
+                value:
+                  endDate: '2022-11-30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated contract line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an contract line
+      description: Deletes a/an contract line.
+      tags:
+        - Contract lines
+      operationId: delete-objects-contract-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line:
+      $ref: ../models/contract-line.s1.schema.yaml
+    contract-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

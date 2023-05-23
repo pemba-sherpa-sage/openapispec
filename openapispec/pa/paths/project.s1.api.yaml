@@ -1,0 +1,457 @@
+openapi: 3.0.0
+info:
+  title: project
+  description: project API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Projects
+    description: Use projects to manage, track, and report on work performed by or for your company.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project:
+    get:
+      summary: List projects
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each project. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Projects
+      tags:
+        - Projects
+      operationId: get-objects-project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of projects:
+                  value:
+                    'ia::result':
+                      - key: '100'
+                        id: P-040
+                        href: /objects/project/100
+                      - key: '101'
+                        id: P-050
+                        href: /objects/project/101
+                      - key: '102'
+                        id: P-060
+                        href: /objects/project/102
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project
+      description: |-
+        Creates a new project. 
+
+        `id` is required if document sequencing is not enabled for projects in the company. If document sequencing is enabled, you can provide an `id` value to use instead of the document sequence value.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Projects
+      tags:
+        - Projects
+      operationId: post-objects-project
+      requestBody:
+        description: project definition
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project'
+                - $ref: '#/components/schemas/projectRequiredProperties'
+            examples:
+              Create a project:
+                value:
+                  id: P-0045
+                  name: Implementation Project
+                  description: Software Implementation Project
+                  projectCurrency: USD
+                  category: 'contract'
+                  projectStatus:
+                    key: '1'
+                  startDate: '2021-01-23'
+                  EndDate: '2021-01-23'
+                  budget:
+                    id: '1'
+                    key: '1'
+                    billingAmount: '10000'
+                    budgetedDuration: '250'
+                    budgetedCost: '10000'
+                  contractAmount: '15000'
+                  progress:
+                    estimatedDuration: '200'
+                    actualDuration: '183'
+                    approvedDuration: '175'
+                    remainingDuration: '8'
+                    percentComplete: '35'
+                    observedPercentComplete: '50'
+                  billingType: timeAndMaterial
+                  salesOrderNumber: SO-5478
+                  purchaseOrderNumber: PO-7829
+                  purchaseOrderAmount: '4500'
+                  purchaseQuoteNumber: '1453'
+                  salesforceKey: '1'
+                  documentNumber: '1453'
+                  parent:
+                    key: '10'
+                    id: P-0040
+                    name: NET-XML30-2
+                  invoiceWithParent: false
+                  customer:
+                    key: '13'
+                  salesContact:
+                    key: '10'
+                  projectType:
+                    key: '3'
+                  manager:
+                    key: '10'
+                  department:
+                    key: '10'
+                  location:
+                    key: '1'
+                  paymentTerm:
+                    key: '10'
+                  customerUser:
+                    key: '1'
+                  class:
+                    key: '1'
+                  userRestrictions: systemDefault
+                  isBillableEmployeeExpense: false
+                  isBillablePurchasingAPExpense: false
+                  ratesAndPricing:
+                    laborPricing: billingRate
+                    plaborMarkup: '10'
+                    pricing: billingRate
+                    expenseMarkup: '10'
+                    DefaultRate: '12'
+                  contacts:
+                    primary:
+                      key: '1'
+                    billTo:
+                      key: '1'
+                    shipTo:
+                      key: '1'
+                  invoiceMessage: Invoice for project
+                  invoiceCurrency: USD
+                  billingOverMax: preventBilling
+                  excludeExpenses: false
+                  contract:
+                    key: '1'
+                  attachment:
+                    key: '1'
+                  rootProject:
+                    key: '12'
+                  grant:
+                    CFDA: Academic Exchange Programs
+                    fundedProjectName: Undergraduate Programs
+                    agency: US government
+                    payer: federal
+                    otherId: Other
+                    assistanceType: cash
+                    revenueRestriction: time
+                    restrictionExpiry: '1'
+                    restrictionExpirationDate: '2021-01-23'
+                    isTimeSatisfactionScheduled: false
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New project created:
+                  value:
+                    'ia::result':
+                      key: '100'
+                      id: P-0045
+                      href: /objects/project/100
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project
+      description: Returns detailed information for a specified project.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Projects
+      tags:
+        - Projects
+      operationId: get-objects-project-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Project details:
+                  value:
+                    'ia::result':
+                      key: '83'
+                      id: P-0045
+                      name: Implementation Project
+                      description: Software Implementation Project
+                      projectCurrency: USD
+                      category: contract
+                      projectStatus:
+                        key: '1'
+                        id: '1'
+                        name: In Progress
+                        disableGenerateInvoice: false
+                        disablePurchasingAPEntry: false
+                        disableExpenseEntry: false
+                        disableTimesheetEntry: false
+                      startDate: '2021-01-23'
+                      endDate: '2021-01-23'
+                      budget:
+                        id: '1'
+                        key: '1'
+                        billingAmount: '10000'
+                        budgetedDuration: '250'
+                        budgetedCost: '10000'
+                      contractAmount: '15000'
+                      progress:
+                        estimatedDuration: '200'
+                        actualDuration: '183'
+                        approvedDuration: '175'
+                        remainingDuration: '8'
+                        percentComplete: '35'
+                        observedPercentComplete: '50'
+                      billingType: timeAndMaterial
+                      salesOrderNumber: SO-5478
+                      purchaseOrderNumber: PO-7829
+                      purchaseOrderAmount: '4500'
+                      purchaseQuoteNumber: '1453'
+                      salesforceKey: '1'
+                      documentNumber: '1453'
+                      parent:
+                        key: '10'
+                        id: P-0040
+                        name: NET-XML30-2
+                      invoiceWithParent: false
+                      customer:
+                        key: '13'
+                        id: '113'
+                        name: Software company
+                      salesContact:
+                        key: '10'
+                        id: '100'
+                        name: John
+                      projectType:
+                        key: '3'
+                        id: '3'
+                        name: Internal
+                      manager:
+                        key: '10'
+                        id: E10
+                        name: Bob
+                      department:
+                        key: '10'
+                        id: '20'
+                        name: Sales
+                      location:
+                        key: '1'
+                        id: '1'
+                        name: US
+                      paymentTerm:
+                        key: '10'
+                        id: '10'
+                        name: Net 60
+                      customerUser:
+                        key: '1'
+                        id: Admin
+                      class:
+                        key: '1'
+                        id: '10'
+                        name: Construction
+                      userRestrictions: systemDefault
+                      isBillableEmployeeExpense: false
+                      isBillablePurchasingAPExpense: false
+                      ratesAndPricing:
+                        laborPricing: billingRate
+                        laborMarkup: '10'
+                        pricing: billingRate
+                        expenseMarkup: '10'
+                        defaultRate: '12'
+                      contacts:
+                        primary:
+                          key: '1'
+                          id: '1'
+                          name: Dave
+                        billTo:
+                          key: '1'
+                          id: '1'
+                          name: Larry
+                        shipTo:
+                          key: '1'
+                          id: '1'
+                          name: Larry
+                      invoiceMessage: Invoice for project
+                      invoiceCurrency: USD
+                      billingOverMax: preventBilling
+                      excludeExpenses: false
+                      contract:
+                        key: '1'
+                        id: CON-002
+                      attachment:
+                        key: '1'
+                        id: '1'
+                        href: /objects/attachment/100
+                      rootProject:
+                        key: '12'
+                        id: '12'
+                        name: PRJ-RT-0001
+                      grant:
+                        CFDA: Academic Exchange Programs
+                        fundedProjectName: Undergraduate Programs
+                        agency: US government
+                        payer: federal
+                        otherId: Other
+                        assistanceType: cash
+                        revenueRestriction: time
+                        restrictionExpiry: '1'
+                        restrictionExpirationDate: '2021-01-23'
+                        isTimeSatisfactionScheduled: false
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project
+      description: Updates an existing project by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Projects
+      tags:
+        - Projects
+      operationId: patch-objects-project-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a project:
+                value:
+                  name: Implementation Project
+                  description: Software Implementation Project
+                  projectCurrency: USD
+                  category: contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated project:
+                  value:
+                    'ia::result':
+                      key: '100'
+                      id: '100'
+                      href: /objects/project/124
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project
+      description: Deletes a project. You can only delete projects without posted transactions. If posted transactions exist for the project, you can make the project inactive but cannot delete it.
+      x-documentationFlags:
+        subscription: Projects
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Projects
+      tags:
+        - Projects
+      operationId: delete-objects-project-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project:
+      $ref: ../models/project.s1.schema.yaml
+    projectRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

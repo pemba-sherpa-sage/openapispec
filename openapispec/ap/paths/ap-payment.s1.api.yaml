@@ -1,0 +1,450 @@
+openapi: 3.0.0
+info:
+  title: ap-payment
+  description: ap-payment API
+  version: '1.0'
+  contact:
+    name: Lingaraj Dhabale
+    email: lingaraj.dhabale@sage.com
+tags:
+  - name: AP payments
+    description: An AP payment is a transaction that records a payment against an AP bill or AP adjustment. The AP payment object gives you access to payment details for each payment entry.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ap-payment:
+    get:
+      summary: List AP payments
+      description: Returns a collection with a key, ID, and link for each AP payment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP payments
+      operationId: get-objects-ap-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-payment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AP payments:
+                  value:
+                    'ia::result':
+                      - key: '1718,'
+                        id: '1718,'
+                        href: /objects/ap-payment/1718
+                      - key: '1717,'
+                        id: '1717,'
+                        href: /objects/ap-payment/1717
+                      - key: '3228,'
+                        id: '3228,'
+                        href: /objects/ap-payment/3228
+                    'ia::meta':
+                      totalCount: '3,'
+                      start: '1,'
+                      pageSize: '100,'
+                      next: '101,'
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AP payment
+      description: Creates a new AP payment.
+      tags:
+        - AP payments
+      operationId: post-objects-ap-payment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-payment'
+                - $ref: '#/components/schemas/ap-paymentRequiredProperties'
+            examples:
+              Create an AP payment submit action:
+                value:
+                  financialAccount:
+                    entityId: Visdb
+                  paymentDate: '2023-04-04'
+                  action: draft
+                  description: description
+                  documentNumber: '123'
+                  documentId: '123'
+                  baseCurrency:
+                    currency: USD
+                  txnCurrency:
+                    currency: USD
+                  paymentMethod: creditCard
+                  vendor:
+                    id: '201'
+                  details:
+                    - txnCurrency:
+                        paymentAmount: '10.00'
+                        inlineAmount: '10.00'
+                        adjustmentAmount: '10.00'
+                        postedAdvanceAmount: '10.00'
+                      bill:
+                        key: '3318'
+                      apDebitAdjustment:
+                        key: '3319'
+                      apDebitAdjustmentLine:
+                        key: '30854'
+                      apAdvance:
+                        key: '3320'
+                      apAdvanceLine:
+                        key: '30856'
+                      inlineBill:
+                        key: '3321'
+                      inlineBillLine:
+                        key: '30866'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-payment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AP payment:
+                  value:
+                    'ia::result':
+                      id: '3323,'
+                      key: '3323,'
+                      href: /objects/ap-payment/3323
+                    'ia::meta':
+                      totalCount: '1,'
+                      totalSuccess: '1,'
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ap-payment/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AP payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AP payment
+      description: Returns detailed information for a specified AP payment.
+      tags:
+        - AP payments
+      operationId: get-objects-ap-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-payment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-payment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AP payment:
+                  value:
+                    'ia::result':
+                      id: '3302'
+                      key: '3302'
+                      paymentSummary:
+                        id: '1843'
+                        key: '1843'
+                        name: 'Payments: 2023/03/30 04:08:58:5637 Batch'
+                        postingDate: '2023-03-21'
+                        href: /objects/ap-summary/1843
+                      recordType: pp
+                      financialAccount:
+                        entityId: Visdb
+                        entityType: cc
+                        name: VISA
+                        currency: USD
+                      state: Completed
+                      paymentMethod: creditCard
+                      vendor:
+                        entity: V201
+                        id: '201'
+                        name: PG & E
+                      documentNumber: '123'
+                      description: Payment for 2023-03-21
+                      documentId: Paid For PrjUS_InvWParent_4
+                      txnDate: '2023-03-21'
+                      txnPaidDate: '2023-03-21'
+                      baseCurrency:
+                        currency: USD
+                        totalAmount: '10'
+                        totalSelected: '0'
+                        totalPaid: '10'
+                        totalDue: '0'
+                      txnCurrency:
+                        currency: USD
+                        totalAmount: '10'
+                        totalSelected: '0'
+                        totalPaid: '10'
+                        totalDue: '0'
+                      exchangeRate:
+                        date: null
+                        typeId: null
+                        rate: null
+                      payToContact:
+                        payTo:
+                          name: PG & E(V201)
+                          key: '6886'
+                          href: /objects/contact/6886
+                      audit:
+                        createdDateTime: '2023-03-29T18:08:57Z'
+                        modifiedDateTime: '2023-03-29T18:08:59Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      cleared: F
+                      clearedDate: null
+                      isInclusiveTax: false
+                      taxSolution:
+                        key: null
+                        id: null
+                        taxCalculationMethod: null
+                      lines:
+                        - id: '30762'
+                          key: '30762'
+                          apPayment:
+                            id: '3302'
+                            key: '3302'
+                            href: /objects/ap-payment/3302
+                          glAccount:
+                            key: '376'
+                            id: '2000.02'
+                            name: Accounts Payable2
+                            href: /objects/gl-account/376
+                          baseCurrency:
+                            amount: '10'
+                            currency: USD
+                            totalPaid: '10'
+                            totalSelected: '0'
+                          txnCurrency:
+                            amount: '10'
+                            currency: USD
+                            totalPaid: '10'
+                            totalSelected: '0'
+                          department:
+                            id: null
+                            name: null
+                          location:
+                            id: '2'
+                            name: India
+                          description: Create_MP_02
+                          exchangeRate:
+                            date: '2023-03-21'
+                            typeId: null
+                            rate: '1'
+                          lineNumber: '1'
+                          paymentLineRecord: pp
+                          bankLocation: '2'
+                          audit:
+                            createdDateTime: '2023-03-29T18:08:57Z'
+                            modifiedDateTime: '2023-03-29T18:08:59Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          taxDetail:
+                            id: null
+                            key: null
+                          isTax: false
+                          dimensions:
+                            'nsp::rgldim43731355_10015':
+                              key: null
+                              id: null
+                            'nsp::rgldim43731355_10074':
+                              key: null
+                              id: null
+                            'nsp::rgldim43731355_10127':
+                              key: null
+                              id: null
+                            'nsp::rgldim44774013_10178':
+                              key: null
+                              id: null
+                            'nsp::rgldim44774013_10232':
+                              key: null
+                              id: null
+                          href: /objects/ap-payment-line/30762
+                      details:
+                        - id: '1059'
+                          key: '1059'
+                          bill:
+                            id: '3289'
+                            key: '3289'
+                            href: /objects/bill/3289
+                          billLine:
+                            id: '30724'
+                            key: '30724'
+                            href: /objects/bill-line/30724
+                          apCreditAdjustment:
+                            id: null
+                            key: null
+                          apCreditAdjustmentLine:
+                            id: null
+                            key: null
+                          apPayment:
+                            id: '3302'
+                            key: '3302'
+                            href: /objects/ap-payment/3302
+                          apPaymentLine:
+                            id: '30762'
+                            key: '30762'
+                            href: /objects/ap-payment-line/30762
+                          paymentDate: '2023-03-21'
+                          baseCurrency:
+                            paymentAmount: '10'
+                            inlineAmount: null
+                            discountAmount: null
+                            adjustmentAmount: null
+                            postedAdvanceAmount: null
+                          txnCurrency:
+                            paymentAmount: '10'
+                            inlineAmount: null
+                            discountAmount: null
+                            adjustmentAmount: null
+                            postedAdvanceAmount: null
+                            currency: USD
+                          inlineBill:
+                            id: null
+                            key: null
+                          inlineBillLine:
+                            id: null
+                            key: null
+                          apDiscount:
+                            id: null
+                            key: null
+                          apDiscountLine:
+                            id: null
+                            key: null
+                          discountDate: null
+                          apDebitAdjustment:
+                            id: null
+                            key: null
+                          apDebitAdjustmentLine:
+                            id: null
+                            key: null
+                          apAdvance:
+                            id: null
+                            key: null
+                          apAdvanceLine:
+                            id: null
+                            key: null
+                          apPostedAdvance:
+                            id: null
+                            key: null
+                          apPostedAdvanceLine:
+                            id: null
+                            key: null
+                          state: C
+                          moduleKey: 3.AP
+                          audit:
+                            createdDateTime: '2023-03-29T18:08:58Z'
+                            modifiedDateTime: '2023-03-29T18:08:58Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/ap-payment-detail/1059
+                      href: /objects/ap-payment/3302
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP payment
+      description: Updates an existing AP payment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP payments
+      operationId: patch-objects-ap-payment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-payment'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AP payment:
+                value:
+                  description: 'Payment for DOC Number : 22345,'
+                  paymentDate: '2023-04-05,'
+                  documentNumber: '22345,'
+                  documentId: '22345'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-payment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an AP payment:
+                  value:
+                    'ia::result':
+                      id: '3325,'
+                      key: '3325,'
+                      href: /objects/ap-payment/3325
+                    'ia::meta':
+                      totalCount: '1,'
+                      totalSuccess: '1,'
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AP payment
+      description: Deletes an AP payment.
+      tags:
+        - AP payments
+      operationId: delete-objects-ap-payment-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-payment:
+      $ref: ../models/ap-payment.s1.schema.yaml
+    ap-paymentRequiredProperties:
+      type: object
+      required:
+        - financialAccount
+        - paymentDate
+        - paymentMethod
+        - vendor
+        - details
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

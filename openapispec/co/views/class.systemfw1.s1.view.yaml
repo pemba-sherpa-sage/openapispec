@@ -1,0 +1,19 @@
+key: class::systemClassFW1
+id: systemClassFW1
+object: class
+name: All
+description: Specifies all classes
+query:
+  object: class
+  fields:
+    - id
+    - name
+    - parent.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default
+

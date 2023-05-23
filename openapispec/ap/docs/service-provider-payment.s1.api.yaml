@@ -1,0 +1,348 @@
+openapi: 3.0.0
+info:
+  title: service-provider-payment
+  description: service-provider-payment API
+  version: '1.0'
+  contact:
+    name: Pavan Sankannanavar
+    email: pavan.sankannanavar@sage.com
+servers:
+  - url: dev01.intacct.com/users/pavan.sankannanavar/ppnextgen/v0
+tags:
+  - name: Service provider payments
+    description: The payment requests that are processed by a payment provider.
+paths:
+  /objects/service-provider-payment:
+    get:
+      summary: List Service provider payments
+      description: Returns a collection with a key, ID, and link for each Service Provider Payment.
+      tags:
+        - Service provider payments
+      operationId: get-objects-service-provider-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of service-provider-payment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of Service provider payments:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: '1'
+                        href: /objects/service-provider-payment/1
+                      - key: '21'
+                        id: '21'
+                        href: /objects/service-provider-payment/21
+                      - key: '40'
+                        id: '40'
+                        href: /objects/service-provider-payment/40
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/service-provider-payment/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the Provider Payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a Service Provider Payment
+      description: Returns detailed information for a particular Service Provider Payment.
+      tags:
+        - Service Provider payments
+      operationId: get-objects-service-provider-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the service-provider-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/service-provider-payment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the Service Provider Payment:
+                  value:
+                    ia::result:
+                      key: '40'
+                      id: '40'
+                      batchId: e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906
+                      externalPaymentId: e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906-00000
+                      paymentId: 252
+                      status: processingCompleted
+                      remittanceSentByUser: notRequested
+                      refundStatus: ''
+                      failedPostingToGL: false
+                      audit:
+                        createdDateTime: '2022-12-15T03:33:32Z'
+                        modifiedDateTime: '2023-01-04T05:34:49Z'
+                        createdBy: '71'
+                        modifiedBy: '71'
+                      href: /objects/service-provider-payment/40
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    service-provider-payment:
+      $ref: '#/components/schemas/service-provider-payment.s1.schema'
+    service-provider-paymentRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    service-provider-payment.s1.schema:
+      title: service-provider-payment
+      x-mappedTo: providerpayment
+      type: object
+      description: Object describes a payment request sent to a Provider for processing.
+      properties:
+        key:
+          type: string
+          description: System assigned key for a Provider payment request.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '10'
+        id:
+          type: string
+          description: System assigned key for a Provider payment request.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '10'
+        batchId:
+          type: string
+          description: Unique payment batch identifier generated by SSF.
+          readOnly: true
+          x-mappedTo: GUID
+          example: e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906
+        externalPaymentId:
+          type: string
+          description: Unique payment identifier generated by SSF.
+          readOnly: true
+          x-mappedTo: PAYMENTGUID
+          example: e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906-00000
+        paymentId:
+          type: integer
+          description: Unique payment identifier generated by Sage.
+          readOnly: true
+          x-mappedTo: PAYMENTKEY
+          example: 266
+        status:
+          type: string
+          description: Status of the payment request sent to the provider.
+          readOnly: true
+          x-mappedTo: STATE
+          example: processingCompleted
+          enum:
+            - pending
+            - inProgress
+            - requestReceived
+            - rejected
+            - awaitingAuthorization
+            - awaitingDecoupledAuthorization
+            - awaitingFunds
+            - processing
+            - processingCompleted
+            - processingFailed
+            - requestFailed
+          x-mappedToValues:
+            - Pending
+            - In progress
+            - Request received
+            - Rejected
+            - Awaiting authorization
+            - Awaiting decoupled authorization
+            - Awaiting funds
+            - Processing
+            - Processing completed
+            - Processing failed
+            - Request failed
+          default: In progress
+        remittanceSentByUser:
+          type: string
+          description: Payment remittance state.
+          readOnly: true
+          x-mappedTo: REMITTANCESENT
+          example: notRequested
+          enum:
+            - notRequested
+            - inProgress
+            - completed
+            - failed
+          x-mappedToValues:
+            - Not requested
+            - In progress
+            - Completed
+            - Failed
+          default: Not requested
+        failedPostingToGL:
+          type: boolean
+          description: Flag to identify whether the payment has been successfully posted to GL or not.
+          readOnly: true
+          x-mappedTo: ERRORONCONFIRM
+          example: 'false'
+          x-mappedToType: string
+          default: 'false'
+        refundStatus:
+          type: string
+          description: Refund status of the Payment.
+          readOnly: true
+          x-mappedTo: REFUNDSTATUS
+          example: refunded
+          enum:
+            - inProgress
+            - refunded
+            - failed
+          x-mappedToValues:
+            - In progress
+            - Refunded
+            - Failed
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

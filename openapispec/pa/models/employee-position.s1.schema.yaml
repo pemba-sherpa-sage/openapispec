@@ -1,0 +1,38 @@
+title: employee-position
+x-mappedTo: employeeposition
+type: object
+description: User-defined employee position that can be assigned to employee or used in timesheets.
+properties:
+  key:
+    type: string
+    description: Employee Position Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Employee Position ID
+    x-mappedTo: POSITIONID
+    x-mutable: false
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples:
+  - key: '11'
+    id: SV001
+    name: Supervisor-1
+    description: First-level supervisor
+    status: active
+    audit:
+      createdDateTime: '2014-01-08T11:28:12Z'
+      modifiedDateTime: '2014-01-08T11:28:12Z'
+      createdBy: '1'
+      modifiedBy: '95'

@@ -1,0 +1,22 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/customer/view
+      - pa/lists/customer/view
+      - so/lists/customer/view
+    POST:
+      - ar/lists/customer/create
+      - ar/quickadds/customer/create
+      - pa/lists/customer/create
+      - so/lists/customer/create
+    PATCH:
+      - ar/lists/customer/edit
+      - pa/lists/customer/edit
+      - so/lists/customer/edit
+    DELETE:
+      - ar/lists/customer/delete
+      - pa/lists/customer/delete
+      - so/lists/customer/delete
+s1:
+  hash: '0'
+  type: rootObject

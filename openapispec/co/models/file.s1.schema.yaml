@@ -1,0 +1,57 @@
+title: file
+x-mappedTo: supportingdocumentdata
+x-ownedBy: attachment
+type: object
+description: 'a single file in Intacct, aka supporting document'
+properties:
+  key:
+    type: string
+    description: File Key
+    x-mappedTo: RECORDNO
+    example: '1'
+    readOnly: true
+  id:
+    type: string
+    description: File ID
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example: '1'
+    readOnly: true
+  href:
+    type: string
+    example: /objects/file/1
+    readOnly: true
+  data:
+    type: string
+    description: Data
+    x-mappedTo: DATA
+    format: base64zip
+    x-mutable: false
+    example: Y2V2YSwgYWx0Y2V2YQ0Kc2kgaW5jYSBjZXZh
+  size:
+    type: integer
+    description: Size in bytes
+    x-mappedTo: SIZE
+    example: 27
+  name:
+    type: string
+    description: File name with extension
+    x-mappedTo: NAME
+    example: test.txt
+  attachment:
+    title: attachment
+    type: object
+    x-mappedTo: supportingdocuments
+    x-object: attachment
+    properties:
+      id:
+        type: string
+        readOnly: true
+        x-mappedTo: SUPDOCID
+      key:
+        type: string
+        x-mappedTo: DOCUMENTKEY
+      href:
+        type: string
+        example: /objects/attachment/1
+        readOnly: true

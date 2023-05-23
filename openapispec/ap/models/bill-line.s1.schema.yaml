@@ -1,0 +1,511 @@
+title: bill-line
+x-mappedTo: apbillitem
+x-ownedBy: bill
+type: object
+description: Line items for an Accounts Payable (AP) bill.
+properties:
+  id:
+    type: string
+    description: System-assigned ID for the line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '62'
+  key:
+    type: string
+    description: System-assigned key for the line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '62'
+  lineNumber:
+    type: integer
+    description: Line number
+    x-mappedTo: LINE_NO
+    readOnly: true
+    example: 1
+  hasForm1099:
+    type: string
+    description: |
+      If the vendor is set up for 1099 tracking and enabled for 1009 flag override, you can set to `true` to enable individual line items for 1099 treatment. If `false`, this line item does not have associated 1099 form type and box values.
+    x-mappedTo: FORM1099
+    example: 'false'
+  form1099:
+    type: object
+    description: Form 1099 information for the line item.
+    title: Form1099
+    properties:
+      type:
+        type: string
+        description: |
+          Type of form 1099.
+        x-mappedTo: FORM1099TYPE
+        example: 'NEC'
+      box:
+        type: string
+        description: |
+          Box value of form 1099.
+        x-mappedTo: FORM1099BOX
+        example: '15A'
+  state:
+    type: string
+    description: System-assigned state of the line item.
+    x-mappedTo: STATE
+    readOnly: true
+    example: 'A'
+  createdDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Created Date
+    x-mappedTo: ENTRY_DATE
+    readOnly: true
+  glAccount:
+    type: object
+    description: General Ledger (GL) account associated with the line item.
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: ACCOUNTKEY
+        example: '256'
+      id:
+        type: string
+        description: User-assigned number for the GL account.
+        x-mappedTo: ACCOUNTNO
+        example: '6252'
+      name:
+        type: string
+        description: Name of the GL account.
+        x-mappedTo: ACCOUNTTITLE
+        readOnly: true
+        example: 'Entertainment'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/gl-account/256'
+  overriddenOffsetGLAccount:
+    type: object
+    description: An alternative AP account to override the default GL AP account for the bill.
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: overriddenOffsetAccount
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account.
+        x-mappedTo: OFFSETACCOUNTKEY
+        example: '384'
+      id:
+        type: string
+        description: Offset account number.
+        x-mappedTo: OFFSETGLACCOUNTNO
+        example: '1234.36'
+      name:
+        type: string
+        description: Offset account name.
+        x-mappedTo: OFFSETGLACCOUNTTITLE
+        readOnly: true
+        example: 'AP ACCOUNT'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/gl-account/384'
+  accountLabel:
+    type: object
+    description: Meaningful name of AP account.
+    x-object: ap-account-label
+    x-mappedTo: accountlabel
+    title: accountLabel
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account label.
+        x-mappedTo: ACCOUNTLABELKEY
+        example: '14'
+      id:
+        type: string
+        description: Meaningful name of the account.
+        x-mappedTo: ACCOUNTLABEL
+        example: 'Accounting Fees'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/ap-account-label/14'
+  baseAmount:
+    type: number
+    description: Amount for the line item in your company's base currency, which is calculated based on the exchange rate defined in the header. 
+    x-mappedTo: AMOUNT
+    readOnly: true
+    example: 100.00
+  txnAmount:
+    type: number
+    description: For multi-currency companies, provide a transaction amount, which is the amount in the transaction currency. 
+    x-mappedTo: TRX_AMOUNT
+    example: 100.00
+  memo:
+    type: string
+    description: Memo about the line item.
+    x-mappedTo: ENTRYDESCRIPTION
+    example: 'Service charges'
+  allocation:
+    type: object
+    description: Transaction allocation template for the line item, which distributes the bill amount across specified dimensions.
+    title: allocation
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: '1'
+      id:
+        type: integer
+        description: System-assigned ID for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: 1
+      name:
+        type: string
+        description: Identifier of the allocation.
+        x-mappedTo: ALLOCATION
+        readOnly: true
+        example: 'Alloc1-WBS-US'
+  currency:
+    type: object
+    description: Currency details for the bill.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency for the company.
+        x-mappedTo: BASECURR
+        readOnly: true
+        example: 'USD'
+      txnCurrency:
+        type: string
+        description: Transaction currency for the bill.
+        x-mappedTo: CURRENCY
+        readOnly: true
+        example: 'GBP'
+      exchangeRate:
+        type: object
+        title: exchangeRate
+        description: Exchange rate details used to calculate the base amount.
+        properties:
+          date:
+            type: string
+            format: date
+            example: '2021-01-23'
+            description: Exchange rate date used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCH_RATE_DATE
+            readOnly: true
+          rate:
+            type: number
+            description: Exchange rate used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCHANGE_RATE
+            readOnly: true
+            example: 1.0789
+          typeId:
+            type: string
+            description: Exchange rate type used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCH_RATE_TYPE_ID
+            readOnly: true
+            example: '-1'
+  paymentInformation:
+    type: object
+    title: paymentInformation
+    description: Payment information for the line item.
+    properties:
+      totalBaseAmountPaid:
+        type: number
+        description: Total base amount that was paid.
+        x-mappedTo: TOTALPAID
+        readOnly: true
+        example: 100.00
+      totalTxnAmountPaid:
+        type: number
+        description: Total transaction amount that was paid.
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+        example: 100.00
+      totalBaseAmountSelectedForPayment:
+        type: number
+        description: Total base amount selected for the payment.
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+        example: 100.00
+      totalTxnAmountSelectedForPayment:
+        type: number
+        description: Total transaction amount selected for the payment.
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+        example: 100.00
+  releaseToPay:
+    type: boolean
+    description: |
+      If `true`, then this  line item is available for the payment.
+    x-mappedTo: RELEASETOPAY
+    x-mappedToType: string
+    example: true
+    default: false
+  isSubTotal:
+    type: string
+    description: |
+      If set to `S`, this is a subtotal. If set to'T', this is tax.
+    x-mappedTo: SUBTOTAL
+    enum:
+      - 'subtotal'
+      - 'tax'
+    x-mappedToValues:
+      - 'S'
+      - 'T'
+    readOnly: true
+    example: 'subtotal'
+  baselocation:
+    type: object
+    allOf:
+      - $ref: ../../common/references/locationref.s1.schema.yaml
+      - type: object
+        properties:
+          key:
+            type: string
+            description: Base location key.
+            x-mappedTo: BASELOCATION
+            example: '4'
+  retainage:
+    type: object
+    description: Retainage information for the line item. (For Construction subscriptions only.) Retainage is a portion of the agreed upon contract price withheld until the work is substantially complete. 
+    title: retainage
+    properties:
+      hasRetainage:
+        type: boolean
+        description: If `true`, retainage applies to the line item.
+        x-mappedTo: HASRETAINAGE
+        readOnly: true
+        example: true
+        default: false
+      percentage:
+        type: number
+        description: Retainage percentage for the line item.
+        x-mappedTo: RETAINAGEPERCENTAGE
+        readOnly: true
+        example: 2
+      baseAmountRetained:
+        type: number
+        description: Base amount retained for the line item.
+        x-mappedTo: AMOUNTRETAINED
+        readOnly: true
+        example: 20.00
+      txnAmountRetained:
+        type: number
+        description: Transaction amount retained for the line item.
+        x-mappedTo: TRX_AMOUNTRETAINED
+        readOnly: true
+        example: 20.00
+      txnAmountReleased:
+        type: number
+        description: Transaciton amount released for the line item.
+        x-mappedTo: TRX_AMOUNTRELEASED
+        readOnly: true
+        example: 10.00
+      release:
+        type: boolean
+        description: Indicates whether retainage is released to pay.
+        x-mappedTo: RETAINAGERELEASED
+        x-mappedToType: string
+        readOnly: true
+        example: true
+        default: false
+  project:
+    type: object
+    title: project
+    description: Project-related information for the line item.
+    properties:
+      isBillable:
+        type: boolean
+        description: Indicates whether the line item is marked as billable.
+        x-mappedTo: BILLABLE
+        x-mappedToType: string
+        example: true
+        default: false
+      isBilled:
+        type: boolean
+        description: Indicates whether the line item is billed.
+        x-mappedTo: BILLED
+        x-mappedToType: string
+        readOnly: true
+        example: true
+        default: false
+  purchasing:
+    type: object
+    title: purchasing
+    description: Purchasing information for the line item.
+    properties:
+      taxDetail:
+        type: object
+        description: Tax details from the purchasing module.
+        x-object: purchasing-tax-detail
+        x-mappedTo: taxdetail
+        title: purchasingTaxDetail
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the tax detail.
+            x-mappedTo: DETAILKEY
+            example: '15'
+          id:
+            type: string
+            description: Identifier of the tax detail.
+            x-mappedTo: DETAILID
+            example: 'Stationary Tax'
+          href:
+            type: string
+            readOnly: true
+            example: '/objects/purchasing-tax-detail/15'
+      document:
+        type: object
+        x-object: purchasing-document
+        x-mappedTo: primarydoc
+        title: purchasingDocument
+        properties:
+          key:
+            type: string
+            description: System-assigned key of the primary purchasing document.
+            x-mappedTo: PRIMARYDOCKEY
+            example: '2437'
+          id:
+            type: string
+            description: User assigned document number.
+            x-mappedTo: PRIMARYDOCNO
+            example: 'Sales Invoice-INV0110'
+          href:
+            type: string
+            readOnly: true
+            example: '/objects/purchasing-document/15'
+      documentLine:
+        type: object
+        description: Line details for the purchasing document.
+        x-object: purchasing-document-line
+        x-mappedTo: primarydocline
+        title: purchasingDocumentLine
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the line in the primary document.
+            x-mappedTo: PRIMARYDOCLINEKEY
+            example: '750'
+          id:
+            type: string
+            description: Number of the line in the primary document.
+            x-mappedTo: PRIMARYDOCLINENO
+            example: '3'
+          href:
+            type: string
+            readOnly: true
+            example: '/objects/purchasing-document-line/750'
+  tax:
+    type: object
+    title: tax
+    description: Tax details for the line entry.
+    properties:
+      parentEntryKey:
+        type: number
+        description: System-assigned key of the user input line, which is the parent of the tax line entries.
+        x-mappedTo: PARENTENTRY
+        readOnly: true
+        example: 468
+      parentTaxEntryKey:
+        type: number
+        description: System-assigned key of the tax line entry that is the parent of additional tax entries.
+        x-mappedTo: PARENTTAXENTRY
+        readOnly: true
+        example: 469
+      isPartialExemption:
+        type: boolean
+        description: |
+          If `true`, this entry is eligible for partial exemption, which separates the recoverable and non-recoverable portions of the input value added tax (VAT).
+        x-mappedTo: PARTIALEXEMPT
+        x-mappedToType: string
+        example: true
+        default: false
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          location:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+            x-object: location
+            x-mappedTo: location
+            title: location
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the location.
+                x-mappedTo: LOCATION#
+                readOnly: true
+                example: '4'
+              id:
+                type: string
+                description: Unique identifier of the location.
+                x-mappedTo: LOCATIONID
+                example: 'AU'
+              name:
+                type: string
+                description: Name of the location.
+                x-mappedTo: LOCATIONNAME
+                readOnly: true
+                example: 'Australia'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/location/4'
+          department:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+            x-object: department
+            x-mappedTo: department
+            title: department
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the department.
+                x-mappedTo: DEPT#
+                readOnly: true
+                example: '9'
+              id:
+                type: string
+                description: Unique identifier of the department.
+                x-mappedTo: DEPARTMENTID
+                example: '01'
+              name:
+                type: string
+                description: Name of the department.
+                x-mappedTo: DEPARTMENTNAME
+                readOnly: true
+                example: 'Accounting'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/department/9'
+  bill:
+    title: billref
+    type: object
+    description: Header level details for the bill's line entries.
+    x-mappedTo: apbill
+    x-object: bill
+    properties:
+      id:
+        type: string
+        description: System-assigned ID for the bill.
+        x-mappedTo: RECORDKEY
+        readOnly: true
+        example: '19876'
+      key:
+        type: string
+        description: System-assigned key for the bill.
+        x-mappedTo: RECORDKEY
+        readOnly: true
+        example: '19876'

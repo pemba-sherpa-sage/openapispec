@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: txn-currency
+  description: txn-currency API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Transaction currencies
+    description: The `txn-currency` objects define the currencies that can be used in transactions.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/txn-currency:
+    get:
+      summary: List transaction currencies
+      description: |-
+        Returns up to 100 currencies from the collection with a key, ID, and link for each one. This operation is mostly for use in testing; use the query service to find currencies that meet specific criteria and to specify the properties that you want in the response.
+      tags:
+        - Transaction currencies
+      operationId: get-objects-txn-currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of txn-currency objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List currencies:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: AUD
+                        href: /objects/txn-currency/1
+                      - key: '2'
+                        id: EUR
+                        href: /objects/txn-currency/2
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/txn-currency/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the transaction currency.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a transaction currency
+      description: Returns detailed information for a specified transaction currency.
+      tags:
+        - Transaction currencies
+      operationId: get-objects-txn-currency-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the txn-currency
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/txn-currency'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a transaction currency
+      description: Deletes a transaction currency.
+      tags:
+        - Transaction currencies
+      operationId: delete-objects-txn-currency-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    txn-currency:
+      $ref: ../models/txn-currency.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

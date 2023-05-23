@@ -1,0 +1,255 @@
+openapi: 3.0.0
+info:
+  title: billing price list
+  description: Billing price list API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+tags:
+  - name: Billing price lists
+    description: |-
+      Use billing price lists to create pricing strategies for items with prices that are determined based on a fixed fee, the quantity used, or the contracted quantity. Billing price lists support several pricing models, including prices per thousands, discount tiers, minimum flat fees, and more. A company can have multiple billing price lists. 
+
+      The `billing-price-list` object is a header for billing price list entries. You create the list and then create the billing price list entries associated with the list.
+
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/billing-price-list:
+    get:
+      summary: List billing price lists
+      description: |
+        Returns up to 100 billing price lists from the collection with a key, ID, and link for each list. This operation is mostly for use in testing; use the query service to find billing price lists that meet specific criteria and to specify the properties that you want in the response.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: get-objects-billing-price-list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing price lists.
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List billing price lists:
+                  value:
+                    'ia::result':
+                      - key: '24'
+                        id: 'SoftwarePackagePL'
+                        href: /objects/billing-price-list/24
+                      - key: '37'
+                        id: 'API'
+                        href: /objects/billing-price-list/37
+                      - key: '1'
+                        id: 'SoftwareFinance'
+                        href: /objects/billing-price-list/1
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a billing price list
+      description: Creates a new billing price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Add Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: post-objects-billing-price-list
+      requestBody:
+        description: Billing price list to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/billingPriceList'
+                - $ref: '#/components/schemas/billingPriceListRequiredProperties'
+            examples:
+              Create a billing price list:
+                value:
+                  status: active
+                  name: SoftwarePackagePL
+                  description: Billing price list for software packages
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billing price list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New billing price list created:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: 'SoftwarePackagePL_1'
+                      href: /objects/billing-price-list/40
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/billing-price-list/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the billing price list.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a billing price list
+      description: Returns detailed information for a specified billing price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: get-objects-billing-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: billing price list
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/billingPriceList'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Billing price list details:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: SoftwarePackagePL
+                      status: active
+                      name: SoftwarePackagePL
+                      description: Software billing price list
+                      audit:
+                        createdDateTime: null
+                        modifiedDateTime: null
+                        createdBy: null
+                        modifiedBy: null
+                      href: /objects/billing-price-list/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a billing price list
+      description: Updates an existing billing price list by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Edit Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: patch-objects-billing-price-list-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: ../models/billing-price-list.s1.schema.yaml
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            example:
+              Change billing price list status:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Billing price list updated
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              example:
+                Update successful:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: 'SoftwarePackagePL'
+                      href: /objects/billing-price-list/40
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a billing price list
+      description: |-
+        Deletes a billing price list. You can delete a billing price list if it has not been used by any contracts. Deleted price lists cannot be recovered. Alternatively, you can change the status to Inactive, which prevents it from being used but retains the price list for historical purposes.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Delete Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: delete-objects-billing-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billingPriceList:
+      $ref: ../models/billing-price-list.s1.schema.yaml
+    billingPriceListRequiredProperties:
+      type: object
+      required:
+          - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

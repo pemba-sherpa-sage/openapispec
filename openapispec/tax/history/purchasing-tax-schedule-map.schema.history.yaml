@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - po/lists/potaxschedmap/view
+    POST:
+      - po/lists/potaxschedmap/create
+    PATCH:
+      - po/lists/potaxschedmap/edit
+    DELETE:
+      - po/lists/potaxschedmap/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

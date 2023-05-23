@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  title: item
+  description: item API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Items
+    description: |
+      Items are goods, services, or kits that you purchase from vendors or sell to customers. Items are used in Inventory Control, Order Entry, and Purchasing.
+      The type of an item (`itemType`) affects other item parameters. Possible item types are:
+      * `inventory` - Items that will be available in inventory, sales, and purchasing transactions.
+      * `nonInventory` - Items that will be available in both sales and purchasing transactions or contracts.
+      * `purchaseOnlyNonInventory` - Items that will only be available in purchasing transactions or contract expenses.
+      * `salesOnlyNonInventory` - Items that will only be available in sales transactions or contracts.
+      * `kit` - The parent item of a (non-stockable) kit (which is assembled from other items at the time of the order). This type is only available if Kits is enabled in either Order Entry or Inventory Control.
+      * `stockableKit` - The parent item of a stockable kit (which is assembled from other items and stored before order). This type is only available if Stockable kits is enabled in Inventory Control.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/item/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the item.
+    get:
+      summary: Get an item
+      description: Returns detailed information for a specified item.
+      tags:
+        - Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the item
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/item'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an item:
+                  value:
+                    'ia::result':
+                      key: '73'
+                      id: itemId15
+                      status: active
+                      name: Item15
+                      description: extended description 1
+                      productLine:
+                        id: Auto Product Line
+                      inventory:
+                        shippingWeight: 10
+                        glGroup:
+                          id: Auto GL Group
+                      sales:
+                        isTaxable: false
+                        taxGroup:
+                          id: Auto Tax Group
+                          key: '12'
+                          href: /objects/item-tax-group/12
+                        basePrice: 100
+                      costMethod: average
+                      purchasing:
+                        standardCost: '120'
+                      unitOfMeasure:
+                        id: Count
+                        key: '28'
+                        href: /objects/unit-of-measure/28
+                      notes: note1
+                      itemType: inventory
+                      'nsp::CUSTOMFIELD1': null
+                      'nsp::itemmasteroneone':
+                        key: null
+                        id: null
+                      warehouseInfo:
+                        - key: '51'
+                          id: '51'
+                          item:
+                            id: itemId15
+                          warehouse:
+                            id: '101'
+                          storageArea: '100'
+                          economicOrderQuantity: '1'
+                          href: /objects/item-warehouse-inventory/51
+                        - key: '52'
+                          id: '52'
+                          item:
+                            id: itemId15
+                          warehouse:
+                            id: '103'
+                          storageArea: '101'
+                          economicOrderQuantity: '2'
+                          href: /objects/item-warehouse-inventory/52
+                      href: /objects/item/73
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-item-key
+    delete:
+      summary: Delete an item
+      description: Deletes an item.
+      tags:
+        - Items
+      operationId: delete-objects-item-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an item
+      description: Updates an existing item by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Items
+      operationId: patch-objects-item-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated item
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an item:
+                  value:
+                    'ia::result':
+                      key: '55'
+                      id: ItemId1
+                      href: /objects/item/55
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    costMethod:
+                      readOnly: true
+            examples:
+              Update an item:
+                value:
+                  name: item1
+                  status: active
+                  extendedDescription: extended description 1
+  /objects/item:
+    get:
+      summary: List items
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each item. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of item objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-item
+    post:
+      summary: Create an item
+      description: Creates a new item.
+      tags:
+        - Items
+      operationId: post-objects-item
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New item
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an item:
+                  value:
+                    'ia::result':
+                      key: '104'
+                      id: Toro FR651-AS06-R Mower
+                      href: /objects/item/104
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item'
+                - $ref: '#/components/schemas/itemRequiredProperties'
+            examples:
+              Create an item:
+                value:
+                  id: Toro FR651-AS06-R Mower
+                  name: Toro FR651-AS06-R Zero Turn Mower
+                  status: active
+                  description: Toro FR651-AS06-R Zero Turn Mower
+                  costMethod: standard
+                  notes: Toro FR 600 Series
+                  itemType: inventory
+                  productLine:
+                    id: Auto Product Line
+                  inventory:
+                    shippingWeight: 7
+                    glGroup:
+                      id: Auto GL Group
+                  sales:
+                    isTaxable: true
+                    basePrice: 60
+                    taxGroup:
+                      id: Auto Tax Group
+                  purchasing:
+                    standardCost: '50'
+                  unitOfMeasure:
+                    id: 3 Pack
+                  warehouseInfo:
+                    - item:
+                        id: Toro FR651-AS06-R Zero Turn Mower
+                      warehouse:
+                        id: WH10001
+                      storageArea: '20'
+                      economicOrderQuantity: '5'
+components:
+  schemas:
+    item:
+      $ref: ../models/item.s1.schema.yaml
+    itemRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+        - itemType
+        - costMethod
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

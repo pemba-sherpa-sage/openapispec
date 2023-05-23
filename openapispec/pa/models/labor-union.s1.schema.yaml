@@ -1,0 +1,38 @@
+title: labor-union
+x-mappedTo: laborunion
+type: object
+description: User-defined labor union that can be used in timesheets.
+properties:
+  key:
+    type: string
+    description: Labor Union Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Labor Union ID
+    x-mappedTo: LABORUNIONID
+    x-mutable: false
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples:
+  - key: '3'
+    id: BAC
+    name: International Union of Bricklayers and Allied Craftworkers
+    description: 'BAC represents all skilled trowel trades workers, including bricklayers, tile setters, plasterers, cement masons, marble masons, restoration workers, and terrazzo and mosaic workers.'
+    status: active
+    audit:
+      createdDateTime: '2021-11-21T11:28:12Z'
+      modifiedDateTime: '2021-11-21T11:30:12Z'
+      createdBy: '1'
+      modifiedBy: '95'

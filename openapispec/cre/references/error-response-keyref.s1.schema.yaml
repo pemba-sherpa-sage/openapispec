@@ -1,0 +1,10 @@
+type: object
+properties:
+  key:
+    type: string
+  href:
+    type: string
+  'ia::result':
+    $ref: ../../common/models/error-response.schema.yaml
+  'ia::meta':
+    $ref: ../../common/models/metadata-extended.schema.yaml

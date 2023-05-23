@@ -1,0 +1,711 @@
+openapi: 3.0.0
+info:
+  title: location
+  description: location API
+  version: '1.0'
+  contact:
+    email: Anca.Uricariu@sage.com
+    name: Anca Uricariu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Locations
+    description: |-
+      Location is a dimension that is used to represent the geographic locations of offices or facilities, or to represent divisions in a company. Once you have defined some locations, you can set locations on transactions, and that information can be used to provide new insights in reports. 
+
+      You can create a hierarchy of locations to reflect how locations are organized within your company.
+paths:
+  /objects/location:
+    get:
+      summary: List locations
+      description: Returns up to 100 locations from the collection with a key, ID, and link for each location. This operation is mostly for use in testing; use the query service to find locations that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Locations
+      tags:
+        - Locations
+      operationId: get-objects-location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of location objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List locations:
+                  value:
+                    ia::result:
+                      - key: 1
+                        id: US-PNW
+                        href: /objects/location/1
+                      - key: 96
+                        id: US-EAST
+                        href: /objects/location/96
+                      - key: 21
+                        id: US-SOUTH
+                        href: /objects/location/21
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a location
+      description: Creates a new location. You can think of this as adding a new value to the dimension that you can use to tag transactions for reporting.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Add Location
+      tags:
+        - Locations
+      operationId: post-objects-location
+      requestBody:
+        description: Create location object
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/location.s1.schema'
+                - $ref: '#/components/schemas/locationRequiredProperties'
+            examples:
+              Create a single location:
+                value:
+                  id: loc22
+                  name: 22-India
+                  description: All India offices
+                  status: active
+              Create a child location:
+                value:
+                  id: loc227
+                  name: Bangalore
+                  description: Bangalore sales office
+                  status: active
+                  parent:
+                    id: loc22
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New location
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New location created:
+                  value:
+                    ia::result:
+                      key: 234
+                      id: 22-India
+                      href: /objects/location/234
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/location/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the location.
+        in: path
+        required: true
+        example: '92'
+        schema:
+          type: string
+    get:
+      summary: Get a location
+      description: Returns detailed information for a specified location.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Locations
+      tags:
+        - Locations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the location
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/location.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a location:
+                  value:
+                    ia::result:
+                      id: WEN
+                      key: '6'
+                      name: Wenatchee
+                      parent:
+                        id: PNW--Pacific Northwest
+                        key: '5'
+                        href: /objects/location/5
+                      manager:
+                        name: miller, dan
+                        id: EE-0000123--miller, dan
+                        key: '2'
+                        href: /objects/employee/2
+                      contacts:
+                        primary:
+                          mailingAddress:
+                            addressLine1: '900 Cherry Avenue, #300'
+                            addressLine2: null
+                            city: Seattle
+                            country: United States
+                            postCode: '98066'
+                            state: WA
+                          URL1: null
+                          URL2: null
+                          companyName: InsideOut Technologies, Inc
+                          email1: null
+                          email2: null
+                          fax: null
+                          firstName: null
+                          id: Insideout Technologies, Inc
+                          lastName: null
+                          middleName: null
+                          mobile: null
+                          pager: null
+                          phone1: null
+                          phone2: null
+                          prefix: null
+                          printAs: InsideOut Technologies, Inc
+                          key: '984'
+                          href: /objects/contact/984
+                        shipTo:
+                          mailingAddress:
+                            addressLine1: null
+                            addressLine2: null
+                            city: null
+                            country: null
+                            postCode: null
+                            state: null
+                          URL1: null
+                          URL2: null
+                          companyName: null
+                          email1: null
+                          email2: null
+                          fax: null
+                          firstName: null
+                          id: null
+                          lastName: null
+                          middleName: null
+                          mobile: null
+                          pager: null
+                          phone1: null
+                          phone2: null
+                          prefix: null
+                          printAs: null
+                          key: null
+                      startDate: null
+                      endDate: null
+                      status: active
+                      audit:
+                        createdDateTime: '2022-02-11T09:07:07Z'
+                        modifiedDateTime: '2022-02-11T09:07:07Z'
+                        createdBy: '110'
+                        modifiedBy: '110'
+                      locationReportingTitle: Seattle Sales Office
+                      taxId: null
+                      href: /objects/location/102
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-location-key
+    patch:
+      summary: Update a location
+      description: Updates an existing location by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Edit Locations
+      tags:
+        - Locations
+      operationId: patch-objects-location-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/location.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update location contacts:
+                value:
+                  manager:
+                    id: '12'
+                  contacts:
+                    primary:
+                      id: john.doe
+                    shipTo:
+                      id: jane.daw
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated location
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a location
+      description: Deletes a location. You can delete a location if it is not being used or referenced. Deleted locations cannot be recovered.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Delete Locations
+      tags:
+        - Locations
+      operationId: delete-objects-location-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    location:
+      $ref: '#/components/schemas/location.s1.schema'
+    locationRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    contactref.s1.schema:
+      title: contact
+      type: object
+      x-object: contact
+      x-mappedTo: contact
+      properties:
+        key:
+          type: string
+          description: Contact Key
+          readOnly: true
+          x-mappedTo: $$key
+          example: '21'
+        id:
+          type: string
+          description: Contact ID
+          x-mappedTo: $$prefix.CONTACTNAME
+          example: 3-Alice
+        href:
+          type: string
+          readOnly: true
+          example: /objects/contact/21
+        lastName:
+          type: string
+          description: Last Name
+          x-mappedTo: $$prefix.LASTNAME
+          example: Cooper
+        firstName:
+          type: string
+          description: First Name
+          x-mappedTo: $$prefix.FIRSTNAME
+          example: Alice
+        middleName:
+          type: string
+          description: Middle Name
+          x-mappedTo: $$prefix.INITIAL
+          example: Mary
+        prefix:
+          type: string
+          description: Prefix
+          x-mappedTo: $$prefix.PREFIX
+          example: Miss
+        printAs:
+          type: string
+          description: Print As
+          x-mappedTo: $$prefix.PRINTAS
+          example: Alice.Cooper
+        email1:
+          type: string
+          description: Primary Email
+          x-mappedTo: $$prefix.EMAIL1
+          example: alice@example.com
+        email2:
+          type: string
+          description: Secondary Email
+          x-mappedTo: $$prefix.EMAIL2
+          example: cooper@example.com
+        phone1:
+          type: string
+          description: Primary Phone
+          x-mappedTo: $$prefix.PHONE1
+          example: '14085551212'
+        phone2:
+          type: string
+          description: Secondary Phone
+          x-mappedTo: $$prefix.PHONE2
+          example: '14085559876'
+        mobile:
+          type: string
+          description: Mobile
+          x-mappedTo: $$prefix.CELLPHONE
+          example: '14085554420'
+        pager:
+          type: string
+          description: Pager
+          x-mappedTo: $$prefix.PAGER
+          example: '14085559987'
+        fax:
+          type: string
+          description: Fax
+          x-mappedTo: $$prefix.FAX
+          example: '14085555309'
+        URL1:
+          type: string
+          description: Primary URL
+          x-mappedTo: $$prefix.URL1
+          example: https://alice.example.com
+        URL2:
+          type: string
+          description: Secondary URL
+          x-mappedTo: $$prefix.URL2
+          example: https://cooper.example.com
+        companyName:
+          type: string
+          description: Company Name
+          x-mappedTo: $$prefix.COMPANYNAME
+          example: AlcoSoft Inc
+        mailingAddress:
+          type: object
+          description: Mailing Address
+          properties:
+            addressLine1:
+              type: string
+              description: Addess 1
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS1
+              example: 300 Park Avenue
+            addressLine2:
+              type: string
+              description: Addess 2
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS2
+              example: Suite 1400
+            city:
+              type: string
+              description: City
+              x-mappedTo: $$prefix.MAILADDRESS.CITY
+              example: San Jose
+            state:
+              type: string
+              description: State
+              x-mappedTo: $$prefix.MAILADDRESS.STATE
+              example: California
+            postCode:
+              type: string
+              description: Zip or Postal Code
+              x-mappedTo: $$prefix.MAILADDRESS.ZIP
+              example: '95110'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: $$prefix.MAILADDRESS.COUNTRY
+              example: United States of America
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    location.s1.schema:
+      title: location
+      x-mappedTo: location
+      type: object
+      description: |
+        Location is a dimension that is used to represent the geographic locations of offices or facilities. It can also be used for divisions in a company, if that is more significant than geographic locations. Once defined, locations can be set on transactions, and that information can be used to provide new insights in reports. 
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the location. Used to identify the location in URLs or JSON bodies for all operations on the location.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: 3345
+        id:
+          type: string
+          description: Unique identifier for the location.
+          x-mappedTo: LOCATIONID
+          x-mutable: false
+          example: 1-Lyon
+        href:
+          type: string
+          readOnly: true
+          description: URL for this location.
+          example: /objects/location/21
+        name:
+          type: string
+          description: Name of the location.
+          x-mappedTo: NAME
+          example: Lyon-France
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+        taxId:
+          type: string
+          description: State tax ID or VAT registration number.
+          x-mappedTo: TAXID
+          example: US4321112
+        startDate:
+          type: string
+          description: Start date of operation at this location.
+          x-mappedTo: STARTDATE
+          format: date
+          example: '2021-01-01'
+        endDate:
+          type: string
+          description: End date of operation at this location.
+          x-mappedTo: ENDDATE
+          format: date
+          example: '2022-04-01'
+        contacts:
+          type: object
+          title: contacts
+          description: The list of contacts for the location
+          properties:
+            primary:
+              type: object
+              description: The main Location contact specifies the company name, address, and other details as they should appear on invoices, bills, and other forms.
+              allOf:
+                - $ref: '#/components/schemas/contactref.s1.schema'
+                - type: object
+                  x-object: contact
+                  x-mappedTo: contactinfo
+                  x-mappedToKey: CONTACTKEY
+                  x-mappedToPrefix: CONTACTINFO
+            shipTo:
+              type: object
+              description: The address for receiving goods and services, if different from the primary contact address.
+              allOf:
+                - $ref: '#/components/schemas/contactref.s1.schema'
+                - type: object
+                  x-object: contact
+                  x-mappedTo: shipto
+                  x-mappedToKey: SHIPTOKEY
+                  x-mappedToPrefix: SHIPTO
+        locationReportingTitle:
+          type: string
+          description: Location information displayed in reports, in addition to the location name. For example, a location title might might include the address and manager name.
+          x-mappedTo: CUSTTITLE
+        parent:
+          type: object
+          x-object: location
+          x-mappedTo: PARENT
+          title: parent
+          description: Parent location, for location hierarchies.
+          properties:
+            key:
+              description: Parent location key.
+              type: string
+              x-mappedTo: PARENTKEY
+              readOnly: true
+              example: 65
+            id:
+              description: Parent location ID.
+              type: string
+              x-mappedTo: PARENTID
+              example: 1-France
+            href:
+              description: URL of parent location.
+              type: string
+              readOnly: true
+              example: /objects/location/65
+        manager:
+          type: object
+          x-object: employee
+          x-mappedTo: MANAGER
+          title: manager
+          description: The employee that manages the location.
+          properties:
+            key:
+              description: Manager's employee key.
+              type: string
+              x-mappedTo: SUPERVISORKEY
+              readOnly: true
+              example: 81
+            id:
+              description: ID of the manager employee.
+              type: string
+              x-mappedTo: SUPERVISORID
+              example: anne.jason
+            href:
+              description: URL of the manager employee.
+              type: string
+              readOnly: true
+              example: /objects/employee/81
+            name:
+              description: Name of the manager.
+              type: string
+              x-mappedTo: SUPERVISORNAME
+              readOnly: true
+              example: Donations
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

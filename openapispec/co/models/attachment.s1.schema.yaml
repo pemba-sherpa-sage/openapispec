@@ -1,0 +1,59 @@
+title: attachment
+x-mappedTo: supportingdocuments
+type: object
+description: Container to hold multiple files
+properties:
+  key:
+    type: string
+    description: Attachment Key test
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Attachment ID
+    x-mappedTo: DOCUMENTID
+    x-mutable: false
+    example: SupDoc1
+  name:
+    type: string
+    description: Name
+    x-mappedTo: DOCUMENTNAME
+    example: Attach-01
+  href:
+    type: string
+    readOnly: true
+    example: /objects/attachment/1
+  folder:
+    type: object
+    description: Folder
+    x-object: folder
+    properties:
+      key:
+        type: string
+        x-mappedTo: GROUPRECORDKEY
+        example: '4'
+      id:
+        type: string
+        x-mappedTo: GROUPKEY
+        readOnly: true
+        example: SupDocFolder1
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/folder/4'
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: Attachment Attach-01
+  files:
+    type: array
+    description: Attached files
+    x-mappedTo: ATTACHMENTS
+    x-object: file
+    items:
+      $ref: file.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples: []

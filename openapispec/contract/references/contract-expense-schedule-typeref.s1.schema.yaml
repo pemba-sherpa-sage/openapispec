@@ -1,0 +1,22 @@
+type: object
+title: contract-expense-schedule
+x-object: contract-expense-schedule
+properties:
+  key:
+    type: string
+    description: Contract expense schedule system-assigned key.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Contract expense schedule unique identifier.
+    x-mappedTo: SCHEDULEKEY
+    readOnly: true
+    example: '145'
+  href:
+    type: string
+    description: Contract expense schedule URL.
+    readOnly: true
+    example: /objects/contract-expense-schedule/145
+examples: []

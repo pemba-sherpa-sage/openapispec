@@ -1,0 +1,325 @@
+title: ar-recurring-invoice-line
+x-mappedTo: arrecurinvoiceentry
+x-ownedBy: ar-recurring-invoice
+type: object
+description: Line items in a recurring invoice represent transactions captured in that recurring invoice.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the line item. 
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: ID for the line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  href:
+    type: string
+    description: URL for the line item.
+    readOnly: true
+  description:
+    type: string
+    description: Memo provides information about the line item that may be of use in the future.
+    x-mappedTo: ENTRYDESCRIPTION
+    example: 
+  amount:
+    type: string
+    description: Base amount
+    x-mappedTo: AMOUNT
+    example:
+  lineNumber:
+    type: number
+    description: Line number of the line item.
+    x-mappedTo: LINE_NO
+    readOnly: true
+  form1099:
+    type: string
+    description: Form 1099 information for the line item.
+    x-mappedTo: FORM1099
+    example: 
+  txnAmount:
+    type: string
+    description: Transaction amount
+    x-mappedTo: TRX_AMOUNT
+    example: 
+  isBillable:
+    type: boolean
+    description: Indicates whether the line item is billable.
+    x-mappedTo: BILLABLE
+    example: 
+    x-mappedToType: string
+  startDate:
+    type: string
+    format: date
+    description: Revenue recognition start date.
+    x-mappedTo: REVRECSTARTDATE
+    example: 
+  endDate:
+    type: string
+    format: date
+    description: Revenue recognition end date.
+    x-mappedTo: REVRECENDDATE
+    example:
+  currency:
+    type: object
+    description: Currency information for the line item.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency
+        x-mappedTo: BASECURR
+        readOnly: true
+      txnCurrency:
+        type: string
+        description: Transaction currency
+        x-mappedTo: CURRENCY
+        readOnly: true
+      exchangeRateDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Exchange rate date
+        x-mappedTo: EXCHRATEDATE
+      exchangeRate:
+        type: number
+        description: Exchange rate
+        x-mappedTo: EXCHRATE
+        readOnly: true
+      exchangeRateTypeId:
+        type: string
+        description: Exchange rate type
+        x-mappedTo: EXCHRATETYPE
+  isTax:
+    type: boolean
+    description: Indicates whether the line item is taxable.
+    x-mappedTo: ISTAX
+    example: 
+    x-mappedToType: string
+    default: false
+  isSubTotal:
+    type: boolean
+    description: Indicates whether the line item is a subtotal.
+    x-mappedTo: SUBTOTAL
+    x-mappedToType: string
+  allocation:
+    type: object
+    description: Type of transaction allocation for the line item.
+    title: allocation
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: '1'
+      id:
+        type: string
+        description: System-assigned ID for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: '1'
+      name:
+        type: string
+        description: Name or other identifier of the allocation.
+        x-mappedTo: ALLOCATION
+        readOnly: true
+        example: 'Alloc1-WBS-US'
+      href:
+        type: string
+        description: URL for the allocation.
+        readOnly: true
+  accountLabel:
+    type: object
+    description: Account the line item is assigned to.
+    x-mappedTo: ar-account-label
+    x-object: ar-account-label
+    properties:
+      key:
+        type: string
+        description: Account label key
+        x-mappedTo: ACCOUNTLABELKEY
+        example:
+      id:
+        type: string
+        description: Account label
+        x-mappedTo: ACCOUNTLABEL
+        example:
+      href:
+        type: string
+        description: URL for the account label.
+        readOnly: true
+  department:
+    type: object
+    description: Department the line item is assigned to.
+    x-mappedTo: department
+    x-object: department
+    properties:
+      key:
+        type: string
+        description: Department key
+        x-mappedTo: DEPT#
+        example:
+      id:
+        type: string
+        description: Department ID
+        x-mappedTo: DEPARTMENTID
+        example: 
+      name:
+        type: string
+        description: Department name
+        x-mappedTo: DEPARTMENTNAME
+        example:
+      href:
+        type: string
+        description: URL for the department.
+        readOnly: true
+  taxDetail:
+    type: object
+    description: For companies subscribed to the Taxes application, the tax category for the line item.
+    x-mappedTo: detail
+    x-object: order-entry-tax-detail
+    properties:
+      key:
+        type: string
+        description: Tax detail key
+        x-mappedTo: DETAILKEY
+        example:
+      id:
+        type: string
+        description: Tax detail ID
+        x-mappedTo: DETAILID
+        example: 
+      taxRate:
+        type: number
+        description: The percent tax rate defined for the tax detail used to calculate the amount of tax. 
+        x-mappedTo: TAXRATE
+        example:
+      href:
+        type: string
+        description: URL for the tax detail.
+        readOnly: true
+  deferredRevenueGLAccount:
+    type: object
+    description: GL account for deferred revenue for the line item.
+    x-mappedTo: dracct
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: Deferred revenue GL account key.
+        x-mappedTo: DEFERREDREVACCTKEY
+        example:
+      id:
+        type: string
+        description: Deferred revenue GL account number.
+        x-mappedTo: DEFERREDREVACCTNO
+        example: 
+      name:
+        type: string
+        description: Deferred revenue GL account name.
+        x-mappedTo: DEFERREDREVACCTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the deferred revenue GL account.
+        readOnly: true
+  glAccount:
+    type: object
+    description: GL account the line item is assigned to.
+    x-mappedTo: glaccount
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: ACCOUNTKEY
+        example:
+      id:
+        type: string
+        description: ID for the GL account.
+        x-mappedTo: GLACCOUNTNO
+        example: 
+      name:
+        type: string
+        description: Name or title of the GL account.
+        x-mappedTo: GLACCOUNTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the GL account.
+        readOnly: true
+  location:
+    type: object
+    description: Where multiple locations exist, the location to which the system should assign the expense.
+    x-mappedTo: location
+    x-object: location
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the location.
+        x-mappedTo: LOCATION#
+        example:
+      id:
+        type: string
+        description: ID for the location.
+        x-mappedTo: LOCATIONID
+        example: 
+      name:
+        type: string
+        description: Name of the location.
+        x-mappedTo: LOCATIONNAME
+        example:
+      href:
+        type: string
+        description: URL for the location.
+        readOnly: true
+  offsetGLAccount:
+    type: object
+    description: GL account for discounts and penalties.
+    x-mappedTo: offsetglaccountno
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the offset GL account.
+        x-mappedTo: OFFSET
+        example:
+      id:
+        type: string
+        description: ID for the offset GL account.
+        x-mappedTo: OFFSETGLACCOUNTNO
+        example: 
+      name:
+        type: string
+        description: Name or title of the offset GL account.
+        x-mappedTo: OFFSETGLACCOUNTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the offset GL account.
+        readOnly: true
+  recurringInvoice:
+    type: object
+    description: Header level details for the AR recurring invoice line entries.
+    x-mappedTo: arrecurinvoice
+    x-object: ar-recurring-invoice
+    properties:
+      id:
+        type: string
+        description: ID for the AR recurring invoice.
+        x-mappedTo: RECORDKEY
+        readOnly: true
+      key:
+        type: string
+        description: System-assigned key for the AR recurring invoice.
+        x-mappedTo: RECORDKEY
+      href:
+        type: string
+        description: URL for the AR recurring invoice.
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

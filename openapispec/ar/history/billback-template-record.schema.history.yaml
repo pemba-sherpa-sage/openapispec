@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/bbtemplaterecs/view
+    POST:
+      - ar/lists/bbtemplaterecs/create
+    PATCH:
+      - ar/lists/bbtemplaterecs/edit
+    DELETE:
+      - ar/lists/bbtemplaterecs/delete
+s1:
+  hash: '0'
+  type: rootObject
+  

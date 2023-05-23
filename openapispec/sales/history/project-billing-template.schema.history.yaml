@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/billingtemplate/view
+    POST:
+      - so/lists/billingtemplate/create
+    PATCH:
+      - so/lists/billingtemplate/edit
+    DELETE:
+      - so/lists/billingtemplate/delete
+s1:
+  hash: '0'
+  type: rootObject

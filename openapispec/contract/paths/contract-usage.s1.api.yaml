@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  title: contract-usage
+  description: contract-usage API
+  version: '1.0'
+  contact:
+    name: Artur Mirzakhanyan
+    email: artur.mirzakhanyan@sage.com
+tags:
+  - name: Contract usage
+    description: A contract usage identifies usage of a quanity based item and is tied directly to a contract line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-usage:
+    get:
+      summary: List contract usage
+      description: 'Returns a collection with a key, ID, and link for each contract-usage.'
+      tags:
+        - Contract usage
+      operationId: get-objects-contract-usage
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract usage objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of contract usage:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-usage/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-usage/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-usage/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-usage/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-usage/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                List of contract usage errors:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [contract-usage] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    post:
+      summary: Create contract usage
+      description: Create a new contract usage
+      tags:
+        - Contract usage
+      operationId: post-objects-contract-usage
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-usage'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+  '/objects/contract-usage/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract usage.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a contract usage
+      description: Returns detailed information for a particular contract usage.
+      tags:
+        - Contract usage
+      operationId: get-objects-contract-usage-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract usage
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-usage'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract usage error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-usage/12
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Field [id] is a read-only field'
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    patch:
+      summary: Update a contract usage
+      description: Updates an existing contract usage by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract usage
+      operationId: patch-objects-contract-usage-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-usage'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract usage
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a contract usage:
+                  value:
+                    'ia::result':
+                      key: '12'
+                      id: 2021-LV2
+                      href: /objects/contract-usage/12
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract usage error:
+                  value:
+                    key: '145'
+                    href: /objects/contract-usage/145
+                    'ia::result':
+                      'ia::error':
+                        code: notFound
+                        message: 'The requested resource [contract-usage] with key(s) [145] could not be found but may be available in the future'
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    delete:
+      summary: Delete contract usage
+      description: Delete a contract usage
+      tags:
+        - Contract usage
+      operationId: delete-objects-contract-usage-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+components:
+  schemas:
+    contract-usage:
+      $ref: ../models/contract-usage.s1.schema.yaml

@@ -1,0 +1,383 @@
+openapi: 3.0.0
+info:
+  title: ap-account-label
+  description: ap-account-label API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AP account labels
+    description: |
+      AP account labels give accounts more descriptive names that are displayed anywhere the accounts are referenced in the product and in reports. Account labels is an optional feature that must be turned on in Accounts Payable. 
+paths:
+  /objects/ap-account-label/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the AP account label.
+    get:
+      summary: Get an AP account label
+      description: Returns detailed information for a specified AP account label.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ap-account-label.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AP account label:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: Equipment
+                      description: Equipment
+                      href: /objects/ap-account-label/1
+                      status: active
+                      glAccount:
+                        id: 1210--Equipment
+                      offsetGLAccount:
+                        id: 1215--EquipmentOffset
+                    ia::meta:
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-account-label-key
+    delete:
+      summary: Delete an AP account label
+      description: Deletes an AP account label.
+      tags:
+        - AP account labels
+      operationId: delete-objects-ap-account-label-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP account label
+      operationId: patch-objects-ap-account-label-key
+      description: Updates an existing AP account label by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-account-label.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an account label:
+                value:
+                  key: '1'
+                  id: null
+                  description: Equipment
+                  href: /objects/ap-account-label/1
+                  status: active
+                  glAccount:
+                    id: 1210--Equipment
+                  offsetGLAccount:
+                    id: 1215--EquipmentOffset
+  /objects/ap-account-label:
+    get:
+      summary: List AP account labels
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each label. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-account-label objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AP account labels:
+                  value:
+                    ia::result:
+                      - key: string
+                        id: string
+                        href: string
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-account-label
+    post:
+      summary: Create an AP account label
+      description: Creates a new AP account label.
+      tags:
+        - AP account labels
+      operationId: post-objects-ap-account-label
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-account-label.s1.schema'
+                - $ref: '#/components/schemas/ap-account-labelRequiredProperties'
+            examples:
+              Create an AP account label:
+                value:
+                  key: '1'
+                  id: Equipment
+                  description: Equipment
+                  href: /objects/ap-account-label/1
+                  status: active
+                  glAccount:
+                    id: 1210--Equipment
+                  offsetGLAccount:
+                    id: 1215--EquipmentOffset
+components:
+  schemas:
+    ap-account-label:
+      $ref: '#/components/schemas/ap-account-label.s1.schema'
+    ap-account-labelRequiredProperties:
+      type: object
+      required:
+        - id
+        - description
+      properties:
+        glAccount:
+          type: object
+          required:
+            - id
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    ap-account-label.s1.schema:
+      title: ap-account-label
+      x-mappedTo: apaccountlabel
+      type: object
+      description: AP account labels provide more descriptive names for accounts.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AP account label. test
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Name or other unique identifier for the account label.
+          x-mappedTo: ACCOUNTLABEL
+          x-mutable: false
+          example: Equipment
+        description:
+          type: string
+          description: A note about the purpose and use of the account label.
+          x-mappedTo: DESCRIPTION
+          example: Equipment
+        href:
+          type: string
+          description: URL for the AP account label.
+          readOnly: true
+          example: /objects/ap-account-label/1
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        glAccount:
+          type: object
+          description: The general ledger account to which the label refers. This is typically a revenue account.
+          x-object: gl-account
+          x-mappedTo: GLACCOUNT
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the general ledger account.
+              x-mappedTo: GLACCOUNTRECORDNO
+              example: '1'
+            id:
+              type: string
+              description: General ledger account number.
+              x-mappedTo: GLACCOUNTNO
+              example: 1210--Equipment
+            href:
+              type: string
+              readOnly: true
+        offsetGLAccount:
+          type: object
+          description: The general ledger account where the system posts offsets to items posted to this label. This is typically a receivables account.
+          x-object: gl-account
+          x-mappedTo: OFFSETGLACCOUNT
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the offset general ledger account.
+              x-mappedTo: OFFSETGLACCOUNTRECORDNO
+              example: '2'
+            id:
+              type: string
+              description: Account number for the offset general ledger account.
+              x-mappedTo: OFFSETGLACCOUNTNO
+              example: 1215--EquipmentOffset
+            href:
+              type: string
+              readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

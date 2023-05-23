@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: time-type
+  description: time-type API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Time types
+    description: Time type description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/time-type:
+    get:
+      summary: List time types
+      description: 'Returns a collection with a key, ID, and link for each time type.'
+      tags:
+        - Time types
+      operationId: get-objects-time-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of time-type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of time types:
+                  value:
+                    'ia::result':
+                      - key: '46'
+                        id: Overtime
+                        name: Overtime
+                        href: /objects/time-type/46
+                      - key: '44'
+                        id: Part time
+                        name: Part time
+                        href: /objects/time-type/44
+                      - key: '40'
+                        id: Full time
+                        name: Full time
+                        href: /objects/time-type/40
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an time type
+      description: Creates a new time type.
+      tags:
+        - Time types
+      operationId: post-objects-time-type
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/time-type'
+                - $ref: '#/components/schemas/time-typeRequiredProperties'
+            examples:
+              Create a time type:
+                value:
+                  name: Overtime
+                  earningType:
+                    key: '22'
+                  glAccount:
+                    key: '12'
+                  offsetGLAccount:
+                    key: '15'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New time-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New time type:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      href: /objects/time-type/10
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/time-type/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the time type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an time type
+      description: Returns detailed information for a particular time type.
+      tags:
+        - Time types
+      operationId: get-objects-time-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the time-type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/time-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the time type:
+                  value:
+                    'ia::result':
+                      key: '23'
+                      id: Overtime
+                      name: Overtime
+                      href: /objects/time-type/23
+                      earningType:
+                        href: /objects/earning-type/23
+                        key: '22'
+                        id: Salary
+                        name: Salary
+                      glAccount:
+                        href: /objects/gl-account/12
+                        key: '12'
+                        id: '5001'
+                        name: Labor
+                      offsetGLAccount:
+                        href: /objects/gl-account/23
+                        key: '15'
+                        id: '5002'
+                        name: Labor Offset
+                      status: active
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an time type
+      description: Updates an existing time type by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Time types
+      operationId: patch-objects-time-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/time-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    name:
+                      readOnly: true
+            examples:
+              Updates a/an time type:
+                value:
+                  status: active
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated time-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated time type:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: 'Overtime'
+                      href: /objects/time-type/10
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an time type
+      description: Deletes a/an time type.
+      tags:
+        - Time types
+      operationId: delete-objects-time-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    time-type:
+      $ref: ../models/time-type.s1.schema.yaml
+    time-typeRequiredProperties:
+      type: object
+      required:
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

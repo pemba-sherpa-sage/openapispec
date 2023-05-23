@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: View Service
+  description: View Service
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Views
+    description: View description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/view:
+    post:
+      summary: Query a view
+      description: Queries a view.
+      tags:
+        - Views
+      operationId: post-services-view
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the query
+                properties:
+                  'ia::result':
+                    type: array
+                    description: Fields requested in query
+                    items:
+                      type: object
+                      description: ''
+                      properties:
+                        fieldName:
+                          type: string
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/view.schema.yaml
+            examples:
+              User Query:
+                value:
+                  key: '540'
+                  viewType: user
+                  filterParameters:
+                    asOfDate: '2020-12-01'
+                    caseSensitiveComparison: false
+              System Query:
+                value:
+                  key: 'vendor::getAll'
+                  viewType: system
+                  orderBy:
+                    - name: asc
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

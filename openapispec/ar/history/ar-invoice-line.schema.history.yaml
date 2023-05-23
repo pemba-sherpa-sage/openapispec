@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/arinvoice/view
+s1:
+  hash: '0'
+  type: ownedObject

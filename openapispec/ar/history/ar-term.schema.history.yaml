@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/arterm/view
+    POST:
+      - ar/lists/arterm/create
+    PATCH:
+      - ar/lists/arterm/edit
+    DELETE:
+      - ar/lists/arterm/delete
+s1:
+  hash: '0'
+  type: rootObject
+

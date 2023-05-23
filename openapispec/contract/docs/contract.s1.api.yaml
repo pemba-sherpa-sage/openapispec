@@ -1,0 +1,988 @@
+openapi: 3.0.0
+info:
+  title: contract
+  description: contract API
+  version: '1.0'
+  contact:
+    name: Niraj
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contracts
+    description: The contract is the container for the products or services that are provided to a selected customer. It can control settings such as renewals and terms, capture compliance information, and record the transaction history for all contract lines and expenses.
+paths:
+  /objects/contract:
+    get:
+      summary: List contracts
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each contract. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contracts
+      tags:
+        - Contracts
+      operationId: get-objects-contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contracts
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of contracts:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: '84'
+                        href: /objects/contract/84
+                      - key: '107'
+                        id: '107'
+                        href: /objects/contract/107
+                      - key: '108'
+                        id: '108'
+                        href: /objects/contract/108
+                      - key: '56'
+                        id: '56'
+                        href: /objects/contract/56
+                    ia::meta:
+                      totalCount: 4
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a contract
+      description: |-
+        Creates a new contract. 
+
+        `id` is required if document sequencing is not enabled for contracts. If document sequencing is enabled, you can provide an `id` value to use instead of the document sequence value.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Add Contracts
+      tags:
+        - Contracts
+      operationId: post-objects-contract
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/contract.s1.schema'
+                - $ref: '#/components/schemas/contractRequiredProperties'
+            examples:
+              Create a contract:
+                value:
+                  id: ProjectTime_Completed_Flows34_45_4
+                  startDate: '2023-01-01'
+                  endDate: '2023-12-31'
+                  name: ProjectTime_Completed_Flows
+                  customer:
+                    key: '47'
+                  billTo:
+                    id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                  shipTo:
+                    id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                    exchangeRateType: Intacct Daily Rate
+                  location:
+                    id: LOC-USA-0011
+                  department:
+                    id: DEPT-USA-0011
+                  paymentTerm:
+                    name: N30
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New contract:
+                  value:
+                    ia::result:
+                      key: '124'
+                      id: '124'
+                      href: /objects/contract/124
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/contract/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a contract
+      description: Returns detailed information for a specified contract.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contracts
+      tags:
+        - Contracts
+      operationId: get-objects-contract-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: contract
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Contract detail:
+                  value:
+                    ia::result:
+                      key: '12'
+                      parent:
+                        key: null
+                        id: null
+                      description: Completed new status for the billing
+                      id: ProjectTime_Completed_Flows
+                      state: notRenewed
+                      termType: Termed
+                      startDate: 01/01/2018
+                      endDate: 04/30/2018
+                      cancellationDate: null
+                      name: ProjectTime_Completed_Flows
+                      customer:
+                        key: '250'
+                        id: CUS-RT-0011
+                        name: Ability Software
+                        href: /objects/customer/250
+                      contacts:
+                        billTo:
+                          key: '1482'
+                          id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                          href: /objects/contact/1482
+                        shipTo:
+                          key: '1482'
+                          id: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                          href: /objects/contact/1482
+                      billingFrequency: monthly
+                      paymentTerm:
+                        key: '16'
+                        name: N30
+                        href: /objects/ap-term/16
+                      renewal: true
+                      renewed:
+                        key: null
+                        id: null
+                      renewalTemplate: RC_24M_Price_SO
+                      renewTermLength: 24
+                      renewTermPeriod: Months
+                      billingPriceList:
+                        key: '1'
+                        name: SoftwarePackagePL
+                        href: /objects/billing-price-list/1
+                      meaPriceList:
+                        key: '12'
+                        name: CONMEA_FVPriceBand_Amount_USD
+                        href: /objects/mea-price-list/12
+                      billingHold: ''
+                      revenueHold: null
+                      cashReceiptHold: null
+                      expenseHold: null
+                      currency:
+                        baseCurrency: USD
+                        txnCurrency: USD
+                        exchangeRateType: Intacct Daily Rate
+                      location:
+                        key: '120'
+                        id: LOC-USA-0011
+                        name: 106-Columbus
+                        href: /objects/location/120
+                      department:
+                        key: 246
+                        id: DEPT-USA-0011
+                        name: 08420-Applied Case Studies
+                        href: /objects/department/246
+                      billInAdvanceLength: null
+                      billInAdvancePeriod: ''
+                      renewalBillInAdvanceLength: null
+                      renewalBillInAdvancePeriod: ''
+                      audit:
+                        createdDateTime: '2019-02-22T09:41:25Z'
+                        modifiedDateTime: '2021-12-20T08:31:25Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      status: active
+                      contractType:
+                        key: '2'
+                        name: Service
+                        href: /objects/contract-type/2
+                      deferEstimatedTimeBasedRevenueBy: ''
+                      total: 0
+                      billed: 0
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a contract
+      description: Updates an existing contract by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Edit Contract
+      tags:
+        - Contracts
+      operationId: patch-objects-contract-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/contract.s1.schema'
+            examples:
+              Update location and billTo contact:
+                value:
+                  location:
+                    key: '6'
+                  contacts:
+                    billTo:
+                      id: Joshua Thomson
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              example:
+                Contract updated:
+                  value:
+                    ia::result:
+                      key: '121'
+                      id: '121'
+                      href: /objects/contract/121
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a contract
+      description: |-
+        Deletes a contract. You can delete a contract if there are no related records. For example, you can delete a contract if there are no contract lines, no expense lines, no signed-off compliance tasks, no notes, and so on. If there are related records, delete each record and then delete the contract.
+
+        If you cannot delete a related record, cancel the contract instead.
+      x-documentationFlags:
+        subscription: Contract Core Billing
+        userPermissions:
+          - userType: Business
+            permissions: Delete Contracts
+      tags:
+        - Contracts
+      operationId: delete-objects-contract-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract:
+      $ref: '#/components/schemas/contract.s1.schema'
+    contractRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    locationref.s1.schema:
+      title: locationref
+      type: object
+      x-object: location
+      properties:
+        key:
+          type: string
+          description: Location Key
+          x-mappedTo: LOCATIONKEY
+          example: '1'
+        id:
+          type: string
+          description: Location
+          x-mappedTo: LOCATION
+          example: US
+        name:
+          type: string
+          description: Location Name
+          readOnly: true
+          x-mappedTo: LOCATIONNAME
+          example: United States of America
+        href:
+          type: string
+          example: /objects/location/1
+          readOnly: true
+    departmentref.s1.schema:
+      title: departmentref
+      type: object
+      x-object: department
+      properties:
+        key:
+          type: string
+          description: Department Key
+          x-mappedTo: DEPARTMENTKEY
+          example: '322'
+        id:
+          type: string
+          description: Department
+          x-mappedTo: DEPARTMENT
+          example: '100'
+        name:
+          type: string
+          description: Department Name
+          readOnly: true
+          x-mappedTo: DEPARTMENTTITLE
+          example: Department-100
+        href:
+          type: string
+          readOnly: true
+          example: /objects/department/322
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract.s1.schema:
+      type: object
+      title: contract
+      x-mappedTo: contract
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the contract.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '12'
+        id:
+          type: string
+          description: Unique ID for the contract.
+          x-mappedTo: CONTRACTID
+          x-mutable: false
+          example: CON-0045-1
+        href:
+          type: string
+          description: Endpoint for the contract.
+          readOnly: true
+          example: /objects/contract/12
+        name:
+          type: string
+          description: Contract name
+          x-mappedTo: NAME
+          example: ACME Widgets - Service
+        parent:
+          type: object
+          description: Original contract that a renewal contract was copied from.
+          x-object: contract
+          x-mappedTo: contract
+          properties:
+            key:
+              type: string
+              description: Key of parent contract.
+              x-mappedTo: PARENTKEY
+              example: '59'
+            id:
+              type: string
+              description: ID of parent contract.
+              x-mappedTo: PARENTID
+              example: CON-0045
+            href:
+              type: string
+              readOnly: true
+              description: Endpoint of parent contract.
+              example: /objects/contract/249
+        description:
+          type: string
+          description: Description of the contract.
+          x-mappedTo: DESCRIPTION
+          example: null
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        state:
+          x-mappedTo: STATE
+          description: |-
+            State of the contract. Use `draft` when creating a contract that is not ready to post to the general ledger.
+
+            * draft: The contract was saved as a preliminary version. A draft contract has no effect on the General Ledger.
+            * inProgress: The contract was posted and is considered in effect. A contract keeps this state until it is renewed, ends without being renewed, or is canceled.
+            * canceled: All contract schedules (revenue, expense, and billing) were canceled for all contract lines associated with this contract.
+            * notRenewed: The contract completed its term, but it was not renewed. Only applicable if `termType` = `termed`.
+            * renewed: The contract was renewed. Only applicable if `termType` = `termed`.
+          type: string
+          default: inProgress
+          enum:
+            - draft
+            - inProgress
+            - renewed
+            - canceled
+            - notRenewed
+          x-mappedToValues:
+            - Draft
+            - In progress
+            - Renewed
+            - Cancelled
+            - Not renewed
+          example: inProgress
+        startDate:
+          x-mappedTo: BEGINDATE
+          description: |-
+            Contract start date.  The start date cannot be changed after a contract line has been posted to the contract.
+
+            For evergreen contracts the start date determines the start day of each recurring billing period. The contract line billing frequency (Monthly, Quarterly, or Annually) determines the length of each recurring billing period.
+          type: string
+          format: date
+          example: '2023-01-01'
+        endDate:
+          x-mappedTo: ENDDATE
+          description: Contract end date. The end date drives the renewal process. Required when `termType` = `termed`.
+          type: string
+          format: date
+          example: '2024-01-01'
+        contacts:
+          type: object
+          description: Contract contacts
+          properties:
+            shipTo:
+              type: object
+              description: Contact to ship to. Leave blank to use customer's default.
+              x-object: contact
+              x-mappedTo: contact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: SHIPTOKEY
+                  example: 1482
+                id:
+                  type: string
+                  x-mappedTo: SHIPTOCONTACTNAME
+                  example: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/1482
+            billTo:
+              type: object
+              description: Contact to bill to. Leave blank to use customer's default.
+              x-object: contact
+              x-mappedTo: contact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: BILLTOKEY
+                  example: '1482'
+                id:
+                  type: string
+                  x-mappedTo: BILLTOCONTACTNAME
+                  example: Gruppen (Estate Europe) Services ABCUS-RT-0010
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/1482
+        customer:
+          type: object
+          description: Customer that the contract is associated with. The customer cannot be changed after a contract line has been posted to the contract.
+          x-object: customer
+          x-mappedTo: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERKEY
+              example: '250'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUS-RT-0011
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Ability Software
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/250
+        cancellationDate:
+          type: string
+          description: The effective date for the contract cancellation.
+          x-mappedTo: CANCELDATE
+          format: date
+          example: '2023-03-03'
+        billingFrequency:
+          type: string
+          description: Billing frequency
+          x-mappedTo: BILLINGFREQUENCY
+          enum:
+            - monthly
+            - quarterly
+            - annually
+          x-mappedToValues:
+            - Monthly
+            - Quarterly
+            - Annually
+          example: monthly
+        paymentTerm:
+          type: object
+          x-object: ar-term
+          x-mappedTo: arterm
+          description: AR payment term for this contract.
+          properties:
+            key:
+              type: string
+              x-mappedTo: TERMKEY
+              readOnly: true
+            name:
+              type: string
+              x-mappedTo: TERMNAME
+            href:
+              type: string
+              readOnly: true
+        termType:
+          type: string
+          description: |-
+            Contract term type:
+
+            * `termed` - a traditional payment term such as Net 30
+            * `evergreen` - perpetual contract
+          x-mappedTo: TERMTYPE
+          default: termed
+          enum:
+            - termed
+            - evergreen
+          x-mappedToValues:
+            - Termed
+            - Evergreen
+          example: termed
+        renewTermLength:
+          type: integer
+          description: How frequently the contract is renewed, counted in `renewTermPeriod`s (days, months, or years). Only applicable if `termType` = `termed`.
+          x-mappedTo: RENEWTERMLENGTH
+          example: 12
+        renewTermPeriod:
+          type: string
+          description: Renewal term period. Only applicable if `termType` = `termed`.
+          x-mappedTo: RENEWTERMPERIOD
+          default: months
+          enum:
+            - years
+            - months
+            - days
+          x-mappedToValues:
+            - Years
+            - Months
+            - Days
+          example: months
+        billingPriceList:
+          type: object
+          x-object: billing-price-list
+          x-mappedTo: contractmpricelist
+          description: Billing price used for all contract lines.
+          properties:
+            key:
+              type: string
+              description: Billing price list key
+              x-mappedTo: PRCLSTKEY
+              readOnly: true
+              example: '12'
+            name:
+              type: string
+              x-mappedTo: PRCLIST
+              example: SoftwarePackageP
+            href:
+              type: string
+              readOnly: true
+              example: /objects/billing-price-list/1
+        meaPriceList:
+          type: object
+          x-object: mea-price-list
+          x-mappedTo: contractmeapricelist
+          description: MEA price list. Only applicable if `termType` = `termed` and the company is subscribed to Contract Advanced Revenue Recognition.
+          properties:
+            key:
+              type: string
+              description: MEA price list key
+              x-mappedTo: MEAPRCLSTKEY
+              readOnly: true
+              example: '12'
+            name:
+              type: string
+              x-mappedTo: MEAPRCLIST
+              example: Services MEA Price List
+            href:
+              type: string
+              readOnly: true
+              example: /objects/mea-price-list/12
+        billingHold:
+          type: boolean
+          description: Billing hold
+          x-mappedTo: BILLINGHOLD
+          x-mappedToType: string
+          default: false
+        revenueHold:
+          type: boolean
+          description: Revenue hold
+          x-mappedTo: REVENUEHOLD
+          x-mappedToType: string
+          default: false
+        cashReceiptHold:
+          type: boolean
+          description: Hold for cash receipt
+          x-mappedTo: CRHOLD
+          x-mappedToType: string
+          default: false
+        expenseHold:
+          type: boolean
+          description: Expense hold
+          x-mappedTo: EXPENSEHOLD
+          x-mappedToType: string
+          default: false
+        currency:
+          description: Currencies used in the contract. Required if company is configured for multi-currency.
+          type: object
+          properties:
+            exchangeRateType:
+              type: string
+              description: Exchange rate type. Leave blank to use Intacct Daily Rate. The exchange rate type cannot be changed after a contract line is posted to the contract.
+              x-mappedTo: EXCHRATETYPE
+            baseCurrency:
+              type: string
+              description: Base currency. Defaults to the base currency associated with the selected location/entity.
+              x-mappedTo: BASECURR
+            txnCurrency:
+              type: string
+              description: Transaction currency. Defaults to the transaction currency associated with the selected customer. All contract lines have the same transaction currency. The transaction currency cannot be changed after a contract line is posted to the contract.
+              x-mappedTo: CURRENCY
+        location:
+          type: object
+          description: Location or entity associated with the contract. This field is required in a multi-entity environment. Contract lines are restricted to the specified location or entity or to a child of the location or entity.
+          allOf:
+            - $ref: '#/components/schemas/locationref.s1.schema'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  description: Location ID
+                  x-mappedTo: LOCATIONID
+                  example: US
+        department:
+          type: object
+          description: Department associated with the contract.
+          allOf:
+            - $ref: '#/components/schemas/departmentref.s1.schema'
+            - type: object
+              properties:
+                key:
+                  type: string
+                  description: Department key
+                  x-mappedTo: DEPTKEY
+                id:
+                  type: string
+                  description: Department ID
+                  x-mappedTo: DEPARTMENTID
+                name:
+                  type: string
+                  description: Department name
+                  readOnly: true
+                  x-mappedTo: DEPARTMENTNAME
+        renewalTemplate:
+          type: string
+          description: Renewal template. Only used if `renewal` is `true`.
+          x-mappedTo: RENEWALMACRO
+          example: 12 months with notifications
+        renewed:
+          type: object
+          x-object: contract
+          x-mappedTo: contract
+          description: The previous contract for which this contract is the renewal.
+          properties:
+            key:
+              type: string
+              description: Unique key of the previous contract.
+              x-mappedTo: RENEWEDCONTRACTKEY
+              readOnly: true
+              example: '12'
+            id:
+              type: string
+              description: ID of the previous contract.
+              x-mappedTo: RENEWEDCONTRACTID
+              x-mutable: false
+              example: CON-0045-2
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contact/12
+        renewal:
+          type: boolean
+          description: Whether the contract is enabled for renewal. Only applicable if `termType` = `termed`.
+          x-mappedTo: RENEWAL
+          x-mappedToType: string
+          default: false
+        billInAdvanceLength:
+          type: integer
+          description: Number of `billInAdvancePeriod` units (months or days) before the contract start date to bill the customer. Overrides bill-in-advance settings on the customer.
+          x-mappedTo: ADVBILLBY
+          example: 1
+        billInAdvancePeriod:
+          type: string
+          description: Bill in advance time units. Must be set to `days` or `months` if using bill in advance.
+          x-mappedTo: ADVBILLBYTYPE
+          default: none
+          enum:
+            - none
+            - days
+            - months
+          x-mappedToValues:
+            - ''
+            - days
+            - months
+          example: months
+        renewalBillInAdvanceLength:
+          type: integer
+          description: Number of `renewalBillInAdvancePeriod` units (months or days) before the renewal date to bill the customer. Overrides bill-in-advance settings on the customer.
+          x-mappedTo: RENEWALADVBILLBY
+          example: 2
+        renewalBillInAdvancePeriod:
+          type: string
+          description: Renewal bill in advance time units. Must be set to `days` or `months` if using bill in advance for renewals.
+          x-mappedTo: RENEWALADVBILLBYTYPE
+          default: none
+          enum:
+            - none
+            - days
+            - months
+          x-mappedToValues:
+            - ''
+            - days
+            - months
+          example: days
+        contractType:
+          type: object
+          x-object: contract-type
+          x-mappedTo: contracttype
+          description: |
+            [Contract type](/openapi/contract/contract-type/tag/Contract-types/)
+          properties:
+            key:
+              type: string
+              x-mappedTo: CONTRACTTYPEKEY
+              readOnly: true
+              example: 1
+            name:
+              type: string
+              x-mappedTo: CONTRACTTYPE
+              example: service
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contract-type/2
+        deferEstimatedTimeBasedRevenueBy:
+          type: string
+          description: |-
+            Specifies how Intacct should combine the timesheet hours associated with a Time & Materials project:
+
+            * `project`: All hours billed from timesheets associated with the project will be used to determine actual revenue for the contract line. There can only be one In progress Project time contract line in the contract linked to a particular project.
+            * `projectAndItem`: All hours billed from timesheets associated with a particular item and with a particular project will be combined and used to determine the actual revenue for the contract line. Each project/item combination on each Project time contract line within a contract must be unique.
+            * `projectAndTask`: All hours billed from timesheets associated with a particular task and with a particular project will be combined and used to determine the actual revenue for the contract line. Each project/task combination on each Project time contract line within a contract must be unique.
+
+             Only applicable if `termType` = `termed` and "Enable deferred revenue for Time & Materials projects" is turned on for the company.
+          default: none
+          enum:
+            - none
+            - project
+            - projectAndItem
+            - projectAndTask
+          x-mappedToValues:
+            - ''
+            - project
+            - Project and Item
+            - Project and Task
+          x-mappedTo: TIMESHEETAGGREGATION
+          example: projectAndTask
+        total:
+          type: number
+          description: The total flat/fixed amount value of the contract (does not include usage).
+          x-mappedTo: SUMMARYTOTAL
+          example: 2300
+        billed:
+          type: number
+          description: The total amount invoiced from the contract.
+          x-mappedTo: SUMMARYBILLED
+          example: 1000
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

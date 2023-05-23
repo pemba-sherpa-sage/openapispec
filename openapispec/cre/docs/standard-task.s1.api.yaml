@@ -1,0 +1,857 @@
+openapi: 3.0.0
+info:
+  title: standard-task
+  description: standard-task API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Standard tasks
+    description: Use standard tasks to create a catalog (library) of definitions that customers can use to populate new project tasks with specific values, improving consistency across their organization.
+paths:
+  /objects/standard-task:
+    get:
+      summary: List standard tasks
+      description: Returns a collection with a key, ID, and link for each standard task.
+      tags:
+        - Standard tasks
+      operationId: get-objects-standard-task
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of standard-task objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-result-collection-of-standard-tasks:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: 1-000
+                        href: /objects/standard-task/1
+                      - key: '2'
+                        id: 3-010
+                        href: /objects/standard-task/2
+                      - key: '3'
+                        id: 1-020
+                        href: /objects/standard-task/3
+                      - key: '4'
+                        id: 1-035
+                        href: /objects/standard-task/4
+                      - key: '5'
+                        id: 1-040
+                        href: /objects/standard-task/5
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a standard task
+      description: Creates a new standard task.
+      tags:
+        - Standard tasks
+      operationId: post-objects-standard-task
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/standard-task.s1.schema'
+                - $ref: '#/components/schemas/standard-taskRequiredProperties'
+            examples:
+              example-create-standard-task:
+                value:
+                  id: 1-010
+                  name: Summary of Work
+                  description: Summary of Work
+                  status: active
+                  isBillable: false
+                  isMilestone: false
+                  isUtilized: false
+                  parent:
+                    id: 1-000
+                  standardCostTypes:
+                    - standardCostType:
+                        id: EQ
+                    - standardCostType:
+                        id: EQ-Owned
+                    - standardCostType:
+                        id: EQ-Rental
+                    - standardCostType:
+                        id: LAB
+                    - standardCostType:
+                        id: LAB-OT
+                    - standardCostType:
+                        id: LAB-REG
+                    - standardCostType:
+                        id: LAB-SALARY
+                    - standardCostType:
+                        id: LAB-BURDEN
+                    - standardCostType:
+                        id: MAT
+                    - standardCostType:
+                        id: OH
+                    - standardCostType:
+                        id: OTH
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New standard-task
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-create-standard-task:
+                  value:
+                    ia::result:
+                      key: '2'
+                      id: 1-010
+                      href: /objects/standard-task/2
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/standard-task/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the standard task.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a standard task
+      description: Returns detailed information for a particular standard task.
+      tags:
+        - Standard tasks
+      operationId: get-objects-standard-task-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the standard-task
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/standard-task.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-get-standard-task:
+                  value:
+                    ia::result:
+                      key: '312'
+                      id: 1-010
+                      name: Summary of Work
+                      description: 'General Conditions: Summary of Work'
+                      productionUnitDescription: days
+                      status: active
+                      item:
+                        key: '318'
+                        id: Other
+                        name: Other
+                        href: /objects/item/318
+                      isBillable: false
+                      isMilestone: false
+                      isUtilized: true
+                      timeType:
+                        key: '11'
+                        name: Design
+                      wbsCode: S
+                      parent:
+                        key: '1'
+                        id: 1-000
+                        name: GENERAL CONDITIONS
+                        href: /objects/standard-task/1
+                      class:
+                        key: '8'
+                        id: CON
+                        name: Construction
+                        href: /objects/class/8
+                      audit:
+                        createdDateTime: '2021-11-23T23:57:52Z'
+                        modifiedDateTime: '2021-11-29T23:15:38Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      standardCostTypes:
+                        - key: '3541'
+                          id: '3541'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '1'
+                            id: EQ
+                            href: /objects/standard-cost-type/1
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3541
+                        - key: '3542'
+                          id: '3542'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '3'
+                            id: EQ-Owned
+                            href: /objects/standard-cost-type/3
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3542
+                        - key: '3543'
+                          id: '3543'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '2'
+                            id: EQ-Rental
+                            href: /objects/standard-cost-type/2
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3543
+                        - key: '3544'
+                          id: '3544'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '7'
+                            id: LAB
+                            href: /objects/standard-cost-type/7
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3544
+                        - key: '3545'
+                          id: '3545'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '9'
+                            id: LAB-OT
+                            href: /objects/standard-cost-type/9
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3545
+                        - key: '3546'
+                          id: '3546'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '10'
+                            id: LAB-REG
+                            href: /objects/standard-cost-type/10
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3546
+                        - key: '3547'
+                          id: '3547'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '11'
+                            id: LAB-SALARY
+                            href: /objects/standard-cost-type/11
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3547
+                        - key: '3548'
+                          id: '3548'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '8'
+                            id: LAB-BURDEN
+                            href: /objects/standard-cost-type/8
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3548
+                        - key: '3549'
+                          id: '3549'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '12'
+                            id: MAT
+                            href: /objects/standard-cost-type/12
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3549
+                        - key: '3550'
+                          id: '3550'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '4'
+                            id: OH
+                            href: /objects/standard-cost-type/4
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3550
+                        - key: '3551'
+                          id: '3551'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '5'
+                            id: OTH
+                            href: /objects/standard-cost-type/5
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3551
+                        - key: '3554'
+                          id: '3554'
+                          standardTask:
+                            key: '312'
+                            id: 1-010
+                            href: /objects/standard-task/312
+                          standardCostType:
+                            key: '6'
+                            id: SUB
+                            href: /objects/standard-cost-type/6
+                          audit:
+                            createdDateTime: '2021-11-29T23:15:38Z'
+                            modifiedDateTime: '2021-11-29T23:15:38Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/standard-task-standard-cost-type/3554
+                      href: /objects/standard-task/312
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a standard task
+      description: Updates an existing standard task by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Standard tasks
+      operationId: patch-objects-standard-task-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/standard-task.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-standard-task-add-standard-cost-type:
+                value:
+                  description: 'General Conditions: Summary of Work'
+                  productionUnitDescription: days
+                  isUtilized: true
+                  class:
+                    id: '3'
+                  standardCostTypes:
+                    - standardCostType:
+                        id: SUB
+              example-update-standard-task-delete-standard-cost-type:
+                value:
+                  standardCostTypes:
+                    - ia::operation: delete
+                      key: '13'
+              example-update-standard-task-update-standard-cost-type:
+                value:
+                  standardCostTypes:
+                    - key: '11'
+                      standardCostType:
+                        id: MAT
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated standard-task
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-update-standard-task:
+                  value:
+                    ia::result:
+                      key: '2'
+                      id: 1-010
+                      href: /objects/standard-task/2
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a standard task
+      description: Deletes a standard task
+      tags:
+        - Standard tasks
+      operationId: delete-objects-standard-task-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    standard-task:
+      $ref: '#/components/schemas/standard-task.s1.schema'
+    standard-taskRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    itemref.s1.schema:
+      title: itemref
+      type: object
+      x-object: item
+      properties:
+        key:
+          type: string
+          description: Item key
+          example: '319'
+          x-mappedTo: ITEMKEY
+          readOnly: true
+        id:
+          type: string
+          description: Item ID
+          example: Overhead
+          x-mappedTo: ITEMID
+        name:
+          type: string
+          description: Item name
+          example: Overhead
+          readOnly: true
+          x-mappedTo: ITEMNAME
+        href:
+          type: string
+          description: URL of the item
+          readOnly: true
+          example: /objects/item/319
+    classref.s1.schema:
+      title: classref
+      type: object
+      x-object: class
+      properties:
+        id:
+          type: string
+          description: Class ID
+          x-mappedTo: CLASSID
+          example: 1-Goods
+        key:
+          type: string
+          description: Class Key
+          x-mappedTo: CLASSDIMKEY
+          example: '42'
+        name:
+          type: string
+          description: Class Name
+          readOnly: true
+          x-mappedTo: CLASSNAME
+          example: Goods
+        href:
+          type: string
+          readOnly: true
+          example: /objects/class/42
+    standard-task-standard-cost-type.s1.schema:
+      title: standard-task-standard-cost-type
+      type: object
+      x-mappedTo: standardtaskstandardcosttype
+      x-ownedBy: standard-task
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the standard task standard cost type
+          example: '3543'
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the standard task standard cost type
+          example: '3543'
+          x-mappedTo: RECORDNO
+          readOnly: true
+        href:
+          type: string
+          description: URL of the standard task standard cost type
+          example: /objects/standard-task-standard-cost-type/3543
+          readOnly: true
+        standardTask:
+          type: object
+          description: Reference to a standard task
+          x-object: standard-task
+          x-mappedTo: standardtask
+          properties:
+            key:
+              type: string
+              example: 1
+              x-mappedTo: STANDARDTASKKEY
+              readOnly: true
+            id:
+              type: string
+              example: GENERAL CONDITIONS
+              x-mappedTo: STANDARDTASKID
+            href:
+              type: string
+              description: URL of the standard task
+              example: /objects/standard-task/1
+              readOnly: true
+        standardCostType:
+          type: object
+          description: Reference to a standard cost type
+          x-object: standard-cost-type
+          x-mappedTo: standardcosttype
+          properties:
+            key:
+              type: string
+              example: 7
+              x-mappedTo: STANDARDCOSTTYPEKEY
+              readOnly: true
+            id:
+              type: string
+              example: LABOR
+              x-mappedTo: STANDARDCOSTTYPEID
+            href:
+              type: string
+              description: URL of the standard cost type
+              example: /objects/standard-cost-type/7
+              readOnly: true
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    standard-task.s1.schema:
+      title: standard-task
+      type: object
+      x-mappedTo: standardtask
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the standard task
+          example: '2'
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the standard task
+          example: 1-010
+          x-mappedTo: STANDARDTASKID
+          x-mutable: false
+        href:
+          type: string
+          example: /objects/standard-task/2
+          description: URL of the standard task
+          readOnly: true
+        name:
+          type: string
+          description: Name of the standard task
+          example: Summary of Work
+          x-mappedTo: NAME
+        description:
+          type: string
+          description: Description of the standard task
+          example: Summary of Work
+          x-mappedTo: DESCRIPTION
+        productionUnitDescription:
+          type: string
+          description: Production unit description of the standard task
+          example: days
+          x-mappedTo: PRODUCTIONUNITDESC
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        item:
+          $ref: '#/components/schemas/itemref.s1.schema'
+        isBillable:
+          type: boolean
+          description: Standard task is billable
+          example: true
+          x-mappedTo: BILLABLE
+          x-mappedToType: string
+          default: false
+        isMilestone:
+          type: boolean
+          description: Standard task is a milestone
+          example: false
+          x-mappedTo: ISMILESTONE
+          x-mappedToType: string
+          default: false
+        isUtilized:
+          type: boolean
+          description: Standard task is utilized. A utilized task indicates progress on a customer project or internal project.
+          example: true
+          x-mappedTo: UTILIZED
+          x-mappedToType: string
+          default: false
+        timeType:
+          type: object
+          description: Reference to a time type
+          properties:
+            key:
+              type: string
+              description: TimeType key
+              example: '2'
+              readOnly: true
+              x-mappedTo: TIMETYPEKEY
+            name:
+              type: string
+              description: TimeType name
+              readOnly: true
+              example: Hourly Salaries
+              x-mappedTo: TIMETYPENAME
+            href:
+              type: string
+              example: /objects/time-type/1
+              description: URL of the time type
+              readOnly: true
+        wbsCode:
+          type: string
+          description: Work breakdown structure code of the standard task
+          example: Design
+          x-mappedTo: TASKNO
+        parent:
+          type: object
+          description: Reference to the parent standard task of this standard task
+          x-object: standard-task
+          x-mappedTo: PARENT
+          properties:
+            key:
+              type: string
+              example: '1'
+              x-mappedTo: PARENTKEY
+              readOnly: true
+            id:
+              type: string
+              example: 1-000
+              x-mappedTo: PARENTID
+            name:
+              type: string
+              example: GENERAL CONDITIONS
+              x-mappedTo: PARENTNAME
+              readOnly: true
+            href:
+              type: string
+              example: /objects/standard-task/1
+              description: URL of parent standard task
+              readOnly: true
+        class:
+          $ref: '#/components/schemas/classref.s1.schema'
+        standardCostTypes:
+          type: array
+          x-mappedTo: STANDARDTASK_STANDARDCOSTTYPES
+          x-object: standard-task-standard-cost-type
+          items:
+            $ref: '#/components/schemas/standard-task-standard-cost-type.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

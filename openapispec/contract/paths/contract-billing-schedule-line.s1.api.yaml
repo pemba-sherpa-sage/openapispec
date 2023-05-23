@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: contract-billing-schedule-line
+  description: contract-billing-schedule-line API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract billing schedule lines
+    description: A contract billing schedule line represents a single billing for a contract line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-billing-schedule-line:
+    get:
+      summary: List contract billing schedule lines
+      description: 'Returns a collection with a key, ID, and link for each contract-billing-schedule-line.'
+      tags:
+        - Contract billing schedule lines
+      operationId: get-objects-contract-billing-schedule-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract billing schedule line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of contract billing schedules:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-billing-schedule-line/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-billing-schedule-line/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-billing-schedule-line/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-billing-schedule-line/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-billing-schedule-line/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                List of contract billing schedule line errors:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [contract-billing-schedule-line] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  '/objects/contract-billing-schedule-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract billing schedule line.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '349'
+    get:
+      summary: Get a contract billing schedule line
+      description: Returns detailed information for a particular contract billing schedule line.
+      tags:
+        - Contract billing schedule lines
+      operationId: get-objects-contract-billing-schedule-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract billing schedule line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-billing-schedule-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract billing schedule line error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-billing-schedule-line/12
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Field [id] is a read-only field'
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    contract-billing-schedule-line:
+      type: object
+      allOf:
+        - $ref: ../models/contract-billing-schedule-line.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-typeref.s1.schema.yaml

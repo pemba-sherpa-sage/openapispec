@@ -1,0 +1,826 @@
+title: order-entry-txn-definition
+x-mappedTo: SODOCUMENTPARAMS
+type: object
+description: An order entry transaction definition includes the accounting rules, workflow settings, security settings, and other characteristics for a transaction. 
+properties:
+  key:
+    type: string
+    description: System-assigned key for the order entry transaction definition.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: ID for the order entry transaction definition.
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example:
+  documentId:
+    type: string
+    description: The name for the order entry transaction definition. 
+    x-mappedTo: DOCID
+    x-mutable: false
+    example:
+  href:
+    type: string
+    description: URL for the order entry transaction definition. 
+    readOnly: true
+  templateType:
+    type: string
+    description: Template type, which determines whether certain fields appear on the transaction.
+    x-mappedTo: DOCCLASS
+    example:
+    enum:
+      - 'quote'
+      - 'order'
+      - 'list'
+      - 'invoice'
+      - 'adjustment'
+      - 'other'
+    x-mappedToValues:
+      - 'Quote'
+      - 'Order'
+      - 'List'
+      - 'Invoice'
+      - 'Adjustment'
+      - 'Other'
+    default: 'Quote'
+  workflowCategory:
+    type: string
+    description: Associates the transaction with the appropriate workflow category.
+    x-mappedTo: CATEGORY
+    example:
+    enum:
+      - 'quote'
+      - 'order'
+      - 'shipping'
+      - 'invoice'
+      - 'return'
+    x-mappedToValues:
+      - 'Quote'
+      - 'Order'
+      - 'Shipping'
+      - 'Invoice'
+      - 'Return'
+    default: 'Quote'
+#  salesPurchaseTransaction:
+  ##    type: string
+  ##    description: Sale/purchase/internal
+  ##    x-mappedTo: SALE_PUR_TRANS
+  ##    example:
+  ##    enum:
+  ##      - 'sale'
+  ##      - 'purchase'
+  ##      - 'internal'
+  ##      - 'timeBill'
+  ##    x-mappedToValues:
+  ##      - 'Sale'
+  ##      - 'Purchase'
+  ##      - 'Internal'
+  ##      - 'TimeBill'
+  enableUserPermissions:
+    type: boolean
+    description: By default, all users with the appropriate application permissions have access to transactions that use this transaction definition. To restrict access to certain users or groups, set this field to `true`.
+    x-mappedTo: USERPERM
+    example:
+    x-mappedToType: string
+  enableOverrideTax:
+    type: boolean
+    description: Indicates whether users can override whether a line item is taxable.
+    x-mappedTo: ENABLEOVERRIDETAX
+    example:
+    x-mappedToType: string
+  enableSequentialNumbering:
+    type: boolean
+    description: Set to `true` to enable sequential numbering.
+    x-mappedTo: ENABLE_SEQNUM
+    example:
+    x-mappedToType: string
+    default: false
+  preserveSequentialNumbering:
+    type: boolean
+    description: Set to `true` to ensure that numbers are never skipped when sequential numbering is enabled. 
+    x-mappedTo: PRESERVE_SEQNUM
+    example:
+    x-mappedToType: string
+    default: false
+  inheritSourceDocumentNumber:
+    type: boolean
+    description: Set to `true` if transactions should inherit source document numbers. For example, a transaction could inherit a sales invoice number.
+    x-mappedTo: INHERIT_SOURCE_DOCNO
+    example:
+    x-mappedToType: string
+  enableDiscountCharge:
+    type: boolean
+    description: Indicates whether users can discount transaction line items.
+    x-mappedTo: ENABLE_DISCOUNT_CHARGE
+    example:
+    x-mappedToType: string
+    default: false
+  requireDiscountDescription:
+    type: boolean
+    description: Indicates whether users must provide notes for line items being discounted before saving a transaction.
+    x-mappedTo: REQUIRE_DISCOUNT_MEMO
+    example:
+    x-mappedToType: string
+    default: false
+  xslTemplate:
+    type: string
+    description: Document template to use for printed output (PDFs).
+    x-mappedTo: XSLTEMPLATE
+    example:
+  description:
+    type: string
+    description: Description of the transaction definition.
+    x-mappedTo: DESCRIPTION
+    example:
+  updatesInventory:
+    type: string
+    description: Specify if inventory will be affected by the transaction and, if so, whether to track the quantity, value, or both.
+    x-mappedTo: UPDATES_INV
+    example:
+    enum:
+      - 'no'
+      - 'quantity'
+      - 'value'
+      - 'quantityAndValue'
+    x-mappedToValues:
+      - 'No'
+      - 'Quantity'
+      - 'Value'
+      - 'Quantity and Value'
+    default: 'no'
+  updatesGL:
+    type: string
+    description: Specify whether the transaction post process creates a GL entry and, if so, whether it will post directly to the GL or to the AR subledger.
+    x-mappedTo: UPDATES_GL
+    example:
+    enum:
+      - 'ap'
+      - 'gl'
+      - 'none'
+    x-mappedToValues:
+      - 'A'
+      - 'G'
+      - 'N'
+    default: 'none'
+  conversionType:
+    type: string
+    description: Specify how the system processes transactions that are partially complete.
+    x-mappedTo: CONVTYPE
+    example:
+    enum:
+      - 'leaveTransactionOpen'
+      - 'closeOriginalAndCreateBackOrder'
+      - 'closeTransaction'
+    x-mappedToValues:
+      - 'Leave Transaction Open'
+      - 'Close Original and Create Back Order'
+      - 'Close Transaction'
+    default: 'closeTransaction'
+  updatesCost:
+    type: boolean
+    description: Indicate whether the transaction affects cost.
+    x-mappedTo: UPDATES_COST
+    example:
+    x-mappedToType: string
+  exchangeRateType:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Exchange rate type.
+        x-mappedTo: EXCHRATETYPES.NAME
+        example:
+      override:
+        type: boolean
+        description: Indicates whether users can edit the Exchange rate and/or Exchange rate type fields of the transaction.
+        x-mappedTo: OVERRIDE_EXCH_RATE_TYPE
+        example:
+        x-mappedToType: string
+        default: true
+  displayBaseCurrency:
+    type: boolean
+    description: Specifies whether the transaction amounts are displayed in both base currency and transaction currency.
+    x-mappedTo: DISPLAY_BASECURRENCY
+    example:
+    x-mappedToType: string
+    default: false
+  forceCreditLimitCheck:
+    type: boolean
+    description: Specifies whether to enforce customer credit limit restrictions in transactions created from this definition.
+    x-mappedTo: CREDITLIMITCHECK
+    example:
+    x-mappedToType: string
+  enableRevenueRecognition:
+    type: string
+    description: Specifies whether revenue recognition applies to transactions created from this definition and, if so, whether to post the revenue recognition or only display it. This field applies only to companies subscribed to Revenue Management and is applicable only to Order Entry revenue recognition.
+    x-mappedTo: ENABLEREVREC
+    example:
+    enum:
+      - 'post'
+      - 'displayOnly'
+      - 'none'
+    x-mappedToValues:
+      - 'Post'
+      - 'Display Only'
+      - 'None'
+    default: 'none'
+  enableRenewals:
+    type: string
+    description: Specifies whether contract renewals apply to the transaction type and, if so, whether the renewal is set up to generate when the transaction posts or the renewal fields are displayed in the transaction so users can select a renewal transaction set.
+    x-mappedTo: ENABLERENEWALS
+    example:
+    enum:
+      - 'generate'
+      - 'displayOnly'
+      - 'none'
+    x-mappedToValues:
+      - 'Generate'
+      - 'Display Only'
+      - 'None'
+    default: 'none'
+  renewOnlyConvertedLine:
+    type: boolean
+    description: This field is only applicable if `enableRenewals` is set to `Generate`. Set to `true` if the system should only renew line items that were converted in the original sales transaction. Set to `false` if all indicated line items should be renewed, regardless of conversion status.
+    x-mappedTo: RENEWONLYCONVERTEDLINE
+    example:
+    x-mappedToType: string
+  enableLineSchedule:
+    type: boolean
+    description: Set to `true` to allow users to convert a sales transaction by line item into a scheduled recurring transaction.
+    x-mappedTo: ENABLESCHEDULE
+    example:
+    x-mappedToType: string
+  convertUnits:
+    type: boolean
+    description: Set to `true` to convert units to standard on save.
+    x-mappedTo: CONVERT_UNITS
+    example:
+    x-mappedToType: string
+  inOut:
+    type: string
+    description: Specify whether the inventory running total is increased or decreased by the transaction.
+    x-mappedTo: IN_OUT
+    example:
+    enum:
+      - 'increase'
+      - 'decrease'
+    x-mappedToValues:
+      - 'Increase'
+      - 'Decrease'
+    default: 'increase'
+  customerVendorWarehouse:
+    type: string
+    description: Customer, vendor, or warehouse.
+    x-mappedTo: CUST_VEND
+    example:
+    enum:
+      - 'customer'
+      - 'vendor'
+      - 'warehouse'
+    x-mappedToValues:
+      - 'Customer'
+      - 'Vendor'
+      - 'Warehouse'
+  recallOnly:
+    type: boolean
+    description: Set to `true` to freeze recalled values.
+    x-mappedTo: RECALLONLY
+    example:
+    x-mappedToType: string
+  isPriceEditable:
+    type: boolean
+    description: Indicates whether prices can be edited.
+    x-mappedTo: EDITABLE_PRICE
+    example:
+    x-mappedToType: string
+  overridePrice:
+    type: boolean
+    description: Set to `true` to allow users to override line item prices on the transaction.
+    x-mappedTo: OVERRIDE_PRICE
+    example:
+    x-mappedToType: string
+    default: true
+  showSubtotals:
+    type: boolean
+    description: Set to `true` to specify standard subtotals, such as tax or a discount, for the transaction.
+    x-mappedTo: SHOW_TOTALS
+    example:
+    x-mappedToType: string
+  showExpandedTaxDetails:
+    type: boolean
+    description: Set to `true` to show expanded tax details in the transaction user interface and in printed output. This field applies only to companies that use Avalara AvaTax or Sage Intacct Advanced Tax.
+    x-mappedTo: SHOWEXPANDEDTOTALS
+    example:
+    x-mappedToType: string
+  overrideDepartment:
+    type: boolean
+    description: Set to `true` to allow users to override the department set for the transaction.
+    x-mappedTo: DEPTOVERRIDE
+    example:
+    x-mappedToType: string
+  overrideLocation:
+    type: boolean
+    description: Set to `true` to allow users to override the location set for the transaction.
+    x-mappedTo: LOCOVERRIDE
+    example:
+    x-mappedToType: string
+  forcePrices:
+    type: boolean
+    description: Set to `true` if a price must be supplied.
+    x-mappedTo: FORCE_PRICES
+    example:
+    x-mappedToType: string
+  fixedMessage:
+    type: string
+    description: Optional default text.
+    x-mappedTo: FIXED_MESG
+    example:
+  editType:
+    type: string
+    description: Sets the edit permission for this transaction type. By default, the user cannot edit the transaction after it is created.
+    x-mappedTo: EDITTYPE
+    example:
+    enum:
+      - 'noEdit'
+      - 'beforePrinting'
+      - 'editInDraftOnly'
+      - 'all'
+    x-mappedToValues:
+      - 'No Edit'
+      - 'Before Printing'
+      - 'Edit in Draft Only'
+      - 'All'
+    default: 'noEdit'
+  deleteType:
+    type: string
+    description: Sets the delete permission for this transaction type. By default, a user cannot delete a transaction after it is created.
+    x-mappedTo: DELTYPE
+    example:
+    enum:
+      - 'noDelete'
+      - 'beforePrinting'
+      - 'all'
+    x-mappedToValues:
+      - 'No Delete'
+      - 'Before Printing'
+      - 'All'
+    default: 'noDelete'
+  allowEditOfCustomer:
+    type: string
+    description: Allow users to change the customer in Draft or Pending transactions if the transaction has not been converted to another transaction, the transaction date is in an open period, and the transaction's payment status is not `Paid` or `Partially paid`. By default, the users cannot edit the customer.
+    x-mappedTo: ALLOWEDITCUSTVEND
+    example:
+    enum:
+      - 'always'
+      - 'exceptConvertedDocuments'
+      - 'never'
+    x-mappedToValues:
+      - 'Always'
+      - 'Except converted documents'
+      - 'Never'
+    default: 'Never'
+  showBillTo:
+    type: boolean
+    description: Indicates whether to show actual billings on print.
+    x-mappedTo: SHOWTITLE1
+    example:
+    x-mappedToType: string
+  showShipTo:
+    type: boolean
+    description: Indicates whether to show Ship-to contact information on print.
+    x-mappedTo: SHOWTITLE2
+    example:
+    x-mappedToType: string
+  allowEditBillTo:
+    type: boolean
+    description: Bill to allow editing
+    x-mappedTo: ALLOWEDITBILLTO
+    example:
+    x-mappedToType: string
+  allowEditShipTo:
+    type: boolean
+    description: Indicates whether to allow users to select a contact other than the default Ship-to contact in the transaction.
+    x-mappedTo: ALLOWEDITSHIPTO
+    example:
+    x-mappedToType: string
+  contactTitle1:
+    type: string
+    description: Use this field to change the Bill-to labels on the transaction and on the printed document.
+    x-mappedTo: CONTACTTITLE1
+    example:
+    default: 'Bill to'
+  contactTitle2:
+    type: string
+    description: Use this field to change the Ship-to labels on the transaction and on the printed document.
+    x-mappedTo: CONTACTTITLE2
+    example:
+    default: 'Ship to'
+  warnOnLowQty:
+    type: boolean
+    description: Indicates whether to alert the user if the quantity needed is greater than the ONHAND total in the selected warehouse. The warning also shows the ONORDER and ONHOLD totals.
+    x-mappedTo: WARNONLOWQTY
+    example:
+    x-mappedToType: string
+    default: true
+  warehouseSelectionMethod:
+    type: string
+    description: Determines how warehouses are presented to the user in the warehouse list in the transaction. 
+    x-mappedTo: WAREHOUSESELMETHOD
+    example:
+    enum:
+      - 'sortByID'
+      - 'sortByName'
+      - 'warehouseWithAvailableInventory'
+      - 'useTheDefaultWarehouse'
+    x-mappedToValues:
+      - 'Sort by ID'
+      - 'Sort by Name'
+      - 'Warehouse with Available Inventory'
+      - 'Use the default warehouse'
+    default: 'sortByID'
+  postToGL:
+    type: boolean
+    description: Set to `true` to enable an additional GL entry posting on this transaction definition.
+    x-mappedTo: POSTTOGL
+    example:
+    x-mappedToType: string
+  disableVAT:
+    type: boolean
+    description: Set to `true` to disable tax capture for the transaction.
+    x-mappedTo: DISABLEVAT
+    example:
+    x-mappedToType: string
+    default: false
+  enablePayments:
+    type: boolean
+    description: Set to `true` to enable users to apply payments to an invoice in Order Entry and to set a recurring template to automatically charge a credit card when an invoice is generated (if the company is subscribed to Payment Services).
+    x-mappedTo: ENABLEPAYMENTS
+    example:
+    x-mappedToType: string
+  enableCosting:
+    type: boolean
+    description: Enable costing for non-inventoried items.
+    x-mappedTo: ENABLE_COSTING
+    example:
+    x-mappedToType: string
+    default: false
+  createPolicyType:
+    type: string
+    description: Set the create policy for this transaction type.
+    x-mappedTo: CREATETYPE
+    example:
+    enum:
+      - 'newDocumentOnly'
+      - 'newDocumentOrConvert'
+      - 'convertOnly'
+    x-mappedToValues:
+      - 'New document only'
+      - 'New document or Convert'
+      - 'Convert only'
+    default: 'newDocumentOrConvert'
+  createTransactionsIn:
+    type: string
+    description: Sets the context for where users can create transactions from this transaction definition within a multi-entity, shared environment.
+    x-mappedTo: TD_CREATION_RULE
+    example:
+    enum:
+      - 'topLevelOrEntity'
+      - 'topLevelOnly'
+      - 'entityOnly'
+    x-mappedToValues:
+      - 'Top level or Entity'
+      - 'Top level only'
+      - 'Entity only'
+    default: 'topLevelOrEntity'
+  enableProjectActualBillings:
+    type: boolean
+    description: Set to `true` to enable display of actual billings on printed or emailed invoices.
+    x-mappedTo: ENABLEPROJECTACTUALBILLINGS
+    example:
+    x-mappedToType: string
+    default: false
+  discountOnExtendedPrice:
+    type: boolean
+    description: Indicates whether the transaction definition can be used for contract invoices. This field is only applicable if the company is subscribed to Contracts.
+    x-mappedTo: DISCOUNT_ON_EXTENDEDPRICE
+    example:
+    x-mappedToType: string
+    default: false
+  subtotalTemplate:
+    type: object
+    description: Specifies the template for populating the transaction subtotals table.
+    x-mappedTo: sosubtotaltemplate
+    x-object: order-entry-subtotal-template
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the purchasing subtotal template.
+        x-mappedTo: SOSUBTOTALTEMPLATEKEY
+        example: '1'
+      id:
+        type: string
+        description: ID for the purchasing subtotal template.
+        x-mappedTo: SOSUBTOTALTEMPLATE
+        example:
+      href:
+        type: string
+        description: URL for the purchasing subtotal template.
+        example: /objects/order-entry-subtotal-template/2
+        readOnly: true
+  enableLineLevelSimpleTax:
+    type: boolean
+    description: Set to `true` to allow the tax rate to be overridden at the line level in the Entries table of a transaction so different tax rates can be applied to different items.
+    x-mappedTo: LINELEVELSIMPLETAX
+    example:
+    x-mappedToType: string
+  enableRetainage:
+    type: boolean
+    description: Set to `true` to enable retainage.
+    x-mappedTo: ENABLE_RETAINAGE
+    example:
+    x-mappedToType: string
+  enableScope:
+    type: boolean
+    description: Set to `true` to enable identification of work that is included and excluded, the reason why, and the terms.
+    x-mappedTo: ENABLEADDINFOSCOPE
+    example:
+    x-mappedToType: string
+    default: false
+  enableSchedule:
+    type: boolean
+    description: Set to `true` to enable identification of dates for work milestones.
+    x-mappedTo: ENABLEADDINFOSCHEDULE
+    example:
+    x-mappedToType: string
+    default: false
+  enableInternalReference:
+    type: boolean
+    description: Set to `true` to enable identification of who authorized work internally and when they authorized the work.
+    x-mappedTo: ENABLEADDINFOINTERNALREF
+    example:
+    x-mappedToType: string
+    default: false
+  enableExternalReference:
+    type: boolean
+    description: Set to `true` to enable identification of who authorized work externally and when they authorized the work.
+    x-mappedTo: ENABLEADDINFOEXTERNALREF
+    example:
+    x-mappedToType: string
+    default: false
+  enableBond:
+    type: boolean
+    description: Set to `true` to identify information about performance and payment bonds.
+    x-mappedTo: ENABLEADDINFOBOND
+    example:
+    x-mappedToType: string
+    default: false
+  enableDocumentChange:
+    type: string
+    description: Indicates whether to enable changes to the transaction definition and, if so, how to handle changes. 
+    x-mappedTo: ENABLEDOCCHANGE
+    example:
+    enum:
+      - 'noChange'
+      - 'enableChange'
+      - 'changeOrder'
+    x-mappedToValues:
+      - 'No Change'
+      - 'Enable Change'
+      - 'Change Order'
+  reportingCategory:
+    type: string
+    description: Establishes a reporting category that best reflects the purpose of the transaction definition so that similar documents can be grouped when building reports. This field is applicable for use with Interactive Custom Report Writer or Interactive Visual Explorer subscriptions only.
+    x-mappedTo: REPORTINGCATEGORY
+    example:
+    enum:
+      - ''
+      - 'salesQuotes'
+      - 'salesOrders'
+      - 'salesOrderChangeOrders'
+      - 'salesOrderInvoices'
+      - 'salesReturns'
+      - 'salesShippers'
+      - 'salesCredits'
+      - 'salesDebits'
+      - 'salesClearingShippers'
+      - 'contractBids'
+      - 'contracts'
+      - 'contractChangeOrders'
+      - 'contractInvoicePreview'
+      - 'contractInvoices'
+      - 'projectInvoices'
+      - 'revRecActivation'
+      - 'forecastRevenue'
+      - 'pledges'
+      - 'giftsAndDonations'
+      - 'pledgeAndGiftInvoices'
+      - 'grantApplications'
+      - 'grantAwardInvoices'
+      - 'eventReservations'
+      - 'eventConfirmations'
+      - 'conferencesAndGatherings'
+      - 'eventInvoices'
+      - 'membershipRegistrations'
+      - 'membershipInvoices'
+      - 'invoicePreview'
+      - 'invoices'
+      - 'tuitionRegistrations'
+      - 'tuitionInvoices'
+      - 'sponsorships'
+      - 'sponsorshipInvoices'
+      - 'subscriptions'
+      - 'subscriptionInvoices'
+      - 'reservations'
+      - 'pointOfSale'
+    x-mappedToValues:
+      - ''
+      - 'Sales Quotes'
+      - 'Sales Orders'
+      - 'Sales Order Change Orders'
+      - 'Sales Order Invoices'
+      - 'Sales Returns'
+      - 'Sales Shippers'
+      - 'Sales Credits'
+      - 'Sales Debits'
+      - 'Sales Clearing Shippers'
+      - 'Contract Bids'
+      - 'Contracts'
+      - 'Contract Change Orders'
+      - 'Contract Invoice Preview'
+      - 'Contract Invoices'
+      - 'Project Invoices'
+      - 'Rev Rec Activation'
+      - 'Forecast Revenue'
+      - 'Pledges'
+      - 'Gifts and Donations'
+      - 'Pledge and Gift Invoices'
+      - 'Grant Applications'
+      - 'Grant Award Invoices'
+      - 'Event Reservations'
+      - 'Event Confirmations'
+      - 'Conferences and Gatherings'
+      - 'Event Invoices'
+      - 'Membership Registrations'
+      - 'Membership Invoices'
+      - 'Invoice Preview'
+      - 'Invoices'
+      - 'Tuition Registrations'
+      - 'Tuition Invoices'
+      - 'Sponsorships'
+      - 'Sponsorship Invoices'
+      - 'Subscriptions'
+      - 'Subscription Invoices'
+      - 'Reservations'
+      - 'Point of Sale'
+    default: ' '
+  enableContractBilling:
+    type: boolean
+    description: Set to `true` to enable project contract billing.
+    x-mappedTo: ENABLECONTRACTBILLING
+    example:
+    x-mappedToType: string
+    default: false
+  arPostingMethod:
+    type: string
+    description: Specifies the update method for project contract totals.
+    x-mappedTo: ARPOSTINGMETHOD
+    example:
+    enum:
+      - 'none'
+      - 'addition'
+    x-mappedToValues:
+      - 'None'
+      - 'Addition'
+    default: 'addition'
+  enableFulfillment:
+    type: boolean
+    description: Set to `true` to enable the transaction definition for fulfillment.
+    x-mappedTo: ENABLEFULFILLMENT
+    example:
+    x-mappedToType: string
+  enableAllocationReserve:
+    type: boolean
+    description: Set to `true` to enable inventory items for reserving and picking.
+    x-mappedTo: ENABLEALLOCRESERVE
+    example:
+    x-mappedToType: string
+  priceList:
+    type: object
+    description: The price list that will be updated when a user saves a transaction.
+    x-mappedTo: pricelist
+    x-object: order-entry-price-list
+    properties:
+      id:
+        type: string
+        description: ID for the price list.
+        x-mappedTo: PRICELISTID
+        example:
+  sequenceNumber:
+    type: object
+    x-mappedTo: seqnum
+    x-object: document-sequence-number
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the document sequence number.
+        x-mappedTo: seqnumkey
+        example:
+      printTitle:
+        type: string
+        x-mappedTo: PRINTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the document sequence number.
+        example: /objects/document-sequence-number/2
+        readOnly: true
+  shippingMethod:
+    type: object
+    description: The default for how goods in the transaction are shipped to the customer. If a shipping method is specified for a customer, the customer shipping method takes precedence as the default in the transaction.
+    x-object: shipping-method
+    x-mappedTo: shipmethod
+    title: Shipping Method
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the shipping method.
+        x-mappedTo: SHIPVIAKEY
+      id:
+        type: string
+        description: ID for the shipping method.
+        x-mappedTo: SHIPPINGMETHOD
+      href:
+        type: string
+        description: URL for the shipping method.
+        readOnly: true
+#  spclpricelist:
+#    type: object
+#    x-mappedTo: spclpricelist
+#    x-object: spclpricelist
+#    properties:
+#      special_pricelistid:
+#        type: string
+#        description: Special price list
+#        x-mappedTo: SPECIAL_PRICELISTID
+#        example:
+  term:
+    type: object
+    description: Accounts Receivable (AR) term, which determines the expiration date for quotes and the due date for invoices.
+    x-mappedTo: arterm
+    x-object: ar-term
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the AR term.
+        x-mappedTo: TERMKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: ID for the AR term.
+        x-mappedTo: NAME
+        example:
+      href:
+        type: string
+        description: URL for the AR term.
+        readOnly: true
+        example: /objects/tax-solution/4
+#  updpricelist:
+#    type: object
+#    x-mappedTo: updpricelist
+#    x-object: updpricelist
+#    properties:
+#      updates_pricelistid:
+#        type: string
+#        description: Price list to update
+#        x-mappedTo: UPDATES_PRICELISTID
+#        example:
+  warehouse:
+    type: object
+    description: Default warehouse for transactions.
+    x-mappedTo: warehouse
+    x-object: warehouse
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the warehouse.
+        x-mappedTo: defaultwhsekey
+        example: '2'
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier for the warehouse.
+        x-mappedTo: WAREHOUSEID
+        x-mutable: false
+        example: "USNA1"
+      href:
+        type: string
+        description: URL for the warehouse.
+        example: /objects/warehouse/2
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

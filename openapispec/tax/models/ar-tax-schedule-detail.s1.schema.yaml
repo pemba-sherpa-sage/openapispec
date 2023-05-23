@@ -1,0 +1,76 @@
+title: ar-tax-schedule-detail
+x-mappedTo: artaxscheddetails
+x-ownedBy: ar-tax-schedule
+type: object
+properties:
+  key:
+    type: string
+    description: System-assigned key of the Accounts Receivable tax schedule detail.
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the Accounts Receivable tax schedule detail.
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  effectiveDate:
+    type: string
+    description: Effective date
+    x-mappedTo: EFFECTIVEDATE
+    format: date
+    example: '2022-01-08'
+  href:
+    type: string
+    description: URL of the Accounts Receivable tax schedule.
+    example: /objects/ar-tax-schedule-detail/7149
+    readOnly: true
+  taxSchedule:
+    type: object
+    description: Tax schedules identify the tax details that are applied when the schedule is referenced by a tax schedule map.
+    x-mappedTo: artaxschedule
+    x-object: ar-tax-schedule
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax schedule.
+        x-mappedTo: SCHEDULENO
+        example: '1'
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier of the tax schedule.
+        x-mappedTo: SCHEDULENO
+        example: '1'
+        readOnly: true
+      name:
+        type: string
+        description: Tax Schedule ID.
+        x-mappedTo: SCHEDULEID
+        example: TaxSched-00002
+      href:
+        type: string
+        description: URL of the tax schedule object.
+        readOnly: true
+        example: /objects/ar-tax-schedule/1
+  taxDetail:
+    type: object
+    description: Order Entry tax details describe a specific type of tax that applies to lines in Accounts Receivable and Order Entry transactions.
+    x-object: order-entry-tax-detail
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax detail.
+        x-mappedTo: DETAILKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the tax detail.
+        x-mappedTo: DETAILID
+        example: Alaska Tax Detail
+      href:
+        type: string
+        description: URL of the tax detail object.
+        readOnly: true
+        example: /objects/order-entry-tax-detail/1

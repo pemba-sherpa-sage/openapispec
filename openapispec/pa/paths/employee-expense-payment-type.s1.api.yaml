@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: Employee expense payment type
+  description: Employee expense payment type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Employee expense payment type
+    description: User-defined Employee expense payment type that is applied to the line items in an Employee expense report or expense adjustment.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-expense-payment-type:
+    get:
+      summary: List
+      description: Returns a collection with a key, ID, and link for each employee expense payment type.
+      tags:
+        - Employee expense payment type
+      operationId: get-objects-employee-expense-payment-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee expense payment type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of employee expense payment type:
+                  value:
+                    'ia::result':
+                      - key: '100'
+                        id: '100'
+                        href: /objects/employee-expense-payment-type/100
+                      - key: '101'
+                        id: '101'
+                        href: /objects/employee-expense-payment-type/101
+                      - key: '102'
+                        id: '102'
+                        href: /objects/employee-expense-payment-type/102
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee expense payment type
+      description: Creates a new employee expense payment type.
+      tags:
+        - Employee expense payment type
+      operationId: post-objects-employee-expense-payment-type
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-payment-type'
+                - $ref: '#/components/schemas/employeeExpensePaymentTypeRequiredProperties'
+            examples:
+              Creates an employee expense payment type:
+                value:
+                  name: Non Rimburse
+                  status: active
+                  description: Non reimbursable payment type
+                  offsetAccount:
+                    id: '2420'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee expense payment type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee expense payment type:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      name: Non Rimburse
+                      description: description
+                      isNonReimbursable: true
+                      offsetGLAccount:
+                        key: '70'
+                        id: '2420'
+                        name: EE-Office Supplies
+                        href: /objects/account/70
+                      status: active
+                      audit:
+                        createdDateTime: '2021-09-02T08:38:53Z'
+                        modifiedDateTime: '2021-09-02T08:38:53Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/employee-expense-payment-type/10
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-expense-payment-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee expense payment type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee expense payment type
+      description: Returns detailed information for a particular employee expense payment type.
+      tags:
+        - Employee expense payment type
+      operationId: get-objects-employee-expense-payment-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee expense payment type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-expense-payment-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee expense payment type:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: '18'
+                      name: Non Rimburse
+                      status: active
+                      href: /objects/employee-expense-payment-type/18
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee expense payment type
+      description: Updates an existing employee expense payment type by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee expense payment type
+      operationId: patch-objects-employee-expense-payment-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-payment-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an employee expense payment type:
+                value:
+                  status: active
+                  description: Non reimbursable payment type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee expense payment type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated employee expense payment type:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      href: /objects/employee-expense-payment-type/10
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee expense payment type
+      description: Deletes an employee expense payment type.
+      tags:
+        - employee-expense-payment-type
+      operationId: delete-objects-employee-expense-payment-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-expense-payment-type:
+      $ref: ../models/employee-expense-payment-type.s1.schema.yaml
+    employeeExpensePaymentTypeRequiredProperties:
+      type: object
+      required:
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

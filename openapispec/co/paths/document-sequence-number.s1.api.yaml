@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: document-sequence-number
+  description: document-sequence-number API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Document sequence numbers
+    description: Document sequence number description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/document-sequence-number:
+    get:
+      summary: List document sequence numbers
+      description: Returns a collection with a key, ID, and link for each document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: get-objects-document-sequence-number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of document-sequence-number objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of document sequence numbers:
+                  value:
+                    'ia::result':
+                      - key: "37"
+                        id: "BOA_ACH_BatchNo"
+                        href: "/objects/document-sequence-number/37"
+                      - key: "27"
+                        id: "Purchase Order"
+                        href: "/objects/document-sequence-number/37"
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an document sequence number
+      description: Creates a new document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: post-objects-document-sequence-number
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/document-sequence-number'
+                - $ref: '#/components/schemas/document-sequence-numberRequiredProperties'
+            examples:
+              Creates a/an document sequence number:
+                value:
+                  id: "Vendor Invoice"
+                  printTitle: "Vendor Invoice"
+                  type: "Numeric"
+                  startingNumber: 1
+                  nextNumber: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New document-sequence-number
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New document sequence number:
+                  value:
+                    'ia::result':
+                      key: "107"
+                      id: "Vendor Invoice"
+                      href: "/objects/document-sequence-number/107"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/document-sequence-number/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the document sequence number.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an document sequence number
+      description: Returns detailed information for a particular document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: get-objects-document-sequence-number-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the document-sequence-number
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/document-sequence-number'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the document sequence number:
+                  value:
+                    'ia::result':
+                      key: "107"
+                      id: "BOA_ACH_BatchNo"
+                      printTitle: "BOA_ACH_BatchNo"
+                      fixedPrefix: "BATCH"
+                      fixedSuffix: null
+                      prefixSeparator: "*"
+                      suffixSeparator: "*"
+                      startingNumber: 1
+                      endingNumber: null
+                      nextNumber: 1
+                      whenModified: "02/22/2023 12:47:20"
+                      fixedLength: null
+                      status: "active"
+                      type: "Numeric"
+                      sequenceCase: null
+                      startingSequence: null
+                      endingSequence: null
+                      nextSequence: null
+                      href: "/objects/document-sequence-number/107"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an document sequence number
+      description: Updates an existing document sequence number by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Document sequence numbers
+      operationId: patch-objects-document-sequence-number-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/document-sequence-number'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an document sequence number:
+                value:
+                  prefixSeparator: "-"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated document-sequence-number
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated document sequence number:
+                  value:
+                    'ia::result':
+                      key: "107"
+                      id: "BOA_ACH_BatchNo"
+                      href: "/objects/document-sequence-number/107"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an document sequence number
+      description: Deletes a/an document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: delete-objects-document-sequence-number-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    document-sequence-number:
+      $ref: ../models/document-sequence-number.s1.schema.yaml
+    document-sequence-numberRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

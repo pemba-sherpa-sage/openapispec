@@ -1,0 +1,27 @@
+title: project-locationref
+type: object
+x-object: location
+properties:
+  key:
+    type: string
+    description: Location key
+    example: 1
+    x-mappedTo: PROJECTLOCATIONKEY
+    readOnly: true
+  id:
+    type: string
+    description: Project location id
+    example: 1
+    x-mappedTo: PROJECTLOCATIONID
+    readOnly: true
+  name:
+    type: string
+    description: Project location name
+    example: United States of America
+    x-mappedTo: PROJECTLOCATIONNAME
+    readOnly: true
+  href:
+    type: string
+    description: URL of the location
+    example: /objects/location/1
+    readOnly: true

@@ -1,0 +1,18 @@
+key: purchasing-tax-schedule::active
+id: active
+object: purchasing-tax-schedule
+name: Active
+description: Specifies active purchasing-tax-schedules
+query:
+  object: purchasing-tax-schedule
+  fields:
+    - name
+    - description
+    - taxSolution.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default

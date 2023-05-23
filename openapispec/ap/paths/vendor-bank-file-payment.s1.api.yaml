@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: vendor-bank-file-payment
+  description: vendor-bank-file-payment API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Vendor bank file payments
+    description: A bank file enables electronic payments to be made to vendors using a local bank file format. Bank files are standard files used by banks to make multiple payments.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/vendor-bank-file-payment:
+    get:
+      summary: List vendor bank file payments
+      description: Returns a collection with a key, ID, and link for each vendor bank file payment. This operation is mostly for use in testing. Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Vendor bank file payments
+      operationId: get-objects-vendor-bank-file-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-bank-file-payment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List vendor bank file payments: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/vendor-bank-file-payment/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the vendor bank file payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a vendor bank file payment
+      description: Returns detailed information for a specified vendor bank file payment.
+      tags:
+        - Vendor bank file payments
+      operationId: get-objects-vendor-bank-file-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the vendor-bank-file-payment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor-bank-file-payment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a vendor bank file payment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    vendor-bank-file-payment:
+      $ref: ../models/vendor-bank-file-payment.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

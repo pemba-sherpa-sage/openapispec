@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  title: Services
+  description: Services API OpenAPI Spec
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: 'http://localhost:3000'
+tags:
+  - name: Models
+    description: Model service
+paths:
+  /services/model:
+    get:
+      summary: Get an object model definition
+      description: List all the fields and relationships for an object.
+      operationId: get-services-model
+      tags:
+        - Models
+      parameters:
+        - $ref: '#/components/parameters/name'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Definition of the object model
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-model.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Model for department:
+                  value:
+                    ia::result:
+                      fields:
+                        id:
+                          mutable: false
+                          nullable: false
+                          type: string
+                          readOnly: false
+                          writeOnly: false
+                          required: false
+                        key:
+                          readOnly: true
+                          type: string
+                          writeOnly: false
+                          required: false
+                          nullable: false
+                          mutable: false
+                        name:
+                          nullable: false
+                          type: string
+                          readOnly: false
+                          writeOnly: false
+                          required: false
+                          mutable: true
+                        reportTitle:
+                          nullable: true
+                          type: string
+                          readOnly: false
+                          writeOnly: false
+                          required: false
+                          mutable: true
+                        status:
+                          enum:
+                            - active
+                            - activeNonPosting
+                            - inactive
+                          type: string
+                          readOnly: false
+                          writeOnly: false
+                          required: false
+                          nullable: false
+                          mutable: true
+                      groups:
+                        audit:
+                          fields:
+                            createdBy:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                            createdDateTime:
+                              format: date-time
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                            modifiedBy:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                            modifiedDateTime:
+                              format: date-time
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                      httpMethods: OPTIONS,GET,DELETE,PATCH,POST
+                      refs:
+                        parent:
+                          apiObject: department
+                          fields:
+                            id:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                            key:
+                              nullable: true
+                              readOnly: false
+                              type: string
+                              writeOnly: false
+                              required: false
+                              mutable: true
+                            name:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                        supervisor:
+                          apiObject: employee
+                          fields:
+                            id:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                            key:
+                              nullable: true
+                              readOnly: false
+                              type: string
+                              writeOnly: false
+                              required: false
+                              mutable: true
+                            name:
+                              readOnly: true
+                              type: string
+                              writeOnly: false
+                              required: false
+                              nullable: false
+                              mutable: false
+                      lists: []
+                      idempotenceSupported: true
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  parameters:
+    name:
+      name: name
+      description: Object name
+      in: query
+      schema:
+        type: string
+      required: true
+      example: vendor
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

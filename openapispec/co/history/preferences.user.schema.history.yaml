@@ -1,0 +1,10 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/setup/userpref
+    PATCH:
+      - co/setup/userpref/edit
+s1:
+  hash: '0'
+  type: preference
+  adapter: GenericAPIAdapter

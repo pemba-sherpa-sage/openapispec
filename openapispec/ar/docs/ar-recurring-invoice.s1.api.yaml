@@ -1,0 +1,868 @@
+openapi: 3.0.0
+info:
+  title: ar-recurring-invoice
+  description: ar-recurring-invoice API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR recurring invoices
+    description: Recurring invoices are invoices that repeat at periods and durations defined in a recurrence schedule. The system respects the company's accounting periods to generate and post transactions based on the defined month end.
+paths:
+  /objects/ar-recurring-invoice:
+    get:
+      summary: List AR recurring invoices
+      description: Returns a collection with a key, ID, and link for each AR recurring invoice. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR recurring invoices
+      operationId: get-objects-ar-recurring-invoice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-recurring-invoice objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AR recurring invoices: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR recurring invoice
+      description: Creates a new AR recurring invoice.
+      tags:
+        - AR recurring invoices
+      operationId: post-objects-ar-recurring-invoice
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-recurring-invoice.s1.schema'
+                - $ref: '#/components/schemas/ar-recurring-invoiceRequiredProperties'
+            examples:
+              Create an AR recurring invoice: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-recurring-invoice
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New AR recurring invoice: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-recurring-invoice/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AR recurring invoice.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR recurring invoice
+      description: Returns detailed information for a specified AR recurring invoice.
+      tags:
+        - AR recurring invoices
+      operationId: get-objects-ar-recurring-invoice-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-recurring-invoice
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-recurring-invoice.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AR recurring invoice: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR recurring invoice
+      description: Updates an existing AR recurring invoice by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR recurring invoices
+      operationId: patch-objects-ar-recurring-invoice-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-recurring-invoice.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR recurring invoice: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-recurring-invoice
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated AR recurring invoice: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR recurring invoice
+      description: Deletes an AR recurring invoice.
+      tags:
+        - AR recurring invoices
+      operationId: delete-objects-ar-recurring-invoice-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-recurring-invoice:
+      $ref: '#/components/schemas/ar-recurring-invoice.s1.schema'
+    ar-recurring-invoiceRequiredProperties:
+      type: object
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ar-recurring-invoice-line.s1.schema:
+      title: ar-recurring-invoice-line
+      x-mappedTo: arrecurinvoiceentry
+      x-ownedBy: ar-recurring-invoice
+      type: object
+      description: Line items in a recurring invoice represent transactions captured in that recurring invoice.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        id:
+          type: string
+          description: ID for the line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        href:
+          type: string
+          description: URL for the line item.
+          readOnly: true
+        description:
+          type: string
+          description: Memo provides information about the line item that may be of use in the future.
+          x-mappedTo: ENTRYDESCRIPTION
+          example: null
+        amount:
+          type: string
+          description: Base amount
+          x-mappedTo: AMOUNT
+          example: null
+        lineNumber:
+          type: number
+          description: Line number of the line item.
+          x-mappedTo: LINE_NO
+          readOnly: true
+        form1099:
+          type: string
+          description: Form 1099 information for the line item.
+          x-mappedTo: FORM1099
+          example: null
+        txnAmount:
+          type: string
+          description: Transaction amount
+          x-mappedTo: TRX_AMOUNT
+          example: null
+        isBillable:
+          type: boolean
+          description: Indicates whether the line item is billable.
+          x-mappedTo: BILLABLE
+          example: null
+          x-mappedToType: string
+        startDate:
+          type: string
+          format: date
+          description: Revenue recognition start date.
+          x-mappedTo: REVRECSTARTDATE
+          example: null
+        endDate:
+          type: string
+          format: date
+          description: Revenue recognition end date.
+          x-mappedTo: REVRECENDDATE
+          example: null
+        currency:
+          type: object
+          description: Currency information for the line item.
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: Base currency
+              x-mappedTo: BASECURR
+              readOnly: true
+            txnCurrency:
+              type: string
+              description: Transaction currency
+              x-mappedTo: CURRENCY
+              readOnly: true
+            exchangeRateDate:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date
+              x-mappedTo: EXCHRATEDATE
+            exchangeRate:
+              type: number
+              description: Exchange rate
+              x-mappedTo: EXCHRATE
+              readOnly: true
+            exchangeRateTypeId:
+              type: string
+              description: Exchange rate type
+              x-mappedTo: EXCHRATETYPE
+        isTax:
+          type: boolean
+          description: Indicates whether the line item is taxable.
+          x-mappedTo: ISTAX
+          example: null
+          x-mappedToType: string
+          default: false
+        isSubTotal:
+          type: boolean
+          description: Indicates whether the line item is a subtotal.
+          x-mappedTo: SUBTOTAL
+          x-mappedToType: string
+        allocation:
+          type: object
+          description: Type of transaction allocation for the line item.
+          title: allocation
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: '1'
+            id:
+              type: string
+              description: System-assigned ID for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: '1'
+            name:
+              type: string
+              description: Name or other identifier of the allocation.
+              x-mappedTo: ALLOCATION
+              readOnly: true
+              example: Alloc1-WBS-US
+            href:
+              type: string
+              description: URL for the allocation.
+              readOnly: true
+        accountLabel:
+          type: object
+          description: Account the line item is assigned to.
+          x-mappedTo: ar-account-label
+          x-object: ar-account-label
+          properties:
+            key:
+              type: string
+              description: Account label key
+              x-mappedTo: ACCOUNTLABELKEY
+              example: null
+            id:
+              type: string
+              description: Account label
+              x-mappedTo: ACCOUNTLABEL
+              example: null
+            href:
+              type: string
+              description: URL for the account label.
+              readOnly: true
+        department:
+          type: object
+          description: Department the line item is assigned to.
+          x-mappedTo: department
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department key
+              x-mappedTo: DEPT#
+              example: null
+            id:
+              type: string
+              description: Department ID
+              x-mappedTo: DEPARTMENTID
+              example: null
+            name:
+              type: string
+              description: Department name
+              x-mappedTo: DEPARTMENTNAME
+              example: null
+            href:
+              type: string
+              description: URL for the department.
+              readOnly: true
+        taxDetail:
+          type: object
+          description: For companies subscribed to the Taxes application, the tax category for the line item.
+          x-mappedTo: detail
+          x-object: order-entry-tax-detail
+          properties:
+            key:
+              type: string
+              description: Tax detail key
+              x-mappedTo: DETAILKEY
+              example: null
+            id:
+              type: string
+              description: Tax detail ID
+              x-mappedTo: DETAILID
+              example: null
+            taxRate:
+              type: number
+              description: The percent tax rate defined for the tax detail used to calculate the amount of tax.
+              x-mappedTo: TAXRATE
+              example: null
+            href:
+              type: string
+              description: URL for the tax detail.
+              readOnly: true
+        deferredRevenueGLAccount:
+          type: object
+          description: GL account for deferred revenue for the line item.
+          x-mappedTo: dracct
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Deferred revenue GL account key.
+              x-mappedTo: DEFERREDREVACCTKEY
+              example: null
+            id:
+              type: string
+              description: Deferred revenue GL account number.
+              x-mappedTo: DEFERREDREVACCTNO
+              example: null
+            name:
+              type: string
+              description: Deferred revenue GL account name.
+              x-mappedTo: DEFERREDREVACCTTITLE
+              example: null
+            href:
+              type: string
+              description: URL for the deferred revenue GL account.
+              readOnly: true
+        glAccount:
+          type: object
+          description: GL account the line item is assigned to.
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: ACCOUNTKEY
+              example: null
+            id:
+              type: string
+              description: ID for the GL account.
+              x-mappedTo: GLACCOUNTNO
+              example: null
+            name:
+              type: string
+              description: Name or title of the GL account.
+              x-mappedTo: GLACCOUNTTITLE
+              example: null
+            href:
+              type: string
+              description: URL for the GL account.
+              readOnly: true
+        location:
+          type: object
+          description: Where multiple locations exist, the location to which the system should assign the expense.
+          x-mappedTo: location
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the location.
+              x-mappedTo: LOCATION#
+              example: null
+            id:
+              type: string
+              description: ID for the location.
+              x-mappedTo: LOCATIONID
+              example: null
+            name:
+              type: string
+              description: Name of the location.
+              x-mappedTo: LOCATIONNAME
+              example: null
+            href:
+              type: string
+              description: URL for the location.
+              readOnly: true
+        offsetGLAccount:
+          type: object
+          description: GL account for discounts and penalties.
+          x-mappedTo: offsetglaccountno
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the offset GL account.
+              x-mappedTo: OFFSET
+              example: null
+            id:
+              type: string
+              description: ID for the offset GL account.
+              x-mappedTo: OFFSETGLACCOUNTNO
+              example: null
+            name:
+              type: string
+              description: Name or title of the offset GL account.
+              x-mappedTo: OFFSETGLACCOUNTTITLE
+              example: null
+            href:
+              type: string
+              description: URL for the offset GL account.
+              readOnly: true
+        recurringInvoice:
+          type: object
+          description: Header level details for the AR recurring invoice line entries.
+          x-mappedTo: arrecurinvoice
+          x-object: ar-recurring-invoice
+          properties:
+            id:
+              type: string
+              description: ID for the AR recurring invoice.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+            key:
+              type: string
+              description: System-assigned key for the AR recurring invoice.
+              x-mappedTo: RECORDKEY
+            href:
+              type: string
+              description: URL for the AR recurring invoice.
+              readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    ar-recurring-invoice.s1.schema:
+      title: ar-recurring-invoice
+      x-mappedTo: arrecurinvoice
+      type: object
+      description: Recurring invoices are invoices that repeat at periods and durations defined in a recurrence schedule.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the recurring invoice.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        id:
+          type: string
+          description: ID for the recurring invoice. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          x-mappedTo: RECORDNO
+          readOnly: true
+        href:
+          type: string
+          description: URL for the recurring invoice.
+          readOnly: true
+        invoiceNumber:
+          type: string
+          description: Each occurrence of the invoice gets an incremented number based on the sequence type defined in Document Numbering on the company setup.
+          x-mappedTo: RECORDID
+          example: null
+        totalEntered:
+          type: string
+          description: Total amount entered.
+          x-mappedTo: TOTALENTERED
+          example: null
+        description:
+          type: string
+          description: Description of the recurring invoice.
+          x-mappedTo: DESCRIPTION
+          example: null
+        referenceNumber:
+          type: string
+          description: This is a number such as a purchase order or account number that may be useful in searches or reports on this invoice.
+          x-mappedTo: DOCNUMBER
+          example: null
+        moduleKey:
+          type: string
+          x-mappedTo: MODULEKEY
+          example: null
+        term:
+          type: object
+          description: Payment terms, which are used to calculate due date, discounts, and penalties associated with this invoice.
+          x-object: ap-term
+          x-mappedTo: term
+          title: term
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the payment term.
+              x-mappedTo: TERMKEY
+            id:
+              type: string
+              description: Name or other unique identifier for the payment term.
+              x-mappedTo: TERMNAME
+            href:
+              type: string
+              description: URL for the payment term.
+              readOnly: true
+        contract:
+          type: object
+          description: Often, recurring invoices are the result of an ongoing contract.
+          x-object: contract
+          x-mappedTo: CONTRACT
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the contract.
+              x-mappedTo: CONTRACTKEY
+              readOnly: true
+              example: '2'
+            id:
+              type: string
+              description: Unique identifier for the contract.
+              x-mappedTo: CONTRACTID
+              readOnly: true
+              example: CON-2
+            description:
+              type: string
+              description: Description of the contract.
+              x-mappedTo: CONTRACTDESC
+              example: null
+            href:
+              type: string
+              description: URL for the contract.
+              readOnly: true
+              example: /objects/contract/2
+        currency:
+          type: object
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: For multi-currency companies, the company's base currency.
+              x-mappedTo: BASECURR
+            txnCurrency:
+              type: string
+              description: For multi-currency companies, the currency for the invoice.
+              x-mappedTo: CURRENCY
+        notes:
+          type: string
+          description: Message to include on the customer's invoice.
+          x-mappedTo: CUSTMESSAGEID
+          example: null
+        txnTotalEntered:
+          type: string
+          description: Transaction currency amount.
+          x-mappedTo: TRX_TOTALENTERED
+          example: null
+        accountType:
+          type: string
+          description: Type of account to which the payment will be deposited.
+          x-mappedTo: ACCOUNTTYPE
+          enum:
+            - bank
+            - undepositedFundsAccount
+          x-mappedToValues:
+            - Bank
+            - Undeposited Funds Account
+        contacts:
+          type: object
+          description: Contacts for the invoice.
+          title: contacts
+          properties:
+            billTo:
+              type: object
+              description: The bill-to contact is used as the address for the invoice.
+              title: billTo
+              x-object: contact
+              x-mappedTo: billto
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: BILLTOPAYTOKEY
+                id:
+                  type: string
+                  description: Name of the contact.
+                  x-mappedTo: BILLTOPAYTOCONTACTNAME
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+            shipTo:
+              type: object
+              description: Ship-to contact for the invoice.
+              title: shipTo
+              x-object: contact
+              x-mappedTo: shipto
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: SHIPTORETURNTOKEY
+                id:
+                  type: string
+                  description: Name of the contact.
+                  x-mappedTo: SHIPTOCONTACTNAME
+                href:
+                  type: string
+                  description: URL of the contact.
+                  readOnly: true
+        customer:
+          type: object
+          description: Person to receive the invoice.
+          x-mappedTo: customer
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the customer.
+              x-mappedTo: ENTITY
+              example: null
+            id:
+              type: string
+              description: ID for the customer.
+              x-mappedTo: CUSTOMERID
+              example: null
+            name:
+              type: string
+              description: Name of the customer.
+              x-mappedTo: CUSTOMERNAME
+              example: null
+            href:
+              type: string
+              description: URL for the customer.
+              readOnly: true
+        glAccount:
+          type: object
+          description: GL account for the invoice.
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: GLACCOUNTKEY
+              example: null
+            id:
+              type: string
+              description: GL account number.
+              x-mappedTo: GLACCTNO
+              example: null
+            name:
+              type: string
+              description: GL account title.
+              x-mappedTo: GLACCTTITLE
+              example: null
+            href:
+              type: string
+              description: URL for the GL account.
+              readOnly: true
+        frequency:
+          type: string
+          description: The frequency at which the invoice recurs.
+          x-mappedTo: FREQUENCY
+          enum:
+            - none
+            - days
+            - weeks
+            - months
+            - years
+            - endOfMonth
+          x-mappedToValues:
+            - None
+            - Days
+            - Weeks
+            - Months
+            - Years
+            - End Of Month
+          default: days
+        lines:
+          type: array
+          description: Line items of the invoice.
+          x-mappedTo: ITEMS
+          x-object: ar-recurring-invoice-line
+          items:
+            $ref: '#/components/schemas/ar-recurring-invoice-line.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

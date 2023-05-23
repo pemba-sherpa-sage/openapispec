@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: billback-template
+  description: billback-template API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Billback templates
+    description: Billback template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/billback-template:
+    get:
+      summary: List billback templates
+      description: Returns a collection with a key, ID, and link for each billback template.
+      tags:
+        - Billback templates
+      operationId: get-objects-billback-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billback-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of billback templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an billback template
+      description: Creates a new billback template.
+      tags:
+        - Billback templates
+      operationId: post-objects-billback-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billback-template'
+                - $ref: '#/components/schemas/billback-templateRequiredProperties'
+            examples:
+              Creates a/an billback template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billback-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New billback template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/billback-template/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the billback template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an billback template
+      description: Returns detailed information for a particular billback template.
+      tags:
+        - Billback templates
+      operationId: get-objects-billback-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billback-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/billback-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the billback template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an billback template
+      description: Updates an existing billback template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Billback templates
+      operationId: patch-objects-billback-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billback-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an billback template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated billback-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated billback template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an billback template
+      description: Deletes a/an billback template.
+      tags:
+        - Billback templates
+      operationId: delete-objects-billback-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billback-template:
+      $ref: ../models/billback-template.s1.schema.yaml
+    billback-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

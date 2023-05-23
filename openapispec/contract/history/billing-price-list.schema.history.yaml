@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/contractpricelist/view
+    POST:
+      - cn/lists/contractpricelist/create
+    PATCH:
+      - cn/lists/contractpricelist/edit
+    DELETE:
+      - cn/lists/contractpricelist/delete
+s1:
+  hash: '0'
+  type: rootObject

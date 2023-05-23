@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/usergroup/view
+      - mp/lists/usergroup/view
+    POST:
+      - co/lists/usergroup/create
+      - mp/lists/usergroup/create
+    PATCH:
+      - co/lists/usergroup/edit
+      - mp/lists/usergroup/edit
+    DELETE:
+      - co/lists/usergroup/delete
+      - mp/lists/usergroup/delete
+s1:
+  hash: '0'
+  type: rootObject

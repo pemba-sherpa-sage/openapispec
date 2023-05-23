@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: admin.provision.store-data
+  description: provisioning API
+  version: '1.0-internal'
+  contact:
+    name: Valer Crisan
+    email: valer.crisan@sage.com
+tags:
+  - name: admin.provision.store-data
+    description: provision routines for domain services
+paths:
+  /services/admin/provision/store-data:
+    post:
+      summary: Store data for a domain
+      description: Store data for a domain
+      tags:
+        - admin.provision.store-data
+      operationId: post-services-admin-provision-store-data
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin.provision.store-data-req'
+            examples:
+              example-1:
+                value:
+                  domain: ia-ds-fa
+                  sandbox: ia
+                  id: v0.0.24
+                  items:
+                    - type: object
+                      name: dummy
+                      data: some data
+                    - type: object
+                      name: not_dummy
+                      data: some other data
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/admin.provision.store-data-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      success: true
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    admin.provision.store-data-req:
+      description: store-data request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        domain:
+          type: string
+          description: Domain for which to store the data
+          x-mappedTo: domain
+        sandbox:
+          type: string
+          description: Sandbox/namespace in which the caller operates
+          x-mappedTo: sandbox
+        id:
+          type: string
+          description: The id (version) of the domain
+          x-mappedTo: id
+        items:
+          type: array
+          description: The items to store
+          x-mappedTo: items
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The type of the item
+                x-mappedTo: type
+              name:
+                type: string
+                description: The name of the item
+                x-mappedTo: name
+              data:
+                type: string
+                description: The data
+                x-mappedTo: data
+    admin.provision.store-data-resp:
+      description: store-data response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        isSuccess:
+          type: boolean
+          description: The status of the request
+          x-mappedTo: isSuccess
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

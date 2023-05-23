@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  title: billing-template-entry
+  description: billing-template-entry API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract billing template entries
+    description: Contract billing template entry.
+paths:
+  /objects/billing-template-entry:
+    get:
+      summary: List Contract billing template entries
+      description: Returns a collection with a key, ID, and link for each Contract billing template entry.
+      tags:
+        - Contract billing template entries
+      operationId: get-objects-billing-template-entry
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing-template-entry objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '7'
+                        id: '7'
+                        href: /objects/billing-template-entry/7
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/billing-template-entry/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the Contract billing template entry.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '7'
+    get:
+      summary: Get a/an Contract billing template entry
+      description: Returns detailed information for a particular Contract billing template entry.
+      tags:
+        - Contract billing template entries
+      operationId: get-objects-billing-template-entry-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billing-template-entry
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/billing-template-entry.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '7'
+                        billingTemplate:
+                          key: '37'
+                          href: /objects/billing-template/37
+                        periodOffset: '1'
+                        stepPercent: '1.00000000'
+                        periodPercent: '50.00000000'
+                        href: /objects/billing-template-entry/7
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billing-template-entry:
+      $ref: '#/components/schemas/billing-template-entry.s1.schema'
+    billing-template-entryRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    billing-template-entry.s1.schema:
+      title: billing-template-entry
+      x-mappedTo: contractbillingtemplateentry
+      x-ownedBy: billing-template
+      type: object
+      description: List of contract billing template entries when using predefined percentages.
+      properties:
+        key:
+          type: string
+          description: Contract billing template entry Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        id:
+          type: string
+          description: Contract billing template entry Id
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: null
+        periodOffset:
+          type: string
+          description: Number of months offset
+          x-mappedTo: PERIODOFFSET
+          example: '2'
+        percentBilled:
+          type: string
+          description: Percent to bill
+          x-mappedTo: PERCENTBILLED
+          example: '10.12312000'
+        stepPercent:
+          type: string
+          format: decimal-precision-8
+          description: Threshold percentage
+          x-mappedTo: STEPPERCENT
+          example: '90.12312000'
+        contractBillingTemplate:
+          type: object
+          x-mappedTo: contractbillingtemplate
+          x-object: billing-template
+          properties:
+            key:
+              type: string
+              description: Template Key
+              x-mappedTo: TEMPLATEKEY
+              example: '1'
+            id:
+              type: string
+              description: Contract Billing Template ID
+              x-mappedTo: NAME
+              example: 12P_BeginingPeriod
+            href:
+              type: string
+              example: /objects/billing-template/1
+              readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

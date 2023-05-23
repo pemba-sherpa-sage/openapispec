@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - tax/lists/taxsolution/view
+    POST:
+      - tax/lists/taxsolution/create
+    PATCH:
+      - tax/lists/taxsolution/edit
+    DELETE:
+      - tax/lists/taxsolution/delete
+s1:
+  hash: '0'
+  type: rootObject

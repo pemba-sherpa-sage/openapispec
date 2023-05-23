@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: order-entry-billing-schedule
+  description: order-entry-billing-schedule API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Order entry billing schedules
+    description: This object provides order entry billing schedule information, including billing template details.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-billing-schedule:
+    get:
+      summary: List order entry billing schedules
+      description: Returns a collection with a key, ID, and link for each order entry billing schedule. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry billing schedules
+      operationId: get-objects-order-entry-billing-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-billing-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List order entry billing schedules: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-billing-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry billing schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an order entry billing schedule
+      description: Returns detailed information for a specified order entry billing schedule.
+      tags:
+        - Order entry billing schedules
+      operationId: get-objects-order-entry-billing-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-billing-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-billing-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an order entry billing schedule: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-billing-schedule:
+      $ref: ../models/order-entry-billing-schedule.s1.schema.yaml
+    order-entry-billing-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,16 @@
+type: object
+title: contract-expense-schedule-line
+x-mappedTo: contractexpensescheduleentry
+x-ownedBy: contract-expense-schedule
+description: Contract expense schedule line.
+required:
+  - scheduledExpenseDate
+properties:
+  href:
+    type: string
+    description: Schedule line URL.
+    readOnly: true
+    example: /objects/contract-expense-schedule-line/145
+  contractExpenseSchedule:
+    $ref: ../references/contract-expense-schedule-typeref.s1.schema.yaml
+examples: []

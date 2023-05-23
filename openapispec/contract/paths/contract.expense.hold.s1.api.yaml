@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: contract.expense
+  description: contract-expense API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+tags:
+  - name: contract-expense
+    description: contract-expense.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/expense/hold:
+    post:
+      summary: contract-expense hold
+      description: contract-expense hold.
+      tags:
+        - contract-expenses
+      operationId: post-contract-expense-hold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-hold-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-hold-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-hold-request:
+      description: hold request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+        - asOfDate
+      properties:
+        key:
+          type: string
+          description: Contract expense key
+          x-mappedTo: CONTRACTEXPENSEKEY
+          nullable: false
+          example: '1'
+        asOfDate:
+          type: string
+          format: date
+          description: Hold date
+          x-mappedTo: ASOFDATE
+          nullable: false
+          example: '2022-06-30'
+    contract-expense-hold-response:
+      description: hold response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

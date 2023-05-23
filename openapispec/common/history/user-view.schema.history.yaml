@@ -1,0 +1,15 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - rest_api
+    POST:
+      - rest_api
+    PATCH:
+      - rest_api
+    DELETE:
+      - rest_api
+s1:
+  hash: '0'
+  type: rootObject
+  adapter: GenericViewAdapter
+  validator: APIQueryValidator

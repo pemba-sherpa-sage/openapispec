@@ -1,0 +1,562 @@
+openapi: 3.0.0
+info:
+  title: standard-cost-type
+  description: standard-cost-type API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Standard cost types
+    description: |-
+      Define standard cost types to create a catalog of definitions that can be used to create new cost types pre-populated with specific values, such as for labor, materials, and subcontracts.
+
+      Note: Construction companies record expenses using the work breakdown structure (WBS). In the industry, the WBS is traditionally defined as job/cost code/category. Sage Intacct uses project/task/cost type to reflect this structure.
+paths:
+  /objects/standard-cost-type:
+    get:
+      summary: List standard cost types
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each standard cost type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Standard Cost Types
+      tags:
+        - Standard cost types
+      operationId: get-objects-standard-cost-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of standard cost types
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of standard cost types:
+                  value:
+                    ia::result:
+                      - key: '9'
+                        id: LAB-OT
+                        href: /objects/standard-cost-type/9
+                      - key: '10'
+                        id: LAB-REG
+                        href: /objects/standard-cost-type/10
+                      - key: '7'
+                        id: LAB
+                        href: /objects/standard-cost-type/7
+                      - key: '1'
+                        id: EQ
+                        href: /objects/standard-cost-type/1
+                      - key: '2'
+                        id: EQ-Rental
+                        href: /objects/standard-cost-type/2
+                      - key: '3'
+                        id: EQ-Owned
+                        href: /objects/standard-cost-type/3
+                    ia::meta:
+                      totalCount: 6
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a standard cost type
+      description: Creates a new standard cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Standard Cost Types
+      tags:
+        - Standard cost types
+      operationId: post-objects-standard-cost-type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/standard-cost-type.s1.schema'
+                - $ref: '#/components/schemas/standard-cost-typeRequiredProperties'
+            examples:
+              Create a standard cost type:
+                value:
+                  id: EQ-Owned
+                  name: EQ Owned
+                  description: EQ Owned
+                  accumulationType:
+                    id: Equipment
+                  glAccount:
+                    key: '208'
+                  parent:
+                    id: EQ
+                  item:
+                    id: Equipment
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New standard cost type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Standard cost type created:
+                  value:
+                    ia::result:
+                      key: '14'
+                      id: EQ-Owned
+                      href: /objects/standard-cost-type/14
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/standard-cost-type/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the standard cost type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a standard cost type
+      description: Returns detailed information for a specified standard cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Standard Cost Types
+      tags:
+        - Standard cost types
+      operationId: get-objects-standard-cost-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Standard cost type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/standard-cost-type.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Standard cost type details:
+                  value:
+                    ia::result:
+                      key: '10'
+                      id: LAB-REG
+                      name: Labor Regular
+                      description: Labor Regular
+                      accumulationType:
+                        key: '1'
+                        id: Labor
+                        href: /objects/accumulation-type/1
+                      costUnitDescription: null
+                      status: active
+                      glAccount:
+                        key: '208'
+                        id: '5001.01'
+                        href: /objects/gl-account/208
+                      parent:
+                        key: '7'
+                        id: LAB
+                        name: Labor
+                        href: /objects/standard-cost-type/7
+                      item:
+                        key: '320'
+                        id: Labor
+                        name: Labor
+                        href: /objects/item/320
+                      audit:
+                        createdDateTime: '2021-10-14T15:45:22Z'
+                        modifiedDateTime: '2021-10-14T15:46:44Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/standard-cost-type/10
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a standard cost type
+      description: Updates an existing standard cost type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Standard Cost Types
+      tags:
+        - Standard cost types
+      operationId: patch-objects-standard-cost-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/standard-cost-type.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update standard cost type fields:
+                value:
+                  description: Owned equipment
+                  costUnitDescription: each
+                  glAccount:
+                    id: '5001.05'
+                  item:
+                    id: Equipment
+                  parent:
+                    id: OH
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Standard cost type updated
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Standard cost type updated:
+                  value:
+                    ia::result:
+                      key: '14'
+                      id: EQ-Owned
+                      href: /objects/standard-cost-type/14
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a standard cost type
+      description: Deletes a standard cost type. You cannot delete a standard cost type if it has been used to create a cost type in a project.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Standard Cost Types
+      tags:
+        - Standard cost types
+      operationId: delete-objects-standard-cost-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    standard-cost-type:
+      $ref: '#/components/schemas/standard-cost-type.s1.schema'
+    standard-cost-typeRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    gl-accountref.s1.schema:
+      title: accountref
+      type: object
+      x-object: gl-account
+      properties:
+        key:
+          type: string
+          description: GL Account Key
+          x-mappedTo: ACCOUNTKEY
+          example: '144'
+        id:
+          type: string
+          description: GL Account ID
+          x-mappedTo: ACCOUNTNO
+          example: '1112'
+        name:
+          type: string
+          description: GL Account Title
+          x-mappedTo: ACCOUNTTITLE
+          example: Employee Advances
+        href:
+          type: string
+          readOnly: true
+          example: /objects/gl-account/144
+    itemref.s1.schema:
+      title: itemref
+      type: object
+      x-object: item
+      properties:
+        key:
+          type: string
+          description: Item key
+          example: '319'
+          x-mappedTo: ITEMKEY
+          readOnly: true
+        id:
+          type: string
+          description: Item ID
+          example: Overhead
+          x-mappedTo: ITEMID
+        name:
+          type: string
+          description: Item name
+          example: Overhead
+          readOnly: true
+          x-mappedTo: ITEMNAME
+        href:
+          type: string
+          description: URL of the item
+          readOnly: true
+          example: /objects/item/319
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    standard-cost-type.s1.schema:
+      title: standard-cost-type
+      type: object
+      x-mappedTo: standardcosttype
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the standard cost type. Used to identify the standard cost type in URLs or JSON bodies for all operations on the standard cost type.
+          example: '3'
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the standard cost type. 12 characters or less.
+          example: EQ-Owned
+          x-mappedTo: STANDARDCOSTTYPEID
+          x-mutable: false
+        href:
+          type: string
+          description: URL of the standard cost type.
+          example: /objects/standard-cost-type/3
+          readOnly: true
+        name:
+          type: string
+          description: Name of the standard cost type.
+          example: EQ Owned
+          x-mappedTo: NAME
+        description:
+          type: string
+          description: Description of the standard cost type.
+          example: EQ Owned
+          x-mappedTo: DESCRIPTION
+        costUnitDescription:
+          type: string
+          description: Describes the unit of measure used by this cost type. For example, for a labor cost type the cost unit represents an hour of labor. For a materials cost type, the cost unit could be tons or feet or similar.
+          example: each
+          x-mappedTo: COSTUNITDESCRIPTION
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        glAccount:
+          $ref: '#/components/schemas/gl-accountref.s1.schema'
+        accumulationType:
+          type: object
+          description: Accumulation type associated with this cost type.
+          x-object: accumulation-type
+          properties:
+            key:
+              type: string
+              description: System-assigned key of the accumulation type.
+              example: '1'
+              x-mappedTo: ACCUMULATIONTYPEKEY
+              readOnly: true
+            id:
+              type: string
+              description: ID of the accumulation type.
+              example: Equipment
+              x-mappedTo: ACCUMULATIONTYPENAME
+            href:
+              type: string
+              example: /objects/accumulation-type/1
+              description: URL of the accumulation type.
+              readOnly: true
+        parent:
+          type: object
+          description: Reference to a parent standard cost type to group standard cost types in the catalog.
+          x-object: standard-cost-type
+          x-mappedTo: PARENT
+          properties:
+            key:
+              type: string
+              example: '2'
+              x-mappedTo: PARENTKEY
+              readOnly: true
+            id:
+              type: string
+              example: EQ
+              x-mappedTo: PARENTID
+            name:
+              type: string
+              example: Equipment
+              x-mappedTo: PARENTNAME
+              readOnly: true
+            href:
+              type: string
+              example: /objects/standard-cost-type/2
+              description: URL of the parent standard cost type
+              readOnly: true
+        item:
+          $ref: '#/components/schemas/itemref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

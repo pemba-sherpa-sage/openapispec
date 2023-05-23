@@ -1,0 +1,111 @@
+title: employee-group
+x-mappedTo: employeegroup
+type: object
+description: A specified set of employees, or a set of employees that meet certain criteria.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the employee group.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Employee group ID. Displayed together with the group name in Sage Intacct (_ID_--_Name_). Employee group IDs cannot be changed.
+    x-mappedTo: ID
+    example: MGR
+  href:
+    type: string
+    description: Endpoint for the employee group.
+    readOnly: true
+    example: /objects/employee-group/23
+  name:
+    type: string
+    description: Employee group name. Displayed together with the group ID in Sage Intacct (_ID_--_Name_).
+    x-mappedTo: NAME
+    example: Sr. Managers
+  description:
+    type: string
+    description: Description of the employee group.
+    x-mappedTo: DESCRIPTION
+    example: Managers G10 and above
+  groupType:
+    type: string
+    description: |
+      Group membership type. The group type and options that you select determine which employees will be included in report data when you filter on this employee group.
+
+      If you are creating financial reports that show employees in rows or columns, your selection will also determine the column headings and row headings that will appear, and the order in which they will be listed.
+
+      * `specific` - Specify the employees to include and their order in the `members` array.
+      * `all` - All employees that match the `memberFilter` criteria.
+    x-mappedTo: GROUPTYPE
+    example: specific
+    enum:
+      - all
+      - specific
+    x-mappedToValues:
+      - ALL
+      - SPECIFIC
+    default: all
+  sortOrder:
+    type: string
+    description: Sort order for employees that match the `memberFilter`. Only applicable when `groupType` = `all`.
+    x-mappedTo: SORTORDER
+    example:
+      enum:
+        - ascending
+        - descending
+      x-mappedToValues:
+        - ASC
+        - DESC
+      default: ascending
+  maxMatches:
+    type: string
+    description: The maximum number of employees that match the `memberFilter` to include in the employee group. Only applicable when `groupType` = `all`.
+    x-mappedTo: RESTRICTTO
+    example:
+  memberFilter:
+    type: array
+    title: memberFilter
+    description: One or more filters to select the employees to include in the employee group.
+    nullable: true
+    x-mappedTo: MEMBERFILTERS
+    items:
+      title: children
+      properties:
+        field:
+          type: string
+          description: Employee field to filter on, such as Employee ID or Country Code.
+          x-mappedTo: FIELD
+          example: STATUS
+        operator:
+          type: string
+          description: Comparison operator.
+          x-mappedTo: OPERATOR
+          example: '!='
+        value:
+          type: string
+          description: Value to compare against.
+          x-mappedTo: VALUE
+          example: inactive
+  glAccountGroup:
+    type: object
+    description: Employee report structure that controls how this employee group is used in reports. If not specified, the group can be used only for filtering reports.
+    x-mappedTo: glacctgrp
+    x-object: gl-account-group
+    properties:
+      key:
+        type: string
+        x-mappedTo: GLACCTGRP.RECORDNO
+        example: '145'
+      id:
+        type: string
+        x-mappedTo: DIMGRPCOMP
+        readOnly: true
+        example: Sales and Marketing
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account-group/145
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,11 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/arpymt/view
+    POST:
+      - ar/lists/arpymt/create
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: rootObject

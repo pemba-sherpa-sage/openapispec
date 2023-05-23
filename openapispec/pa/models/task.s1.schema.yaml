@@ -1,0 +1,485 @@
+title: task
+x-mappedTo: task
+type: object
+description: Information about each task.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the task. Use this key to refer to the task in all operations.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '101'
+  id:
+    type: string
+    description: Identifier for the task. Must be unique within the project. 20 characters max.
+    x-mappedTo: TASKID
+    example: '01-010'
+  name:
+    type: string
+    description: Task name. Must be unique within the project.
+    x-mappedTo: NAME
+    example: Task 1
+  parent:
+    type: object
+    description: The parent task if this task is the child of another, larger task.
+    x-object: task
+    x-mappedTo: task
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the parent task.
+        x-mappedTo: PARENTKEY
+        example: '11'
+      id:
+        type: string
+        readOnly: true
+        description: Parent task ID.
+        x-mappedTo: PARENTKEY
+        example: '11'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/task/11
+  project:
+    type: object
+    description: The project that the task is associated with.
+    x-object: project
+    x-mappedTo: project
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the project.
+        x-mappedTo: PROJECTKEY
+        example: '114'
+      id:
+        type: string
+        description: Unique identifier of the project.
+        readOnly: true
+        x-mappedTo: PROJECTID
+        example: '15-GAR'
+      name:
+        type: string
+        description: Project name.
+        readOnly: true
+        x-mappedTo: PROJECTNAME
+        example: Parking garage renovation
+      startDate:
+        type: string
+        description: Project begin date.
+        x-mappedTo: PROJECTBEGINDATE
+        example: '2023-01-01'
+      endDate:
+        type: string
+        description: Project end date.
+        x-mappedTo: PROJECTENDDATE
+        example: '2023-04-01'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project/114
+  customer:
+    type: object
+    description: The customer that this task will be billed to.
+    x-object: customer
+    x-mappedTo: customer
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the customer.
+        readOnly: true
+        x-mappedTo: CUSTOMERKEY
+        example: '987'
+      id:
+        type: string
+        description: Unique identifier of the customer.
+        readOnly: true
+        x-mappedTo: CUSTOMERID
+        example: '38-097'
+      name:
+        type: string
+        readOnly: true
+        description: Customer name.
+        x-mappedTo: CUSTOMERNAME
+        example: City Parking
+      href:
+        type: string
+        readOnly: true
+        example: /objects/customer/987
+  item:
+    type: object
+    description: Work item that this task is assigned to. A task must be assigned to an item for it to be invoiced.
+    x-object: item
+    x-mappedTo: item
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the item.
+        x-mappedTo: ITEMKEY
+        example: '311'
+      id:
+        type: string
+        readOnly: true
+        description: Unique identifier of the item.
+        x-mappedTo: ITEMID
+        example: Project Item 1
+      name:
+        type: string
+        readOnly: true
+        description: Item name.
+        x-mappedTo: ITEMNAME
+        example: Extension pack
+      href:
+        type: string
+        readOnly: true
+        example: /objects/item/311
+  planned:
+    type: object
+    description: Planned start and end dates for the task.
+    properties:
+      startDate:
+        format: date
+        type: string
+        description: Planned start date.
+        x-mappedTo: PBEGINDATE
+        example: '2023-04-01'
+      endDate:
+        format: date
+        type: string
+        description: Planned end date.
+        x-mappedTo: PENDDATE
+        example: '2023-05-05'
+  actual:
+    type: object
+    description: Actual task start and end dates.
+    properties:
+      startDate:
+        format: date
+        type: string
+        readOnly: true
+        description: Actual start date.
+        x-mappedTo: ABEGINDATE
+        example: '2023-04-01'
+      endDate:
+        format: date
+        type: string
+        readOnly: true
+        description: Actual end date.
+        x-mappedTo: AENDDATE
+        example: '2023-05-05'
+  duration:
+    type: object
+    description: Task-related durations.
+    properties:
+      planned:
+        type: number
+        description: Task planned duration (hours).
+        x-mappedTo: BUDGETQTY
+        example: 100
+      plannedBillable:
+        type: number
+        readOnly: true
+        description: Billable task planned duration (hours).
+        x-mappedTo: BILLABLE_BUDGETQTY
+        example: 0
+      estimated:
+        type: number
+        description: Task estimated duration (hours).
+        x-mappedTo: ESTQTY
+        example: 100
+      estimatedBillable:
+        type: number
+        readOnly: true
+        description: Billable task estimated duration (hours).
+        x-mappedTo: BILLABLE_ESTQTY
+        example: 0
+      actual:
+        type: number
+        readOnly: true
+        description: Task actual duration (hours).
+        x-mappedTo: ACTUALQTY
+        example: 0
+      actualBillable:
+        type: number
+        readOnly: true
+        description: Billable actual duration (hours).
+        x-mappedTo: BILLABLE_ACTUALQTY
+        example: 0
+      approved:
+        type: number
+        readOnly: true
+        description: Approved duration (hours).
+        x-mappedTo: APPROVEDQTY
+        example: 100
+      approvedBillable:
+        type: number
+        readOnly: true
+        description: Billable approved duration (hours).
+        x-mappedTo: BILLABLE_APPROVEDQTY
+        example: 0
+      remaining:
+        type: number
+        readOnly: true
+        description: Remaining duration (hours).
+        x-mappedTo: REMAININGQTY
+        example: 100
+  percentComplete:
+    type: number
+    readOnly: true
+    description: Calculated percentage of the task that has been completed.
+    x-mappedTo: PERCENTCOMPLETE
+    example: 25
+  description:
+    type: string
+    description: Task description.
+    x-mappedTo: DESCRIPTION
+    example: First task
+  isMilestone:
+    type: boolean
+    description: Set to `true` to indicate that the task is a milestone. 
+    x-mappedTo: ISMILESTONE
+    example: true
+    default: false
+  isUtilized:
+    type: boolean
+    description: Set to `true` to mark this task as utilized. A utilized task is one spent making progress on a customer project or internal project. A non-utilized task is one spent not working on a customer project or internal project, for example, time spent filling in an expense report or timesheet.
+    x-mappedTo: UTILIZED
+    example: true
+    default: false
+  isBillable:
+    type: boolean
+    description: Set to `true` to bill the work for the task. Set to `false` to mark the task as non-billable.
+    x-mappedTo: BILLABLE
+    example: true
+    default: false
+  wbsCode:
+    type: string
+    description: Work breakdown structure code.
+    x-mappedTo: TASKNO
+    example: '1'
+  priority:
+    type: number
+    description: A numeric value indicating the task priority.
+    x-mappedTo: PRIORITY
+    example: '2'
+  status:
+    type: string
+    description: Current status of the task. If the task status is Completed, employees can't enter time for the task on timesheets.
+    enum:
+      - 'notStarted'
+      - 'planned'
+      - 'inProgress'
+      - 'completed'
+      - 'onHold'
+    x-mappedToValues:
+      - 'Not Started'
+      - 'Planned'
+      - 'In Progress'
+      - 'Completed'
+      - 'On Hold'
+    x-mappedTo: TASKSTATUS
+    default: inProgress
+    example: completed
+  timeType:
+    type: object
+    description: Time type used when posting labor costs to the general ledger or for tracking and reporting how work time is spent.
+    properties:
+      name:
+        type: string
+        readOnly: true
+        description: Name of the time type, such as salary, contract hours, overtime, vacation, travel time, etc.
+        x-mappedTo: TIMETYPENAME
+        example: overtime
+      key:
+        type: string
+        readOnly: true
+        description: System-assigned key of the time type.
+        x-mappedTo: TIMETYPEKEY
+        example: '60'
+  class:
+    type: object
+    x-object: class
+    x-mappedTo: class
+    description: Class dimension associated with the task.
+    properties:
+      id:
+        type: string
+        readOnly: true
+        description: Class ID.
+        x-mappedTo: CLASSID
+        example: '19'
+      name:
+        type: string
+        readOnly: true
+        description: Class name.
+        x-mappedTo: CLASSNAME
+        example: class
+      key:
+        type: string
+        description: System-assigned key of the class.
+        x-mappedTo: CLASSKEY
+        example: '19'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/class/19
+  attachment:
+    type: object
+    description: Documents associated with the task, such as statements of work, specifications, or agreements.
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the attachment.
+        x-mappedTo: SUPDOCKEY
+        example: '546'
+      id:
+        type: string
+        readOnly: true
+        description: Attachment ID.
+        x-mappedTo: SUPDOCID
+        example: 'P8-29'
+      href:
+        type: string
+        description: Link to the attachment.
+        readOnly: true
+        example: /objects/attachment/546
+  dependentOn:
+    type: object
+    x-object: task
+    x-mappedTo: task
+    description: Task that must be completed before this task can start.
+    properties:
+      key:
+        type: string
+        readOnly: true
+        description: System-assigned key of the task that this task is dependent on.
+        x-mappedTo: DEPENDENTONKEY
+        example: '1330'
+      id:
+        type: string
+        readOnly: true
+        description: ID of the task that this task is dependent on.
+        x-mappedTo: DEPENDENTONTASKID
+        example: '1330'
+      name:
+        type: string
+        readOnly: true
+        description: Name of the task that this task is dependent on.
+        x-mappedTo: DEPENDENTONNAME
+        example: Rough framing
+      href:
+        type: string
+        readOnly: true
+        description: Link to the task that this task is dependent on.
+        example: /objects/link/1223
+  productionUnits:
+    type: object
+    description: Production Units  
+    properties: 
+      original:
+        type: number
+        readOnly: true
+        description: Original estimated production units.
+        x-mappedTo: ORIGINALPRODUCTIONUNITS
+        example: 1200
+      revision:
+        type: number
+        readOnly: true
+        description: Revision estimated production units.
+        x-mappedTo: REVISIONPRODUCTIONUNITS
+        example: 1250
+      approvedChange:
+        type: number
+        readOnly: true
+        description: Approved change estimated production units.
+        x-mappedTo: APPROVEDCHANGEPRODUCTIONUNITS
+        example: 50
+      other:
+        type: number
+        readOnly: true
+        description: Other estimated production units.
+        x-mappedTo: OTHERPRODUCTIONUNITS
+        example: 0
+      forecast:
+        type: number
+        readOnly: true
+        description: Forecast estimated production units.
+        x-mappedTo: FORECASTPRODUCTIONUNITS
+        example: 1200
+      pendingChange:
+        type: number
+        readOnly: true
+        description: Pending change estimated production units.
+        x-mappedTo: PENDINGCHANGEPRODUCTIONUNITS
+        example: 50
+      total:
+        type: number
+        readOnly: true
+        description: Total estimated production units.
+        x-mappedTo: TOTALPRODUCTIONUNITS
+        example: 1250
+      description:
+        type: string
+        readOnly: true
+        description: Production unit description, such as "cubic yards" or "window assembly".
+        x-mappedTo: PRODUCTIONUNITDESC
+        example: linear feet siding
+  root:
+    type: object
+    x-object: task
+    x-mappedTo: task
+    description: The top-level task that this task descends from.
+    properties:
+      id:
+        type: string
+        readOnly: true
+        description: ID of the root task. If the parent is the root, then it's the ID of the parent task. If there is no parent task, then it's the ID of the current task.
+        x-mappedTo: ROOTPARENTID
+        example: '1334'
+      key:
+        type: string
+        readOnly: true
+        description: System-assigned key of the root task. If the parent is the root, then it's the key of the parent task. If there is no parent task, then it's the key of the current task.
+        x-mappedTo: ROOTPARENTKEY
+        example: '1334'
+      name:
+        type: string
+        readOnly: true
+        description: Name of the root task. If the parent is the root, then it's the name of the parent task.  If there is no parent task, then it's the name of the current task.
+        x-mappedTo: ROOTPARENTNAME
+        example: '1295 Maple St home remodel'
+      href:
+        type: string
+        readOnly: true
+        description: Link to the root task.
+        example: /objects/task/1334
+  standardTask:
+    type: object
+    x-object: task
+    x-mappedTo: task
+    description: The standard task that is the template for this task.
+    properties:
+      id:
+        type: string
+        readOnly: true
+        description: Standard task ID.
+        x-mappedTo: STANDARDTASKID
+        example: '13'
+      key:
+        type: string
+        readOnly: true
+        description: System-assigned key of the standard task.
+        x-mappedTo: STANDARDTASKKEY
+        example: '13'
+      name:
+        type: string
+        readOnly: true
+        description: Name of the standard task.
+        x-mappedTo: STANDARDTASKNAME
+        example: Rough framing
+      href:
+        type: string
+        readOnly: true
+        description: link to the standard task.
+        example: /objects/standard-task/13
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

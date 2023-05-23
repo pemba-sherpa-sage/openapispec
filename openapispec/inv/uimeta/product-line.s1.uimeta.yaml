@@ -1,0 +1,44 @@
+fields:
+    description:
+        uiType: text
+        uiLabel: 'Product line description'
+    id:
+        uiType: text
+        uiLabel: 'Product line ID'
+    key:
+        uiType: integer
+        uiLabel: 'Record number'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+groups:
+    audit:
+        fields:
+            createdBy:
+                uiType: ptr
+                uiLabel: 'Created by'
+            createdDateTime:
+                uiType: timestamp
+                uiLabel: 'When created'
+            modifiedBy:
+                uiType: ptr
+                uiLabel: 'Modified by'
+            modifiedDateTime:
+                uiType: timestamp
+                uiLabel: 'When modified'
+refs:
+    parent:
+        fields:
+            id:
+                uiType: ptr
+                uiLabel: 'Parent product line'
+            key:
+                uiType: integer
+                uiLabel: 'Parentlineid record number'

@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  title: ar-tax-schedule-detail
+  description: Accounts Receivable Tax Schedule Detail is used to associate a tax detail to the date at which the tax detail becomes effective.
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Accounts Receivable tax schedule details
+    description: Accounts Receivable tax schedule detail description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-tax-schedule-detail:
+    get:
+      summary: List Accounts Receivable tax schedule details
+      description: 'Returns a collection with a key, ID, and link for each Accounts Receivable tax schedule detail.'
+      tags:
+        - Accounts Receivable tax schedule details
+      operationId: get-objects-ar-tax-schedule-detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-tax-schedule-detail objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Accounts Receivable tax schedule details:
+                  value:
+                    'ia::result':
+                      - key: '8'
+                        id: '8'
+                        href: /objects/ar-tax-schedule-detail/8
+                      - key: '9'
+                        id: '9'
+                        href: /objects/ar-tax-schedule-detail/9
+                      - key: '10'
+                        id: '10'
+                        href: /objects/ar-tax-schedule-detail/10
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    parameters: []
+  '/objects/ar-tax-schedule-detail/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Accounts Receivable tax schedule detail.
+        in: path
+        required: true
+        schema:
+          type: string
+          default: '162'
+          example: '162'
+    get:
+      summary: Get a/an Accounts Receivable tax schedule detail
+      description: Returns detailed information for a particular Accounts Receivable tax schedule detail.
+      tags:
+        - Accounts Receivable tax schedule details
+      operationId: get-objects-ar-tax-schedule-detail-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-tax-schedule-detail
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-tax-schedule-detail'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Accounts Receivable tax schedule detail:
+                  value:
+                    'ia::result':
+                      taxSchedule:
+                        key: '162'
+                        id: '162'
+                        name: Tax Florida
+                        href: /objects/ar-tax-schedule/162
+                      key: '44'
+                      id: '44'
+                      taxDetail:
+                        id: Sales Tax California
+                        key: '22'
+                        href: /objects/order-entry-tax-detail/22
+                      effectiveDate: '2022-01-02'
+                      href: /objects/ar-tax-schedule-detail/44
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-tax-schedule-detail:
+      $ref: ../models/ar-tax-schedule-detail.s1.schema.yaml
+    ar-tax-schedule-detailRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

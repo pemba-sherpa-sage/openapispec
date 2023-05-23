@@ -1,0 +1,18 @@
+key: order-entry-price-list::systemSOPricelistFW1
+id: systemSOPricelistFW1
+object: order-entry-price-list
+name: All
+description: Specifies all active order entry price lists
+query:
+  object: order-entry-price-list
+  fields:
+    - id
+    - startDate
+    - endDate
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default

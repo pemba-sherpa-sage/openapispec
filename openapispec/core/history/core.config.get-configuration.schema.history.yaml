@@ -1,0 +1,9 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - ALL
+    OPTIONS:
+      - ALL
+s1:
+  hash: '0'
+  type: functionService

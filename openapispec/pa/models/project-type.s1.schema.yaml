@@ -1,0 +1,53 @@
+title: project-type
+x-mappedTo: projecttype
+type: object
+description: Use project types to group projects into categories for reporting
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for project type. Use this key to refer to the project type in all operations.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '3'
+  id:
+    type: string
+    description: User-specified name for the project type; used to categorize and report on projects
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'Internal'
+  name:
+    type: string
+    description: User-specified name for the project type; used to categorize and report on projects
+    x-mappedTo: NAME
+    example: 'Internal'
+  parent:
+    type: object
+    description: The parent project type if you are working with a hierarchy of project types.
+    x-mappedTo: project-type
+    x-object: project-type
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent project type.
+        x-mappedTo: PARENTKEY
+        example: '10'
+      id:
+        type: string
+        description: Unique identifier of the parent project type.
+        x-mappedTo: PARENT.NAME
+        readOnly: true
+        example: 'Billable'
+      name:
+        type: string
+        description: Name of the parent project type.
+        x-mappedTo: PARENT.NAME
+        readOnly: true
+        example: 'Billable'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project-type/1
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

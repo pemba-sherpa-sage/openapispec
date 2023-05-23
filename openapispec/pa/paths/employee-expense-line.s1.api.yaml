@@ -1,0 +1,345 @@
+openapi: 3.0.0
+info:
+  title: employee expense line
+  description: employee expense line API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Employee expense lines
+    description: Details for each expense line on the employee expense report.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-expense-line:
+    get:
+      summary: Get an employee expense line
+      description: 'Returns a collection with a key, ID, and link for each employee expense line.'
+      tags:
+        - Employee expense lines
+      operationId: get-objects-employee-expense-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee expense line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of employee expense line objects:
+                  value:
+                    'ia::result':
+                      - key: '100'
+                        id: '100'
+                        href: /objects/employee-expense-line/100
+                      - key: '101'
+                        id: '101'
+                        href: /objects/employee-expense-line/101
+                      - key: '102'
+                        id: '102'
+                        href: /objects/employee-expense-line/102
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee expense line
+      description: Creates a new employee expense line.
+      tags:
+        - Employee expense lines
+      operationId: post-objects-employee-expense-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-line'
+                - $ref: '#/components/schemas/employeeExpenseLineRequiredProperties'
+            examples:
+              Creates an employee expense line:
+                value:
+                  account:
+                    id: '6775.3'
+                  paidTo: paid To
+                  paidFor: paid For
+                  isBillable: false
+                  form1099:
+                    isForm1099: 'true'
+                    type: MISC
+                    box: '3'
+                  paymentType:
+                    key: '1'
+                    name: Non-reimburse
+                    isNonreimbursable: false
+                  quantity: '10'
+                  unitrate: '20'
+                  txnCurrency: INR
+                  txnAmount: '100'
+                  transactionToReimburseConversion:
+                    exchangeRateDate: '2021-03-11'
+                    exchangeRateTypeId: Intacct Daily Rate
+                  dimensions:
+                    location:
+                      id: '1'
+                    department:
+                      id: '1'
+                    class:
+                      id: REST_CLS_001
+                    item:
+                      id: Case 13
+                    employee:
+                      id: '10'
+                    vendor:
+                      id: '1605212096809'
+                    customer:
+                      id: '113'
+                    project:
+                      id: NET-XML30-2
+                    warehouse:
+                      id: WH01
+                    task:
+                      id: tet
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee expense line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee expense line:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: /objects/employee-expense-line/124
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-expense-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee expense line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee expense line
+      description: Returns detailed information for a particular employee expense line.
+      tags:
+        - Employee expense lines
+      operationId: get-objects-employee-expense-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee expense line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-expense-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee expense line:
+                  value:
+                    'ia::result':
+                      key: '312'
+                      id: '312'
+                      employee-expense:
+                        id: '136'
+                        key: '136'
+                        href: /objects/employee-expense/136
+                      glAccount:
+                        key: '158'
+                        id: '6775.30'
+                        name: Travel
+                        href: /objects/account/158
+                      entryDate: '2021-03-11'
+                      paidTo: paid To
+                      paidFor: paid For
+                      reimburseToBase:
+                        baseAmount: '1.38'
+                        exchangeRateDate: '2021-03-11'
+                        exchangeRateTypeId: '-1'
+                        exchangeRate: '1.1899'
+                      dimensions:
+                        location:
+                          key: '1'
+                          id: '1'
+                          name: USA
+                          href: /objects/location/1
+                        department:
+                          key: '1'
+                          id: '1'
+                          name: IT
+                          href: /objects/department/1
+                        class:
+                          key: '731'
+                          id: REST_CLS_001
+                          name: Enterprises
+                          href: /objects/class/731
+                        item:
+                          key: '13'
+                          id: Case 13
+                          name: Platform pack
+                          href: /objects/item/13
+                        employee:
+                          key: '10'
+                          id: '10'
+                          name: 'Thomas, Glenn'
+                          href: /objects/employee/10
+                        vendor:
+                          key: '357'
+                          id: '1605212096809'
+                          name: GenLab
+                          href: /objects/vendor/357
+                        customer:
+                          key: '13'
+                          id: '113'
+                          name: Jack In the Box
+                          href: /objects/customer/13
+                        project:
+                          key: '2'
+                          id: NET-XML30-2
+                          name: Talcomp training
+                          href: /objects/project/2
+                        task:
+                          key: '2'
+                          id: tet
+                          name: Design
+                          href: /objects/task/2
+                        warehouse:
+                          key: '6'
+                          id: WH01
+                          name: WH01
+                          href: /objects/warehouse/6
+                      lineNumber: 1
+                      expenseType:
+                        key: Meals
+                        id: '6000'
+                      reimbursement:
+                        reimbursementAmount: '1.16'
+                        totalSelected: '0'
+                        totalPaid: '0'
+                      isBillable: false
+                      isBilled: false
+                      state: approved
+                      form1099:
+                        isForm1099: 'true'
+                        type: MISC
+                        box: '3'
+                      paymentType:
+                        key: '1'
+                        name: Non-reimburse
+                        isNonreimbursable: false
+                      quantity: '5'
+                      unitRate: '20'
+                      currency:
+                        txnCurrency: INR
+                        txnAmount: '4444'
+                        exchangeRateDate: '2021-03-11'
+                        exchangeRateTypeId: '-1'
+                        exchangeRate: '65'
+                        userExchangeRate: '5'
+                      href: /objects/employee-expense-line/312
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee expense line
+      description: Updates an existing employee expense line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee expense lines
+      operationId: patch-objects-employee-expense-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an employee expense line:
+                value:
+                  id: '100'
+                  paidTo: Travel expense
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee expense line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated employee expense line:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: /objects/employee-expense-line/124
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee expense line
+      description: Deletes an employee expense line.
+      tags:
+        - Employee expense lines
+      operationId: delete-objects-employee-expense-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-expense-line:
+      $ref: ../models/employee-expense-line.s1.schema.yaml
+    employeeExpenseLineRequiredProperties:
+      type: object
+      required:
+        - txnAmount
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

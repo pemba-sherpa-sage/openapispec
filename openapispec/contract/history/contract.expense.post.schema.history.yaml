@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - cn/lists/contractexpense/post
+s1:
+  hash: '0'
+  type: functionService

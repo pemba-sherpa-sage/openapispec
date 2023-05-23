@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  title: sandbox
+  description: sandbox API
+  version: '1.0'
+  contact:
+    name: Vlad Nicolae
+    email: vlad.nicolae@sage.com
+tags:
+  - name: Sandboxes
+    description: Sandboxes description
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/sandbox:
+    get:
+      summary: List sandboxes
+      description: Returns a collection with a key, ID, and link for each sandbox.
+      tags:
+        - Sandboxes
+      operationId: get-objects-sandbox
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of sandbox objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: '/objects/sandbox/1'
+                      - key: '2'
+                        id: '2'
+                        href: '/objects/sandbox/2'
+                      - key: '3'
+                        id: '3'
+                        href: '/objects/sandbox/3'
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/sandbox/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the sandbox.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '10'
+    get:
+      summary: Get a sandbox
+      description: Returns detailed information for a particular sandbox.
+      tags:
+        - Sandboxes
+      operationId: get-objects-sandbox-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the sandbox
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/sandbox'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '10'
+                      id: '10'
+                      name: 'Company_title-sandbox'
+                      description: 'Sandbox description'
+                      state: 'pending'
+                      expirationDate: '2022-09-01'
+                      lastRefreshedDate: '2022-06-22'
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      href: '/objects/sandbox/10'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a sandbox
+      description: Deletes a sandbox.
+      tags:
+        - Sandboxes
+      operationId: delete-objects-sandbox-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    sandbox:
+      $ref: ../models/sandbox.s1.schema.yaml
+    sandboxRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

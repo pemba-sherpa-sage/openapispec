@@ -1,0 +1,115 @@
+title: Employee expense type
+x-mappedTo: eeaccountlabel
+type: object
+description: User-defined Employee expense type that is applied to the line items in an expense report or expense adjustment.
+properties:
+  key:
+    type: string
+    description: Employee expense type record number.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '47'
+  id:
+    type: string
+    description: Expense Type name
+    readOnly: true
+    x-mappedTo: ACCOUNTLABEL
+    example: '47'
+  name:
+    type: string
+    description: Expense Type name
+    x-mappedTo: ACCOUNTLABEL
+    example: travel
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  description:
+    type: string
+    description: Employee expense type description.
+    x-mappedTo: DESCRIPTION
+    example: Non reimbursable expense for travel
+  glAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: Employee expense type record number. Required if not using name.
+        x-mappedTo: RECORDNO
+        readOnly: true
+        example: '5500'
+      id:
+        type: string
+        description: Employee expense type GL account  number.
+        x-mappedTo: GLACCOUNTNO
+        example: 5500--Commissions Paid
+      name:
+        type: string
+        description: Employee expense type GL account  name.
+        x-mappedTo: GLACCOUNTTITLE
+        readOnly: true
+        example: Commissions Paid
+      href:
+        type: string
+        readOnly: true
+  offsetGLAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: Employee expense type record number. Required if not using name.
+        x-mappedTo: RECORDNO
+        readOnly: true
+        example: '6000'
+      id:
+        type: string
+        description: Employee expense type GL account  number.
+        x-mappedTo: OFFSETGLACCOUNTNO
+        example: 6000 -- Offset
+      name:
+        type: string
+        description: Employee expense type GL account  name.
+        x-mappedTo: OFFSETGLACCOUNTTITLE
+        readOnly: true
+        example: offset account
+      href:
+        type: string
+        readOnly: true
+  item:
+    type: object
+    x-object: item
+    x-mappedTo: item
+    title: item
+    properties:
+      key:
+        type: string
+        description: Employee expense type Item record number.
+        x-mappedTo: RECORDNO
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Employee expense type Item ID.
+        x-mappedTo: ITEMID
+        example: '1'
+      name:
+        type: string
+        description: Employee expense type Item name.
+        x-mappedTo: ITEMNAME
+        readOnly: true
+        example: PC
+      href:
+        type: string
+        readOnly: true
+  unitCurrency:
+    type: string
+    description: Employee expense type currency of the unit rate.
+    x-mappedTo: unitCurrency
+    readOnly: true
+    example: USD
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

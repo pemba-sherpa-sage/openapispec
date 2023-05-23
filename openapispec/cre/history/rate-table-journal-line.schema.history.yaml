@@ -1,0 +1,10 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - gl/lists/ratetableglentry/view
+    POST:
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: ownedObject

@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: job-status
+  description: job-status API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Asynchronous job statuses
+    description: Asynchronous job status description -- explain what it's for and how it's used.
+paths:
+  /services/core/async/job-status:
+    get:
+      description: Get an asynchonous job status
+      summary: Returns detailed information for a particular asynchronous job status.
+      tags:
+        - Asynchronous job statuses
+      parameters:
+        - $ref: '#/components/parameters/jobId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the async-job-status
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/core.async.job-status.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Job Status:
+                  value:
+                    ia::result:
+                      jobId: NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE
+                      processingStatus: delivered
+                      queuedDateTime: '2021-03-09T09:25:27Z'
+                      startDateTime: '2021-03-09T09:25:33Z'
+                      endDateTime: '2021-03-09T09:26:04Z'
+                      href: /services/core/async/job-status?jobId=NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE
+                      deliveryStatus:
+                        - status: 429
+                          attemptedDateTime: '2021-03-09T09:25:36Z'
+                          scheduledRetryDateTime: '2021-03-09T10:32:16Z'
+                        - status: 200
+                          attemptedDateTime: '2021-03-09T09:26:31Z'
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-services-async-job-status
+components:
+  schemas:
+    job-status-response:
+      $ref: '#/components/schemas/core.async.job-status.s1.schema'
+    core.async.job-status.s1.schema:
+      title: async.job-status
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        jobId:
+          type: string
+          format: base64url
+          x-mappedTo: PACKAGEID
+          description: Job identifier
+          example: 6465763130YLqEgGMm0IdJZ5NxL0NDYwAAAA81
+        processingStatus:
+          type: string
+          x-mappedTo: STATE
+          description: |
+            Job processing status
+            ** Valid values **
+              - 'failed' job failed to complete
+              - 'onHold' job has execution/performance issues
+              - 'queued' job is in queue for processing
+              - 'inTransit' job is processing
+              - 'delivered' job was complete and delivered
+              - 'deferred' job put in deferred status
+              - 'cancelled' job was cancelled
+          enum:
+            - failed
+            - onHold
+            - queued
+            - inTransit
+            - delivered
+            - deferred
+            - cancelled
+          x-mappedToValues:
+            - Dead
+            - Parked
+            - Queued
+            - In Transit
+            - Delivered
+            - Deferred
+            - Cancelled
+          example: queued
+        queuedDateTime:
+          type: string
+          format: date-time
+          x-mappedTo: TIMESTAMP_DATE
+          description: Date and time the job was added to queue
+          example: '2022-04-20T16:20:00Z'
+        startDateTime:
+          type: string
+          format: date-time
+          x-mappedTo: TIMESTARTED
+          description: Date and time the job was picked for execution
+          example: '2022-04-20T16:20:00Z'
+        endDateTime:
+          type: string
+          format: date-time
+          x-mappedTo: TIMEFINISHED
+          description: Date and time the job completed execution
+          example: '2022-04-20T16:20:00Z'
+        deliveryStatus:
+          type: array
+          description: Status of job delivery (includes status of each delivery attempt)
+          x-mappedTo: deliveryStatus
+          items:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: HTTP Status Code
+                x-mappedTo: status
+                example: 200
+              deliveryDateTime:
+                type: string
+                format: date-time
+                description: Timestamp of delivery
+                x-mappedTo: deliveryDateTime
+                example: '2022-04-20T16:20:00Z'
+              scheduledRetryDateTime:
+                type: string
+                format: date-time
+                description: Timestamp of next scheduled retry attempt
+                x-mappedTo: scheduledRetryDateTime
+                example: '2022-04-20T16:20:00Z'
+        href:
+          type: string
+          readOnly: true
+          example: /services/core/async/job-status?jobId=6465763130YLqEgGMm0IdJZ5NxL0NDYwAAAA81
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'
+  parameters:
+    jobId:
+      name: jobId
+      description: Job Identifier
+      in: query
+      required: true
+      schema:
+        type: string
+        x-mappedTo: PACKAGEID
+        nullable: false
+        format: base64url
+        example: NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE

@@ -1,0 +1,22 @@
+type: object
+title: contract-line
+x-object: contract-line
+properties:
+  key:
+    type: string
+    description: System-assigned key for the contract line.
+    x-mappedTo: CONTRACTDETAILKEY
+    readOnly: true
+    example: '2'
+  id:
+    type: string
+    description: Unique identifier of the contract line.
+    x-mappedTo: CONTRACTDETAILKEY
+    readOnly: true
+    example: '2'
+  href:
+    type: string
+    description: URL of the contract line.
+    readOnly: true
+    example: /objects/contract-line/2
+examples: []

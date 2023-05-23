@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: row
+  description: row API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Rows
+    description: A row is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/row:
+    get:
+      summary: List rows
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each row. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Rows
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Rows
+      operationId: get-objects-row
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of row objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List rows:
+                  value:
+                    'ia::result':
+                      - key: '354'
+                        id: R1ADW
+                        href: /objects/row/354
+                      - key: '355'
+                        id: R1BDW
+                        href: /objects/row/355
+                      - key: '356'
+                        id: R2ADW
+                        href: /objects/row/356
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageRow: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a row
+      description: Creates a new row.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Rows
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Rows
+      operationId: post-objects-row
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/row'
+                - $ref: '#/components/schemas/rowRequiredProperties'
+            examples:
+              Create a row:
+                value:
+                  id: R3ADW
+                  description: Row 3A Dishwashers
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New row
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a row:
+                  value:
+                    'ia::result':
+                      key: '543'
+                      id: R3ADW
+                      href: /objects/row/543
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/row/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '354'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the row.
+    get:
+      summary: Get a row
+      description: Returns detailed information for a specified row.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Rows
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Rows
+      operationId: get-objects-row-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the row
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/row'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a row:
+                  value:
+                    'ia::result':
+                      key: '354'
+                      id: R3ADW
+                      description: Row 3 A Dishwashers
+                      audit:
+                        createdDateTime: '2021-05-07T01:15:23Z'
+                        modifiedDateTime: '2021-05-07T01:15:23Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                      href: /objects/row/354
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a row
+      description: Updates an existing row by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Rows
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Rows
+      operationId: patch-objects-row-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/row'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Row 3A1 Dishwashers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated row
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: R3ADW
+                      href: /objects/row/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a row
+      description: Deletes a row. You can delete a row if it is not being used and you no longer need it. Deleted rows cannot be recovered.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Rows
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Rows
+      operationId: delete-objects-row-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    row:
+      $ref: ../models/row.s1.schema.yaml
+    rowRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

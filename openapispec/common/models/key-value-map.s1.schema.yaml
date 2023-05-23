@@ -1,0 +1,35 @@
+title: key-value-map
+description: key-value-map
+type: object
+x-mappedTo: __custom__
+properties:
+  key:
+    type: string
+    description: Key to identify the map
+    x-mappedTo: key
+    example: 'page-layout3'
+  type:
+    type: string
+    description: Key type
+    x-mappedTo: type
+    enum:
+      - user
+      - company
+    default: user
+    example: user
+  value:
+    oneOf:
+      - type: string
+      - type: number
+      - type: integer
+      - type: boolean
+      - type: object
+      - type: array
+        items: {}
+    description: 'Can be any value - string, number, integer, boolean, object or array.'
+    x-mappedTo: value
+    example: 'type: string'
+  href:
+    type: string
+    readOnly: true
+    example: /objects/key-value-map/page-layout3

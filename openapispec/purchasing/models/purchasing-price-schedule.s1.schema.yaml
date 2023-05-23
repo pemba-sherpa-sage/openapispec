@@ -1,0 +1,53 @@
+title: purchasing-price-schedule
+type: object
+description: Purchasing price schedules are pricing groups that you can assign to one or more customers.
+x-mappedTo: popriceschedule
+properties:
+  key:
+    type: string
+    description: System-assigned key for the purchasing price schedule.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '3'
+  id:
+    type: string
+    description: Name or other unique identifier for the purchasing price schedule.
+    x-mappedTo: SCHEDULE
+    x-mutable: false
+    example: ColtSched21
+  href:
+    type: string
+    description: URL for the purchasing price schedule.
+    readOnly: true
+    example: /objects/purchasing-price-schedule/3
+  description:
+    type: string
+    description: Description of the purchasing price schedule.
+    x-mappedTo: DESCRIPTION
+    example: Colt Price Schedule 2021
+  priceList:
+    type: object
+    description: Associated purchasing price list. 
+    x-object: purchasing-price-list
+    x-mappedTo: popricelist
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the purchasing price list.
+        x-mappedTo: PRICELISTID
+        readOnly: true
+      id:
+        type: string
+        description: Name or other unique identifier for the purchasing price list.
+        x-mappedTo: PRICELISTID
+      href:
+        type: string
+        description: URL for the purchasing price list. 
+        readOnly: true
+  discountPercent:
+    type: string
+    description: Discount percentage for all items in the associated price list. A positive value decreases prices; a negative value increases prices.
+    x-mappedTo: DISCOUNT
+    example: '10'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

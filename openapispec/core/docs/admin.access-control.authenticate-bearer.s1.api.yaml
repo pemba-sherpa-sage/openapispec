@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: admin.access-control.authenticate-bearer
+  description: access-control API
+  version: 1.0-internal
+  contact:
+    name: Valer Crisan
+    email: valer.crisan@sage.com
+tags:
+  - name: admin.access-control.authenticate-bearer
+    description: access-control routines for domain services
+paths:
+  /services/admin/access-control/authenticate-bearer:
+    post:
+      summary: Authenticate a bearer token
+      description: Authenticate a bearer token
+      tags:
+        - admin.access-control.authenticate-bearer
+      operationId: post-services-admin-access-control-authenticate-bearer
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin.access-control.authenticate-bearer-req'
+            examples:
+              example-1:
+                value:
+                  token: A1B2C3D4
+                  permissions:
+                    - co/lists/class/view
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/admin.access-control.authenticate-bearer-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      auth: true
+                      authz: true
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    admin.access-control.authenticate-bearer-req:
+      description: Bearer authentication request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        token:
+          type: string
+          description: Bearer token
+          x-mappedTo: token
+        permissions:
+          type: array
+          description: Permissions to authorize
+          x-mappedTo: permissions
+          items:
+            type: string
+    admin.access-control.authenticate-bearer-resp:
+      description: Bearer authentication response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        auth:
+          type: boolean
+          description: Authentication success or failure
+          x-mappedTo: auth
+        authz:
+          type: boolean
+          description: Authorization success or failure
+          x-mappedTo: authz
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

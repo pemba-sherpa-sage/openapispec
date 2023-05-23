@@ -1,0 +1,724 @@
+openapi: 3.0.0
+info:
+  title: cost-type
+  description: cost-type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Cost types
+    description: |-
+      Cost type is a standard dimension used to capture and categorize project cost details in Construction projects.
+
+      Each project typically has several cost types related to labor, materials, subcontracts, and so forth. You use the standard cost types in the catalog as templates for creating new cost types.
+
+      Each cost type is associated with a task, which in turn is associated with a project. A cost type record is uniquely identified by the standard cost type used to create it as well as the combination of project/task to which it applies.
+
+      Note: Cost type corresponds with category in the work breakdown structure in the construction industry.
+paths:
+  /objects/cost-type:
+    get:
+      summary: List cost types.
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each cost type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Cost Types
+      tags:
+        - Cost types
+      operationId: get-objects-cost-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of cost types
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of cost types:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: '1'
+                        href: /objects/cost-type/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/cost-type/2
+                      - key: '3'
+                        id: '4'
+                        href: /objects/cost-type/3
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a cost type
+      description: Creates a new cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Cost Types
+      tags:
+        - Cost types
+      operationId: post-objects-cost-type
+      requestBody:
+        description: cost type
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/cost-type.s1.schema'
+            examples:
+              Create a cost type:
+                value:
+                  project:
+                    id: Project Expense 1
+                  task:
+                    id: ID1
+                  name: Costtype2
+                  description: standard task1
+                  accumulationType:
+                    id: '1'
+                  costUnitDescription: Hours
+                  glAccount:
+                    id: '5000'
+                  item:
+                    id: '1'
+                  planned:
+                    startDate: '2020-10-27'
+                    endDate: '2022-10-27'
+                  actual:
+                    startDate: '2020-10-27'
+                    endDate: '2022-10-27'
+                  root:
+                    id: '1'
+                  standardCostType:
+                    id: '2'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New cost type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New cost type created:
+                  value:
+                    ia::result:
+                      key: '40'
+                      id: '40'
+                      href: /objects/cost-type/40
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/cost-type/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the cost type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a cost type
+      description: Returns detailed information for a specified standard cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Cost Types
+      tags:
+        - Cost types
+      operationId: get-objects-cost-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the cost type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/cost-type.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Cost type details:
+                  value:
+                    ia::result:
+                      key: '5941'
+                      project:
+                        key: '109'
+                        id: 22-001
+                        name: Wallula Heights Conference Center
+                        href: /objects/project/109
+                      task:
+                        key: '690'
+                        id: 2-050
+                        name: Demolition
+                        href: /objects/task/690
+                      id: EQ
+                      name: Equipment
+                      description: Equipment Group
+                      accumulationType:
+                        id: '3'
+                        key: '3'
+                        name: Equipment
+                        href: /objects/accumulation-type/3
+                      costUnitDescription: null
+                      status: active
+                      glAccount:
+                        key: '383'
+                        id: '5001.07'
+                        href: /objects/gl-account/383
+                      parent:
+                        key: null
+                        id: null
+                        name: null
+                      item:
+                        key: '317'
+                        id: Equipment
+                        name: Equipment
+                        href: /objects/item/317
+                      planned:
+                        startDate: null
+                        endDate: null
+                      actual:
+                        startDate: null
+                        endDate: null
+                      audit:
+                        createdDateTime: '2022-01-25T16:11:28Z'
+                        modifiedDateTime: '2022-01-25T16:11:28Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      root:
+                        key: '5941'
+                        id: EQ
+                        name: Equipment
+                        href: /objects/cost-type/5941
+                      standardCostType:
+                        key: '1'
+                        id: EQ
+                        name: Equipment
+                        href: /objects/cost-type/1
+                      href: /objects/cost-type/5941
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a cost type
+      description: Updates an existing cost type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Cost Types
+      tags:
+        - Cost types
+      operationId: patch-objects-cost-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/cost-type.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a cost type:
+                value:
+                  description: Updated cost type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated cost type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Cost type updated:
+                  value:
+                    ia::result:
+                      key: '40'
+                      id: '40'
+                      href: /objects/cost-type/40
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a cost type
+      description: Deletes a cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Cost Type
+      tags:
+        - Cost types
+      operationId: delete-objects-cost-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    cost-type:
+      $ref: '#/components/schemas/cost-type.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    gl-accountref.s1.schema:
+      title: accountref
+      type: object
+      x-object: gl-account
+      properties:
+        key:
+          type: string
+          description: GL Account Key
+          x-mappedTo: ACCOUNTKEY
+          example: '144'
+        id:
+          type: string
+          description: GL Account ID
+          x-mappedTo: ACCOUNTNO
+          example: '1112'
+        name:
+          type: string
+          description: GL Account Title
+          x-mappedTo: ACCOUNTTITLE
+          example: Employee Advances
+        href:
+          type: string
+          readOnly: true
+          example: /objects/gl-account/144
+    itemref.s1.schema:
+      title: itemref
+      type: object
+      x-object: item
+      properties:
+        key:
+          type: string
+          description: Item key
+          example: '319'
+          x-mappedTo: ITEMKEY
+          readOnly: true
+        id:
+          type: string
+          description: Item ID
+          example: Overhead
+          x-mappedTo: ITEMID
+        name:
+          type: string
+          description: Item name
+          example: Overhead
+          readOnly: true
+          x-mappedTo: ITEMNAME
+        href:
+          type: string
+          description: URL of the item
+          readOnly: true
+          example: /objects/item/319
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    cost-type.s1.schema:
+      title: cost-type
+      x-mappedTo: costtype
+      type: object
+      description: A dimension used to capture and categorize project cost detail in construction projects.  it's associated with a task, which in turn is associated with a project.
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the cost type.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '99'
+        id:
+          type: string
+          description: Cost type ID. Created automatically from the standardCostType `id`.
+          readOnly: true
+          x-mappedTo: COSTTYPEID
+          example: EQ
+        href:
+          type: string
+          description: URL of the cost type.
+          example: /objects/cost-type/2
+          readOnly: true
+        project:
+          type: object
+          description: Project that will use this cost type.
+          x-mappedTo: project
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project record number.
+              x-mappedTo: PROJECTKEY
+              example: '109'
+            id:
+              type: string
+              description: Project ID.
+              x-mappedTo: PROJECTID
+              example: 22-001
+            name:
+              type: string
+              description: Project name.
+              x-mappedTo: PROJECTNAME
+              example: Wallula Heights Conference Center
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/109
+        task:
+          type: object
+          description: Task that will use this cost type.
+          x-mappedTo: task
+          x-object: task
+          properties:
+            key:
+              type: string
+              description: Task record number.
+              x-mappedTo: TASKKEY
+              example: '1410'
+            id:
+              type: string
+              description: Task ID.
+              x-mappedTo: TASKID
+              example: 3-450
+            name:
+              type: string
+              description: Task name.
+              x-mappedTo: TASKNAME
+              example: Architectural Precast
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1410
+        name:
+          type: string
+          description: Name of the cost type. Does not have to be unique.
+          x-mappedTo: NAME
+          example: Equipment
+        description:
+          type: string
+          description: Cost type description.
+          x-mappedTo: DESCRIPTION
+          example: Equipment
+        accumulationType:
+          type: object
+          description: Accumulation type associated with this cost type.
+          x-mappedTo: accumulationtype
+          x-object: accumulation-type
+          properties:
+            key:
+              type: string
+              description: Accumulation type record number.
+              x-mappedTo: ACCUMULATIONTYPEKEY
+              example: '3'
+            id:
+              type: string
+              description: Accumulation type Id.
+              x-mappedTo: ACCUMULATIONTYPEKEY
+              example: '3'
+            name:
+              type: string
+              description: Accumulation type name to use.
+              x-mappedTo: ACCUMULATIONTYPENAME
+              example: Equipment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/accumulation-type/3
+        costUnitDescription:
+          type: string
+          description: Describes the unit of measure used by this cost type. For example, for a labor cost type the cost unit represents an hour of labor. For a materials cost type, the cost unit could be tons or feet or similar.
+          example: each
+          x-mappedTo: COSTUNITDESCRIPTION
+        glAccount:
+          $ref: '#/components/schemas/gl-accountref.s1.schema'
+        parent:
+          type: object
+          description: Reference to a parent cost type to group cost types.
+          x-object: cost-type
+          x-mappedTo: costtype
+          properties:
+            key:
+              type: string
+              description: Unique identifier of the parent cost type.
+              x-mappedTo: PARENTKEY
+              example: '1'
+            id:
+              type: string
+              description: ID of a parent cost type if hierarchical cost types are used.
+              readOnly: true
+              x-mappedTo: PARENTID
+              example: EQ-GRP
+            name:
+              type: string
+              description: Parent cost type name.
+              readOnly: true
+              x-mappedTo: PARENTNAME
+              example: Equipment Group
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/1
+        item:
+          $ref: '#/components/schemas/itemref.s1.schema'
+        planned:
+          type: object
+          description: Cost type planned dates.
+          properties:
+            startDate:
+              type: string
+              description: Planned begin date.
+              x-mappedTo: PLANNEDBEGINDATE
+              format: date
+              example: '2023-01-04'
+            endDate:
+              type: string
+              format: date
+              description: Planned end date.
+              x-mappedTo: PLANNEDENDDATE
+              example: '2023-02-24'
+        actual:
+          type: object
+          description: Cost type actual dates.
+          properties:
+            startDate:
+              type: string
+              format: date
+              description: Actual begin date.
+              x-mappedTo: ACTUALBEGINDATE
+              example: '2023-01-06'
+            endDate:
+              type: string
+              format: date
+              description: Actual end date.
+              x-mappedTo: ACTUALENDDATE
+              example: '2023-03-01'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        root:
+          type: object
+          description: The root cost type that this cost type descends from.
+          x-object: cost-type
+          x-mappedTo: costtype
+          properties:
+            key:
+              type: string
+              description: System-assigned unique ID of the root cost type.
+              x-mappedTo: ROOTPARENTKEY
+              example: '13921'
+            id:
+              type: string
+              description: ID of a root cost type if hierarchical cost types are used.
+              readOnly: true
+              x-mappedTo: ROOTPARENTID
+              example: EQ
+            name:
+              type: string
+              description: Root cost type name.
+              readOnly: true
+              x-mappedTo: ROOTPARENTNAME
+              example: Equipment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/13921
+        standardCostType:
+          type: object
+          description: The standard cost type that is the template for this cost type.
+          x-object: cost-type
+          x-mappedTo: costtype
+          properties:
+            key:
+              type: string
+              description: Standard cost type record number.
+              x-mappedTo: STANDARDCOSTTYPEKEY
+              example: '1'
+            id:
+              type: string
+              description: Standard cost type ID to use as a template for this cost type.
+              x-mappedTo: STANDARDCOSTTYPEID
+              example: EQ
+            name:
+              type: string
+              description: Standard cost type name to use as a template for this cost type.
+              x-mappedTo: STANDARDCOSTTYPENAME
+              example: Equipment
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/1
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,322 @@
+title: ar-invoice-line
+x-mappedTo: arinvoiceitem
+x-ownedBy: ar-invoice
+type: object
+description: Line items in an invoice represent transactions captured in that invoice.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AR invoice line item
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Identifier for the AR invoice line item.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  glAccount:
+    type: object
+    description: General Ledger (GL) account associated with the line item.
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: ACCOUNTKEY
+        readOnly: true
+      id:
+        type: string
+        description: User-assigned number for the GL account.
+        x-mappedTo: ACCOUNTNO
+        x-mutable: false
+      name:
+        type: string
+        description: Name of the GL account.
+        x-mappedTo: ACCOUNTTITLE
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/gl-account/256'
+  overriddenOffsetGLAccount:
+    type: object
+    description: An alternative AR account to override the default GL AR account for the invoice.
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: overriddenOffsetAccount
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account.
+        x-mappedTo: OFFSETACCOUNTKEY
+        readOnly: true
+      id:
+        type: string
+        description: Offset account number.
+        x-mappedTo: OFFSETGLACCOUNTNO
+        x-mutable: false
+      name:
+        type: string
+        description: Offset account name.
+        x-mappedTo: OFFSETGLACCOUNTTITLE
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/gl-account/384'
+  baseAmount:
+    type: string
+    description: For multi-currency companies, Sage Intacct calculates the base amount by applying the exchange rate from the header to the transaction amount.
+    x-mappedTo: AMOUNT
+    readOnly: true
+  txnAmount:
+    type: string
+    description: Amount for the AR invoice line item in the transaction currency.
+    x-mappedTo: TRX_AMOUNT
+    format: decimal-precision-2
+    x-mutable: false
+  memo:
+    type: string
+    description: Memo or notes about the AR invoice line item.
+    x-mappedTo: ENTRYDESCRIPTION
+  currency:
+    type: object
+    description: Currency details for multi-currency companies.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency for the invoice line item.
+        x-mappedTo: BASECURR
+        readOnly: true
+      txnCurrency:
+        type: string
+        description: Transaction Currency of the invoice
+        x-mappedTo: CURRENCY
+        readOnly: true
+      exchangeRate:
+        type: object
+        title: exchangeRate
+        description: Exchange rate details used to calculate the base amount.
+        properties:
+          date:
+            type: string
+            format: date
+            example: '2021-01-23'
+            description: Exchange rate date used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCH_RATE_DATE
+            readOnly: true
+          rate:
+            type: string
+            description: Exchange rate used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCHANGE_RATE
+            readOnly: true
+            example: '1.0789'
+          typeId:
+            type: string
+            description: Exchange rate type used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCH_RATE_TYPE_ID
+            readOnly: true
+            example: '-1'
+  paymentInformation:
+    type: object
+    title: paymentInformation
+    description: Payment information for the line item.
+    properties:
+      totalBaseAmountPaid:
+        type: string
+        description: Total base amount that was paid.
+        x-mappedTo: TOTALPAID
+        readOnly: true
+        example: '100.00'
+      totalTxnAmountPaid:
+        type: string
+        description: Total transaction amount that was paid.
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+        example: '100.00'
+      totalBaseAmountSelectedForPayment:
+        type: string
+        description: Total base amount selected for the payment.
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+        example: '100.00'
+      totalTxnAmountSelectedForPayment:
+        type: string
+        description: Total transaction amount selected for the payment.
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+        example: '100.00'
+  allocation:
+    type: object
+    description: Transaction allocation template for the line item, which distributes the invoice amount across specified dimensions.
+    title: allocation
+    properties:
+      key:
+        type: string
+        x-mappedTo: ALLOCATIONKEY
+        description: System-assigned key for the allocation.
+        readOnly: true
+      id:
+        type: string
+        description: System-assigned ID for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        x-mutable: false
+      name:
+        type: string
+        x-mappedTo: ALLOCATION
+        description: Identifier of the allocation.
+        readOnly: true
+  lineNumber:
+    type: number
+    description: Line number
+    x-mappedTo: LINE_NO
+    readOnly: true
+  isSubtotal:
+    type: string
+    description: |
+      If set to `S`, this is a subtotal. If set to'T', this is tax.
+    x-mappedTo: SUBTOTAL
+    enum:
+      - 'subtotal'
+      - 'tax'
+    x-mappedToValues:
+      - 'S'
+      - 'T'
+    readOnly: true
+    example: 'subtotal'
+  baseLocation:
+    type: object
+    readOnly: true
+    allOf:
+      - $ref: ../../common/references/locationref.s1.schema.yaml
+      - type: object
+        properties:
+          key:
+            type: string
+            description: Base location key.
+            x-mappedTo: BASELOCATION
+            example: '4'
+  createdDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Entry date for the line item.
+    x-mappedTo: ENTRY_DATE
+    readOnly: true
+  accountLabel:
+    type: object
+    description: Meaningful name of AR account.
+    x-object: ar-account-label
+    x-mappedTo: accountlabel
+    title: accountLabel
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account label.
+        x-mappedTo: ACCOUNTLABELKEY
+        readOnly: true
+      id:
+        type: string
+        description: Meaningful name of the account.
+        x-mappedTo: ACCOUNTLABEL
+        x-mutable: false
+      name:
+        type: string
+        description: Name of the account label.
+        x-mappedTo: ACCOUNTTITLE
+        readOnly: true
+      href:
+        type: string
+        description: URL for the account label.
+        readOnly: true
+        example: '/objects/ar-account-label/14'
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          location:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+            x-object: location
+            x-mappedTo: location
+            title: location
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the location.
+                x-mappedTo: LOCATION#
+                readOnly: true
+                example: '4'
+              id:
+                type: string
+                description: Unique identifier of the location.
+                x-mappedTo: LOCATIONID
+                example: 'AU'
+                x-mutable: false
+              name:
+                type: string
+                description: Name of the location.
+                x-mappedTo: LOCATIONNAME
+                readOnly: true
+                example: 'Australia'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/location/4'
+          department:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+            x-object: department
+            x-mappedTo: department
+            title: department
+            properties:
+              key:
+                type: string
+                description: System-assigned key for the department.
+                x-mappedTo: DEPT#
+                readOnly: true
+                example: '9'
+              id:
+                type: string
+                description: Unique identifier of the department.
+                x-mappedTo: DEPARTMENTID
+                x-mutable: false
+                example: '01'
+              name:
+                type: string
+                description: Name of the department.
+                x-mappedTo: DEPARTMENTNAME
+                readOnly: true
+                example: 'Accounting'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/department/9'
+  invoice:
+    title: invoiceref
+    description: Header level details for the AR invoice's line items.
+    type: object
+    x-mappedTo: arinvoice
+    x-object: ar-invoice
+    properties:
+      id:
+        type: string
+        description: Identifier for the AR invoice.
+        x-mappedTo: RECORDKEY
+        readOnly: true
+      key:
+        type: string
+        description: System-assigned key for the AR invoice.
+        x-mappedTo: RECORDKEY
+        readOnly: true
+      href:
+        type: string
+        description: URL for the AR invoice.
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,20 @@
+type: object
+title: billing-template
+x-object: contract-billing-template
+properties:
+  key:
+    type: string
+    description: System-assigned key for the contract billing template.
+    x-mappedTo: TEMPLATEKEY
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier of the contract billing template.
+    x-mappedTo: CONTRACTDETAIL.TEMPLATENAME
+    example: Bill in advance
+  href:
+    type: string
+    description: URL of the billing contract template.
+    readOnly: true
+    example: /objects/contract-billing-template/1
+examples: []

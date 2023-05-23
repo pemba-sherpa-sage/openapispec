@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: role
+  description: role API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Roles
+    description: Role description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/role:
+    get:
+      summary: List roles
+      description: Returns a collection with a key, ID, and link for each role.
+      tags:
+        - Roles
+      operationId: get-objects-role
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of role objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of roles: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an role
+      description: Creates a new role.
+      tags:
+        - Roles
+      operationId: post-objects-role
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/role'
+                - $ref: '#/components/schemas/roleRequiredProperties'
+            examples:
+              Creates a/an role: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New role
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New role: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/role/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the role.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an role
+      description: Returns detailed information for a particular role.
+      tags:
+        - Roles
+      operationId: get-objects-role-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the role
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/role'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the role: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an role
+      description: Updates an existing role by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Roles
+      operationId: patch-objects-role-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/role'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an role: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated role
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated role: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an role
+      description: Deletes a/an role.
+      tags:
+        - Roles
+      operationId: delete-objects-role-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    role:
+      $ref: ../models/role.s1.schema.yaml
+    roleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

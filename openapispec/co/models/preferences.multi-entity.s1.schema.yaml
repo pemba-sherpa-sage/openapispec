@@ -1,0 +1,190 @@
+title: preferences.multi-entity
+x-mappedTo: mesetup
+type: object
+description: Multi Entity Console Setup object
+properties:
+  enableMultipleBaseCurrency:
+    type: boolean
+    description: Set to `true` to enable each entity to use its own base currency. Multi-currency management must be enabled in the General Ledger.
+    x-mappedTo: ENTITYBASECURRENCY
+    x-mappedToType: string
+    nullable: false
+    default: false
+  approvalCurrency:
+    type: string
+    description: Value approval currency for purchase transactions and expense reports. A value approval currency enables Sage Intacct to translate the transaction currency into a common currency, which is used to evaluate transaction approval thresholds and determine whether a transaction requires approval.
+    x-mappedTo: APPROVALCURRENCY
+  isForm1099:
+    type: boolean
+    description: Set to `true` to print 1099s with entity-level information, rather than top-level company information. Set to `false` to have the top level company to print a single set of 1099s across all entities and all vendors. 
+    x-mappedTo: FORM1099
+    x-mappedToType: string
+    nullable: false
+    default: false
+  restrictions:
+    type: object
+    properties:
+      disableEntitySlideIn:
+        type: boolean
+        description: Set to `true` to restrict users to accessing the top level only. Only applies to multi-entity companies with a single base currency
+        x-mappedTo: DISABLEENTITYSLIDEIN
+        x-mappedToType: string
+        nullable: false
+        default: false
+      restrictSubledgerTxnToEntity:
+        type: boolean
+        description: Set to `true` to restrict users to entering subledger transactions at the entity level only.
+        x-mappedTo: ENTITYONLYTRANS
+        x-mappedToType: string
+        nullable: false
+        default: false
+      enableCustomerRestrictions:
+        type: boolean
+        description: Set to `true` to enable the option to restrict which locations and departments can work with each top-level customer.
+        x-mappedTo: ENABLEMULTIOWNCUSTOMER
+        x-mappedToType: string
+        nullable: false
+        default: false
+      enableVendorRestrictions:
+        type: boolean
+        description: Set to `true` to enable the option to restrict which locations and departments can work with each top-level vendor.
+        x-mappedTo: ENABLEMULTIOWN
+        x-mappedToType: string
+        nullable: false
+        default: false
+      enableCheckingAccountRestrictions:
+        type: boolean
+        description: Set to `true` to enable the option to restrict which locations and departments can work with each checking account.
+        x-mappedTo: ENABLEMULTIOWNCHECKINGAC
+        x-mappedToType: string
+        nullable: false
+        default: false
+      enableSavingsAccountRestrictions:
+        type: boolean
+        description: Set to `true` to enable the option to restrict which locations and departments can work with each savings account.
+        x-mappedTo: ENABLEMULTIOWNSAVINGAC
+        x-mappedToType: string
+        nullable: false
+        default: false
+  interEntityAccountMappingPlan:
+    type: string
+    description: |
+      Type of inter-entity account mapping:
+
+      * `basic`: Use only one set of inter-entity accounts per entity.
+      * `advanced`: Define separate sets of inter-entity accounts for each entity relationship, or entity pair. 
+    enum:
+      - basic
+      - advanced
+    x-mappedToValues:
+      - Basic
+      - Advanced
+    x-mappedTo: IEACCTMAPPLAN
+    nullable: false
+    default: basic
+  limitAPCredit:
+    type: boolean
+    description: |
+      Whether AP credits are limited to the owning entity.
+
+      * `false` - Credits are applied to the owning entity first, and then applied from the oldest to the newest invoices.
+      * `true` - Limit credits to just the owning entity. Credits are applied to the bills of the owning entity and no others; any remaining credit is reserved for more bills owned by that entity. 
+    x-mappedTo: AP_LIMITCREDIT
+    x-mappedToType: string
+    nullable: false
+    default: false
+  limitARCredit:
+    type: boolean
+    description: |
+      Whether AR credits are limited to the owning entity.
+
+      * `false` - Credits are applied to the owning entity first, and then applied from the oldest to the newest invoices.
+      * `true` - Limit credits to just the owning entity. Credits are applied to the bills of the owning entity and no others; any remaining credit is reserved for more bills owned by that entity. 
+    x-mappedTo: AR_LIMITCREDIT
+    x-mappedToType: string
+    nullable: false
+    default: false
+  isModuleConfigured:
+    type: boolean
+    description: Is module configured?
+    enum:
+      - true
+      - false
+    x-mappedToValues:
+      - T
+      - F
+    x-mappedTo: MODULE_CONFIGURED
+    default: true
+    readOnly: true
+    x-mappedToType: string
+  interEntityTxns:
+    type: object
+    description: Use these settings to control how Sage Intacct records transactions that involve two or more entities.
+    properties:
+      enableForJournalEntry:
+        type: boolean
+        description: |
+          Set to `true` to have Intacct automatically create offsetting entries for journal entries that involve two or more entities. Set to `false` to require all balancing line items to be entered manually.
+
+          Note: This option is incompatible with the __Enable journal entry auto-balancing__ option on the Configuration page for General Ledger, which automatically balances GL journal entries using the specified GL auto-balancing account.
+        x-mappedTo: ENABLEAUTOIETJE
+        x-mappedToType: string
+        nullable: false
+        default: false
+      manuallyBalanceSubledgerTxns:
+        type: boolean
+        description: |
+          Set to `true` to disable automatic tracking of inter-entity payables and receivables for  transactions. For example, although one entity can still pay a bill on behalf of another entity, Intacct will not track the inter-entity payables and receivables by creating offsetting journal entries in the affected entities.
+
+          Setting this to `true` disables inter-entity transactions, and you do not need to specify a `creditsJournal`.
+        x-mappedTo: DISABLEIETFINACCT
+        x-mappedToType: string
+        nullable: false
+        default: false
+      manuallyBalanceSubledgerCredits:
+        type: boolean
+        description: |
+          Set to `true` to turn off the automatic recording of inter-entity payables and receivables for credits, adjustments, and advances. Intacct won't automatically track the inter-entity payables and receivables by creating offsetting journal entries in the affected entities. 
+          
+          You do not need to specify a `creditsJournal` when this field is enabled.
+        x-mappedTo: DISABLEIETCRAPP
+        x-mappedToType: string
+        nullable: false
+        default: false
+      creditsJournal:
+        type: object
+        description: The journal to use when posting inter-entity credit bills or invoices to AP or AR, respectively. This journal is used when credits are applied to AR invoices or AP bills that generate an inter-entity transaction (IET) with no source payment record.
+        x-object: gl-journal
+        x-mappedTo: pe_journal
+        properties:
+          key:
+            type: string
+            description: System-assigned unique identifier for the credits journal.
+            x-mappedTo: PE_JOURNALKEY
+            readOnly: true
+          id:
+            type: string
+            description: ID of the credits journal.
+            x-mappedTo: PE_JOURNAL
+          name:
+            type: string
+            description: Name of the credits journal            
+            x-mappedTo: PE_JOURNALNAME
+          href:
+            type: string
+            description: Endpoint of the credits journal.
+            readOnly: true
+  balanceJournalEntryBy:
+    type: string
+    description: Enforce journal entry balancing by location or entity. If you choose not to enable inter-entity transactions, you can enforce journal entry balancing by location instead of entity.
+    enum:
+      - location
+      - entity
+    x-mappedToValues:
+      - Location
+      - Entity
+    x-mappedTo: BALANCE_ENTRY_LOC
+    nullable: false
+    default: entity
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

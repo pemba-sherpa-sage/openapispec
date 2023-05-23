@@ -1,0 +1,43 @@
+key: order-entry-tax-detail::systemOrderEntryTaxDetailFW1
+id: systemOrderEntryTaxDetailFW1
+object: order-entry-tax-detail
+name: All
+description: Specifies all active order-entry-tax-details
+query:
+  object: order-entry-tax-detail
+  fields:
+    - id
+    - taxUniqueId
+    - taxRate
+    - description
+    - taxPercent
+    - reverseCharge
+    - isSystemGenerated
+    - useExpenseAccount
+    - status
+    - taxSolution.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+metadata:
+  frozenColumnsCount: 2
+  columns:
+    - id: "id"
+      format: "clip"
+      size: 40
+    - id: "description"
+      format: "clip"
+      size: 40
+    - id: "taxPercent"
+      format: "clip"
+      size: 40
+    - id: "taxSolution.id"
+      format: "clip"
+      size: 40
+    - id: "taxRate"
+      format: "clip"
+      size: 40
+contexts:
+  - __default

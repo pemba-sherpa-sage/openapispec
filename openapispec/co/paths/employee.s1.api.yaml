@@ -1,0 +1,282 @@
+openapi: 3.0.0
+info:
+  title: employee
+  description: employee API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Employees
+    description: An employee is a resource that executes work for a company and is associated with a financial transaction such as a timesheet entry or expense transaction. If the employee is also a user in Sage Intacct (which is required if they will be entering Time & Expenses), the employee and user must be associated with the same Sage Intacct contact.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee:
+    get:
+      summary: List employees
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each employee. This operation is mostly for use in testing; use query to find employees that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Employees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '32'
+                        id: '100'
+                        href: /objects/employee/32
+                      - key: '52'
+                        id: Emp2
+                        href: /objects/employee/52
+                      - key: '17'
+                        id: '16'
+                        href: /objects/employee/17
+                    'ia::meta':
+                      totalCount: 20
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-employee
+    post:
+      summary: Create an employee
+      description: Creates a new employee. If the employee is also a user in Sage Intacct (which is required if they will be entering Time & Expenses), the employee and user must be associated with the same Sage Intacct contact.
+      tags:
+        - Employees
+      operationId: post-objects-employee
+      requestBody:
+        description: Employee to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee'
+                - $ref: '#/components/schemas/employeeRequiredProperties'
+            examples:
+              Create a new employee:
+                value:
+                  id: Emp2
+                  jobTitle: Sr Software Eng
+                  status: active
+                  startDate: '2021-04-01'
+                  birthDate: '1984-04-13'
+                  gender: male
+                  SSN: '078051120'
+                  defaultCurrency: USD
+                  manager:
+                    id: '1'
+                  location:
+                    id: '1'
+                  department:
+                    id: '1'
+                  class:
+                    id: Class_1
+                  primaryContact:
+                    id: Anglin, John W.
+                  employeeType:
+                    id: Full Time
+                  earningType:
+                    id: earningType
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee created:
+                  value:
+                    'ia::result':
+                      key: '54'
+                      id: Emp3
+                      href: /objects/employee/52
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/employee/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee
+      description: Returns detailed information for a specified employee.
+      tags:
+        - Employees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '52'
+                      id: Emp2
+                      SSN: '078051120'
+                      jobTitle: Sr Software Eng
+                      location:
+                        id: '10'
+                        key: '15'
+                        name: Indianapolis
+                        href: /objects/location/15
+                      department:
+                        id: '10'
+                        key: '10'
+                        name: QA - II
+                        href: /objects/department/10
+                      manager:
+                        key: '11'
+                        id: '10'
+                        href: /objects/employee/11
+                      birthDate: '1984-04-14'
+                      startDate: '2021-05-01'
+                      status: active
+                      employeeType:
+                        id: Part Time
+                        name: Part Time
+                        key: '2'
+                        href: /objects/employee-type/2
+                      gender: female
+                      primaryContact:
+                        id: abc(C02)
+                        name: abc(C02)
+                        key: '205'
+                        href: /objects/contact/205
+                      defaultCurrency: MXN
+                      earningType:
+                        key: '2'
+                        id: earningType2
+                        name: earningType2
+                        href: /objects/earning-type/2
+                      class:
+                        id: Class_2
+                        name: Class 2
+                        key: '2'
+                        href: /objects/class/2
+                      'nsp::ic_employees_users':
+                        key: null
+                        id: null
+                      'nsp::employee1':
+                        key: null
+                        id: null
+                      'nsp::remployee':
+                        key: null
+                        id: null
+                      href: /objects/employee/52
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-employee-key
+    patch:
+      summary: Update an employee
+      description: Updates an existing employee by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employees
+      operationId: patch-objects-employee-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update when an employee resigns:
+                value:
+                  status: inactive
+                  endDate: '2023-04-01'
+                  terminationType: voluntary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Employee updated:
+                  value:
+                    'ia::result':
+                      key: '52'
+                      id: Emp2
+                      href: /objects/employee/52
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee
+      description: Deletes an employee.
+      tags:
+        - Employees
+      operationId: delete-objects-employee-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee:
+      $ref: ../models/employee.s1.schema.yaml
+    employeeRequiredProperties:
+      type: object
+      required:
+        - id
+        - location
+        - primaryContact
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

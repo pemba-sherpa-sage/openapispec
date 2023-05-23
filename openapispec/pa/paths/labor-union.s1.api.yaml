@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: labor-union
+  description: labor-union API
+  version: '1.0'
+  contact:
+    name: Anna Gawlas
+    email: anna.gawlas@sage.com
+tags:
+  - name: Labor unions
+    description: User-defined labor union that can be used on timesheet lines when creating a timesheet.  Only available with Construction subscription to enhance billing capabilities for Timesheets.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/labor-union:
+    get:
+      summary: List labor unions
+      description: 'Returns a collection with a key, ID, and link for each labor union.'
+      tags:
+        - Labor unions
+      operationId: get-objects-labor-union
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of labor-union objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: IBEW
+                        href: /objects/labor-union/1
+                      - key: '2'
+                        id: Teamsters
+                        href: /objects/labor-union/2
+                      - key: '3'
+                        id: BAC
+                        href: /objects/labor-union/3
+                      - key: '4'
+                        id: IUEC
+                        href: /objects/labor-union/4
+                    'ia::meta':
+                      totalCount: 4
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a labor union
+      description: Creates a new labor union.
+      tags:
+        - Labor unions
+      operationId: post-objects-labor-union
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-union'
+                - $ref: '#/components/schemas/labor-unionRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: BAC
+                  name: International Union of Bricklayers and Allied Craftworkers
+                  description: 'BAC represents all skilled trowel trades workers, including bricklayers, tile setters, plasterers, cement masons, marble masons, restoration workers, and terrazzo and mosaic workers.'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New labor-union
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      id: BAC
+                      href: /objects/labor-union/3
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/labor-union/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the labor union.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a labor union
+      description: Returns detailed information for a particular labor union.
+      tags:
+        - Labor unions
+      operationId: get-objects-labor-union-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the labor-union
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/labor-union'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example:
+                  value:
+                    'ia::result':
+                      key: '4'
+                      id: IUEC
+                      name: International Union of Elevator Constructors
+                      description: 'The IUEC represent the most qualified and trained elevator constructors in the world. Members assemble, install and replace elevators, escalators, dumbwaiters, moving walkways and similar equipment in new and old buildings. Elevator constructors also maintain and repair this equipment and modernize older equipment.'
+                      status: active
+                      audit:
+                        createdDateTime: '2021-11-22T00:08:55Z'
+                        modifiedDateTime: '2021-11-22T00:11:44Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/labor-union/4
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a labor union
+      description: Updates an existing labor union by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Labor unions
+      operationId: patch-objects-labor-union-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-union'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  description: 'The IUEC represent the most qualified and trained elevator constructors in the world. Members assemble, install and replace elevators, escalators, dumbwaiters, moving walkways and similar equipment in new and old buildings. Elevator constructors also maintain and repair this equipment and modernize older equipment.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated labor-union
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '4'
+                      id: IUEC
+                      href: /objects/labor-union/4
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a labor union
+      description: Deletes a labor union.
+      tags:
+        - Labor unions
+      operationId: delete-objects-labor-union-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    labor-union:
+      $ref: ../models/labor-union.s1.schema.yaml
+    labor-unionRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

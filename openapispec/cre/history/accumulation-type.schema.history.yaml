@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/accumulationtype/view
+    POST:
+      - pa/lists/accumulationtype/create
+    PATCH:
+      - pa/lists/accumulationtype/edit
+    DELETE:
+      - pa/lists/accumulationtype/delete
+s1:
+  hash: '0'
+  type: rootObject

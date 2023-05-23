@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/department/view
+    POST:
+      - co/lists/department/create
+      - co/quickadds/department/create
+    PATCH:
+      - co/lists/department/edit
+    DELETE:
+      - co/lists/department/delete
+s1:
+  hash: '0'
+  type: rootObject

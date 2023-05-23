@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: ar-tax-schedule-map
+  description: ar-tax-schedule-map API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: AR tax schedule maps
+    description: |
+     An Accounts Receivable tax schedule map associates a tax schedule with customers (through a contact tax group) and account labels (through an account label tax group). These maps drive the taxes that are applied to a line item. The tax schedule contains the tax detail records, which define the amount of tax to apply.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-tax-schedule-map:
+    get:
+      summary: List AR tax schedule maps
+      description: Returns a collection with a key, ID, and link for each Accounts Receivable tax schedule map. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR tax schedule maps
+      operationId: get-objects-ar-tax-schedule-map
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-tax-schedule-map objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR tax schedule maps:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: '2'
+                        href: /objects/ar-tax-schedule-map/2
+                      - key: '15'
+                        id: '15'
+                        href: /objects/ar-tax-schedule-map/15
+                      - key: '12'
+                        id: '12'
+                        href: /objects/ar-tax-schedule-map/12
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR tax schedule map
+      description: Creates a new AR tax schedule map.
+      tags:
+        - AR tax schedule maps
+      operationId: post-objects-ar-tax-schedule-map
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-tax-schedule-map'
+                - $ref: '#/components/schemas/ar-tax-schedule-mapRequiredProperties'
+            examples:
+              Create an AR tax schedule map:
+                value:
+                  taxSchedule:
+                    name: Alabama Tax
+                  accountLabelTaxGroup:
+                    id: Account Label Tax Group
+                  contactTaxGroup:
+                    id: Auto Contact Tax Group
+                  taxSolution:
+                    id: United Kingdom - VAT
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AR tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: '2'
+                      href: /objects/ar-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-tax-schedule-map/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR tax schedule map.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '2'
+    get:
+      summary: Get an AR tax schedule map
+      description: Returns detailed information for a specified AR tax schedule map.
+      tags:
+        - AR tax schedule maps
+      operationId: get-objects-ar-tax-schedule-map-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-tax-schedule-map'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '17'
+                      id: '17'
+                      contactTaxGroup:
+                        id: Auto Contact Tax
+                        key: '1'
+                        href: /objects/contact-tax-group/1
+                      accountLabelTaxGroup:
+                        id: Account Label Tax Group
+                        key: '1'
+                        href: /objects/account-label-tax-group/1
+                      taxSchedule:
+                        name: Sales Tax Alaska
+                        key: '9'
+                        id: '9'
+                        href: /objects/ar-tax-schedule/9
+                      isSystemGenerated: false
+                      taxSolution:
+                        id: UK Tax Solution
+                        key: '2'
+                        href: /objects/tax-solution/2
+                      href: /objects/ar-tax-schedule-map/17
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR tax schedule map
+      description: Updates an existing Accounts Receivable tax schedule map by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR tax schedule maps
+      operationId: patch-objects-ar-tax-schedule-map-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-tax-schedule-map'
+                - type: object
+                  properties:
+                    id:
+                      example: '2'
+                      readOnly: true
+            examples:
+              Update an AR tax schedule map:
+                value:
+                  contactTaxGroup:
+                    id: Contact Tax Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an AR tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      href: /objects/ar-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR tax schedule map
+      description: Deletes an AR tax schedule map.
+      tags:
+        - AR tax schedule maps
+      operationId: delete-objects-ar-tax-schedule-map-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-tax-schedule-map:
+      $ref: ../models/ar-tax-schedule-map.s1.schema.yaml
+    ar-tax-schedule-mapRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/acctlabeltaxgroup/view
+    POST:
+      - ar/lists/acctlabeltaxgroup/create
+    PATCH:
+      - ar/lists/acctlabeltaxgroup/edit
+    DELETE:
+      - ar/lists/acctlabeltaxgroup/delete
+s1:
+  hash: '0'
+  type: rootObject

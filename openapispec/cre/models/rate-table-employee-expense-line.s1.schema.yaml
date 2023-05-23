@@ -1,0 +1,58 @@
+title: rate-table-employee-expense-line
+x-mappedTo: ratetableexpenseentry
+x-ownedBy: rate-table
+type: object
+description: Project contract rate table line for employee expenses.
+examples: []
+properties:
+  key:
+    type: string
+    description: Rate table employee expense line key
+    x-mappedTo: RECORDNO
+    example: '30'
+    readOnly: true
+  id:
+    type: string
+    description: Rate table employee expense line id
+    x-mappedTo: RECORDNO
+    example: '30'
+    readOnly: true
+  rateTable:
+    $ref: ../references/rate-tableref.s1.schema.yaml
+  href:
+    type: string
+    example: /objects/rate-table-employee-expense-line/30
+    readOnly: true
+  lineNumber:
+    type: integer
+    description: Line number
+    x-mappedTo: LINENO
+    example: 1
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: Aug Manager
+    maxLength: 1000
+  startDate:
+    type: string
+    format: date
+    description: Start date
+    x-mappedTo: STARTDATE
+    example: '2021-08-02'
+  markupPercent:
+    type: string
+    format: decimal-precision-3
+    description: Markup %
+    x-mappedTo: MARKUPPCT
+    example: '14.800'
+  accumulationType:
+    $ref: ../references/accumulation-typeref.s1.schema.yaml
+  standardCostType:
+    $ref: ../references/standard-cost-typeref.s1.schema.yaml
+  standardTask:
+    $ref: ../references/standard-taskref.s1.schema.yaml
+  dimensions:
+    $ref: ../../common/references/dimensionref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

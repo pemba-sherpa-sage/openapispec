@@ -1,0 +1,140 @@
+title: ar-tax-schedule-map
+type: object
+description: An Accounts Receivable (AR) tax schedule map associates a tax schedule with customers through a contact tax group. The tax schedule contains the tax details.
+x-mappedTo: artaxschedmap
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AR tax schedule map.
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the AR tax schedule map.
+    example: '7149'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  href:
+    type: string
+    description: URL for the AR tax schedule map.
+    example: /objects/ar-tax-schedule-map/7149
+    readOnly: true
+  isSystemGenerated:
+    type: boolean
+    description: Set to `true` if the AR tax schedule map is a system-generated object.
+    x-mappedTo: SYSGENERATED
+    x-mappedToType: string
+    example: true
+    default: false
+    readOnly: true
+  taxSolution:
+    type: object
+    description: The tax solution to which this tax schedule map belongs. Different tax solutions are available for different countries, for example, Australia GST, South Africa VAT, UK VAT. The tax schedule map must belong to the same tax solution as the tax schedule.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+        example: United Kingdom - VAT
+      href:
+        type: string
+        description: URL for the tax solution object.
+        readOnly: true
+        example: /objects/tax-solution/1
+  taxSchedule:
+    type: object
+    description: Tax schedule to associate with the AR tax schedule map. A tax schedule identifies the tax details that are applied when the schedule is referenced by the tax schedule map.
+    x-object: ar-tax-schedule
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax schedule.
+        x-mappedTo: TAXSCHEDKEY
+        example: '1'
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier for the tax schedule.
+        x-mappedTo: TAXSCHEDKEY
+        example: '1'
+        readOnly: true
+      name:
+        type: string
+        description: Name or other unique identifier for the tax schedule.
+        x-mappedTo: TAXSCHED
+        example: TaxSched-00002
+      href:
+        type: string
+        description: URL for the tax schedule.
+        readOnly: true
+        example: /objects/ar-tax-schedule/1
+  contactTaxGroup:
+    type: object
+    description: Contact tax group to which the tax schedule map applies.
+    x-object: contact-tax-group
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the contact tax group.
+        x-mappedTo: ENTITYGROUPKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the contact tax group.
+        x-mappedTo: ENTITYGROUP
+        example: Auto Contact Tax
+      href:
+        type: string
+        description: URL for the contact tax group.
+        readOnly: true
+        example: /objects/contact-tax-group/1
+  itemTaxGroup:
+    type: object
+    description: Item tax group
+    x-object: item-tax-group
+    properties:
+      key:
+        type: string
+        x-mappedTo: ITEMGROUPKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the item tax group.
+        x-mappedTo: ITEMGROUP
+        example: ABC Tax Group
+      href:
+        type: string
+        description: URL of the item tax group object.
+        readOnly: true
+        example: /objects/item-tax-group/1
+  accountLabelTaxGroup:
+    type: object
+    description: Account label tax group to which the tax schedule map applies.
+    x-object: account-label-tax-group
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account label tax group.
+        x-mappedTo: ACCOUNTGROUPKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the account label tax group.
+        x-mappedTo: ACCOUNTGROUP
+        example: Account Label Tax
+      href:
+        type: string
+        description: URL for the account label tax group.
+        readOnly: true
+        example: /objects/account-label-tax-group/1

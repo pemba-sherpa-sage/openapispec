@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/artaxschedule/view
+    POST:
+      - ar/lists/artaxschedule/create
+    PATCH:
+      - ar/lists/artaxschedule/edit
+    DELETE:
+      - ar/lists/artaxschedule/delete
+s1:
+  hash: '0'
+  type: ownedObject

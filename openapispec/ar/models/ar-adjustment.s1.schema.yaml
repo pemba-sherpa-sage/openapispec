@@ -1,0 +1,284 @@
+title: ar-adjustment
+x-mappedTo: ARADJUSTMENT
+type: object
+description: An AR adjustment is a transaction that applies a credit or debit in order to modify the amount owed by a customer.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AR adjustment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: ID for the AR adjustment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  txnType:
+    type: string
+    description: Record type to identify the type of transaction. AR Adjustment record type refers to `ra`.
+    x-mappedTo: RECORDTYPE
+    example: ra
+  adjustmentNumber:
+    type: string
+    description: Number that can be used to track the AR adjustment.
+    x-mappedTo: RECORDID
+    example: 'ADJ001'
+  href:
+    type: string
+    description: URL for the AR adjustment.
+    readOnly: true
+    example: /objects/ar-adjustment/1
+  contacts:
+    type: object
+    description: Associated contacts for this AR adjustment.
+    title: contacts
+    properties:
+      billTo:
+        type: object
+        description: Customer to contact to invoice for this sale.
+        title: billTo
+        x-object: contact
+        x-mappedTo: BILLTOCONTACT
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: BILLTOPAYTOKEY
+            example: '916'
+          id:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: BILLTOPAYTOKEY
+            example: '916'
+          name:
+            type: string
+            description: Name of the bill to contact.
+            x-mappedTo: BILLTOPAYTOCONTACTNAME
+            example: 'Power Aerospace Materials(C1)'
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+            example: /objects/contact/1
+      shipTo:
+        type: object
+        description: Customer contact for shipping.
+        title: shipTo
+        x-object: contact
+        x-mappedTo: SHIPTTOCONTACT
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: SHIPTORETURNTOKEY
+            example: '916'
+          id:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: SHIPTORETURNTOKEY
+            example: '916'
+          name:
+            type: string
+            description: Name of the ship to contact.
+            x-mappedTo: SHIPTORETURNTOCONTACTNAME
+            example: 'Power Aerospace Materials(C1)'
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+            example: /objects/contact/1
+  state:
+    type: string
+    description: Processing state of the AR adjustment.
+    x-mappedTo: STATE
+    readOnly: true
+    enum:
+      - 'reversed'
+      - 'reversal'
+      - 'draft'
+      - 'noValue'
+      - 'posted'
+      - 'paid'
+      - 'partiallyPaid'
+      - 'selected'
+    x-mappedToValues:
+      - 'Reversed'
+      - 'Reversal'
+      - 'Draft'
+      - 'No Value'
+      - 'Posted'
+      - 'Paid'
+      - 'Partially Paid'
+      - 'Selected'
+    example: 'paid'
+  rawState:
+    type: string
+    description: Raw state
+    x-mappedTo: RAWSTATE
+    readOnly: true
+    example: 'A'
+  description:
+    type: string
+    description: Description of the AR adjustment.
+    x-mappedTo: DESCRIPTION
+    example: 'Computer Hardware & Software Expenses 03/01/20 - 08/31/21 Subscription charges.'
+  documentNumber:
+    type: string
+    description: Invoice number selected as reference for the AR Adjustment
+    x-mappedTo: DOCNUMBER
+    example: 'Apply to INV-1602'
+  paymentInformation:
+    type: object
+    description: Payment information for the AR adjustment.
+    title: paymentInformation
+    properties:
+      paidDate:
+        type: string
+        format: date
+        description: Payment date
+        x-mappedTo: WHENPAID
+        example: '01-11-2022'
+      totalPaid:
+        type: string
+        description: Total paid
+        x-mappedTo: TOTALPAID
+        readOnly: true
+        example: '1117.8'
+      totalSelected:
+        type: string
+        description: Total selected
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+        example: '100.10'
+      totalDue:
+        type: string
+        description: Total due
+        x-mappedTo: TOTALDUE
+        example: '251464.01'
+      txnTotalEntered:
+        type: string
+        description: Total amount
+        x-mappedTo: TRX_TOTALENTERED
+        readOnly: true
+        example: '1000.20'
+      txnTotalSelected:
+        type: string
+        description: Total transaction amount selected
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+        example: '1000.05'
+      txnTotalPaid:
+        type: string
+        description: Total transaction amount paid
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+        example: '2000.50'
+      txnTotalDue:
+        type: string
+        description: Total transaction amount due
+        x-mappedTo: TRX_TOTALDUE
+        readOnly: true
+        example: '100.50'
+  currency:
+    type: object
+    description: Currency information for the AR adjustment.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency
+        x-mappedTo: BASECURR
+        example: 'USD'
+      txnCurrency:
+        type: string
+        description: Transaction currency
+        x-mappedTo: CURRENCY
+        example: 'INR'
+      exchangeRateDate:
+        type: string
+        format: date
+        description: Date used to calculate the exchange rate.
+        x-mappedTo: EXCH_RATE_DATE
+        example: '01-03-2023'
+      exchangeRate:
+        type: string
+        description: The exchange rate to use.
+        x-mappedTo: EXCHANGE_RATE
+        example: '86.2'
+      exchangeRateTypeId:
+        type: string
+        description: Exchange rate type.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        example: 'INR-Rate'
+  totalEntered:
+    type: string
+    description: Total entered
+    x-mappedTo: TOTALENTERED
+    readOnly: true
+    example: '100.20'
+  moduleKey:
+    type: string
+    description: Module key, source module from which transaction got created.
+    x-mappedTo: MODULEKEY
+    readOnly: true
+    example: '3.AR'
+  customer:
+    type: object
+    description: The customer who is the target of the adjustment.
+    x-mappedTo: CUSTOMER
+    x-object: customer
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the customer.
+        x-mappedTo: CUSTOMERRECORDNO
+        example: '16'
+      id:
+        type: string
+        description: ID of the customer.
+        x-mappedTo: CUSTOMERID
+        example: 'Customer_01'
+      name:
+        type: string
+        description: name of the customer.
+        x-mappedTo: CUSTOMERNAME
+        example: 'Logic Solutions'
+      totalDue:
+        type: string
+        description: Transaction customer total due.
+        readOnly: true
+        x-mappedTo: TRX_ENTITYDUE
+        example: '1125.10'
+      href:
+        type: string
+        description: URL for the customer.
+        readOnly: true
+        example: /objects/customer/1
+  createdDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the AR adjustment was created.
+    x-mappedTo: WHENCREATED
+  postingDate:
+    type: string
+    format: date
+    description: GL posting date.
+    x-mappedTo: WHENPOSTED
+    example: '24-03-2023'
+  lines:
+    type: array
+    description: Line items of the AR adjustment.
+    x-mappedTo: ITEMS
+    x-object: ar-adjustment-line
+    items:
+      $ref: ar-adjustment-line.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+x-mappings:
+  audit:
+    createdDateTime:
+      type: string
+      x-mappedTo: AUWHENCREATED

@@ -1,0 +1,65 @@
+title: db-server-throttle
+x-mappedTo: dbserverthrottle
+type: object
+description: 
+properties:
+  key:
+    type: string
+    description: System-assigned key for the db server throttle limit.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description:  Unique identifier for db server throttle limit
+    x-mappedTo: DBSERVER
+    example: 'dbserver1'
+  href:
+    type: string
+    description: Endpoint for the db server throttle limit.
+    readOnly: true
+    example: /objects/db-server-throttle/23
+  limit:
+    type: integer
+    description: Throttle limit.
+    x-mappedTo: THROTTLE_LIMIT
+    example: 20
+  notes:
+    type: string
+    x-mappedTo: NOTES
+    description: Notes or comments
+    example: 'Limit override for customer escalation resolution'
+  override:
+    type: object
+    properties:
+      limit:
+        type: integer
+        x-mappedTo: THROTTLE_LIMIT_OVERRIDE
+        description: Override the throttle limit
+        example: 200
+      endDate:
+        type: string
+        format: date
+        x-mappedTo: END_DATE
+        description: End data for throttle Limit overide
+        example: 2023-10-10
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    type: object
+    properties:
+      createdDateTime:
+        description: Time of the submission
+        type: string
+        format: date-time
+        example: 2022-04-20T16:20:00Z
+        x-mappedTo: WHENCREATED
+        readOnly: true
+      modifiedDateTime:
+        description: Time of the modification
+        type: string
+        format: date-time
+        example: 2022-04-20T16:20:00Z
+        x-mappedTo: WHENMODIFIED
+        readOnly: true
+    readOnly: true

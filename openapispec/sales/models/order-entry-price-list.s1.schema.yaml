@@ -1,0 +1,45 @@
+title: order-entry-price-list
+type: object
+description: Sales Price List
+x-mappedTo: sopricelist
+properties:
+  key:
+    type: string
+    description: Key
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: "5"
+  id:
+    type: string
+    description: Price List Name
+    x-mappedTo: NAME
+    x-mutable: false
+    example: "Base Price List Sales"
+  href:
+    type: string
+    readOnly: true
+    example: "/objects/order-entry-price-list/2"
+  startDate:
+    type: string
+    format: date
+    description: Start date
+    x-mappedTo: DATEFROM
+    example: "2021-01-01"
+  endDate:
+    type: string
+    format: date
+    description: End date
+    x-mappedTo: DATETO
+    example: "2100-12-31"
+  #  appliesTo:
+  #    type: string
+  #    description: Application
+  #    x-mappedTo: SALEPURCHASE
+  #    enum:
+  #      - purchasing
+  #      - orderEntry
+  #    x-mappedToValues:
+  #      - Purchasing
+  #      - Sales
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

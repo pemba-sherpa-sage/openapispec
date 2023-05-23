@@ -1,0 +1,280 @@
+openapi: 3.0.0
+info:
+  title: warehouse
+  description: warehouse API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Warehouses
+    description: |
+      A warehouse can be an actual warehouse, a store, or any type of stocking location or site that requires inventory tracking and management. Warehouse also serves as a dimension that can be set on transactions to expand report functionality and insight. See [Define warehouses](https://www.intacct.com/ia/docs/en_US/help_action/Inventory_Control/Setting_up_Inventory_Control/Warehouses/warehouses.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/warehouse:
+    get:
+      summary: List warehouses
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each warehouse. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Warehouses
+      tags:
+        - Warehouses
+      operationId: get-objects-warehouse
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of warehouse objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List warehouses:
+                  value:
+                    'ia::result':
+                      - key: '5'
+                        id: '103'
+                        href: /objects/warehouse/5
+                      - key: '8'
+                        id: '101'
+                        href: /objects/warehouse/8
+                      - key: '9'
+                        id: '100'
+                        href: /objects/warehouse/9
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a warehouse
+      description: Creates a new warehouse. For a warehouse hierarchy, create the parent warehouses before adding child warehouses.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Warehouses
+      tags:
+        - Warehouses
+      operationId: post-objects-warehouse
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/warehouse'
+                - $ref: '#/components/schemas/warehouseRequiredProperties'
+            examples:
+              Create a warehouse:
+                value:
+                  id: childId2
+                  name: child2
+                  location:
+                    id: 1--Chicago
+                  parent:
+                    id: 101--Distribution Center
+                  manager:
+                    id: 1--Courtney, Bill
+                  contacts:
+                    primary:
+                      id: Sam Smith
+                    shipTo:
+                      id: Bill North
+                  status: active
+                  isReplenishmentEnabled: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New warehouse
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a warehouse:
+                  value:
+                    'ia::result':
+                      key: '12'
+                      id: '103'
+                      href: /objects/warehouse/12
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/warehouse/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the warehouse.
+    get:
+      summary: Get a warehouse
+      description: Returns detailed information for a specified warehouse.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Warehouses
+      tags:
+        - Warehouses
+      operationId: get-objects-warehouse-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the warehouse
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/warehouse'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a warehouse:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      name: 'US NA Warehouse-1'
+                      id: 'USNAWA1'
+                      parent:
+                        id: 'US NA--1'
+                        key: '22'
+                        href: '/objects/warehouse/22'
+                      location:
+                        id: 'North America--North America'
+                        key: '10'
+                        href: '/objects/location/10'
+                      manager:
+                        id: 'EM 1--Aman'
+                        key: '14'
+                        href: '/objects/employee/14'
+                      contacts:
+                        primary:
+                          id: 'Sam Smith'
+                          key: '210'
+                          href: '/objects/contact/210'
+                        shipTo:
+                          id: 'Bill North'
+                          key: '229'
+                          href: '/objects/contact/229'
+                      status: active
+                      isReplenishmentEnabled: true
+                      enableNegativeInv: false
+                      href: '/objects/warehouse/15'
+                      audit:
+                        createdDateTime: '2021-04-21T23:57:50Z'
+                        modifiedDateTime: '2021-04-21T23:59:40Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a warehouse
+      description: Updates an existing warehouse by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Warehouses
+      tags:
+        - Warehouses
+      operationId: patch-objects-warehouse-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/warehouse'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  manager:
+                    id: 2--Lapus, Alan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated warehouse
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '9'
+                      id: 'US NA Warehouse-2'
+                      href: '/objects/warehouse/9'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      
+    delete:
+      summary: Delete a warehouse
+      description: Deletes a warehouse.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Warehouses
+      tags:
+        - Warehouses
+      operationId: delete-objects-warehouse-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    warehouse:
+      $ref: ../models/warehouse.s1.schema.yaml
+    warehouseRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+        - location
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

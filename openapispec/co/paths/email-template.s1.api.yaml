@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: email-template
+  description: email-template API
+  version: '1.0'
+  contact:
+    email: tim.miller@sage.com
+    name: tmiller
+tags:
+  - name: Email templates
+    description: Email template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/email-template/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the email-template.
+    get:
+      summary: Get an email template
+      description: Returns detailed information for a particular email-template.
+      tags:
+        - Email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the email-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/email-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-email-template-key
+    delete:
+      summary: Delete an email template
+      description: Deletes an email template.
+      tags:
+        - Email templates
+      operationId: delete-objects-email-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an email template
+      description: Updates an existing email-template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Email templates
+      operationId: patch-objects-email-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated email-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/email-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  name: New Email Template patched
+                  email:
+                    to: mitcrellim@gmail.com
+                  includeTxnAttachments: true
+  /objects/email-template:
+    get:
+      summary: List email templates
+      description: Returns a collection with a key, ID, and link for each email template.
+      tags:
+        - Email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of email-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-email-template
+    post:
+      summary: Create an email template
+      description: Creates a new email template.
+      tags:
+        - Email templates
+      operationId: post-objects-email-template
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New email-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/email-template'
+                - $ref: '#/components/schemas/email-templateRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  name: New Email Template
+                  description: test for New Email Template
+                  templateType: purchasingTxn
+                  email:
+                    replyTo: tmiller@intacct.com
+                    to: tim.miller@sage.com
+                  subject: test subject
+                  body: test message for all to see
+components:
+  schemas:
+    email-template:
+      $ref: ../models/email-template.s1.schema.yaml
+    email-templateRequiredProperties:
+      type: object
+      properties:
+        email:
+          required:
+            - replyTo
+      required:
+        - name
+        - subject
+        - body
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

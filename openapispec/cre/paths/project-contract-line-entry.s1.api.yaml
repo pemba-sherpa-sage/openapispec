@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: project-contract-line-entry
+  description: project-contract-line-entry API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: Project contract line entries
+    description: The purpose of a project contract line entry is to add pricing to the project contract line at the appropriate workflow type. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-contract-line-entry:
+    get:
+      summary: List project contract line entries
+      description: Returns a collection with a key, ID, and link for each project contract line entry.
+      tags:
+        - Project contract line entries
+      operationId: get-objects-project-contract-line-entry
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-contract-line-entry objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-result-collection-of-project-contract-line-entries:
+                  value:
+                    ia::result:
+                      - key: '44'
+                        id: '44'
+                        href: /objects/project-contract-line-entry/44
+                      - key: '40'
+                        id: '40'
+                        href: /objects/project-contract-line-entry/40
+                      - key: '1'
+                        id: '1'
+                        href: /objects/project-contract-line-entry/1
+                      - key: '22'
+                        id: '22'
+                        href: /objects/project-contract-line-entry/22
+                      - key: '20'
+                        id: '20'
+                        href: /objects/project-contract-line-entry/20
+                      - key: '43'
+                        id: '43'
+                        href: /objects/project-contract-line-entry/43
+                      - key: '41'
+                        id: '41'
+                        href: /objects/project-contract-line-entry/41
+                      - key: '45'
+                        id: '45'
+                        href: /objects/project-contract-line-entry/45
+                      - key: '49'
+                        id: '49'
+                        href: /objects/project-contract-line-entry/49
+                      - key: '50'
+                        id: '50'
+                        href: /objects/project-contract-line-entry/50
+                      - key: '47'
+                        id: '47'
+                        href: /objects/project-contract-line-entry/47
+                    ia::meta:
+                      totalCount: 11
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-contract-line-entry/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project contract line entry.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an project contract line entry
+      description: Returns detailed information for a particular project contract line entry.
+      tags:
+        - Project contract line entries
+      operationId: get-objects-project-contract-line-entry-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-contract-line-entry
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-contract-line-entry'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-get-project-contract-line-entry:
+                  value:
+                    ia::result:
+                      key: '5'
+                      id: '5'
+                      projectContractLine:
+                        key: '4'
+                        id: '003'
+                        href: /objects/project-contract-line/4
+                      workflowType: original
+                      dimensions:
+                        location:
+                          key: 1
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        department:
+                          key: 3
+                          id: '3'
+                          name: Engineering
+                          href: /objects/department/3
+                        project:
+                          key: '1'
+                          id: DIM - BTI
+                          name: Dimensions - Berkeley Technology Inc
+                          href: /objects/project/1
+                        customer:
+                          key: '14'
+                          id: BTI
+                          name: Berkeley Technology Inc
+                          href: /objects/customer/14
+                        vendor:
+                          key: '43'
+                          id: 1099 Int
+                          name: 1099 Int
+                          href: /objects/vendor/43
+                        employee:
+                          key: '27'
+                          id: '12'
+                          name: Eberhardt
+                          href: /objects/employee/27
+                        item:
+                          key: '240'
+                          id: '3'
+                          name: 'Rebar #10'
+                          href: /objects/item/240
+                        class:
+                          key: '6'
+                          id: '4'
+                          name: Professional Services
+                          href: /objects/class/6
+                      quantity: '2.50'
+                      externalUOM: box
+                      unitPrice: '95.75'
+                      price: '191.50'
+                      priceMarkupPercent: '10.00'
+                      priceMarkupAmount: '19.15'
+                      linePrice: '210.65'
+                      memo: '[updated]'
+                      priceEffectiveDate: '2021-10-21'
+                      href: /objects/project-contract-line-entry/5
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an project contract line entry
+      description: Deletes a/an project contract line entry.
+      tags:
+        - Project contract line entries
+      operationId: delete-objects-project-contract-line-entry-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract-line-entry:
+      $ref: ../models/project-contract-line-entry.s1.schema.yaml
+    project-contract-line-entryRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

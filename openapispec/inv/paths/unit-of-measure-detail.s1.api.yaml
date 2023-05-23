@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: unit-of-measure-detail
+  description: unit-of-measure-detail API
+  version: '1.0'
+  contact:
+    email: mahesh.yallure@sage.com
+    name: Mahesh Yallure
+tags:
+  - name: Unit of measure details
+    description: |
+     Details for a unit of measure included in a unit of measure group. Sage Intacct places related units of measure into groups.
+     For example, the Count group includes related units of each, pair, and dozen. For more information, see [About unit of measure groups](https://www.intacct.com/ia/docs/en_US/help_action/Order_Entry/Setting_up_Order_Entry/UOM_groups/about-UOM-groups-OE.htm).
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/unit-of-measure-detail/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        example: '45'
+        description: System-assigned key for the unit of measure detail.
+    get:
+      summary: Get unit of measure details
+      description: Returns detailed information for a specified unit of measure detail.
+      tags:
+        - Unit of measure details
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unit-of-measure-detail'
+              examples:
+                Get unit of measure details:
+                  value:
+                    'ia::result':
+                      key: 45
+                      id: Pair
+                      abbreviation: PAIR
+                      parent:
+                        key: 1
+                        id: Count
+                        href: "/objects/unit-of-measure/1" 
+                      conversionFactor: 2
+                      numberOfDecimalPlaces: 1
+                      isBase: false
+                      audit:
+                        createdDateTime: '2021-09-15T16:46:11Z'
+                        modifiedDateTime: '2021-09-15T16:46:11Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: "/objects/unit-of-measure-detail/45"
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+      operationId: get-objects-unit-of-measure-detail-key
+  /objects/unit-of-measure-detail:
+    get:
+      summary: List unit of measure details
+      description: Returns a collection with a key, ID, and link for each unit of measure detail. This operation is mostly for use in testing; use the query service to find unit of measure details that meet certain criteria and to specify the properties that you want in the response.
+      tags:
+        - Unit of measure details
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of unit of measure details
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: 
+                List unit of measure details:
+                  value:
+                    'ia::result':
+                      - key: '45'
+                        id: Pair
+                        href: /objects/unit-of-measure-detail/45
+                      - key: '46'
+                        id: Dozen
+                        href: /objects/unit-of-measure-detail/46
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-unit-of-measure-detail
+components:
+  schemas:
+    unit-of-measure-detail:
+      $ref: ../models/unit-of-measure-detail.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

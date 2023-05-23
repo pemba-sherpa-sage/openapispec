@@ -1,0 +1,194 @@
+title: purchasing-tax-detail
+type: object
+x-mappedTo: potaxdetail
+properties:
+  key:
+    type: string
+    description: System-assigned key for the Purchasing tax detail.
+    example: '4'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the Purchasing tax detail.
+    example: State Tax Arkansas
+    x-mappedTo: DETAILID
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the Purchasing tax detail.
+    example: /objects/purchasing-tax-detail/4 
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+    description: Indicates whether the tax detail is `active` or `inactive`. An `active` tax detail is used to calculate taxes for a purchasing transaction per the tax schedule map.
+    example: inactive 
+    default: active
+  taxUniqueId:
+    type: string
+    description: A valid identifier for Australia GST, South Africa VAT, or United Kingdom VAT compliance. Valid identifiers are predetermined by internal Sage requirements.
+    example: GB.ECOutput_GB.ExemptGB.VAT
+    x-mappedTo: TAXUID
+  taxRate:
+    type: string
+    description: |
+      Tax rate.
+
+        **Valid values**
+        - `standard` - Standard tax rate.
+        - `reduced` - Reduced tax rate.
+        - `exempt` - Exempt from tax rate.
+        - `zero` - Zero tax rate.
+        - `federal` - Federal tax rate.
+        - `provincial` - Provincial tax rate.
+    enum:
+      - standard
+      - reduced
+      - exempt
+      - zero
+      - federal
+      - provincial
+    x-mappedToValues:
+      - Standard
+      - Reduced
+      - Exempt
+      - Zero
+      - Federal
+      - Provincial
+    example: 'exempt'
+    x-mappedTo: TAXRATE
+  amountToTax:
+    type: string
+    description: |
+      Amount to include in taxable amount.
+
+      ** Valid values **
+        - `fullAmount` - Include the cost from zero up to the maximum taxable amount.
+        - `amountWithinRange` - Include the amount between the minimum and maximum taxable amount.
+    enum:
+      - fullAmount
+      - amountWithinRange
+    x-mappedToValues:
+      - Full Amount
+      - Amount Within Range
+    example: 'fullAmount'
+    x-mappedTo: INCLUDE
+  description:
+    type: string
+    description: The description of the Purchasing tax detail, which appears in the transaction subtotals if configured.
+    example: Standard Rate for UK Import Services 
+    x-mappedTo: DESCRIPTION
+  taxPercent:
+    type: number
+    description: Tax rate percentage. For example, a value of 5 applies a tax of 5%.
+    example: 10
+    x-mappedTo: VALUE
+  taxLimit:
+    type: object
+    properties:
+      minTaxable:
+        type: number
+        example: 10
+        description: Minimum taxable amount. If the amount of a line item is at or below this value, tax is not applied.
+        x-mappedTo: MINTAXABLE
+      maxTaxable:
+        type: number
+        example: 2000
+        description: Maximum taxable amount. Tax is applied to line item amounts up to this value, but not over.
+        x-mappedTo: MAXTAXABLE
+      minTax:
+        type: number
+        description: Minimum tax.
+        example: 10
+        x-mappedTo: MINTAX
+      maxTax:
+        type: number
+        description: Maximum tax.
+        example: 150
+        x-mappedTo: MAXTAX
+  reverseCharge:
+    type: boolean
+    description: Reverse charge flag.
+    x-mappedTo: REVERSECHARGE
+    x-mappedToType: string
+    example: true
+    default: false
+  useExpenseAccount:
+    type: boolean
+    description: Set to `true` to assign taxes to the expense account.
+    x-mappedTo: USEEXPENSEACCT
+    x-mappedToType: string
+    example: true
+    default: false
+  isSystemGenerated:
+    type: boolean
+    description: If `true`, this is a system-generated tax detail.
+    x-mappedTo: SYSGENERATED
+    x-mappedToType: string
+    example: true
+    default: false
+    readOnly: true
+  taxAuthority:
+    type: object
+    x-object: tax-authority
+    x-mappedTo: TAXAUTHORITY
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the legal tax authority. Useful for creating separate tax reports by jurisdictions.
+        example: California
+        x-mappedTo: TAXAUTHORITY
+      key:
+        type: string
+        description: System-assigned key for the tax authority.
+        example: '24'
+        x-mappedTo: TAXAUTHORITYKEY
+        readOnly: true
+      href:
+        type: string
+        description: URL of the tax authority object.
+        readOnly: true
+        example: /objects/tax-authority/24
+  purchaseGLAccount:
+    type: object
+    description: GL account to which this tax is to be assigned.
+    x-object: gl-account
+    x-mappedTo: GLACCOUNT
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the GL account.
+        example: '1200.01--Accounts Receivable - a/c label offset' 
+        x-mappedTo: GLACCOUNT
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        example: '57'
+        x-mappedTo: GLACCOUNTKEY
+        readOnly: true
+      href:
+        type: string
+        description: URL of the GL account.
+        readOnly: true
+        example: /objects/gl-account/57 
+  taxSolution:
+    type: object
+    description: Different tax solutions are available for different countries. Examples include Australia GST, South Africa VAT, and UK VAT.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        example: '1'
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: Unique identifier for the tax solution.
+        example: United Kingdom - VAT
+        x-mappedTo: TAXSOLUTIONID
+      href:
+        type: string
+        description: URL of the tax solution.
+        readOnly: true
+        example: /objects/tax-authority/1

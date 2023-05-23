@@ -1,0 +1,20 @@
+title: deptref
+type: object
+x-object: department
+properties:
+  key:
+    type: string
+    description: Department key
+    x-mappedTo: DEPARTMENTKEY
+  id:
+    type: string
+    description: Department id
+    x-mappedTo: DEPARTMENTID
+  name:
+    type: string
+    description: Department name
+    readOnly: true
+    x-mappedTo: DEPARTMENTNAME
+  href:
+    type: string
+    readOnly: true

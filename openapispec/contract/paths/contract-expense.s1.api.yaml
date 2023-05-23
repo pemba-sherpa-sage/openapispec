@@ -1,0 +1,380 @@
+openapi: 3.0.0
+info:
+  title: contract-expense
+  description: contract-expense API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+tags:
+  - name: Contract expenses
+    description: Contract expense
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-expense:
+    get:
+      summary: List contract expenses
+      description: 'Returns a collection with a key, ID, and link for each contract expense.'
+      tags:
+        - Contract expenses
+      operationId: get-objects-contract-expense
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract-expense objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: '84'
+                        href: '/objects/contract-expense/84'
+                    'ia::meta':
+                      totalCount: 1
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an contract expense
+      description: Creates a new contract expense.
+      tags:
+        - Contract expenses
+      operationId: post-objects-contract-expense
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense'
+                - $ref: '#/components/schemas/contract-expenseRequiredProperties'
+            examples:
+              Example-1:
+                value:
+                  contract:
+                    id: 'EXP_TEST'
+                  expenseType: 'contract'
+                  item:
+                    id: '1'
+                  dimensions:
+                    location:
+                      id: '1'
+                    department:
+                      id: '11'
+                  template:
+                    expenseJournal1:
+                      expenseTemplate:
+                        id: 'EXPSTRAIGHTLINE_MAN'
+                        startDate: '2022-05-01'
+                        endDate: '2022-12-30'
+                        defaultPostingType: 'M'
+                        postingType: 'manual'
+                    expenseJournal2:
+                      expenseTemplate:
+                        id: 'EXPSTRAIGHTLINE_MAN'
+                        startDate: '2022-05-01'
+                        endDate: '2022-12-30'
+                        defaultPostingType: 'M'
+                        postingType: 'manual'
+                  txnAmount: '1000.00'
+                  baseAmount: '1000.00'
+                  currency:
+                    exchangeRateType: 'Intacct Daily Rate'
+                    exchangeRateDate: '2022-05-01'
+                    exchangeRate: '1'
+                  postingDate: '2022-06-01'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract-expense
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: '2'
+                        href: '/objects/contract-expense/2'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/contract-expense/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract expense.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '17'
+    get:
+      summary: Get a/an contract expense
+      description: Returns detailed information for a particular contract expense.
+      tags:
+        - Contract expenses
+      operationId: get-objects-contract-expense-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-expense
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Contract Expense:
+                  value:
+                    'ia::result':
+                      - id: '17'
+                        key: '17'
+                        contract:
+                          key: '59'
+                          id: 'EXP_TEST'
+                          href: '/objects/contract/59'
+                        expenseType: 'contract'
+                        item:
+                          key: '1'
+                          id: '1'
+                          name: 'PC Computer'
+                          href: '/objects/item/1'
+                        dimensions:
+                          location:
+                            key: '1'
+                            id: '1'
+                            name: 'United States of America'
+                            href: '/objects/location/1'
+                          department:
+                            key: '9'
+                            id: '11'
+                            name: 'Accounting'
+                            href: '/objects/department/9'
+                        template:
+                          expenseJournal1:
+                            expenseTemplate:
+                              key: '1'
+                              id: 'EXPSTRAIGHTLINE_MAN'
+                              startDate: '2022-05-01'
+                              endDate: '2022-12-30'
+                              defaultPostingType: 'M'
+                              href: '/objects/contract-expense-template/1'
+                            schedule:
+                              key: '795'
+                              status: 'In progress'
+                              href: '/objects/contract-expense-schedule/795'
+                            journalDetails:
+                              key: '52'
+                              href: '/objects/gl-journal/52'
+                            postingType: 'manual'
+                            postingConversionDate: null
+                          expenseJournal2:
+                            expenseTemplate:
+                              key: '1'
+                              id: 'EXPSTRAIGHTLINE_MAN'
+                              startDate: '2022-05-01'
+                              endDate: '2022-12-30'
+                              defaultPostingType: 'M'
+                              href: '/objects/contract-expense-template/1'
+                            schedule:
+                              key: '796'
+                              status: 'In progress'
+                              href: '/objects/contract-expense-schedule/796'
+                            journalDetails:
+                              key: '54'
+                              href: '/objects/gl-journal/54'
+                            postingType: 'manual'
+                            postingConversionDate: null
+                        txnAmount: 10000
+                        baseAmount: 10000
+                        currency:
+                          exchangeRateType: 'Intacct Daily Rate'
+                          exchangeRateDate: '2022-05-01'
+                          exchangeRate: '1'
+                        postingDate: '2022-06-01'
+                        cancelDate: null
+                        deferredExpenseGLAccount:
+                          key: '423'
+                          href: '/objects/gl-account/423'
+                        recognizedExpenseGLAccount:
+                          key: '429'
+                          href: '/objects/gl-account/429'
+                        expenseAccrualGLAccount:
+                          key: '435'
+                          href: '/objects/gl-account/435'
+                        state: 'inProgress'
+                        audit:
+                          createdDateTime: '2022-06-29T23:03:06Z'
+                          modifiedDateTime: '2022-06-29T23:03:06Z'
+                          createdBy: '1'
+                          modifiedBy: '1'
+                        calculatedExpensePostingType: 'M'
+                        memo: null
+                        lineNo: '8'
+                        nsp::CE_CHECKBOX: false
+                        nsp::CE_CURRENCY: null
+                        nsp::CE_DATE: null
+                        nsp::CE_EMAIL: null
+                        nsp::CE_MULTIPICKLIST: [ ]
+                        nsp::CE_NUMBER: null
+                        nsp::CE_PASSWORD: null
+                        nsp::CE_PERCENT: null
+                        nsp::CE_PICKLIST: ''
+                        nsp::CE_TEXT: null
+                        nsp::CE_TEXTAREA: null
+                        nsp::CE_URL: null
+                        nsp::EXPENSE_CBX_DEFAULT_UN_CHECKED_NF: false
+                        nsp::EXPENSE_CB_DEFAULT_CHECKED: true
+                        nsp::EXPENSE_CB_DEFAULT_CHECKED_HIDDEN: true
+                        nsp::EXPENSE_CB_DEFAULT_UN_CHECKED_NT: false
+                        nsp::EXPENSE_CURRENCY: null
+                        nsp::EXPENSE_CURRENCY_HIDDEN: null
+                        nsp::EXPENSE_CURRENCY_NF: null
+                        nsp::EXPENSE_CURRENCY_NT: null
+                        nsp::EXPENSE_DATE_DEFAULT_TODAY: null
+                        nsp::EXPENSE_DATE_HIDDEN: null
+                        nsp::EXPENSE_DATE_NF: null
+                        nsp::EXPENSE_DATE_NT: null
+                        nsp::EXPENSE_EMAIL: null
+                        nsp::EXPENSE_EMAIL_HIDDEN: null
+                        nsp::EXPENSE_EMAIL_NF: null
+                        nsp::EXPENSE_EMAIL_NT: null
+                        nsp::EXPENSE_MULTIPICKLIST: [ 'Val 1' ]
+                        nsp::EXPENSE_MULTIPICKLIST_HIDDEN: [ ]
+                        nsp::EXPENSE_MULTIPICKLIST_NF: [ ]
+                        nsp::EXPENSE_MULTIPICKLIST_NT: [ ]
+                        nsp::EXPENSE_NUMBER: null
+                        nsp::EXPENSE_NUMBER_HIDDEN: null
+                        nsp::EXPENSE_NUMBER_NF: null
+                        nsp::EXPENSE_NUMBER_NT: null
+                        nsp::EXPENSE_PERCENT: null
+                        nsp::EXPENSE_PERCENT_HIDDEN: null
+                        nsp::EXPENSE_PERCENT_NF: null
+                        nsp::EXPENSE_PERCENT_NT: null
+                        nsp::EXPENSE_PICKLIST: FALL
+                        nsp::EXPENSE_PICKLIST_HIDDEN:
+                        nsp::EXPENSE_PICKLIST_NF:
+                        nsp::EXPENSE_PICKLIST_NT:
+                        nsp::EXPENSE_TEXT: null
+                        nsp::EXPENSE_TEXT_AREA: null
+                        nsp::EXPENSE_TEXT_AREA_HIDDEN: null
+                        nsp::EXPENSE_TEXT_AREA_NF: null
+                        nsp::EXPENSE_TEXT_AREA_NT: null
+                        nsp::EXPENSE_TEXT_HIDDEN: null
+                        nsp::EXPENSE_TEXT_NF: null
+                        nsp::EXPENSE_TEXT_NT: null
+                        nsp::EXPENSE_URL: null
+                        nsp::EXPENSE_URL_HIDDEN: null
+                        nsp::EXPENSE_URL_NF: null
+                        nsp::EXPENSE_URL_NT: null
+                        nsp::GLDIMPRODUCT_LINES: null
+                        nsp::GLDIMREGION: null
+                        nsp::GLDIMVERTICAL: null
+                        nsp::RDETAIL_ONE_MANY: null
+                        nsp::RDETAIL_ONE_ONE: null
+                        href: '/objects/contract-expense/17'
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an contract expense
+      description: Updates an existing contract expense by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract expenses
+      operationId: patch-objects-contract-expense-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Example-1:
+                value:
+                  currency:
+                    exchangeRateDate: '2022-05-01'
+                  postingDate: '2022-06-01'
+                  txnAmount: 1200
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract-expense
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: '2'
+                        href: '/objects/contract-expense/2'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an contract expense
+      description: Deletes a/an contract expense.
+      tags:
+        - Contract expenses
+      operationId: delete-objects-contract-expense-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense:
+      $ref: ../models/contract-expense.s1.schema.yaml
+    contract-expenseRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

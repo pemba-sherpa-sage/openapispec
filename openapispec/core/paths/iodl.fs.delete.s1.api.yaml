@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.delete
+  description: IODL Delete service
+  version: '1.0-internal'
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.delete
+    description: Delete IODL in the IODL file service
+paths:
+  /services/iodl/file/store:
+    post:
+      summary: Delete IODL
+      description: Delete IODL
+      tags:
+        - iodl.file.delete
+      operationId: post-iodl-file-delete
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.delete-request'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.delete-response'
+              examples:
+                example-1:
+                  value:
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.delete-request:
+      description: Delete IODL request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+        options:
+          type: object
+          properties:
+            sandboxCollection:
+              x-mappedTo: options.sandboxCollection
+              type: string
+    iodl.file.delete-response:
+      description: Delete IODL response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          x-mappedTo: status
+          type: boolean
+        result:
+          x-mappedTo: result
+          type: array
+          items:
+            type: string
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

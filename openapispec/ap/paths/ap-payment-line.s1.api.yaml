@@ -1,0 +1,169 @@
+openapi: 3.0.0
+info:
+  title: ap-payment-line
+  description: ap-payment-line API
+  version: '1.0'
+  contact:
+    name: Lingaraj Dhabale
+    email: lingaraj.dhabale@sage.com
+tags:
+  - name: AP payment lines
+    description: AP payment line items represent entries in an AP payment object.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ap-payment-line:
+    get:
+      summary: List AP payment lines
+      description: Returns a collection with a key, ID, and link for each AP payment line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP payment lines
+      operationId: get-objects-ap-payment-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-payment-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Get AP payment lines:
+                  value:
+                    'ia::result':
+                      - key: '3936'
+                        id: '3936'
+                        href: /objects/ap-payment-line/3936
+                      - key: '3938'
+                        id: '3938'
+                        href: /objects/ap-payment-line/3938
+                    'ia::meta':
+                      totalCount: 2
+                      start: 0
+                      pageSize: 1
+                      next: 0
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ap-payment-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AP payment line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AP payment line
+      description: Returns detailed information for a specified AP payment line.
+      tags:
+        - AP payment lines
+      operationId: get-objects-ap-payment-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-payment-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-payment-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get AP payment line:
+                  value:
+                    'ia::result':
+                      id: '3936'
+                      key: '3936'
+                      apPayment:
+                        id: '267'
+                        key: '267'
+                        href: /objects/ap-payment/267
+                      glAccount:
+                        key: '109'
+                        id: '2000'
+                        name: Accounts Payable
+                        href: /objects/gl-account/109
+                      baseCurrency:
+                        amount: '100'
+                        currency: USD
+                        totalPaid: '0'
+                        totalSelected: '100'
+                      txnCurrency:
+                        amount: '100'
+                        currency: USD
+                        totalPaid: '0'
+                        totalSelected: '100'
+                      dimensions:
+                        department:
+                          id: null
+                          name: null
+                        location:
+                          id: '1'
+                          name: United States of America
+                        customer:
+                          key: null
+                          id: null
+                          name: null
+                        vendor:
+                          key: '17'
+                          id: VEN-0019
+                          name: EC
+                          href: /objects/vendor/17
+                        employee:
+                          key: null
+                          id: null
+                          name: null
+                        item:
+                          key: null
+                          id: null
+                          name: null
+                        class:
+                          key: null
+                          id: null
+                          name: null
+                      description: Invoice for development in March 2022
+                      exchangeRate:
+                        date: '2022-07-21'
+                        typeId: null
+                        rate: '1'
+                      lineNumber: '1'
+                      paymentLineRecord: pp
+                      bankLocation: '1'
+                      audit:
+                        createdDateTime: '2022-07-21T10:00:13Z'
+                        modifiedDateTime: '2022-07-21T10:00:13Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      taxDetail:
+                        id: null
+                        key: null
+                      isTax: false
+                      href: /objects/ap-payment-line/3936
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-payment-line:
+      $ref: ../models/ap-payment-line.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

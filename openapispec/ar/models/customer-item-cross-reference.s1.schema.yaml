@@ -1,0 +1,100 @@
+title: customer-item-cross-reference
+x-mappedTo: customeritemcrossref
+type: object
+x-ownedBy: customer
+description: list of customer item cross references
+properties:
+  key:
+    type: string
+    description: Customer Item Cross Reference Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Customer Item Cross Reference id
+    readOnly: true
+    x-mappedTo: RECORDNO
+  href:
+    type: string
+    description: URL of the customer-item-cross-reference.
+    readOnly: true
+  customer:
+    type: object
+    description: Customer.
+    x-object: customer
+    x-mappedTo: customer
+    properties:
+      key:
+        type: string
+        description: Customer key
+        x-mappedTo: CUSTOMERKEY
+      id:
+        type: string
+        description: Customer ID
+        x-mappedTo: CUSTOMERID
+      name:
+        type: string
+        x-mappedTo: CUSTOMERNAME
+      href:
+        type: string
+        description: URL of the customer.
+        readOnly: true
+  item:
+    type: object
+    x-mappedTo: item
+    x-object: item
+    properties:
+      key:
+        type: string
+        description: Item key
+        x-mappedTo: ITEMKEY
+      id:
+        type: string
+        description: Item ID
+        x-mappedTo: ITEMID
+        example:
+      name:
+        type: string
+        x-mappedTo: ITEMNAME
+        example:
+      href:
+        type: string
+        description: URL of the item.
+        readOnly: true
+  referenceType:
+    type: string
+    description: Reference type
+    x-mappedTo: REFTYPE
+    example:
+    enum:
+      - 'customer'
+    x-mappedToValues:
+      - 'Customer'
+  itemAliasId:
+    type: string
+    description: Cross-reference item ID
+    x-mappedTo: ITEMALIASID
+    example:
+  itemAliasDescription:
+    type: string
+    description: Cross-reference item description
+    x-mappedTo: ITEMALIASDESC
+    example:
+  unit:
+    type: string
+    description: Unit
+    x-mappedTo: UNIT
+    example:
+  referenceTypeContext:
+    type: string
+    description: Reference type Context
+    x-mappedTo: REFTYPECONTEXT
+    example:
+    enum:
+      - 'internal'
+      - 'external'
+    x-mappedToValues:
+      - 'Internal'
+      - 'External'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

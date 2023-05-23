@@ -1,0 +1,46 @@
+title: system-view
+type: object
+x-idempotence: true
+x-mappedTo: __custom__
+description: Filter View.
+properties:
+  key:
+    type: string
+    description: Record Key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Record Id
+    x-mappedTo: RECORDNO
+    readOnly: true
+  name:
+    type: string
+    description: View name
+    x-mappedTo: NAME
+  href:
+    type: string
+    readOnly: true
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  object:
+    type: string
+    description: Object
+    x-mappedTo: OBJECT
+  query:
+    type: object
+    description: Query Parameters
+    allOf:
+      - $ref: ../../common/models/query.schema.yaml
+      - type: object
+        x-mappedToType: blob
+        x-mappedTo: QUERYPARAMS
+  contexts:
+    type: array
+    description: Contexts
+    x-mappedTo: CONTEXTS
+    items:
+      type: string
+    readOnly: true

@@ -1,0 +1,102 @@
+title: ap-summary
+x-mappedTo: apbatch
+type: object
+description: Payment batches of all payment processed in the system.
+properties:
+  key:
+    type: string
+    description: Summary Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: Summary id
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  href:
+    type: string
+    readOnly: true
+  name:
+    type: string
+    description: Summary name
+    x-mappedTo: TITLE
+    example: 
+  createdBy:
+    type: string
+    description: Created
+    x-mappedTo: AUTOCREATED
+    example: 
+    enum:
+      - 'system'
+      - 'manual'
+    x-mappedToValues:
+      - 'Auto-Summary'
+      - 'Manual'
+    default: 'manual'
+  postingDate:
+    type: string
+    description: GL posting date
+    x-mappedTo: CREATED
+    example: 
+  recordType:
+    type: string
+    description: Record type
+    x-mappedTo: RECORDTYPE
+    example:
+  total:
+    type: string
+    description: Total
+    x-mappedTo: TOTAL
+    example: 
+  state:
+    type: string
+    description: Open or closed
+    x-mappedTo: OPEN
+    example: 
+    enum:
+      - 'open'
+      - 'closed'
+    x-mappedToValues:
+      - 'Open'
+      - 'Closed'
+  parent:
+    type: object
+    x-object: ap-summary
+    properties:
+      key:
+        type: string
+        description: Parent batch
+        x-mappedTo: PARENTKEY
+        example:
+      href:
+        type: string
+        readOnly: true
+  preventGLPosting:
+    type: boolean
+    description: Not for GL posting
+    x-mappedTo: NOGL
+    example: 
+    x-mappedToType: string
+  glAccount:
+    type: object
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: Bank account ID
+        x-mappedTo: ACCOUNTNOKEY
+        example:
+      href:
+        type: string
+        readOnly: true
+  isSystemGenerated:
+    type: boolean
+    description: System generated
+    x-mappedTo: SYSTEMGENERATED
+    x-mappedToType: string
+    example:
+    default: false
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

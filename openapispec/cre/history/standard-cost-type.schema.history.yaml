@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/standardcosttype/view
+    POST:
+      - pa/lists/standardcosttype/create
+    PATCH:
+      - pa/lists/standardcosttype/edit
+    DELETE:
+      - pa/lists/standardcosttype/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

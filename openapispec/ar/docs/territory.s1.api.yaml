@@ -1,0 +1,368 @@
+openapi: 3.0.0
+info:
+  title: territory
+  description: territory API
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca uricariu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Territories
+    description: |
+      Territories are optionally included in Customer records and are used with Accounts Receivable reports. They can be useful for filtering and categorizing data, assuming your company has multiple territories.
+paths:
+  /objects/territory/{key}:
+    parameters:
+      - schema:
+          type: string
+          example: '81'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the territory.
+    get:
+      summary: Get a territory
+      description: Returns detailed information for a specified territory.
+      tags:
+        - Territories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the territory
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/territory.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-key
+    delete:
+      summary: Delete a territory
+      description: Deletes a territory.
+      tags:
+        - Territories
+      operationId: delete-objects-territory-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a territory
+      description: Updates an existing territory by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Territories
+      operationId: patch-objects-territory-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated territory
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/territory.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+  /objects/customer:
+    get:
+      summary: List territories
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each territory. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Territories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of territory objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-territory
+    post:
+      summary: Create a territory
+      description: Creates a new territory.
+      tags:
+        - Territories
+      operationId: post-objects-territory
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples: {}
+              schema:
+                type: object
+                title: New territory
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/territory.s1.schema'
+components:
+  schemas:
+    territory:
+      $ref: '#/components/schemas/territory.s1.schema'
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    territory.s1.schema:
+      title: territory
+      x-mappedTo: territory
+      type: object
+      description: Territories are optionally included in Customer records and are used with Accounts Receivable reports.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the territory.
+          x-mappedTo: TERRITORYID
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the territory. This unique identifier cannot be modified.
+          x-mappedTo: TERRITORYID
+          x-mutable: false
+          example: 1-South
+        href:
+          type: string
+          readOnly: true
+          description: URL for the territory.
+          example: /objects/territory/1
+        name:
+          type: string
+          description: Name of the territory.
+          x-mappedTo: NAME
+          example: South
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        parent:
+          type: object
+          x-object: territory
+          x-mappedTo: PARENT
+          title: parent
+          properties:
+            key:
+              type: string
+              x-mappedTo: PARENT.TERRITORYID
+              description: System-assigned key for the parent territory.
+              readOnly: false
+              example: '2'
+            id:
+              type: string
+              x-mappedTo: PARENT.NAME
+              description: ID of the parent territory.
+              readOnly: true
+              example: 1-North
+            href:
+              type: string
+              readOnly: true
+              description: URL for the parent territory.
+              example: /objects/territory/21
+        manager:
+          type: object
+          x-object: employee
+          x-mappedTo: MANAGER
+          title: manager
+          description: Employee who manages the territory. Used for informational purposes only.
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the territory.
+              x-mappedTo: TERRITORYID
+              example: '81'
+              readOnly: false
+            name:
+              type: string
+              description: Name of the territory manager.
+              x-mappedTo: SUPERVISORNAME
+              example: Donations
+              readOnly: true
+            id:
+              type: string
+              description: Unique identifier for the territory manager.
+              x-mappedTo: SUPERVISORNAME
+              example: anne.jason
+              readOnly: true
+            href:
+              type: string
+              description: URL for the territory manager.
+              example: /objects/employee/81
+              readOnly: true
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

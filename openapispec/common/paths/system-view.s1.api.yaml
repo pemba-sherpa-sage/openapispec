@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: system-view
+  description: system-view API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: System views
+    description: System view description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/system-view/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the system view.
+    get:
+      summary: Get a system view
+      description: Returns detailed information for a particular system view.
+      tags:
+        - System views
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the system-view
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/systemView'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-system-view-key
+components:
+  schemas:
+    systemView:
+      $ref: ../models/system-view.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

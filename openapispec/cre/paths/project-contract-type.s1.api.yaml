@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: project-contract-type
+  description: project-contract-type API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: project-contract-type
+    description: Project Contract Type is a user defined list, for categorizing Project Contracts.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-contract-type:
+    get:
+      summary: Get collection of project-contract-types
+      description: Returns a collection of project contract type keys and reference links to get project contract type details
+      tags:
+        - project-contract-type
+      operationId: get-objects-project-contract-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: project-contract-type Collection
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-result-collection-of-project-contract-types:
+                  value:
+                    'ia::result':
+                      - key: '21'
+                        id: COM
+                        href: /objects/project-contract-type/21
+                      - key: '22'
+                        id: RES
+                        href: /objects/project-contract-type/22
+                      - key: '23'
+                        id: REST-CUST
+                        href: /objects/project-contract-type/23
+                      - key: '24'
+                        id: REST-INS
+                        href: /objects/project-contract-type/24
+                      - key: '25'
+                        id: Fab
+                        href: /objects/project-contract-type/25
+                      - key: '26'
+                        id: SUB
+                        href: /objects/project-contract-type/26
+                      - key: '27'
+                        id: CUST-BLD
+                        href: /objects/project-contract-type/27
+                      - key: '28'
+                        id: LUMPSUM
+                        href: /objects/project-contract-type/28
+                    'ia::meta':
+                      totalCount: 8
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create project-contract-type
+      description: Create a new project contract type
+      tags:
+        - project-contract-type
+      operationId: post-objects-project-contract-type
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-type'
+                - $ref: '#/components/schemas/project-contract-typeRequiredProperties'
+            examples:
+              example-create-project-contract-type:
+                value:
+                  id: RES
+                  name: Residential
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-contract-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-create-project-contract-type:
+                  value:
+                    'ia::result':
+                      key: '22'
+                      id: RES
+                      href: /objects/project-contract-type/22
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-contract-type/{key}':
+    parameters:
+      - name: key
+        description: project-contract-type Key
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get project-contract-type
+      description: Get complete details for a particular project contract type
+      tags:
+        - project-contract-type
+      operationId: get-objects-project-contract-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: project-contract-type details
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-contract-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-get-project-contract-type:
+                  value:
+                    'ia::result':
+                      key: '22'
+                      id: RES
+                      name: Residential
+                      status: active
+                      audit:
+                        createdDateTime: '2021-08-19T00:00:00Z'
+                        modifiedDateTime: '2021-08-19T00:00:00Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/project-contract-type/22
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update project-contract-type
+      description: Update details of existing project contract type
+      tags:
+        - project-contract-type
+      operationId: patch-objects-project-contract-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../models/project-contract-type.s1.schema.yaml
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-contract-type:
+                value:
+                  name: Temp contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-result-update-project-contract-type:
+                  value:
+                    'ia::result':
+                      key: '29'
+                      id: TEMP
+                      href: /objects/project-contract-type/29
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete project-contract-type
+      description: Delete a project contract type
+      tags:
+        - project-contract-type
+      operationId: delete-objects-project-contract-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract-type:
+      $ref: ../models/project-contract-type.s1.schema.yaml
+    project-contract-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

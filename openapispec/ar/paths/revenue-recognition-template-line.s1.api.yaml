@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template-line
+  description: revenue-recognition-template-line API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Revenue recognition template lines
+    description: This object represents line entries in a revenue recognition template.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/revenue-recognition-template-line:
+    get:
+      summary: List revenue recognition template lines
+      description: Returns a collection with a key, ID, and link for each revenue recognition template line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition template lines
+      operationId: get-objects-revenue-recognition-template-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List revenue recognition template lines: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/REVRECTEMPLENTRY/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the revenue recognition template line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a revenue recognition template line
+      description: Returns detailed information for a specified revenue recognition template line.
+      tags:
+        - Revenue recognition template lines
+      operationId: get-objects-revenue-recognition-template-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue-recognition-template-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/revenue-recognition-template-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a revenue recognition template line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    revenue-recognition-template-line:
+      $ref: ../models/revenue-recognition-template-line.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

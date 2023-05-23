@@ -1,0 +1,57 @@
+title: billing-template-entry
+x-mappedTo: contractbillingtemplateentry
+x-ownedBy: billing-template
+type: object
+description: List of contract billing template entries when using predefined percentages.
+properties:
+  key:
+    type: string
+    description: Contract billing template entry Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: Contract billing template entry Id
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  periodOffset:
+    type: string
+    description: Number of months offset
+    x-mappedTo: PERIODOFFSET
+    example: '2'
+  percentBilled:
+    type: string
+    description: Percent to bill
+    x-mappedTo: PERCENTBILLED
+    example: '10.12312000'
+  stepPercent:
+    type: string
+    format: decimal-precision-8
+    description: Threshold percentage
+    x-mappedTo: STEPPERCENT
+    example: '90.12312000'
+  contractBillingTemplate:
+    type: object
+    x-mappedTo: contractbillingtemplate
+    x-object: billing-template
+    properties:
+      key:
+        type: string
+        description: Template Key
+        x-mappedTo: TEMPLATEKEY
+        example: '1'
+      id:
+        type: string
+        description: Contract Billing Template ID
+        x-mappedTo: NAME
+        example: '12P_BeginingPeriod'
+      href:
+        type: string
+        example: '/objects/billing-template/1'
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

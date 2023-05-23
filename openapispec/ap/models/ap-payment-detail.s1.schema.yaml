@@ -1,0 +1,472 @@
+title: ap-payment-detail
+x-mappedTo: appymtdetail
+x-ownedBy: ap-payment
+type: object
+description: An AP payment detail object includes an AP bill or AP adjustment credit memo to pay and optional transactions to apply as credits.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP payment detail.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1083'
+  id:
+    type: string
+    description: Identifier for the AP payment detail. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1083'
+  href:
+    type: string
+    description: URL for the AP payment-detail.
+    readOnly: true
+    example: /objects/ap-payment-detail/1083
+  paymentDate:
+    type: string
+    format: date
+    description: Date the payment was made.
+    readOnly: true
+    x-mappedTo: PAYMENTDATE
+    nullable: false
+    example: '2023-04-04'
+  baseCurrency:
+    type: object
+    description: Grouping all the base currency fields.
+    properties:
+      paymentAmount:
+        type: string
+        description: The amount of the payment in the company's base currency.
+        x-mappedTo: PAYMENTAMOUNT
+        example: '10'
+      inlineAmount:
+        type: string
+        description: Inline transaction base amount.
+        readOnly: true
+        x-mappedTo: INLINEAMOUNT
+        example: '10'
+      discountAmount:
+        type: string
+        description: Discount base amount.
+        readOnly: true
+        x-mappedTo: DISCOUNTAMOUNT
+        example: '10'
+      adjustmentAmount:
+        type: string
+        description: Adjustment transaction base amount.
+        readOnly: true
+        x-mappedTo: ADJUSTMENTAMOUNT
+        example: '10'
+      postedAdvanceAmount:
+        type: string
+        description: Posted advance base amount.
+        readOnly: true
+        x-mappedTo: POSTEDADVANCEAMOUNT
+        example: '10'
+  txnCurrency:
+    type: object
+    description: Grouping all the transaction currency fields.
+    properties:
+      currency:
+        type: string
+        description: Payment currency.
+        readOnly: true
+        x-mappedTo: CURRENCY
+        example: 'USD'
+      paymentAmount:
+        type: string
+        description: The amount of the transaction in the payment currency.
+        x-mappedTo: TRX_PAYMENTAMOUNT
+        nullable: false
+        example: '10'
+      inlineAmount:
+        type: string
+        description: Inline transaction amount.
+        x-mappedTo: TRX_INLINEAMOUNT
+        example: '10'
+      discountAmount:
+        type: string
+        description: Discount transaction amount.
+        readOnly: true
+        x-mappedTo: TRX_DISCOUNTAMOUNT
+        example: '10'
+      adjustmentAmount:
+        type: string
+        description: Adjustment transaction amount.
+        x-mappedTo: TRX_ADJUSTMENTAMOUNT
+        example: '10'
+      postedAdvanceAmount:
+        type: string
+        description: Posted advance transaction amount.
+        x-mappedTo: TRX_POSTEDADVANCEAMOUNT
+        example: '10'
+  discountDate:
+    type: string
+    format: date
+    description: Discount date.
+    x-mappedTo: DISCOUNTDATE
+    example: '2023-04-04'
+  state:
+    type: string
+    description: State of the payment.
+    readOnly: true
+    x-mappedTo: STATE
+    example: D
+  moduleKey:
+    type: string
+    description: Module key.
+    readOnly: true
+    x-mappedTo: MODULEKEY
+    nullable: false
+    example: '3.AP'
+  apDebitAdjustment:
+    type: object
+    description: AP adjustment to pay.
+    x-mappedTo: apadjustment
+    x-object: ap-adjustment
+    properties:
+      href:
+        type: string
+        description: URL for the AP adjustment.
+        readOnly: true
+        example: /objects/ap-adjustment/3319
+      key:
+        type: string
+        description: System-assigned key for the AP adjustment.
+        x-mappedTo: ADJUSTMENTKEY
+        example: '3319'
+      id:
+        type: string
+        description: Identifier for the AP adjustment.
+        readOnly: true
+        x-mappedTo: ADJUSTMENTKEY
+        example: '3319'
+  apDebitAdjustmentLine:
+    type: object
+    description: Line item in the AP adjustment.
+    x-mappedTo: apadjustmententry
+    x-object: ap-adjustment-line
+    properties:
+      href:
+        type: string
+        description: URL for the AP adjustment line item.
+        readOnly: true
+        example: /objects/ap-adjustment-line/30854
+      key:
+        type: string
+        description: System-assigned key for the AP adjustment line item.
+        x-mappedTo: ADJUSTMENTENTRYKEY
+        example: '30854'
+      id:
+        type: string
+        description: Identifier for the AP adjustment line item.
+        readOnly: true
+        x-mappedTo: ADJUSTMENTENTRYKEY
+        example: '30854'
+  bill:
+    type: object
+    description: AP bill to pay.
+    x-mappedTo: apbill
+    x-object: bill
+    properties:
+      href:
+        type: string
+        description: URL for the AP bill.
+        readOnly: true
+        example: /objects/bill/3318
+      key:
+        type: string
+        description: System-assigned key for the bill.
+        x-mappedTo: RECORDKEY
+        example: '3318'
+      id:
+        type: string
+        description: ID for the bill.
+        readOnly: true
+        x-mappedTo: RECORDKEY
+        example: '3318'
+  billLine:
+    type: object
+    description: Line item in the AP bill.
+    readOnly: true
+    x-mappedTo: apbillitem
+    x-object: bill-line
+    properties:
+      href:
+        type: string
+        description: URL for the bill line item.
+        readOnly: true
+        example: /objects/bill-line/30844
+      key:
+        type: string
+        description: System-assigned key for the bill line item.
+        x-mappedTo: ENTRYKEY
+        example: '30844'
+      id:
+        type: string
+        description: ID for the bill line item.
+        readOnly: true
+        x-mappedTo: ENTRYKEY
+        example: '30844'
+  apDiscount:
+    type: object
+    description: Discount transaction included in the AP payment details.
+#    x-mappedTo: apdiscount
+#    x-object: ap-discount
+    properties:
+#      href:
+#        type: string
+#        description: URL for the discount.
+#        readOnly: true
+      key:
+        type: string
+        description: System-assigned key for the discount.
+        readOnly: true
+        x-mappedTo: DISCOUNTKEY
+        example: '123'
+      id:
+        type: string
+        description: ID for the discount.
+        x-mappedTo: DISCOUNTKEY
+        example: '123'
+  apDiscountLine:
+    type: object
+    description: Line item in the discount.
+#    x-mappedTo: apdiscountentry
+#    x-object: ap-discount-line
+    properties:
+#      href:
+#        type: string
+#        description: URL for the discount line item.
+#        readOnly: true
+      key:
+        type: string
+        description: System-assigned key for the discount line item.
+        readOnly: true
+        x-mappedTo: DISCOUNTENTRYKEY
+        example: '12344'
+      id:
+        type: string
+        description: ID for the discount line item.
+        readOnly: true
+        x-mappedTo: DISCOUNTENTRYKEY
+        example: '12344'
+  apAdvance:
+    type: object
+    description: AP Posted advance transaction included in the AP payment details.
+#    x-mappedTo: apadvance
+#    x-object: ap-advance
+    properties:
+#      href:
+#        type: string
+#        description: URL for the AP posted advance.
+#        readOnly: true
+#        example: /objects/ap-advance/3320
+      key:
+        type: string
+        description: System-assigned key for the AP posted advance.
+        x-mappedTo: ADVANCEKEY
+        example: '3320'
+      id:
+        type: string
+        description: ID for the AP posted advance.
+        readOnly: true
+        x-mappedTo: ADVANCEKEY
+        example: '3320'
+  apAdvanceLine:
+    type: object
+    description: Line item in the AP posted advance.
+#    x-mappedTo: apadvanceitem
+#    x-object: ap-advance-line
+    properties:
+#      href:
+#        type: string
+#        description: URL for the AP posted advance line item.
+#        readOnly: true
+#        example: /objects/ap-advance/30856
+      key:
+        type: string
+        description: System-assigned key for the AP posted advance line item.
+        x-mappedTo: ADVANCEENTRYKEY
+        example: '30856'
+      id:
+        type: string
+        description: ID for the AP posted advance line item.
+        readOnly: true
+        x-mappedTo: ADVANCEENTRYKEY
+        example: '30856'
+  apPostedAdvance:
+    type: object
+    description: Posted advance transaction included in the AP payment details.
+#    x-mappedTo: appostedadvance
+#    x-object: ap-postedadvance
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the posted advance.
+        readOnly: true
+        x-mappedTo: POSTEDADVANCEKEY
+        example: '3328'
+      id:
+        type: string
+        description: ID for the posted advance.
+        readOnly: true
+        x-mappedTo: POSTEDADVANCEKEY
+        example: '3328'
+#      href:
+#        type: string
+#        description: URL for the posted advance.
+#        readOnly: true
+#        example: /objects/ap-postedadvance/3328
+  apPostedAdvanceLine:
+    type: object
+    description: Line item in the posted advance.
+#    x-mappedTo: appostedadvanceentry
+#    x-object: ap-postedadvance-line
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the posted advance line item.
+        readOnly: true
+        x-mappedTo: POSTEDADVANCEENTRYKEY
+        example: '30916'
+      id:
+        type: string
+        description: ID for the posted advance line item.
+        readOnly: true
+        x-mappedTo: POSTEDADVANCEENTRYKEY
+        example: '30916'
+#      href:
+#        type: string
+#        description: URL for the posted advance line item.
+#        readOnly: true
+#        example: /objects/ap-postedadvance-line/30916
+  apPayment:
+    type: object
+    description: AP payment included in the payment details. 
+    x-mappedTo: appymt
+    x-object: ap-payment
+    properties:
+      href:
+        type: string
+        description: URL for the AP payment.
+        readOnly: true
+        example: /objects/ap-payment/3325
+      key:
+        type: string
+        description: System-assigned key for the AP payment.
+        x-mappedTo: PAYMENTKEY
+        example: '3325'
+      id:
+        type: string
+        description: ID for the AP payment.
+        readOnly: true
+        x-mappedTo: PAYMENTKEY
+        example: '3325'
+  apPaymentLine:
+    type: object
+    description: AP payment line included in the payment details.
+    x-mappedTo: appymtentry
+    x-object: ap-payment-line
+    properties:
+      href:
+        type: string
+        description: URL for the AP payment line.
+        readOnly: true
+        example: /objects/ap-payment-line/30917
+      key:
+        type: string
+        description: System-assigned key for the AP payment line.
+        x-mappedTo: PAYMENTENTRYKEY
+        example: '30917'
+      id:
+        type: string
+        description: ID for the AP payment line.
+        readOnly: true
+        x-mappedTo: PAYMENTENTRYKEY
+        example: '30917'
+  inlineBill:
+    type: object
+    x-mappedTo: apbill
+    x-object: bill
+    properties:
+      href:
+        type: string
+        description: URL for the inline bill.
+        readOnly: true
+        example: /objects/bill/3321
+      key:
+        type: string
+        description: Inline transaction record number.
+        x-mappedTo: INLINEKEY
+        example: '3321'
+      id:
+        type: string
+        description: Inline transaction record ID.
+        readOnly: true
+        x-mappedTo: INLINEKEY
+        example: '3321'
+  inlineBillLine:
+    type: object
+    x-mappedTo: apbillitem
+    x-object: bill-line
+    properties:
+      href:
+        type: string
+        description: URL for the inline bill item.
+        readOnly: true
+        example: /objects/bill-line/30866
+      key:
+        type: string
+        description: Inline transaction entry record number.
+        x-mappedTo: INLINEENTRYKEY
+        example: '30866'
+      id:
+        type: string
+        description: Inline transaction entry record ID.
+        readOnly: true
+        x-mappedTo: INLINEENTRYKEY
+        example: '30866'
+  apCreditAdjustment:
+    type: object
+    x-mappedTo: apadjustment
+    x-object: ap-adjustment
+    properties:
+      href:
+        type: string
+        description: URL for the positive adjustment.
+        readOnly: true
+        example: /objects/ap-adjustment/3321
+      key:
+        type: string
+        description: Positive adjustment record number.
+        x-mappedTo: POSADJKEY
+        example: '3321'
+      id:
+        type: string
+        description: Positive adjustment record ID.
+        readOnly: true
+        x-mappedTo: POSADJKEY
+        example: '3321'
+  apCreditAdjustmentLine:
+    type: object
+    x-mappedTo: apadjustmentitem
+    x-object: ap-adjustment-line
+    properties:
+      href:
+        type: string
+        description: URL for the positive adjustment item.
+        readOnly: true
+        example: /objects/ap-adjustment/33213
+      key:
+        type: string
+        description: Positive adjustment record number.
+        x-mappedTo: POSADJENTRYKEY
+        example: '33213'
+      id:
+        type: string
+        description: Positive adjustment record ID.
+        readOnly: true
+        x-mappedTo: POSADJENTRYKEY
+        example: '33213'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

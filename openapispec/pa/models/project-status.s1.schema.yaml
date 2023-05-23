@@ -1,0 +1,65 @@
+title: project-status
+x-mappedTo: projectstatus
+type: object
+x-idempotence: true
+description: Use a project status to disable (prevent) certain transactions from occurring, or use the status to track projects in different states.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for project status. Use this key to refer to the project status in all operations.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: User-specified name for the project status; used to categorize and report on projects.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'In Progress'
+  name:
+    type: string
+    description: Project status name
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'In Progress'
+  description:
+    type: string
+    description: A brief description of the purpose of the project status.
+    x-mappedTo: DESCRIPTION
+    example: 'In Progress'
+  disableTimeSheetEntry:
+    type: boolean
+    description: Indicates whether timesheet entries are allowed for projects with this status.
+    x-mappedTo: PREVENTTIMESHEET
+    x-mappedToType: string
+    example: false
+    default: false
+  disableExpenseEntry:
+    type: boolean
+    description: Indicates whether expense entries are allowed for projects with this status.
+    x-mappedTo: PREVENTEXPENSE
+    x-mappedToType: string
+    example: false
+    default: false
+  disablePurchasingAPEntry:
+    type: boolean
+    description: Indicates whether AP/PO entries are allowed for projects with this status.
+    x-mappedTo: PREVENTAPPO
+    x-mappedToType: string
+    example: false
+    default: false
+  disableGenerateInvoice:
+    type: boolean
+    description: Indicates whether invoices can be generated for projects with this status.
+    x-mappedTo: PREVENTGENINVOICE
+    x-mappedToType: string
+    example: false
+    default: false
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  href:
+    type: string
+    readOnly: true
+    example: /objects/project-status/1

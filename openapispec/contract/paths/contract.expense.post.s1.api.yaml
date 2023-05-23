@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: contract.expense
+  description: contract-expense API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+tags:
+  - name: contract-expense
+    description: contract-expense.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/expense/post:
+    post:
+      summary: contract-expense post
+      description: contract-expense post.
+      tags:
+        - contract-expenses
+      operationId: post-contract-expense-post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-post-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-post-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-post-request:
+      description: post request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          description: Contract Expense key
+          x-mappedTo: CONTRACTEXPENSEKEY
+          nullable: false
+          example: 1
+        postingDate:
+          type: string
+          format: date
+          description: post date
+          x-mappedTo: GLPOSTINGDATE
+          example: '2022-06-30'
+        memo:
+          type: string
+          description: post memo
+          x-mappedTo: POSTMEMO
+          example: 'test'
+      
+    contract-expense-post-response:
+      description: post response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,17 @@
+title: account-label-tax-group
+x-mappedTo: acctlabeltaxgroup
+type: object
+description: List of AR Account Label Tax Group.
+properties:
+  key:
+    type: string
+    description: Account Label Tax Group Key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Account Label Tax Group ID
+    x-mappedTo: NAME
+    x-mutable: false
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

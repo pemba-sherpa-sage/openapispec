@@ -1,0 +1,51 @@
+title: tax-authority
+x-mappedTo: taxauthority
+type: object
+description: Tax authority
+properties:
+  key:
+    type: string
+    description: System-assigned key for the tax authority.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '105'
+  id:
+    type: string
+    description: Unique identifier for the tax authority.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'Texas'
+  description:
+    type: string
+    description: Description of the tax authority or other additional information.
+    x-mappedTo: DESCRIPTION
+    example: 'Texas tax authority'
+  href:
+    type: string
+    description: URL of the tax authority.
+    readOnly: true
+    example: /objects/tax-authority/105
+  vendorId:
+    type: string
+    description: The unique identifier of the vendor to whom you'll pay the taxes collected for this tax authority.
+    x-mappedTo: VENDORID
+    example: 'Vendor_Visa_C'
+  parent:
+    type: object
+    x-object: tax-authority
+    title: Parent authority
+    description: Parent tax authority.
+    properties:
+      id:
+        type: string
+        x-mappedTo: PARENTAUTHORITY
+        example: 'California'
+      key:
+        type: string
+        x-mappedTo: PARENTNAME
+        readOnly: true
+        example: '24'
+      href:
+        type: string
+        readOnly: true
+        example: objects/tax-authority/24

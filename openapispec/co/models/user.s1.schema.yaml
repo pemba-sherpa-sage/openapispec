@@ -1,0 +1,253 @@
+title: user
+description: User information
+x-mappedTo: userinfo
+type: object
+properties:
+  key:
+    description: User key
+    type: string
+    x-mappedTo: RECORDNO
+    example: '29'
+    readOnly: true
+  id:
+    description: User Login Id
+    type: string
+    x-mappedTo: LOGINID
+    x-mutable: false
+    example: 'john.doe'
+  userName:
+    description: Username
+    type: string
+    x-mappedTo: DESCRIPTION
+    example: 'John Doe'
+  adminPrivileges:
+    description: User admin privileges
+    type: string
+    x-mappedTo: ADMIN
+    enum:
+      - 'off'
+      - 'limited'
+      - 'full'
+    x-mappedToValues:
+      - 'false'
+      - 'true'
+      - 'Full'
+    example: off
+  userType:
+    description: User type
+    type: string
+    x-mappedTo: USERTYPE
+    enum:
+      - business
+      - employee
+      - viewOnly
+      - dashboard
+      - projectManager
+      - paymentApprover
+      - platform
+      - CRM
+      - warehouse
+    x-mappedToValues:
+      - business user
+      - employee user
+      - view only user
+      - dashboard user
+      - project manager user
+      - payment approver
+      - platform user
+      - CRM user
+      - warehouse user
+    example: 'employee'
+  status:
+    type: string
+    enum:
+      - active
+      - inactive
+      - lockedOut
+    x-mappedToValues:
+      - active
+      - inactive
+      - lockedout
+    description: Record status. (Default= active)
+    x-mappedTo: STATUS
+    example: 'active'
+  webServices:
+    type: object
+    description: Web Services / API properties
+    properties:
+      isEnabled:
+        description: Whether the user can be used for web services (API)
+        type: boolean
+        x-mappedTo: VISIBLE
+        x-mappedToType: string
+        default: true
+        example: true
+      isRestricted:
+        description: Restrict user access to Web Services only
+        type: boolean
+        x-mappedTo: LOGINDISABLED
+        x-mappedToType: string
+        default: false
+        example: true
+  password:
+    type: object
+    description: Password properties
+    properties:
+      neverExpires:
+        type: boolean
+        description: Password will not expire if set to true
+        x-mappedTo: PWDNEVEREXPIRES
+        example: true
+      requiresReset:
+        type: boolean
+        description: Reset password required
+        x-mappedTo: RESETPASSWORD
+        example: false
+  sso:
+    type: object
+    description: SSO settings
+    properties:
+      isSSOEnabled:
+        type: boolean
+        description: Whether SSO is enabled for the user
+        x-mappedTo: SSO_ENABLED
+        example: true
+        default: false
+      federatedSSOId:
+        type: string
+        description: Federated SSO user id
+        x-mappedTo: SSO_FEDERATED_ID
+        example: 'john.doe'
+  entityAccess:
+    type: object
+    description: Entity level restrictions
+    properties:
+      allowUnrestrictedAccess:
+        description: Restricted users means the user is restricted to 1 or more entities
+        type: boolean
+        x-mappedTo: UNRESTRICTED
+        default: true
+        example: true
+      allowToplevelAccess:
+        description: Enable access to top-level. Makes sense for restricted users
+        type: boolean
+        x-mappedTo: TOPLEVELACCESS
+        default: false
+        example: false
+  contact:
+    description: User contact information
+    allOf:
+      - $ref: ../../common/references/contactref.s1.schema.yaml
+      - type: object
+        x-mappedToPrefix: CONTACTINFO
+        x-object: contact
+        x-mappedTo: contact
+        x-mappedToKey: CONTACTKEY
+    type: object
+  trustedDevices:
+    type: string
+    x-mappedTo: MFA_NOTRUST
+    description: Allow trusted devices. The user can specify whether to use the company setting or have it enforced
+    enum:
+      - 'companyDefault'
+      - 'always'
+      - 'never'
+    x-mappedToValues:
+      - 'none'
+      - 'always'
+      - 'never'
+    default: 'companyDefault'
+    example: 'always'
+  isChatterDisabled:
+    type: boolean
+    x-mappedTo: CHATTER_DISABLED
+    description: Prevent this user from accessing the Intacct Collaborate feature
+    x-mappedToType: string
+    default: false
+    example: false
+  hideOtherDepartmentTransactions:
+    type: boolean
+    x-mappedTo: HIDENODEPT
+    description: Hide transactions that do not belong to the user's departments
+    default: false
+    example: false
+  locations:
+    type: array
+    x-mappedTo: USERLOCATIONS
+    x-schemaOverride: true
+    x-object: location
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          x-mappedTo: LOCATIONKEY
+        id:
+          type: string
+          x-mappedTo: LOCATIONID
+        href:
+          type: string
+          readOnly: true
+          example: '/objects/location/21'
+  departments:
+    type: array
+    x-mappedTo: USERDEPARTMENTS
+    x-schemaOverride: true
+    x-object: department
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          x-mappedTo: DEPTKEY
+        id:
+          type: string
+          x-mappedTo: DEPARTMENTID
+        href:
+          type: string
+          readOnly: true
+          example: '/objects/department/7'
+  territories:
+    type: array
+    x-mappedTo: USERTERRITORIES
+    x-schemaOverride: true
+    x-object: territory
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          x-mappedTo: TERRITORYKEY
+        id:
+          type: string
+          x-mappedTo: TERRITORYID
+        href:
+          type: string
+          readOnly: true
+          example: '/objects/territory/7'
+  roles:
+    type: array
+    description: List of roles assigned to the user.
+    x-mappedTo: USERROLES
+    x-schemaOverride: true
+    x-object: role
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          x-mappedTo: ROLEKEY
+        id:
+          type: string
+          x-mappedTo: ROLENAME
+        href:
+          type: string
+          readOnly: true
+          example: '/objects/role/7'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  href:
+    type: string
+    readOnly: true
+    description: URL for user
+    example: '/objects/user/21'

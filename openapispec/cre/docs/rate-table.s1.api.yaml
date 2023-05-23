@@ -1,0 +1,2918 @@
+openapi: 3.0.0
+info:
+  title: rate-table
+  description: rate-table API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Rate tables
+    description: A project contract rate table provides markup and pricing information to be used for generating Project Generated Invoices. Every rate table can optionally have lines for each transaction type that identify the criteria to use when applying markup and pricing for that transaction type. The rate table lines for transaction types include timesheetLines, purchasingLines, accountsPayableLines, journalLines, creditCardLines, employeeExpenseLines,
+paths:
+  /objects/rate-table:
+    get:
+      summary: List rate tables
+      description: Returns a collection with a key, ID, and link for each rate-table.
+      tags:
+        - Rate tables
+      operationId: get-objects-rate-table
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of rate table objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of rate tables:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/rate-table/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/rate-table/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/rate-table/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/rate-table/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/rate-table/79
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response-nokeyref.s1.schema'
+              examples:
+                List of rate tables error:
+                  value:
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Object named [rate-table] is not supported in version [0]
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    post:
+      summary: Create a rate table
+      description: Creates a new rate table.
+      tags:
+        - Rate tables
+      operationId: post-objects-rate-table
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/rate-table.s1.schema'
+                - type: object
+                  properties:
+                    '':
+                      type: string
+            examples:
+              Create a rate table:
+                value:
+                  - key: '145'
+                    id: 2021-LV2
+                    name: 2021 Level 2
+                    description: 2021 Level 2 Rate Table
+                    location:
+                      key: 0
+                      id: 0
+                      name: string
+                    audit:
+                      createdDateTime: '2014-01-08T11:28:12Z'
+                      modifiedDateTime: '2014-01-08T11:28:12Z'
+                      createdBy: '1'
+                      modifiedBy: '95'
+                    status: active
+                    timesheetLines:
+                      - key: '12'
+                        id: '12'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-timesheet-line/12
+                        lineNumber: 1
+                        description: Aug Costing Kit
+                        startDate: '2021-08-03'
+                        markupPercent: '8.250'
+                        laborRate: '115.500'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        employeePosition:
+                          key: '2'
+                          id: COO
+                          name: Chief Executive Officer
+                          href: /objects/employee-position/2
+                        laborClass:
+                          key: '2'
+                          id: LC-2
+                          name: Labor class 2
+                          href: /objects/labor-class/2
+                        laborShift:
+                          key: '2'
+                          id: LS-2
+                          name: Day shift
+                          href: /objects/labor-shift/2
+                        laborUnion:
+                          key: '2'
+                          id: LU-2
+                          name: Labor union 2
+                          href: /objects/labor-union/2
+                        timeType:
+                          key: '1'
+                          id: Salaries At Root
+                          href: /objects/time-type/1
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    purchasingLines:
+                      - key: '176'
+                        id: '176'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-purchasing-line/176
+                        lineNumber: 1
+                        description: Aug Costing SOPA
+                        startDate: '2021-08-03'
+                        markupPercent: '15.900'
+                        unitPrice: '112.560'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    accountsPayableLines:
+                      - key: '397'
+                        id: '397'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-credit-card-line/397
+                        lineNumber: 1
+                        description: Aug Service
+                        startDate: '2021-08-01'
+                        markupPercent: '25.500'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    journalLines:
+                      - key: '64'
+                        id: '64'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-journal-line/64
+                        lineNumber: 1
+                        description: Aug John Smith
+                        startDate: '2021-08-01'
+                        markupPercent: '12.500'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    creditCardLines:
+                      - key: '145'
+                        id: '145'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-credit-card-line/145
+                        lineNumber: 1
+                        description: Aug Costing SOPA
+                        startDate: '2021-08-03'
+                        markupPercent: '15.900'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    employeeExpenseLines:
+                      - key: '30'
+                        id: '30'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-employee-expense-line/30
+                        lineNumber: 1
+                        description: Aug Manager
+                        startDate: '2021-08-02'
+                        markupPercent: '14.800'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: Thomas, Glenn
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: '1605212096809'
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New rate table
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create a rate table:
+                  value:
+                    ia::result:
+                      key: '111'
+                      href: /objects/rate-table/111
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response-nokeyref.s1.schema'
+              examples:
+                Create a rate table error:
+                  value:
+                    ia::result:
+                      ia::error:
+                        code: operationFailed
+                        message: '[POST] operation on [rate-table] object failed'
+                        supportId: N18al%7EYagIoDESVH90vAQ16yfqGAAAAAI
+                        details:
+                          - code: BL03000018
+                            message: 'ratetable: Required field ''Rate table ID'' is missing.'
+                            correction: Ensure all required fields are completed.
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  /objects/rate-table/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the rate table.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a rate table
+      description: Returns detailed information for a particular rate table.
+      tags:
+        - Rate tables
+      operationId: get-objects-rate-table-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the rate table
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/rate-table.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of rate table:
+                  value:
+                    ia::result:
+                      - key: '145'
+                        id: 2021-LV2
+                        name: 2021 Level 2
+                        description: 2021 Level 2 Rate Table
+                        location:
+                          key: 0
+                          id: 0
+                          name: string
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                        status: active
+                        timesheetLines:
+                          - key: '12'
+                            id: '12'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-timesheet-line/12
+                            lineNumber: 1
+                            description: Aug Costing Kit
+                            startDate: '2021-08-03'
+                            markupPercent: '8.250'
+                            laborRate: '115.500'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            employeePosition:
+                              key: '2'
+                              id: COO
+                              name: Chief Executive Officer
+                              href: /objects/employee-position/2
+                            laborClass:
+                              key: '2'
+                              id: LC-2
+                              name: Labor class 2
+                              href: /objects/labor-class/2
+                            laborShift:
+                              key: '2'
+                              id: LS-2
+                              name: Day shift
+                              href: /objects/labor-shift/2
+                            laborUnion:
+                              key: '2'
+                              id: LU-2
+                              name: Labor union 2
+                              href: /objects/labor-union/2
+                            timeType:
+                              key: '1'
+                              id: Salaries At Root
+                              href: /objects/time-type/1
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                        purchasingLines:
+                          - key: '176'
+                            id: '176'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-purchasing-line/176
+                            lineNumber: 1
+                            description: Aug Costing SOPA
+                            startDate: '2021-08-03'
+                            markupPercent: '15.900'
+                            unitPrice: '112.560'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                        accountsPayableLines:
+                          - key: '397'
+                            id: '397'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-credit-card-line/397
+                            lineNumber: 1
+                            description: Aug Service
+                            startDate: '2021-08-01'
+                            markupPercent: '25.500'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                        journalLines:
+                          - key: '64'
+                            id: '64'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-journal-line/64
+                            lineNumber: 1
+                            description: Aug John Smith
+                            startDate: '2021-08-01'
+                            markupPercent: '12.500'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                        creditCardLines:
+                          - key: '145'
+                            id: '145'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-credit-card-line/145
+                            lineNumber: 1
+                            description: Aug Costing SOPA
+                            startDate: '2021-08-03'
+                            markupPercent: '15.900'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                        employeeExpenseLines:
+                          - key: '30'
+                            id: '30'
+                            rateTable:
+                              key: '145'
+                              id: 2021-LV2
+                              name: 2021 Level 2
+                              href: /objects/rate-table/145
+                            href: /objects/rate-table-employee-expense-line/30
+                            lineNumber: 1
+                            description: Aug Manager
+                            startDate: '2021-08-02'
+                            markupPercent: '14.800'
+                            accumulationType:
+                              key: '2'
+                              id: ACCT-2
+                              href: /objects/accumulation-type/2
+                            standardCostType:
+                              key: '33'
+                              id: CT-RT-0010
+                              name: CT-RT-0010 MATERIAL
+                              href: /objects/standard-cost-type/33
+                            standardTask:
+                              key: '3'
+                              id: TSK-RT-0011
+                              name: TSK-RT-0011 Name
+                              href: /objects/standard-task/3
+                            dimensions:
+                              employee:
+                                key: '10'
+                                id: '10'
+                                name: Thomas, Glenn
+                                href: /objects/employee/10
+                              project:
+                                key: '2'
+                                id: NET-XML30-2
+                                name: Talcomp training
+                                href: /objects/project/2
+                              customer:
+                                key: '13'
+                                id: '113'
+                                name: Jack In the Box
+                                href: /objects/customer/13
+                              vendor:
+                                key: '357'
+                                id: '1605212096809'
+                                name: GenLab
+                                href: /objects/vendor/357
+                              item:
+                                key: '13'
+                                id: Case 13
+                                name: Platform pack
+                                href: /objects/item/13
+                              warehouse:
+                                key: '6'
+                                id: WH01
+                                name: WH01
+                                href: /objects/warehouse/6
+                              class:
+                                key: '731'
+                                id: REST_CLS_001
+                                name: Enterprises
+                                href: /objects/class/731
+                              task:
+                                key: '2'
+                                id: tet
+                                name: Design
+                                href: /objects/task/2
+                            audit:
+                              createdDateTime: '2014-01-08T11:28:12Z'
+                              modifiedDateTime: '2014-01-08T11:28:12Z'
+                              createdBy: '1'
+                              modifiedBy: '95'
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response-keyref.s1.schema'
+              examples:
+                Update a rate table error:
+                  value:
+                    key: '12'
+                    href: /objects/rate-table/12
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Field [id] is a read-only field
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    patch:
+      summary: Update a rate table
+      description: Updates an existing rate table by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Rate tables
+      operationId: patch-objects-rate-table-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/rate-table.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a rate table:
+                value:
+                  key: '145'
+                  description: 2021 Level 2 Rate Table (Aug)
+                  timesheetLines:
+                    - key: '12'
+                      lineNumber: 2
+                      description: Aug Costing Kit (Aug)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated rate table
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a rate table:
+                  value:
+                    ia::result:
+                      key: '12'
+                      id: 2021-LV2
+                      href: /objects/rate-table/12
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response-keyref.s1.schema'
+              examples:
+                Update a rate table error:
+                  value:
+                    key: '145'
+                    href: /objects/rate-table/145
+                    ia::result:
+                      ia::error:
+                        code: notFound
+                        message: The requested resource [rate-table] with key(s) [145] could not be found but may be available in the future
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    delete:
+      summary: Delete a rate table
+      description: Deletes a rate table.
+      tags:
+        - Rate tables
+      operationId: delete-objects-rate-table-key
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    rate-table:
+      $ref: '#/components/schemas/rate-table.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    metadata-extended.schema:
+      title: metadata-extended
+      description: Meta data with partial success
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            totalSuccess:
+              type: integer
+              description: Total Success
+              x-mappedTo: null
+              readOnly: true
+              example: 2
+            totalError:
+              type: integer
+              description: Total Errors
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+    error-response-nokeyref.s1.schema:
+      type: object
+      properties:
+        ia::result:
+          $ref: '#/components/schemas/error-response.schema'
+        ia::meta:
+          $ref: '#/components/schemas/metadata-extended.schema'
+    locationref.s1.schema:
+      title: locationref
+      type: object
+      x-object: location
+      properties:
+        key:
+          type: string
+          description: Location Key
+          x-mappedTo: LOCATIONKEY
+          example: '1'
+        id:
+          type: string
+          description: Location
+          x-mappedTo: LOCATION
+          example: US
+        name:
+          type: string
+          description: Location Name
+          readOnly: true
+          x-mappedTo: LOCATIONNAME
+          example: United States of America
+        href:
+          type: string
+          example: /objects/location/1
+          readOnly: true
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    rate-tableref.s1.schema:
+      type: object
+      title: rate-table
+      x-mappedTo: ratetable
+      x-object: rate-table
+      properties:
+        key:
+          type: string
+          x-mappedTo: RATETABLEKEY
+          example: '145'
+        id:
+          type: string
+          x-mappedTo: RATETABLEID
+          example: 2021-LV2
+        name:
+          type: string
+          x-mappedTo: RATETABLENAME
+          example: 2021 Level 2
+        href:
+          type: string
+          example: /objects/rate-table/145
+          readOnly: true
+      examples: []
+    accumulation-typeref.s1.schema:
+      type: object
+      title: accumulation-type
+      properties:
+        key:
+          type: string
+          description: Accumulation type key
+          x-mappedTo: ACCUMULATIONTYPEKEY
+          example: '2'
+        id:
+          type: string
+          description: Accumulation type id
+          x-mappedTo: ACCUMULATIONTYPENAME
+          example: ACCT-2
+        name:
+          type: string
+          description: Accumulation type name
+          x-mappedTo: ACCUMULATIONTYPENAME
+          example: ACCT-2
+        href:
+          type: string
+          readOnly: true
+          example: /objects/accumulation-type/2
+      examples: []
+    standard-cost-typeref.s1.schema:
+      type: object
+      title: standard-cost-type
+      x-object: standard-cost-type
+      properties:
+        key:
+          type: string
+          description: Standard cost type key
+          x-mappedTo: STANDARDCOSTTYPEKEY
+          example: '33'
+          readOnly: true
+        id:
+          type: string
+          description: Standard cost type id
+          x-mappedTo: STANDARDCOSTTYPEID
+          example: LAB
+        name:
+          type: string
+          description: Standard cost type name
+          x-mappedTo: STANDARDCOSTTYPENAME
+          example: LABOR
+          readOnly: true
+        href:
+          type: string
+          description: URL of the standard cost type
+          readOnly: true
+          example: /objects/standard-cost-type/33
+      examples: []
+    standard-taskref.s1.schema:
+      type: object
+      title: standard-task
+      x-object: standard-task
+      properties:
+        key:
+          type: string
+          description: Standard task key
+          x-mappedTo: STANDARDTASKKEY
+          example: '3'
+          readOnly: true
+        id:
+          type: string
+          description: Standard task id
+          x-mappedTo: STANDARDTASKID
+          example: 1-000
+        name:
+          type: string
+          description: Standard task name
+          x-mappedTo: STANDARDTASKNAME
+          example: GENERAL CONDITIONS
+          readOnly: true
+        href:
+          type: string
+          description: URL of the standard task
+          readOnly: true
+          example: /objects/standard-task/3
+      examples: []
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    rate-table-timesheet-line.s1.schema:
+      title: rate-table-timesheet-line
+      x-mappedTo: ratetabletsentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project contract rate table line for timesheets.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table timesheet line key
+          x-mappedTo: RECORDNO
+          example: '12'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table timesheet line id
+          x-mappedTo: RECORDNO
+          example: '12'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-timesheet-line/12
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug Costing Kit
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-03'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: '8.250'
+        laborRate:
+          type: string
+          format: decimal-precision-3
+          description: Labor rate
+          x-mappedTo: LABORRATE
+          example: '115.500'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        employeePosition:
+          type: object
+          title: employee-position
+          properties:
+            key:
+              type: string
+              description: Employee position key
+              x-mappedTo: EMPPOSITIONKEY
+              example: '2'
+            id:
+              type: string
+              description: Employee position id
+              x-mappedTo: EMPPOSITIONID
+              example: COO
+            name:
+              type: string
+              description: Employee position name
+              x-mappedTo: EMPPOSITIONNAME
+              example: Chief Executive Officer
+              readOnly: true
+            href:
+              type: string
+              example: /objects/employee-position/2
+              readOnly: true
+        laborClass:
+          type: object
+          title: labor-class
+          properties:
+            key:
+              type: string
+              description: Labor class key
+              x-mappedTo: LABORCLASSKEY
+              example: '2'
+            id:
+              type: string
+              description: Labor class id
+              x-mappedTo: LABORCLASSID
+              example: LC-2
+            name:
+              type: string
+              description: Labor class name
+              x-mappedTo: LABORCLASSNAME
+              example: Labor class 2
+              readOnly: true
+            href:
+              type: string
+              example: /objects/labor-class/2
+              readOnly: true
+        laborShift:
+          type: object
+          title: labor-shift
+          properties:
+            key:
+              type: string
+              description: Labor shift key
+              x-mappedTo: LABORSHIFTKEY
+              example: '2'
+            id:
+              type: string
+              description: Labor shift id
+              x-mappedTo: LABORSHIFTID
+              example: LS-2
+            name:
+              type: string
+              description: Labor shift name
+              x-mappedTo: LABORSHIFTNAME
+              example: Day shift
+              readOnly: true
+            href:
+              type: string
+              example: /objects/labor-shift/2
+              readOnly: true
+        laborUnion:
+          type: object
+          title: labor-union
+          properties:
+            key:
+              type: string
+              description: Labor union key
+              x-mappedTo: LABORUNIONKEY
+              example: '2'
+            id:
+              type: string
+              description: Labor union id
+              x-mappedTo: LABORUNIONID
+              example: LU-2
+            name:
+              type: string
+              description: Labor union name
+              x-mappedTo: LABORUNIONNAME
+              example: Labor union 2
+              readOnly: true
+            href:
+              type: string
+              example: /objects/labor-union/2
+              readOnly: true
+        timeType:
+          type: object
+          title: time-type
+          properties:
+            key:
+              type: string
+              description: Time type key
+              x-mappedTo: TIMETYPEKEY
+              example: '1'
+            id:
+              type: string
+              description: Time type id
+              x-mappedTo: TIMETYPENAME
+              example: Salaries At Root
+            name:
+              type: string
+              description: Time type name
+              x-mappedTo: TIMETYPENAME
+              example: Salaries At Root
+              readOnly: true
+            href:
+              type: string
+              example: /objects/time-type/1
+              readOnly: true
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table-purchasing-line.s1.schema:
+      title: rate-table-purchasing-line
+      x-mappedTo: ratetablepoentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project contract rate table line for purchase orders.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table purchase order line key
+          x-mappedTo: RECORDNO
+          example: '176'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table purchase order line id
+          x-mappedTo: RECORDNO
+          example: '176'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-purchasing-line/176
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug Costing SOPA
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-03'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: 15.9
+        unitPrice:
+          type: string
+          format: decimal-precision-3
+          description: Unit price
+          x-mappedTo: UNITPRICE
+          example: '112.560'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table-accounts-payable-line.s1.schema:
+      title: rate-table-accounts-payable-line
+      x-mappedTo: ratetableapentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project Contract rate table line for accounts payable.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table accounts payable line key
+          x-mappedTo: RECORDNO
+          example: '397'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table accounts payable line id
+          x-mappedTo: RECORDNO
+          example: '397'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-accounts-payable-line/397
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug Service
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-01'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: '25.5'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table-journal-line.s1.schema:
+      title: rate-table-journal-line
+      x-mappedTo: ratetableglentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project contract rate table line for general ledger.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table journal line key
+          x-mappedTo: RECORDNO
+          example: '64'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table journal line id
+          x-mappedTo: RECORDNO
+          example: '64'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-journal-line/64
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug John Smith
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-01'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: '12.500'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table-credit-card-line.s1.schema:
+      title: rate-table-credit-card-line
+      x-mappedTo: ratetableccentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project contract rate table line for credit cards.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table credit card line key
+          x-mappedTo: RECORDNO
+          example: '145'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table credit card line id
+          x-mappedTo: RECORDNO
+          example: '145'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-credit-card-line/145
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug Costing SOPA
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-03'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: '15.900'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table-employee-expense-line.s1.schema:
+      title: rate-table-employee-expense-line
+      x-mappedTo: ratetableexpenseentry
+      x-ownedBy: rate-table
+      type: object
+      description: Project contract rate table line for employee expenses.
+      examples: []
+      properties:
+        key:
+          type: string
+          description: Rate table employee expense line key
+          x-mappedTo: RECORDNO
+          example: '30'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table employee expense line id
+          x-mappedTo: RECORDNO
+          example: '30'
+          readOnly: true
+        rateTable:
+          $ref: '#/components/schemas/rate-tableref.s1.schema'
+        href:
+          type: string
+          example: /objects/rate-table-employee-expense-line/30
+          readOnly: true
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINENO
+          example: 1
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Aug Manager
+          maxLength: 1000
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          x-mappedTo: STARTDATE
+          example: '2021-08-02'
+        markupPercent:
+          type: string
+          format: decimal-precision-3
+          description: Markup %
+          x-mappedTo: MARKUPPCT
+          example: '14.800'
+        accumulationType:
+          $ref: '#/components/schemas/accumulation-typeref.s1.schema'
+        standardCostType:
+          $ref: '#/components/schemas/standard-cost-typeref.s1.schema'
+        standardTask:
+          $ref: '#/components/schemas/standard-taskref.s1.schema'
+        dimensions:
+          $ref: '#/components/schemas/dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    rate-table.s1.schema:
+      title: rate-table
+      x-mappedTo: ratetable
+      type: object
+      description: Header information for rate table.
+      x-internal: false
+      examples:
+        - key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          description: 2021 Level 2 Rate Table
+          location:
+            key: '1'
+            id: '1'
+            name: United States of America
+            href: /objects/location/1
+          audit:
+            createdDateTime: '2014-01-08T11:28:12Z'
+            modifiedDateTime: '2014-01-08T11:28:12Z'
+            createdBy: '1'
+            modifiedBy: '95'
+          status: active
+          timesheetLines:
+            - key: '12'
+              id: '12'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-timesheet-line/12
+              lineNumber: 1
+              description: Aug Costing Kit
+              startDate: '2021-08-03'
+              markupPercent: '8.250'
+              laborRate: '115.500'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              employeePosition:
+                key: '2'
+                id: COO
+                name: Chief Executive Officer
+                href: /objects/employee-position/2
+              laborClass:
+                key: '2'
+                id: LC-2
+                name: Labor class 2
+                href: /objects/labor-class/2
+              laborShift:
+                key: '2'
+                id: LS-2
+                name: Day shift
+                href: /objects/labor-shift/2
+              laborUnion:
+                key: '2'
+                id: LU-2
+                name: Labor union 2
+                href: /objects/labor-union/2
+              timeType:
+                key: '1'
+                id: Salaries At Root
+                name: Salaries At Root
+                href: /objects/time-type/1
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+          purchasingLines:
+            - key: '176'
+              id: '176'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-purchasing-line/176
+              lineNumber: 1
+              description: Aug Costing SOPA
+              startDate: '2021-08-03'
+              markupPercent: 15.9
+              unitPrice: '112.560'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+          accountsPayableLines:
+            - key: '397'
+              id: '397'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-credit-card-line/397
+              lineNumber: 1
+              description: Aug Service
+              startDate: '2021-08-01'
+              markupPercent: '25.5'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+          journalLines:
+            - key: '64'
+              id: '64'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-journal-line/64
+              lineNumber: 1
+              description: Aug John Smith
+              startDate: '2021-08-01'
+              markupPercent: '12.500'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+          creditCardLines:
+            - key: '145'
+              id: '145'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-credit-card-line/145
+              lineNumber: 1
+              description: Aug Costing SOPA
+              startDate: '2021-08-03'
+              markupPercent: '15.900'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+          employeeExpenseLines:
+            - key: '30'
+              id: '30'
+              rateTable:
+                key: '145'
+                id: 2021-LV2
+                name: 2021 Level 2
+                href: /objects/rate-table/145
+              href: /objects/rate-table-employee-expense-line/30
+              lineNumber: 1
+              description: Aug Manager
+              startDate: '2021-08-02'
+              markupPercent: '14.800'
+              accumulationType:
+                key: '2'
+                id: ACCT-2
+                href: /objects/accumulation-type/2
+              standardCostType:
+                key: '33'
+                id: CT-RT-0010
+                name: CT-RT-0010 MATERIAL
+                href: /objects/standard-cost-type/33
+              standardTask:
+                key: '3'
+                id: TSK-RT-0011
+                name: TSK-RT-0011 Name
+                href: /objects/standard-task/3
+              dimensions:
+                location:
+                  key: '22'
+                  id: LOC-22
+                  name: California
+                department:
+                  key: '11'
+                  id: DEP-11
+                  name: Sales and Marketing
+                employee:
+                  key: '10'
+                  id: '10'
+                  name: Thomas, Glenn
+                  href: /objects/employee/10
+                project:
+                  key: '2'
+                  id: NET-XML30-2
+                  name: Talcomp training
+                  href: /objects/project/2
+                customer:
+                  key: '13'
+                  id: '113'
+                  name: Jack In the Box
+                  href: /objects/customer/13
+                vendor:
+                  key: '357'
+                  id: 1605212096809
+                  name: GenLab
+                  href: /objects/vendor/357
+                item:
+                  key: '13'
+                  id: Case 13
+                  name: Platform pack
+                  href: /objects/item/13
+                warehouse:
+                  key: '6'
+                  id: WH01
+                  name: WH01
+                  href: /objects/warehouse/6
+                class:
+                  key: '731'
+                  id: REST_CLS_001
+                  name: Enterprises
+                  href: /objects/class/731
+                task:
+                  key: '2'
+                  id: tet
+                  name: Design
+                  href: /objects/task/2
+              audit:
+                createdDateTime: '2014-01-08T11:28:12Z'
+                modifiedDateTime: '2014-01-08T11:28:12Z'
+                createdBy: '1'
+                modifiedBy: '95'
+      properties:
+        key:
+          type: string
+          description: Rate table key
+          x-mappedTo: RECORDNO
+          x-mutable: false
+          example: '145'
+          readOnly: true
+        id:
+          type: string
+          description: Rate table id
+          x-mappedTo: RATETABLEID
+          x-mutable: false
+          example: 2021-LV2
+          maxLength: 20
+        name:
+          type: string
+          description: Name
+          x-mappedTo: NAME
+          example: 2021 Level 2
+          maxLength: 200
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: 2021 Level 2 Rate Table
+          maxLength: 1000
+        location:
+          $ref: '#/components/schemas/locationref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        timesheetLines:
+          type: array
+          x-object: rate-table-timesheet-line
+          x-mappedTo: RATETABLEENTRY_TS
+          items:
+            $ref: '#/components/schemas/rate-table-timesheet-line.s1.schema'
+        purchasingLines:
+          type: array
+          description: Rate table purchase order lines
+          x-object: rate-table-purchasing-line
+          x-mappedTo: RATETABLEENTRY_PO
+          items:
+            $ref: '#/components/schemas/rate-table-purchasing-line.s1.schema'
+        accountsPayableLines:
+          type: array
+          description: Rate table accounts payable lines
+          x-object: rate-table-accounts-payable-line
+          x-mappedTo: RATETABLEENTRY_AP
+          items:
+            $ref: '#/components/schemas/rate-table-accounts-payable-line.s1.schema'
+        journalLines:
+          type: array
+          description: Rate table general ledger lines
+          x-object: rate-table-journal-line
+          x-mappedTo: RATETABLEENTRY_GL
+          items:
+            $ref: '#/components/schemas/rate-table-journal-line.s1.schema'
+        creditCardLines:
+          type: array
+          description: Rate table credit card lines
+          x-object: rate-table-credit-card-line
+          x-mappedTo: RATETABLEENTRY_CC
+          items:
+            $ref: '#/components/schemas/rate-table-credit-card-line.s1.schema'
+        employeeExpenseLines:
+          type: array
+          description: Rate table employee expense lines
+          x-object: rate-table-employee-expense-line
+          x-mappedTo: RATETABLEENTRY_EE
+          items:
+            $ref: '#/components/schemas/rate-table-employee-expense-line.s1.schema'
+    error-response-keyref.s1.schema:
+      type: object
+      properties:
+        key:
+          type: string
+        href:
+          type: string
+        ia::result:
+          $ref: '#/components/schemas/error-response.schema'
+        ia::meta:
+          $ref: '#/components/schemas/metadata-extended.schema'

@@ -1,0 +1,189 @@
+title: rate-table-timesheet-line
+x-mappedTo: ratetabletsentry
+x-ownedBy: rate-table
+type: object
+description: Project contract rate table line for timesheets.
+examples: []
+properties:
+  key:
+    type: string
+    description: Rate table timesheet line key
+    x-mappedTo: RECORDNO
+    example: '12'
+    readOnly: true
+  id:
+    type: string
+    description: Rate table timesheet line id
+    x-mappedTo: RECORDNO
+    example: '12'
+    readOnly: true
+  rateTable:
+    $ref: ../references/rate-tableref.s1.schema.yaml
+  href:
+    type: string
+    example: /objects/rate-table-timesheet-line/12
+    readOnly: true
+  lineNumber:
+    type: integer
+    description: Line number
+    x-mappedTo: LINENO
+    example: 1
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: Aug Costing Kit
+    maxLength: 1000
+  startDate:
+    type: string
+    format: date
+    description: Start date
+    x-mappedTo: STARTDATE
+    example: '2021-08-03'
+  markupPercent:
+    type: string
+    format: decimal-precision-3
+    description: Markup %
+    x-mappedTo: MARKUPPCT
+    example: '8.250'
+  laborRate:
+    type: string
+    format: decimal-precision-3
+    description: Labor rate
+    x-mappedTo: LABORRATE
+    example: '115.500'
+  accumulationType:
+    $ref: ../references/accumulation-typeref.s1.schema.yaml
+  standardCostType:
+    $ref: ../references/standard-cost-typeref.s1.schema.yaml
+  standardTask:
+    $ref: ../references/standard-taskref.s1.schema.yaml
+  employeePosition:
+    type: object
+    title: employee-position
+    #x-object: employee-position
+    properties:
+      key:
+        type: string
+        description: Employee position key
+        x-mappedTo: EMPPOSITIONKEY
+        example: '2'
+      id:
+        type: string
+        description: Employee position id
+        x-mappedTo: EMPPOSITIONID
+        example: COO
+      name:
+        type: string
+        description: Employee position name
+        x-mappedTo: EMPPOSITIONNAME
+        example: Chief Executive Officer
+        readOnly: true
+      href:
+        type: string
+        example: /objects/employee-position/2
+        readOnly: true
+  laborClass:
+    type: object
+    title: labor-class
+    #x-object: labor-class
+    properties:
+      key:
+        type: string
+        description: Labor class key
+        x-mappedTo: LABORCLASSKEY
+        example: '2'
+      id:
+        type: string
+        description: Labor class id
+        x-mappedTo: LABORCLASSID
+        example: LC-2
+      name:
+        type: string
+        description: Labor class name
+        x-mappedTo: LABORCLASSNAME
+        example: Labor class 2
+        readOnly: true
+      href:
+        type: string
+        example: /objects/labor-class/2
+        readOnly: true
+  laborShift:
+    type: object
+    title: labor-shift
+    #x-object: labor-shift
+    properties:
+      key:
+        type: string
+        description: Labor shift key
+        x-mappedTo: LABORSHIFTKEY
+        example: '2'
+      id:
+        type: string
+        description: Labor shift id
+        x-mappedTo: LABORSHIFTID
+        example: LS-2
+      name:
+        type: string
+        description: Labor shift name
+        x-mappedTo: LABORSHIFTNAME
+        example: Day shift
+        readOnly: true
+      href:
+        type: string
+        example: /objects/labor-shift/2
+        readOnly: true
+  laborUnion:
+    type: object
+    title: labor-union
+    #x-object: labor-union
+    properties:
+      key:
+        type: string
+        description: Labor union key
+        x-mappedTo: LABORUNIONKEY
+        example: '2'
+      id:
+        type: string
+        description: Labor union id
+        x-mappedTo: LABORUNIONID
+        example: LU-2
+      name:
+        type: string
+        description: Labor union name
+        x-mappedTo: LABORUNIONNAME
+        example: Labor union 2
+        readOnly: true
+      href:
+        type: string
+        example: /objects/labor-union/2
+        readOnly: true
+  timeType:
+    type: object
+    title: time-type
+    #x-object: time-type
+    properties:
+      key:
+        type: string
+        description: Time type key
+        x-mappedTo: TIMETYPEKEY
+        example: '1'
+      id:
+        type: string
+        description: Time type id
+        x-mappedTo: TIMETYPENAME
+        example: Salaries At Root
+      name:
+        type: string
+        description: Time type name
+        x-mappedTo: TIMETYPENAME
+        example: Salaries At Root
+        readOnly: true
+      href:
+        type: string
+        example: /objects/time-type/1
+        readOnly: true
+  dimensions:
+    $ref: ../../common/references/dimensionref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

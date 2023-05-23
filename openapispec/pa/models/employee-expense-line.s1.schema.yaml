@@ -1,0 +1,370 @@
+title: employee-expense-line
+x-mappedTo: eexpensesitem
+x-ownedBy: employee-expense
+type: object
+description: Details for each expense line on the employee expense report.
+properties:
+  key:
+    type: string
+    description: Expense line record key.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '312'
+  id:
+    type: string
+    description: Expense line record ID.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '312'
+  entryDate:
+    type: string
+    format: date
+    description: Expense line date.
+    example: '2021-01-23'
+    x-mappedTo: ENTRY_DATE
+  baseCurrency:
+    type: string
+    description: Expense base currency.
+    x-mappedTo: BASECURR
+    readOnly: true
+    example: 'USD'
+  baseAmount:
+    type: string
+    description: Line amount in base currency
+    x-mappedTo: AMOUNT
+    readOnly: true
+    format: decimal-precision-2
+    example: '1.38'
+  reimbursementCurrency:
+    type: string
+    description: Expense line reimbursement currency.
+    x-mappedTo: CURRENCY
+    readOnly: true
+    example: 'CAD'
+  reimbursementAmount:
+    type: string
+    description: Expense line reimbursement amount.
+    x-mappedTo: TRX_AMOUNT
+    readOnly: true
+    format: decimal-precision-2
+    example: '1.16'
+  txnCurrency:
+    type: string
+    description: Expense line currency.
+    x-mappedTo: ORG_CURRENCY
+    example: 'INR'
+  txnAmount:
+    type: string
+    description: Expense line amount.
+    x-mappedTo: ORG_AMOUNT
+    format: decimal-precision-2
+    example: '444'
+    nullable: false
+  totalSelected:
+    type: string
+    description: Amount selected to pay  in transaction currency.
+    x-mappedTo: TRX_TOTALSELECTED
+    readOnly: true
+    format: decimal-precision-2
+    example: '0'
+  totalPaid:
+    type: string
+    description: Amount paid in transaction currency.
+    x-mappedTo: TRX_TOTALPAID
+    readOnly: true
+    format: decimal-precision-2
+    example: '0'
+  quantity:
+    type: string
+    description: Quantity for a rate-based expense.(example- mileage)
+    x-mappedTo: QUANTITY
+    format: decimal-precision-2
+    example: '5'
+  unitRate:
+    type: string
+    description: Unit rate for a rate-based expense (example- mileage)
+    x-mappedTo: UNITRATE
+    format: decimal-precision-2
+    example: '20'
+  paidTo:
+    type: string
+    description: Paid to.
+    x-mappedTo: DESCRIPTION
+    example: 'Hotel Westin'
+  paidFor:
+    type: string
+    description: Paid for.
+    x-mappedTo: DESCRIPTION2
+    example: 'Attending conference'
+  glAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: glaccount
+    title: account
+    properties:
+      key:
+        type: string
+        description: Expense line GL account key.
+        x-mappedTo: ACCOUNTKEY
+        example: '158'
+      id:
+        type: string
+        description: Expense line GL account number.(Only if not using expense type)
+        x-mappedTo: ACCOUNTNO
+        readonly: true
+        example: '6775.30'
+      name:
+        type: string
+        description: Expense line GL account name.
+        x-mappedTo: GLACCOUNTTITLE
+        readOnly: true
+        example: 'Travel'
+      href:
+        type: string
+        readOnly: true
+  expenseType:
+    type: object
+    x-object: employee-expense-type
+    x-mappedTo: acctlabel
+    title: expenseType
+    properties:
+      key:
+        type: string
+        description: Expense type account key.
+        x-mappedTo: ACCOUNTLABELKEY
+        example: '6000'
+      id:
+        type: string
+        description: Expense type account Id.
+        x-mappedTo: ACCOUNTLABEL
+        readonly: true
+        example: 'Meals'
+      href:
+        type: string
+        readOnly: true
+  lineNumber:
+    type: number
+    description: Expense line number.
+    x-mappedTo: LINE_NO
+    readOnly: true
+    example: 1
+  reimburseToBaseConversion:
+    type: object
+    title: Reimbursement currency to Base currency conversion data
+    properties:
+      exchangeRateDate:
+        type: string
+        format: date
+        description: Exchange rate date.
+        example: '2021-01-23'
+        x-mappedTo: EXCH_RATE_DATE
+        readOnly: true
+      exchangeRateTypeId:
+        type: string
+        description: Expense line exchange rate type.
+        example: '-1'
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        readOnly: true
+      exchangeRate:
+        type: string
+        description: Expense line exchange rate value.
+        x-mappedTo: EXCHANGE_RATE
+        readOnly: true
+        format: decimal-precision-5
+        example: '1.1899'
+  transactionToReimburseConversion:
+    type: object
+    title: currency
+    properties:
+      exchangeRate:
+        type: string
+        description: Expense line exchange rate.
+        x-mappedTo: ORG_EXCHRATE
+        format: decimal-precision-5
+        example: '65'
+      exchangeRateDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Exchange rate date.
+        x-mappedTo: ORG_EXCHRATEDATE
+      exchangeRateTypeId:
+        type: string
+        description: Exchange rate type.
+        x-mappedTo: ORG_EXCHRATETYPE
+        example: '-1'
+  state:
+    title: state
+    type: string
+    description: Employee expense report line state
+    enum:
+      - draft
+      - submitted
+      - partiallyApproved
+      - partiallyDeclined
+      - approved
+      - posted
+      - declined
+      - reversalPending
+      - reversed
+      - reversal
+      - paid
+      - confirmed
+      - voided
+      - partiallyPaid
+      - saved
+    x-mappedToValues:
+      - Draft
+      - Submitted
+      - Partially Approved
+      - Partially Declined
+      - Approved
+      - Posted
+      - Declined
+      - Reversal Pending
+      - Reversed
+      - Reversal
+      - Paid
+      - Confirmed
+      - Voided
+      - Partially Paid
+      - Saved
+    default: posted
+    x-mappedTo: STATE
+    readOnly: true
+    example: 'draft'
+  isBillable:
+    type: boolean
+    default: false
+    description: Expense line that is billable.Use false for No, true for Yes.
+    x-mappedTo: BILLABLE
+    x-mappedToType: string
+    example: false
+  isBilled:
+    type: boolean
+    default: false
+    description: Expense line is billed/invoiced.
+    x-mappedTo: BILLED
+    x-mappedToType: string
+    readOnly: true
+    example: false
+  form1099:
+    type: object
+    title: form1099
+    properties:
+      isForm1099:
+        type: string
+        description: Form 1099. Use false for No, true for Yes. Employee must be set up for 1099s.
+        x-mappedTo: FORM1099
+        example: 'true'
+      type:
+        type: string
+        description: Expense payment type key.
+        x-mappedTo: FORM1099TYPE
+        example: 'MISC'
+      box:
+        type: string
+        description: Form 1099 box.
+        x-mappedTo: FORM1099BOX
+        example: '3'
+  paymentType:
+    type: object
+    x-object: employee-expense-payment-type
+    x-mappedTo: expensepaymenttype
+    title: reimbursementInformation
+    properties:
+      key:
+        type: string
+        description: Expense payment type key.
+        x-mappedTo: EXPPMTTYPEKEY
+        example: '1'
+      id:
+        type: string
+        description: Expense payment type key.
+        x-mappedTo: EXPPMTTYPEKEY
+        example: '1'
+      name:
+        type: string
+        description: Expense payment type name.
+        x-mappedTo: EXPPMTTYPE
+        example: 'Non-reimburse'
+      isNonReimbursable:
+        type: boolean
+        default: false
+        description: Non-reimbursable expense.
+        x-mappedTo: NONREIMBURSABLE
+        example: false
+      href:
+        type: string
+        readOnly: true
+  #ccEntryKey:
+    #type: string
+    #description: Credit card entry key.
+    #x-mappedTo: CCENTRYKEY
+    #example: '158'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          location:
+            type: object
+            x-object: location
+            properties:
+              key:
+                x-mappedTo: LOCATION#
+                type: string
+                description: Location Key
+                example: '1'
+              id:
+                x-mappedTo: LOCATIONID
+                type: string
+                description: Location
+                readonly: true
+                example: '1'
+              name:
+                x-mappedTo: LOCATIONNAME
+                readOnly: true
+                type: string
+                description: Location Name
+                example: 'USA'
+          department:
+            type: object
+            x-object: department
+            properties:
+              key:
+                type: string
+                description: Department Key
+                x-mappedTo: DEPT#
+                example: '1'
+              id:
+                type: string
+                description: Department
+                x-mappedTo: DEPARTMENTID
+                readonly: true
+                example: '1'
+              name:
+                type: string
+                description: Department Name
+                x-mappedTo: DEPARTMENTNAME
+                readOnly: true
+                example: 'IT'
+  employeeExpense:
+    title: employeeExpense
+    type: object
+    x-mappedTo: eexpenses
+    x-object: employee-expense
+    properties:
+      id:
+        type: string
+        x-mappedTo: RECORDKEY
+        readOnly: true
+      key:
+        type: string
+        x-mappedTo: RECORDKEY
+        readOnly: true
+required:
+  - txnAmount

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/setup/company_info/view
+      - mp/setup/company_info/view
+    POST:
+    PATCH:
+      - co/setup/company_info/edit
+      - mp/setup/company_info/edit
+    DELETE:
+s1:
+  hash: '0'
+  type: preference

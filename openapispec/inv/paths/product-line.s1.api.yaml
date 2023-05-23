@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: product-line
+  description: product-line API
+  version: '1.0'
+  contact:
+    name: Prasanna Kumar R
+    email: prasannakumar.raghavendra@sage.com
+tags:
+  - name: Product lines
+    description: Product lines are groups of related products. Using product lines makes it easier to update prices and track inventory movement. See [Product lines](https://www.intacct.com/ia/docs/en_US/help_action/Order_Entry/Setting_up_Order_Entry/product-lines-OE.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/product-line:
+    get:
+      summary: List product lines
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each product line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Product Lines
+      tags:
+        - Product lines
+      operationId: get-objects-product-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of product-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List product lines:
+                  value:
+                    'ia::result':
+                      - key: '23'
+                        id: Adapters
+                        href: /objects/product-line/23
+                      - key: '25'
+                        id: Telephones
+                        href: /objects/product-line/25
+                      - key: '29'
+                        id: Auto Product Line
+                        href: /objects/product-line/29
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a product line
+      description: Creates a new product line.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Product Lines
+      tags:
+        - Product lines
+      operationId: post-objects-product-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/product-line'
+                - $ref: '#/components/schemas/product-lineRequiredProperties'
+            examples:
+              Create a product line:
+                value:
+                  id: OCA
+                  description: Other Computer Accessories
+                  parent:
+                    id: PCCS
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New product-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a product line:
+                  value:
+                    'ia::result':
+                      key: '26'
+                      id: OCA
+                      href: /objects/product-line/26
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/product-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the product line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a product line
+      description: Returns detailed information for a specified product line.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Product Lines
+      tags:
+        - Product lines
+      operationId: get-objects-product-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the product-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/product-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a product line:
+                  value:
+                    'ia::result':
+                      key: '25'
+                      id: Telephones
+                      description: Telephones
+                      parent:
+                        id: Adapters
+                        key: '28'
+                        href: /objects/product-line/28
+                      status: active
+                      audit:
+                        createdDateTime: '2017-04-27T17:29:36Z'
+                        modifiedDateTime: '2022-03-15T14:40:30Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/product-line/25
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a product line
+      description: Updates an existing product line by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Product Lines
+      tags:
+        - Product lines
+      operationId: patch-objects-product-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/product-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Telephones for US markets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated product-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '25'
+                      id: Telephones
+                      href: /objects/product-line/25
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a Product line
+      description: Deletes a product line.
+      x-documentationFlags:
+        subscription: Inventory Control, Order Entry, or Purchasing
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Product Lines
+      tags:
+        - Product lines
+      operationId: delete-objects-product-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    product-line:
+      $ref: ../models/product-line.s1.schema.yaml
+    product-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: contract-revenue-schedule post
+  description: API to post contract-revenue-schedules
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract revenue schedules
+    description: contract revenue schedules
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/revenue-schedule/post:
+    post:
+      summary: Post contract revenue schedule
+      description: You can post all J1 contract revenue schedule entries for a given customer (across contracts) or for a given contract.
+      tags:
+        - Contract revenue schedules
+      operationId: post-contract-revenue-schedule-post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-revenue-schedule-post-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-revenue-schedule-post-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-revenue-schedule-post-request:
+      $ref: ../references/contract-schedule-post-request.typeref.yaml
+    contract-revenue-schedule-post-response:
+      $ref: ../references/contract-schedule-post-response.typeref.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

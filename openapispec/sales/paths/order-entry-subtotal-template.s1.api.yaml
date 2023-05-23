@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: order-entry-subtotal-template
+  description: order-entry-subtotal-template API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Order entry subtotal templates
+    description: Order entry subtotal template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-subtotal-template:
+    get:
+      summary: List order entry subtotal templates
+      description: Returns a collection with a key, ID, and link for each order entry subtotal template.
+      tags:
+        - Order entry subtotal templates
+      operationId: get-objects-order-entry-subtotal-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-subtotal-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of order entry subtotal templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an order entry subtotal template
+      description: Creates a new order entry subtotal template.
+      tags:
+        - Order entry subtotal templates
+      operationId: post-objects-order-entry-subtotal-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-subtotal-template'
+                - $ref: '#/components/schemas/order-entry-subtotal-templateRequiredProperties'
+            examples:
+              Creates a/an order entry subtotal template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New order entry subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-subtotal-template/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the order entry subtotal template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an order entry subtotal template
+      description: Returns detailed information for a particular order entry subtotal template.
+      tags:
+        - Order entry subtotal templates
+      operationId: get-objects-order-entry-subtotal-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-subtotal-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the order entry subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an order entry subtotal template
+      description: Updates an existing order entry subtotal template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry subtotal templates
+      operationId: patch-objects-order-entry-subtotal-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-subtotal-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an order entry subtotal template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-subtotal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated order entry subtotal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an order entry subtotal template
+      description: Deletes a/an order entry subtotal template.
+      tags:
+        - Order entry subtotal templates
+      operationId: delete-objects-order-entry-subtotal-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-subtotal-template:
+      $ref: ../models/order-entry-subtotal-template.s1.schema.yaml
+    order-entry-subtotal-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

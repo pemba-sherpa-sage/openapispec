@@ -1,0 +1,210 @@
+title: task-resource
+x-mappedTo: taskresources
+type: object
+description: An employee who works on a project task, and the duration of their involvement.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the task resource.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: This value is the same as the `key` value for this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: Endpoint for the task resource.
+    readOnly: true
+    example: /objects/task-resource/23
+  plannedBeginDate:
+    type: string
+    description: Planned begin date.
+    x-mappedTo: PBEGINDATE
+    format: date
+    example: '2023-01-01'
+  plannedEndDate:
+    type: string
+    description: Planned end date.
+    x-mappedTo: PENDDATE
+    format: date
+    example: '2023-06-30'
+  actualBeginDate:
+    type: string
+    description: Actual begin date.
+    x-mappedTo: ABEGINDATE
+    format: date
+    example: '2023-01-08'
+  actualEndDate:
+    type: string
+    description: Actual end date.
+    x-mappedTo: AENDDATE
+    format: date
+    example: '2023-04-01'
+  budgetDuration:
+    type: number
+    description: Planned duration (hours).
+    x-mappedTo: BUDGETQTY
+    example: 22
+  billableBudgetDuration:
+    type: number
+    description: Billable planned duration (hours).
+    x-mappedTo: BILLABLE_BUDGETQTY
+    example: 22
+  estimatedDuration:
+    type: number
+    description: Estimated duration (hours).
+    x-mappedTo: ESTQTY
+    example: 20
+  billableEstimatedDuration:
+    type: number
+    description: Billable estimated duration (hours).
+    x-mappedTo: BILLABLE_ESTQTY
+    example: 20
+  actualDuration:
+    type: number
+    description: Actual duration (hours).
+    x-mappedTo: ACTUALQTY
+    example: 17
+  billableActualDuration:
+    type: number
+    description: Billable actual duration (hours).
+    x-mappedTo: BILLABLE_ACTUALQTY
+    example: 17
+  approvedDuration:
+    type: number
+    description: Approved duration (hours).
+    x-mappedTo: APPROVEDQTY
+    example: 18
+  billableApprovedDuration:
+    type: number
+    description: Billable approved duration (hours).
+    x-mappedTo: BILLABLE_APPROVEDQTY
+    example: 18
+  remainingEstimatedDuration:
+    type: number
+    description: Remaining estimated duration (hours).
+    x-mappedTo: REMAININGQTY
+    example: 8
+  estimatedPercentComplete:
+    type: number
+    description: Calculated estimated percent completed.
+    x-mappedTo: PERCENTCOMPLETE
+    example: 50
+  description:
+    type: string
+    description: Description of the task resource.
+    x-mappedTo: DESCRIPTION
+    example: 
+  isFullTime:
+    type: boolean
+    description: Set to `true` to mark the resource as fully booked.
+    x-mappedTo: ISFULLTIME
+    example: true
+    x-mappedToType: string
+    default: false
+  isSoftBook:
+    type: boolean
+    description: Set to `true` to mark the resource as soft booked.
+    x-mappedTo: SOFTBOOK
+    example: true
+    x-mappedToType: string
+    default: false
+  employee:
+    type: object
+    description: The employee resource assigned to the task.
+    x-mappedTo: employee
+    x-object: employee
+    properties:
+      href:
+        type: string
+        description: Endpoint for the employee.
+        readOnly: true
+        example: /objects/employee/23
+      key:
+        type: string
+        description: Employee key.
+        x-mappedTo: EMPLOYEEKEY
+        example: '23'
+      id:
+        type: string
+        description: Employee ID.
+        x-mappedTo: EMPLOYEEID
+        example: jsmith
+      startDate:
+        type: string
+        x-mappedTo: EMPLOYEESTARTDATE
+        format: date
+        example: '2023-04-01'
+      endDate:
+        type: string
+        x-mappedTo: EMPLOYEEENDDATE
+        format: date
+        example: '2023-04-04'
+      name:
+        type: string
+        description: Employee name.
+        x-mappedTo: EMPLOYEECONTACTNAME
+        example: John Smith
+  project:
+    type: object
+    description: The project that the task is part of.
+    x-mappedTo: project
+    x-object: project
+    properties:
+      href:
+        type: string
+        description: Endpoint for the project.
+        readOnly: true
+        example: /objects/project/23
+      key:
+        type: integer
+        description: Project key.
+        x-mappedTo: PROJECTKEY
+        example: '23'
+      id:
+        type: string
+        description: Project ID.
+        x-mappedTo: PROJECTID
+        example: Q-Field
+      name:
+        type: string
+        description: Project name.
+        x-mappedTo: PROJECTNAME
+        example: Quantum Field Repair
+  task:
+    type: object
+    description: The task that the resource is assigned to.
+    x-mappedTo: task
+    x-object: task
+    properties:
+      href:
+        type: string
+        description: Endpoint for the task.
+        readOnly: true
+        example: /objects/task/23
+      key:
+        type: string
+        description: System-assigned key for the task.
+        x-mappedTo: TASKKEY
+        example: '23'
+      id:
+        type: string
+        description: Task.
+        x-mappedTo: TASKID
+        example: RR-27-Q5
+      name:
+        type: string
+        description: Task name.
+        x-mappedTo: TASKNAME
+        example: Ajust flux capacitor
+      billable:
+        type: string
+        description: Set to `true` to mark the task resource as billable.
+        x-mappedTo: BILLABLE
+        example: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

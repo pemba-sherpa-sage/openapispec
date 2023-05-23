@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template-line
+  description: revenue-recognition-template-line API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Revenue recognition template lines
+    description: This object represents line entries in a revenue recognition template.
+paths:
+  /objects/revenue-recognition-template-line:
+    get:
+      summary: List revenue recognition template lines
+      description: Returns a collection with a key, ID, and link for each revenue recognition template line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition template lines
+      operationId: get-objects-revenue-recognition-template-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template-line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List revenue recognition template lines: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/REVRECTEMPLENTRY/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the revenue recognition template line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a revenue recognition template line
+      description: Returns detailed information for a specified revenue recognition template line.
+      tags:
+        - Revenue recognition template lines
+      operationId: get-objects-revenue-recognition-template-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue-recognition-template-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/revenue-recognition-template-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a revenue recognition template line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    revenue-recognition-template-line:
+      $ref: '#/components/schemas/revenue-recognition-template-line.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    revenue-recognition-template-line.s1.schema:
+      title: revenue-recognition-template-line
+      x-mappedTo: REVRECTEMPLENTRY
+      x-ownedBy: revenue-recognition-template
+      type: object
+      description: This object represents line entries in a revenue recognition template.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the revenue recognition template line entry.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Revenue recognition template line entry ID. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the revenue recognition template line entry.
+          readOnly: true
+          example: /objects/revenue-recognition-template-line/23
+        template:
+          type: object
+          description: Header level details for the revenue recognition template's line entries.
+          x-mappedTo: REVRECTEMPLATE
+          x-object: revenue-recognition-template
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the revenue recognition template.
+              x-mappedTo: TEMPLATEKEY
+              example: null
+            id:
+              type: string
+              description: Unique identifier for the revenue recognition template.
+              x-mappedTo: TEMPLATEKEY
+              example: null
+            href:
+              type: string
+              description: URL for the revenue recognition template.
+              readOnly: true
+        periodOffset:
+          type: string
+          description: Determines how many periods in the future to create the potential revenue recognition journal entries in the schedule.
+          x-mappedTo: PERIODOFFSET
+          example: null
+        percentAmount:
+          type: number
+          description: Indicates the percentage of the revenue recognition that should be applied to the corresponding account for the corresponding offset period.
+          x-mappedTo: PERCAMOUNT
+          example: null
+        glAccount:
+          type: object
+          description: GL account associated with the template line entry.
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            href:
+              type: string
+              description: URL for the GL account.
+              readOnly: true
+              example: /objects/gl-account/23
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: ACCOUNTKEY
+              example: null
+            id:
+              type: string
+              description: GL account number.
+              x-mappedTo: ACCOUNTNO
+              example: null
+            name:
+              type: string
+              description: GL account title.
+              x-mappedTo: ACCOUNTTITLE
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

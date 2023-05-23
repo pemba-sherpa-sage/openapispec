@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  title: task-resource
+  description: task-resource API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Task resources
+    description: An employee who works on a project task is considered a task resource.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/task-resource:
+    get:
+      summary: List task resources
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each task resource. This operation is mostly for use in testing; use query to find task resources that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Task resources
+      operationId: get-objects-task-resource
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of task-resource objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of task resources:
+                  value:
+                    'ia::result':
+                      - key: '110'
+                        id: '110'
+                        href: /objects/task-resource/110
+                      - key: '2374'
+                        id: '2374'
+                        href: /objects/task-resource/2374
+                      - key: '33'
+                        id: '33'
+                        href: /objects/task-resource/33
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a task resource
+      description: Creates a new task resource.
+      tags:
+        - Task resources
+      operationId: post-objects-task-resource
+      requestBody:
+        description: Task resource to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/task-resource'
+                - $ref: '#/components/schemas/task-resourceRequiredProperties'
+            examples:
+              Creates a task resource: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New task-resource
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New task resource:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/task-resource/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/task-resource/{key}':
+    parameters:
+      - name: key
+        description: System-assigned unique key for the task resource.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a task resource
+      description: Returns detailed information for a specified task resource.
+      tags:
+        - Task resources
+      operationId: get-objects-task-resource-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the task-resource
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/task-resource'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the task resource: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a task resource
+      description: Updates an existing task resource by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Task resources
+      operationId: patch-objects-task-resource-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/task-resource'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a task resource: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated task-resource
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Task resource updated:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/task-resource/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a task resource
+      description: Deletes a task resource.
+      tags:
+        - Task resources
+      operationId: delete-objects-task-resource-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    task-resource:
+      $ref: ../models/task-resource.s1.schema.yaml
+    task-resourceRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

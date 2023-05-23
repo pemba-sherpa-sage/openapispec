@@ -1,0 +1,29 @@
+title: zone
+type: object
+description: A zone is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+x-mappedTo: zone
+properties:
+  key:
+    type: string
+    description: System-assigned key for the zone.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '12'
+  id:
+    type: string
+    description: Unique identifier or name for the zone. The zone ID cannot be modified.
+    x-mappedTo: ZONEID
+    x-mutable: false
+    example: 'Z4REF'
+  description:
+    type: string
+    description: Description for the zone.
+    x-mappedTo: ZONEDESC
+    example: 'Refrigeration Zone Four'
+  href:
+    type: string
+    description: URL for the zone.
+    readOnly: true
+    example: '/objects/zone/12'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

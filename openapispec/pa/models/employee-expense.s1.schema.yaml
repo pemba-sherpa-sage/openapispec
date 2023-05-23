@@ -1,0 +1,288 @@
+title: employee-expense
+x-mappedTo: eexpenses
+type: object
+description: Expense report for an employee.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the Employee expense.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '124'
+  id:
+    type: string
+    description: Unique identifier of the Employee expense. You must specify a unique Employee expense ID when creating an Employee expense unless document sequencing is configured, in which case the ID is auto-generated.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '124'
+  createdDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Created date.
+    x-mappedTo: WHENCREATED
+    nullable: false
+  employee:
+    type: object
+    x-object: employee
+    x-mappedTo: employee
+    title: employee
+    nullable: false
+    properties:
+      key:
+        type: string
+        description: Employee record number.
+        x-mappedTo: EMPLOYEEKEY
+        example: '10'
+      id:
+        type: string
+        description: Employee ID
+        x-mappedTo: EMPLOYEEID
+        readonly: true
+        example: '10'
+      name:
+        type: string
+        description: Employee Name.
+        x-mappedTo: ENAME
+        readOnly: true
+        example: 'Thomas, Glenn'
+      firstName:
+        type: string
+        description: Employee First Name.
+        x-mappedTo: FIRSTNAME
+        readOnly: true
+        example: 'Glenn'
+      lastName:
+        type: string
+        description: Employee Last Name.
+        x-mappedTo: LASTNAME
+        readOnly: true
+        example: 'Thomas'
+      href:
+        type: string
+        readOnly: true
+  state:
+    title: state
+    type: string
+    enum:
+      - draft
+      - submitted
+      - partiallyApproved
+      - partiallyDeclined
+      - approved
+      - posted
+      - declined
+      - reversalPending
+      - reversed
+      - reversal
+      - paid
+      - confirmed
+      - voided
+      - partiallyPaid
+    x-mappedToValues:
+      - Draft
+      - Submitted
+      - Partially Approved
+      - Partially Declined
+      - Approved
+      - Posted
+      - Declined
+      - Reversal pending
+      - Reversed
+      - Reversal
+      - Paid
+      - Confirmed
+      - Voided
+      - Partially Paid
+    default: posted
+    description: State to update the entry to. Posted to post to the GL
+    x-mappedTo: STATE
+    example: 'draft'
+  basePayment:
+    type: object
+    title: basePayment
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency of Employee expense report.
+        x-mappedTo: BASECURR
+        example: 'USD'
+      paidDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Payment date.
+        x-mappedTo: WHENPAID
+        readOnly: true
+      totalEntered:
+        type: string
+        description: Total transaction amount.
+        x-mappedTo: TOTALENTERED
+        readOnly: true
+        example: '1.38'
+      totalPaid:
+        type: string
+        description: Total amount paid.
+        x-mappedTo: TOTALPAID
+        readOnly: true
+        example: '1'
+      totalDue:
+        type: string
+        description: Total amount due.
+        x-mappedTo: TOTALDUE
+        readOnly: true
+        example: '1.38'
+      totalSelected:
+        type: string
+        description: Amount selected for reimbursement.
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+        example: '1'
+  reimbursement:
+    type: object
+    title: reimbursement
+    properties:
+      reimbursementCurrency:
+        type: string
+        description: Reimbursement currency.
+        x-mappedTo: CURRENCY
+        x-mutable: false
+        example: 'EUR'
+      totalEntered:
+        type: string
+        description: Total reimbursable amount.
+        x-mappedTo: TRX_TOTALENTERED
+        readOnly: true
+        format: decimal-precision-2
+        example: '1.16'
+      totalPaid:
+        type: string
+        description: Total amount paid.
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+        format: decimal-precision-2
+        example: '1'
+      totalDue:
+        type: string
+        description: Total amount due.
+        x-mappedTo: TRX_TOTALDUE
+        readOnly: true
+        format: decimal-precision-2
+        example: '1.16'
+      totalSelected:
+        type: string
+        description: Amount selected for reimbursement.
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+        format: decimal-precision-2
+        example: '1'
+  expenseReportNumber:
+    type: string
+    description: Expense report number.
+    x-mappedTo: RECORDID
+    example: 'EXP-00001'
+  expenseSummary:
+    type: object
+    x-mappedTo: prbatch
+    x-object: employee-expense-summary
+    title: Expense Summary
+    properties:
+      key:
+        type: string
+        description: Expense summary key.
+        x-mappedTo: PRBATCHKEY
+        readOnly: true
+        example: '3'
+      id:
+        type: string
+        description: Expense Summary ID.
+        x-mappedTo: PRBATCHKEY
+        readOnly: true
+        example: '3'
+      title:
+        type: string
+        description: Expense summary title.
+        x-mappedTo: PRBATCH
+        readOnly: true
+        example: 'Expenses 2021/01/31 Batch'
+      postingDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: GL posting date.
+        x-mappedTo: WHENPOSTED
+      href:
+        type: string
+        readOnly: true
+  nonReimbursable:
+    type: object
+    title: nonReimbursable
+    properties:
+      baseTotalEntered:
+        type: string
+        description: Non-reimbursable amount in base currency.
+        x-mappedTo: NR_TOTALENTERED
+        readOnly: true
+        format: decimal-precision-2
+        example: '1'
+      reimbursementTotalEntered:
+        type: string
+        description: Total non-reimbursable amount.
+        x-mappedTo: NR_TRX_TOTALENTERED
+        readOnly: true
+        format: decimal-precision-2
+        example: '1'
+  memo:
+    type: string
+    description: Memo.
+    x-mappedTo: MEMO
+    example: 'Supplies for customer training'
+  description:
+    type: string
+    description: Reason for expense.
+    x-mappedTo: DESCRIPTION
+    example: 'Supplies for customer training'
+  reclassificationNotes:
+    type: string
+    description: Reason for reclassification.
+    x-mappedTo: RECLASS_NOTES
+    example: 'Reclassifying the expense'
+  attachment:
+    type: object
+    description: Supporting document ID.
+    x-object: attachment
+    x-mappedTo: attachment
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPDOCKEY
+        example: '1'
+      id:
+        type: string
+        x-mappedTo: SUPDOCID
+        example: '1'
+      href:
+        type: string
+        readOnly: true
+  audit:
+    type: object
+    allOf:
+      - $ref: ../../common/models/audit.s1.schema.yaml
+      - type: object
+        properties:
+          createdDateTime:
+            type: string
+            x-mappedTo: AUWHENCREATED
+            description: Time of the submission
+            format: date-time
+            example: '2014-01-08T11:28:12Z'
+            readOnly: true
+  lines:
+    type: array
+    x-mappedTo: ITEMS
+    x-object: employee-expense-line
+    items:
+      $ref: employee-expense-line.s1.schema.yaml
+required:
+  - employee
+  - createdDate

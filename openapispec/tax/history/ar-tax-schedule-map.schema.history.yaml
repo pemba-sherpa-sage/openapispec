@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/artaxschedmap/view
+    POST:
+      - ar/lists/artaxschedmap/create
+    PATCH:
+      - ar/lists/artaxschedmap/edit
+    DELETE:
+      - ar/lists/artaxschedmap/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

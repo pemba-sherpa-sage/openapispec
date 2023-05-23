@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: contract.line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: contract-line
+    description: Resume the contract line which is in hold.
+paths:
+  /services/contract/line/resume:
+    post:
+      summary: contract-line resume
+      description: Resume the contract line which is in hold.
+      tags:
+        - contract-lines
+      operationId: post-contract-line-resume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-line-resume-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-line-resume-response'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line-resume-request:
+      description: resume request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+        - asOfDate
+      properties:
+        key:
+          type: string
+          description: Contract line key
+          x-mappedTo: CONTRACTDETAILKEY
+          nullable: false
+          example: '2'
+        asOfDate:
+          type: string
+          format: date
+          description: resume date
+          x-mappedTo: ASOFDATE
+          nullable: false
+          example: '2022-01-01'
+        memo:
+          type: string
+          description: resume date
+          x-mappedTo: MEMO
+          example: test
+        resumeBilling:
+          type: boolean
+          description: Resume Billing
+          x-mappedTo: BILLING
+          x-mappedToType: string
+          example: true
+        resumeRevenue:
+          type: boolean
+          description: Resume Revenue
+          x-mappedTo: REVENUE
+          x-mappedToType: string
+          example: true
+        resumeExpense:
+          type: boolean
+          description: Resume Expense
+          x-mappedTo: EXPENSE
+          x-mappedToType: string
+          example: true
+        revenueAdjustmentType:
+          type: string
+          description: Revenue adjustment type
+          x-mappedTo: REVENUEADJUSTMENTTYPE
+          enum:
+            - template
+            - oneTime
+            - distributed
+            - walkForward
+          x-mappedToValues:
+            - Use template default
+            - 'Catch-up : One time'
+            - 'Catch-up : Distributed'
+            - Walk forward
+          example: One time
+    contract-line-resume-response:
+      description: resume response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

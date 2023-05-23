@@ -1,0 +1,254 @@
+openapi: 3.0.0
+info:
+  title: customer-email-template
+  description: customer-email-template API
+  version: '1.0'
+  contact:
+    name: Divya Hiremath
+    email: divya.hiremath@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Customer email templates
+    description: Email templates can be associated with customers to tailor communications about transactions.
+paths:
+  /objects/customer-email-template:
+    get:
+      summary: List customer email templates
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each email template. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customer email templates
+      operationId: get-objects-customer-email-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-email-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List customer email templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/cusomer-email-template/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the customer email template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a customer email template
+      description: Returns detailed information for a specified customer email template.
+      tags:
+        - Customer email templates
+      operationId: get-objects-customer-email-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-email-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/customer-email-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a customer email template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    customer-email-template:
+      $ref: '#/components/schemas/customer-email-template.s1.schema'
+    customer-email-templateRequiredProperties:
+      type: object
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    customer-email-template.s1.schema:
+      title: customer-email-template
+      x-mappedTo: customeremailtemplate
+      type: object
+      x-ownedBy: customer
+      description: Email templates can be associated with customers to tailor communications about transactions.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the customer email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: ID for the customer email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        href:
+          type: string
+          description: URL for the customer email template.
+          readOnly: true
+        customer:
+          type: object
+          description: Customer to associate with the email template.
+          x-object: customer
+          x-mappedTo: customer
+          title: customer
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the customer.
+              x-mappedTo: CUSTOMERKEY
+            id:
+              type: string
+              description: ID for the customer.
+              x-mappedTo: CUSTOMERID
+            href:
+              type: string
+              description: URL for the customer.
+              readOnly: true
+        txnDefinitionName:
+          type: string
+          description: Transaction definition, which is the template that contains accounting settings, workflow rules, and other configuration settings for a transaction.
+          x-mappedTo: DOCPARID
+        emailTemplateType:
+          type: string
+          description: Specify the type of transaction that will use the email template.
+          x-mappedTo: EMAILTEMPLATETYPE
+          enum:
+            - arInvoice
+            - arStatement
+            - contract
+            - soDocument
+            - poDocument
+          x-mappedToValues:
+            - arinvoice
+            - arstatement
+            - contract
+            - sodocument
+            - podocument
+        emailTemplate:
+          type: object
+          description: Email template to associate with the customer.
+          x-object: email-template
+          x-mappedTo: emailtemplate
+          title: emailTemplate
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+            id:
+              type: string
+              description: ID for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+            name:
+              type: string
+              description: Name of the email template.
+              x-mappedTo: EMAILTEMPLATENAME
+            href:
+              type: string
+              description: URL for the email template.
+              readOnly: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

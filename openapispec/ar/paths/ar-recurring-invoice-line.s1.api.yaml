@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: ar-recurring-invoice-line
+  description: ar-recurring-invoice-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: AR recurring invoice lines
+    description: Line items in a recurring invoice represent transactions captured in that recurring invoice.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-recurring-invoice-line:
+    get:
+      summary: List AR recurring invoice lines
+      description: Returns a collection with a key, ID, and link for each AR recurring invoice line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR recurring invoice lines
+      operationId: get-objects-ar-recurring-invoice-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-recurring-invoice-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR recurring invoice lines: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR recurring invoice line
+      description: Creates a new AR recurring invoice line.
+      tags:
+        - AR recurring invoice lines
+      operationId: post-objects-ar-recurring-invoice-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-recurring-invoice-line'
+                - $ref: '#/components/schemas/ar-recurring-invoice-lineRequiredProperties'
+            examples:
+              Create an AR recurring invoice line: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-recurring-invoice-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AR recurring invoice line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-recurring-invoice-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR recurring invoice line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR recurring invoice line
+      description: Returns detailed information for a specified line item in an AR recurring invoice.
+      tags:
+        - AR recurring invoice lines
+      operationId: get-objects-ar-recurring-invoice-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-recurring-invoice-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-recurring-invoice-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR recurring invoice line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR recurring invoice line
+      description: Updates an existing line item in an AR recurring invoice by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR recurring invoice lines
+      operationId: patch-objects-ar-recurring-invoice-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-recurring-invoice-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an AR recurring invoice line: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-recurring-invoice-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an AR recurring invoice line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR recurring invoice line
+      description: Deletes a line item in an AR recurring invoice.
+      tags:
+        - AR recurring invoice lines
+      operationId: delete-objects-ar-recurring-invoice-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-recurring-invoice-line:
+      $ref: ../models/ar-recurring-invoice-line.s1.schema.yaml
+    ar-recurring-invoice-lineRequiredProperties:
+      type: object
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

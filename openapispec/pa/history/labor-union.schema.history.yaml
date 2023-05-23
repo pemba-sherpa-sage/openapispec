@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/laborunion/view
+    POST:
+      - pa/lists/laborunion/create
+    PATCH:
+      - pa/lists/laborunion/edit
+    DELETE:
+      - pa/lists/laborunion/delete
+s1:
+  hash: '0'
+  type: rootObject

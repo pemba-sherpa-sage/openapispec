@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/renewalmacro/view
+      - so/lists/renewalmacro/view
+    POST:
+      - cn/lists/renewalmacro/create
+      - so/lists/renewalmacro/create
+      - so/quickadds/renewalmacro/create
+    PATCH:
+      - cn/lists/renewalmacro/edit
+      - so/lists/renewalmacro/edit
+    DELETE:
+      - cn/lists/renewalmacro/delete
+      - so/lists/renewalmacro/delete
+s1:
+  hash: '0'
+  type: rootObject

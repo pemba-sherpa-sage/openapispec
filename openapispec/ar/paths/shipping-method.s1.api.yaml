@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: shipping-method
+  description: shipping-method API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Shipping methods
+    description: A shipping method is a specific way to transport goods, such as UPS or FedEx.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/shipping-method/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the shipping method.
+    get:
+      summary: Get a shipping method
+      description: Returns detailed information for a specified shipping method.
+      tags:
+        - Shipping methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the shipping-method
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/shipping-method'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod-key
+    delete:
+      summary: Delete a shipping method
+      description: Deletes a shipping method.
+      tags:
+        - Shipping methods
+      operationId: delete-objects-shipmethod-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a shipping method
+      description: Updates an existing shipping method by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Shipping methods
+      operationId: patch-objects-shipmethod-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated shipping-method
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/shipping-method'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/shipping-method:
+    get:
+      summary: List shipping methods
+      description: Returns a collection with a key, ID, and link for each shipping method. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Shipping methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of shipping-method objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod
+    post:
+      summary: Create a shipping method
+      description: Creates a new shipping method.
+      tags:
+        - Shipping methods
+      operationId: post-objects-shipmethod
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New shipping-method
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/shipping-method'
+                - $ref: '#/components/schemas/shipping-methodRequiredProperties'
+            examples: {}
+components:
+  schemas:
+    shipping-method:
+      $ref: ../models/shipping-method.s1.schema.yaml
+    shipping-methodRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

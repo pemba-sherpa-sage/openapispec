@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: order-entry-price-list
+  description: order-entry-price-list API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Order entry price lists
+    description: Order entry price list
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-price-list:
+    get:
+      summary: List order entry price lists
+      description: 'Returns a collection with a key, ID, and link for each order entry price list.'
+      tags:
+        - Order entry price lists
+      operationId: get-objects-order-entry-price-list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-price-list objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of order entry price lists:
+                  value:
+                    key: '1'
+                    id: Base Price List
+                    href: /objects/order-entry-price-list/1
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an order entry price list
+      description: Creates a new order entry price list.
+      tags:
+        - Order entry price lists
+      operationId: post-objects-order-entry-price-list
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-price-list'
+                - $ref: '#/components/schemas/order-entry-price-listRequiredProperties'
+            examples:
+              Create an order entry price list:
+                value:
+                  id: Base Price List Sales
+                  startDate: '2000-01-01'
+                  endDate: '2030-12-31'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Created order entry price list:
+                  value:
+                    'ia::result':
+                      key: '5'
+                      id: Base Price List Sales
+                      href: /objects/order-entry-price-list/5
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-price-list/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry price list.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an order entry price list
+      description: Returns detailed information for a particular order entry price list.
+      tags:
+        - Order entry price lists
+      operationId: get-objects-order-entry-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-price-list
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-price-list'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of order entry price list:
+                  value:
+                    'ia::result':
+                      key: '5'
+                      id: Base Price List Sales
+                      startDate: '2000-01-01'
+                      endDate: '2030-12-31'
+                      status: active
+                      href: /objects/order-entry-price-list/5
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an order entry price list
+      description: Updates an existing order entry price list by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry price lists
+      operationId: patch-objects-order-entry-price-list-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-price-list'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an order entry price list:
+                value:
+                  startDate: '2021-01-01'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated order entry price list:
+                  value:
+                    'ia::result':
+                      key: '5'
+                      id: Base Price List Sales
+                      href: /objects/order-entry-price-list/5
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an order entry price list
+      description: Deletes a/an order entry price list.
+      tags:
+        - Order entry price lists
+      operationId: delete-objects-order-entry-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-price-list:
+      $ref: ../models/order-entry-price-list.s1.schema.yaml
+    order-entry-price-listRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

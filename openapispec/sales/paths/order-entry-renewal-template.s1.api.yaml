@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: order-entry-renewal-template
+  description: order-entry-renewal-template API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Order entry renewal templates
+    description: Order entry renewal template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-renewal-template:
+    get:
+      summary: List order entry renewal templates
+      description: Returns a collection with a key, ID, and link for each order entry renewal template.
+      tags:
+        - Order entry renewal templates
+      operationId: get-objects-order-entry-renewal-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-renewal-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of order entry renewal templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an order entry renewal template
+      description: Creates a new order entry renewal template.
+      tags:
+        - Order entry renewal templates
+      operationId: post-objects-order-entry-renewal-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-renewal-template'
+                - $ref: '#/components/schemas/order-entry-renewal-templateRequiredProperties'
+            examples:
+              Creates a/an order entry renewal template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-renewal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New order entry renewal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-renewal-template/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the order entry renewal template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an order entry renewal template
+      description: Returns detailed information for a particular order entry renewal template.
+      tags:
+        - Order entry renewal templates
+      operationId: get-objects-order-entry-renewal-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-renewal-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-renewal-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the order entry renewal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an order entry renewal template
+      description: Updates an existing order entry renewal template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry renewal templates
+      operationId: patch-objects-order-entry-renewal-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-renewal-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an order entry renewal template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-renewal-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated order entry renewal template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an order entry renewal template
+      description: Deletes a/an order entry renewal template.
+      tags:
+        - Order entry renewal templates
+      operationId: delete-objects-order-entry-renewal-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-renewal-template:
+      $ref: ../models/order-entry-renewal-template.s1.schema.yaml
+    order-entry-renewal-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

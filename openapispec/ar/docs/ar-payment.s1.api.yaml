@@ -1,0 +1,1862 @@
+openapi: 3.0.0
+info:
+  title: ar-payment
+  description: ar-payment API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR payments
+    description: An AR payment is a transaction used to record a payment against an AR invoice or an AR adjustment/debit memo.
+paths:
+  /objects/ar-payment:
+    get:
+      summary: List AR payments
+      description: Returns a collection with a key, ID, and link for each AR payment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR payments
+      operationId: get-objects-ar-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-payment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AR payments:
+                  value:
+                    ia::result:
+                      - key: '212'
+                        id: '212'
+                        href: /objects/ar-payment/212
+                      - key: '201'
+                        id: '201'
+                        href: /objects/ar-payment/201
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an ar payment
+      description: Creates a new ar payment.
+      tags:
+        - AR payments
+      operationId: post-objects-ar-payment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-payment.s1.schema'
+                - $ref: '#/components/schemas/ar-paymentRequiredProperties'
+            examples:
+              Create an AR payment:
+                value:
+                  financialEntity:
+                    entityId: BOA
+                  paymentMethod: cash
+                  customer:
+                    id: '1'
+                  documentNumber: ''
+                  paymentSummary:
+                    receiptDate: '2023-03-23'
+                  paidDate: '2023-03-23'
+                  txnCurrency: MXN
+                  baseAmountToPay: '0.06'
+                  txnAmountToPay: '1'
+                  paymentDetails:
+                    - arInvoice:
+                        id: '2085'
+                        entry:
+                          id: '4313'
+                      txnPaymentAmount: '1'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create an AR payment:
+                  value:
+                    ia::result:
+                      id: '2096'
+                      key: '2096'
+                      href: /objects/ar-payment/2096
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-payment/{key}:
+    parameters:
+      - name: key
+        description: system-assigned unique key for the ar payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR payment
+      description: Returns detailed information for a specified AR payment.
+      tags:
+        - AR payments
+      operationId: get-objects-ar-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-payment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AR payment:
+                  value:
+                    ia::result:
+                      id: '464'
+                      key: '464'
+                      paymentSummary:
+                        key: '281'
+                        title: 'Receipts(Bank-BOA): 2025/10/10 Batch'
+                        receiptDate: '2025-10-10'
+                        batch: 'Receipts(Bank-BOA): 2025/10/10 Batch'
+                        undepositedGLAccountNo: null
+                      recordType: rp
+                      financialEntity:
+                        entityId: BOA
+                        entityType: ba
+                        name: Bank of America
+                        currency: USD
+                      state: null
+                      paymentMethod: cash
+                      customer:
+                        id: '1'
+                        name: Power Aerospace Materials
+                      documentNumber: null
+                      description: null
+                      audit:
+                        createdDateTime: '2025-10-10T00:00:00Z'
+                        modifiedDateTime: '2022-12-12T06:51:22Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      paidDate: '2019-03-20'
+                      baseTotalPaid: '10'
+                      txnTotalPaid: '10'
+                      baseCurrency: USD
+                      exchangeRate:
+                        date: null
+                        typeId: null
+                        rate: null
+                      baseTotalAmount: '10'
+                      baseAmountDue: '0'
+                      txnTotalAmount: '10.00'
+                      txnAmountDue: '0.00'
+                      contacts:
+                        payTo:
+                          id: null
+                          key: null
+                      bankReconciliationStatus: 'false'
+                      bankReconciliationDate: null
+                      referenceNumber: null
+                      attachment:
+                        id: null
+                        key: null
+                      nsp::arpayment_cns_case:
+                        key: null
+                        id: null
+                      lines:
+                        - id: '1011'
+                          key: '1011'
+                          arPayment:
+                            key: '464'
+                            href: /objects/ar-payment/464
+                          glAccount:
+                            key: '36'
+                            id: '1200'
+                            name: Accounts Receivable
+                            href: /objects/gl-account/36
+                          baseAmount: '10'
+                          txnAmount: '10.00'
+                          dimensions:
+                            department:
+                              key: null
+                              id: null
+                              name: null
+                            location:
+                              key: '1'
+                              id: '1'
+                              name: United States of America
+                              href: /objects/location/1
+                            project:
+                              key: null
+                              id: null
+                              name: null
+                            customer:
+                              key: '1'
+                              id: '1'
+                              name: Power Aerospace Materials
+                              href: /objects/customer/1
+                            vendor:
+                              key: null
+                              id: null
+                              name: null
+                            employee:
+                              key: null
+                              id: null
+                              name: null
+                            item:
+                              key: null
+                              id: null
+                              name: null
+                            class:
+                              key: null
+                              id: null
+                              name: null
+                            nsp::rgldim43491134_10019:
+                              key: null
+                              id: null
+                          memo: null
+                          exchangeRate:
+                            date: 10/10/2025
+                            typeId: null
+                            rate: '1'
+                          txnCurrency: USD
+                          baseCurrency: USD
+                          lineNumber: 1
+                          baseTotalPaid: '10'
+                          txnTotalPaid: '10'
+                          baseTotalSelected: '0'
+                          txnTotalSelected: '0'
+                          recordType: rp
+                          offsetGLAccount:
+                            key: '9'
+                            href: /objects/gl-account/9
+                          audit:
+                            createdDateTime: '2022-12-12T06:51:21Z'
+                            modifiedDateTime: '2022-12-12T06:51:22Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/ar-payment-line/1011
+                      paymentDetails:
+                        - id: '127'
+                          key: '127'
+                          arInvoice:
+                            id: '406'
+                            key: '406'
+                            entry:
+                              id: '886'
+                              key: '886'
+                            href: /objects/ar-invoice/406
+                          positiveAdjustment:
+                            key: null
+                            entry:
+                              id: null
+                              key: null
+                          inlineTxn:
+                            key: null
+                            entry:
+                              id: null
+                              key: null
+                            baseAmount: null
+                            txnAmount: null
+                          postedAdvance:
+                            key: null
+                            entry:
+                              id: null
+                              key: null
+                            baseAmount: null
+                            txnAmount: null
+                          postedOverPayment:
+                            key: null
+                            entry:
+                              id: null
+                              key: null
+                            baseAmount: null
+                            txnAmount: null
+                          arAdjustment:
+                            key: null
+                            entry:
+                              id: null
+                              key: null
+                            baseAmount: null
+                            txnAmount: null
+                          arPayment:
+                            id: '464'
+                            key: '464'
+                            entry:
+                              id: '1011'
+                              key: '1011'
+                            href: /objects/ar-payment/464
+                          paymentDate: '2019-03-20'
+                          basePaymentAmount: '10'
+                          txnPaymentAmount: '10.00'
+                          bankCurrency: USD
+                          audit:
+                            createdDateTime: '2022-12-12T06:51:21Z'
+                            modifiedDateTime: '2022-12-12T06:51:21Z'
+                            createdBy: '1'
+                            modifiedBy: '1'
+                          href: /objects/ar-payment-detail/127
+                      href: /objects/ar-payment/464
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR payment
+      description: Updates an existing AR payment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR payments
+      operationId: patch-objects-ar-payment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-payment.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR payment: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-payment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update an AR payment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-payment:
+      $ref: '#/components/schemas/ar-payment.s1.schema'
+    ar-paymentRequiredProperties:
+      type: object
+      required:
+        - paymentMethod
+        - txnCurrency
+        - paymentSummary
+        - customer
+        - paymentDetails
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ar-payment-detail.s1.schema:
+      title: ar-payment-detail
+      x-mappedTo: arpymtdetail
+      x-ownedBy: ar-payment
+      type: object
+      description: An AR payment detail object can specify either an object, like an invoice or an adjustment, as a whole (header level), or it can specify a line item. An AR payment detail object also provides the transaction amount that was received.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AR payment detail.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        id:
+          type: string
+          description: Identifier for the AR payment detail. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        paymentDate:
+          type: string
+          format: date
+          description: Date the payment was received. For example, for a credit card payment, this date is the date the credit card transaction occurred.
+          x-mappedTo: PAYMENTDATE
+          readOnly: true
+          example: '2023-04-30'
+        basePaymentAmount:
+          type: string
+          description: For multi-currency companies, the payment amount in the company's base currency.
+          x-mappedTo: PAYMENTAMOUNT
+          readOnly: true
+          example: '100.0'
+        txnPaymentAmount:
+          type: string
+          description: For multi-currency companies, payment amount in the currency in which the payment was received and recorded.
+          x-mappedTo: TRX_PAYMENTAMOUNT
+          format: decimal-precision-2
+          example: '100.0'
+        bankCurrency:
+          type: string
+          description: Payment currency
+          x-mappedTo: CURRENCY
+          readOnly: true
+          example: USD
+        inlineTxn:
+          type: object
+          title: inlinetxn
+          description: Inline transaction record details
+          x-object: ar-invoice
+          x-mappedTo: inlineinvoice
+          properties:
+            key:
+              type: string
+              x-mappedTo: INLINEKEY
+              description: Inline transaction record number
+            entry:
+              type: object
+              description: Inline transaction entry record number
+              x-mappedTo: inlineinvoiceitem
+              x-object: ar-invoice-line
+              properties:
+                key:
+                  type: string
+                  description: Inline transaction entry record number
+                  x-mappedTo: INLINEENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Inline transaction entry record number
+                  x-mappedTo: INLINEENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/ar-invoice-line/4
+            baseAmount:
+              type: string
+              description: Inline transaction base amount
+              x-mappedTo: INLINEAMOUNT
+              readOnly: true
+            txnAmount:
+              type: string
+              description: Inline transaction amount
+              x-mappedTo: TRX_INLINEAMOUNT
+              format: decimal-precision-2
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ar-invoice/4
+        postedAdvance:
+          type: object
+          description: Posted advance record
+          properties:
+            key:
+              type: string
+              x-mappedTo: POSTEDADVANCEKEY
+              description: Posted advance record number
+              readOnly: true
+            entry:
+              type: object
+              description: Posted advance entry record number
+              properties:
+                key:
+                  type: string
+                  description: Posted advance entry record number
+                  x-mappedTo: POSTEDADVANCEENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Posted advance entry record number
+                  x-mappedTo: POSTEDADVANCEENTRYKEY
+                  readOnly: true
+                href:
+                  type: string
+                  readOnly: true
+            baseAmount:
+              type: string
+              x-mappedTo: POSTEDADVANCEAMOUNT
+              readOnly: true
+              description: Posted advance base amount
+            txnAmount:
+              type: string
+              description: Posted advance transaction amount
+              x-mappedTo: TRX_POSTEDADVANCEAMOUNT
+              format: decimal-precision-2
+            href:
+              type: string
+              readOnly: true
+        postedOverPayment:
+          type: object
+          description: Posted overpayment record
+          properties:
+            key:
+              type: string
+              x-mappedTo: POSTEDOVERPAYMENTKEY
+              description: Posted overpayment record number
+              readOnly: true
+            entry:
+              type: object
+              description: Posted overpayment entry record number
+              properties:
+                key:
+                  type: string
+                  description: Posted overpayment entry record number
+                  x-mappedTo: POSTEDOVERPAYMENTENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Posted overpayment entry record number
+                  x-mappedTo: POSTEDOVERPAYMENTENTRYKEY
+                  readOnly: true
+                href:
+                  type: string
+                  readOnly: true
+            baseAmount:
+              type: string
+              description: Posted overpayment base amount
+              x-mappedTo: POSTEDOVERPAYMENTAMOUNT
+              readOnly: true
+            txnAmount:
+              type: string
+              description: Posted overpayment transaction amount
+              x-mappedTo: TRX_POSTEDOVERPAYMENTAMOUNT
+              format: decimal-precision-2
+            href:
+              type: string
+              readOnly: true
+        negativeInvoice:
+          type: object
+          description: Negative invoice transaction record
+          x-mappedTo: negativeinvoice
+          properties:
+            key:
+              type: string
+              description: Negative invoice transaction record number
+              x-mappedTo: NEGATIVEINVOICEKEY
+            entry:
+              type: object
+              description: Negative invoice transaction entry record number
+              x-mappedTo: negativeinvoiceitem
+              properties:
+                key:
+                  type: string
+                  description: Negative invoice transaction entry record number
+                  x-mappedTo: NEGATIVEINVOICEENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Negative invoice transaction entry record number
+                  x-mappedTo: NEGATIVEINVOICEENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/ar-invoice-line/4
+            baseAmount:
+              type: string
+              description: Negative invoice transaction base amount
+              x-mappedTo: NEGATIVEINVOICEAMOUNT
+              readOnly: true
+            txnAmount:
+              type: string
+              description: Negative invoice transaction amount
+              x-mappedTo: TRX_NEGATIVEINVOICEAMOUNT
+              format: decimal-precision-2
+            href:
+              type: string
+              readOnly: true
+        arAdjustment:
+          type: object
+          x-mappedTo: aradjustment
+          x-object: ar-adjustment
+          properties:
+            key:
+              type: string
+              description: Adjustment transaction record number
+              x-mappedTo: ADJUSTMENTKEY
+            entry:
+              type: object
+              description: Adjustment transaction entry record number
+              x-mappedTo: aradjustmententry
+              x-object: ar-adjustment-line
+              properties:
+                key:
+                  type: string
+                  description: Adjustment transaction entry record number
+                  x-mappedTo: ADJUSTMENTENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Adjustment transaction entry record number
+                  x-mappedTo: ADJUSTMENTENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+            baseAmount:
+              type: string
+              x-mappedTo: ADJUSTMENTAMOUNT
+              description: Adjustment transaction base amount
+              readOnly: true
+            txnAmount:
+              type: string
+              x-mappedTo: TRX_ADJUSTMENTAMOUNT
+              description: Adjustment transaction amount
+              format: decimal-precision-2
+            href:
+              type: string
+              readOnly: true
+        arInvoice:
+          type: object
+          description: AR invoice included in the payment details.
+          x-mappedTo: arinvoice
+          x-object: ar-invoice
+          properties:
+            key:
+              type: string
+              description: AR invoice included in the payment details.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+            id:
+              type: string
+              description: AR receivables payment Invoice Key
+              x-mappedTo: RECORDKEY
+            entry:
+              type: object
+              description: AR Invoice line item included for payment
+              x-mappedTo: arinvoiceitem
+              x-object: ar-invoice-line
+              properties:
+                key:
+                  type: string
+                  description: AR Invoice line item record number
+                  x-mappedTo: ENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: AR Invoice entry record number
+                  x-mappedTo: ENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/ar-invoice-line/4
+            href:
+              type: string
+              readOnly: true
+              example: /objects/ar-invoice/4
+        arAdvance:
+          type: object
+          x-mappedTo: arpostedadvance
+          properties:
+            key:
+              type: string
+              description: Advance record number
+              x-mappedTo: ADVANCEKEY
+            entry:
+              type: object
+              description: Advance entry record number
+              x-mappedTo: arpostedadvanceentry
+              properties:
+                key:
+                  type: string
+                  description: Advance entry record number
+                  x-mappedTo: ADVANCEENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Advance entry record number
+                  x-mappedTo: ADVANCEENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+            href:
+              type: string
+              readOnly: true
+        arPostedOverPayment:
+          type: object
+          x-mappedTo: arpostedoverpayment
+          properties:
+            key:
+              type: string
+              description: Overpayment record number
+              x-mappedTo: OVERPAYMENTKEY
+            entry:
+              type: object
+              description: Overpayment entry record number
+              x-mappedTo: arpostedoverpaymententry
+              properties:
+                key:
+                  type: string
+                  description: Overpayment entry record number
+                  x-mappedTo: OVERPAYMENTENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Overpayment entry record number
+                  x-mappedTo: OVERPAYMENTENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+            href:
+              type: string
+              readOnly: true
+        arPayment:
+          type: object
+          description: AR payment included in the payment details.
+          x-mappedTo: arpymt
+          x-object: ar-payment
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AR payment.
+              x-mappedTo: PAYMENTKEY
+              readOnly: true
+              example: '98545678'
+            id:
+              type: string
+              description: ID for the AR payment.
+              x-mappedTo: PAYMENTKEY
+              readOnly: true
+              example: '98545678'
+            entry:
+              type: object
+              description: AR payment line included in the payment details.
+              x-mappedTo: arpymtentry
+              x-object: ar-payment-line
+              properties:
+                key:
+                  type: string
+                  description: AR payment line included in the payment details.
+                  x-mappedTo: PAYMENTENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: AR payment line included in the payment details.
+                  x-mappedTo: PAYMENTENTRYKEY
+                  readOnly: true
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/ar-payment-line/4
+            href:
+              type: string
+              description: URL for the AR payment.
+              readOnly: true
+        positiveAdjustment:
+          type: object
+          x-mappedTo: posadj
+          x-object: subledger-record
+          properties:
+            key:
+              type: string
+              description: Positive adjustment record number
+              x-mappedTo: POSADJKEY
+              example: '98545678'
+            entry:
+              type: object
+              description: Positive adjustment record number
+              x-mappedTo: posadjitem
+              x-object: subledger-record-line
+              properties:
+                key:
+                  type: string
+                  description: Positive adjustment record number
+                  x-mappedTo: POSADJENTRYKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Positive adjustment record number
+                  x-mappedTo: POSADJENTRYKEY
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/subledger-record-line/4
+            href:
+              type: string
+              readOnly: true
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    ar-payment-line.s1.schema:
+      title: ar-payment-line
+      x-mappedTo: arpymtentry
+      x-ownedBy: ar-payment
+      type: object
+      description: AR payment information, including invoices and the line items in those invoices.
+      properties:
+        id:
+          type: string
+          description: Identifier for the AR payment line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        key:
+          type: string
+          description: System-assigned key for the AR payment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        href:
+          type: string
+          description: URL for the AR payment line item.
+          readOnly: true
+        baseAmount:
+          type: string
+          description: For multi-currency companies, the base amount of the item in the company's base currency.
+          x-mappedTo: AMOUNT
+          readOnly: true
+          example: '100.0'
+        txnAmount:
+          type: string
+          description: For payment involving multi-currency, the amount of the item in the currency for the invoice.
+          x-mappedTo: TRX_AMOUNT
+          format: decimal-precision-2
+          example: '100.0'
+        memo:
+          type: string
+          description: Memo or brief description of the AR payment line item.
+          x-mappedTo: ENTRYDESCRIPTION
+          example: Descreiption for line
+        baseCurrency:
+          type: string
+          description: Base currency of the company.
+          x-mappedTo: BASECURR
+          readOnly: true
+        txnCurrency:
+          type: string
+          description: Transaction Currency of the invoice
+          x-mappedTo: CURRENCY
+          readOnly: true
+        exchangeRate:
+          type: object
+          title: exchangeRate
+          description: Exchange rate details used to calculate the base amount.
+          properties:
+            date:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_DATE
+              readOnly: true
+            rate:
+              type: string
+              description: Exchange rate used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCHANGE_RATE
+              readOnly: true
+              example: '1.0789'
+            typeId:
+              type: string
+              description: Exchange rate type used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              readOnly: true
+              example: '-1'
+        lineNumber:
+          type: number
+          description: Line number of the AR payment line item.
+          x-mappedTo: LINE_NO
+          readOnly: true
+          example: 1
+        baseTotalPaid:
+          type: string
+          description: Total amount paid for the line item.
+          x-mappedTo: TOTALPAID
+          readOnly: true
+          example: '100.0'
+        txnTotalPaid:
+          type: string
+          description: Transaction total paid for the line item.
+          x-mappedTo: TRX_TOTALPAID
+          readOnly: true
+          example: '100.0'
+        baseTotalSelected:
+          type: string
+          description: Total selected for the line item.
+          x-mappedTo: TOTALSELECTED
+          example: '100.0'
+        txnTotalSelected:
+          type: string
+          description: Total transaction selected for the line item.
+          x-mappedTo: TRX_TOTALSELECTED
+          example: '100.0'
+        recordType:
+          type: string
+          description: Record type of the line item.
+          x-mappedTo: RECORDTYPE
+          example: rp
+        accountLabel:
+          type: object
+          description: AR account label associated with the line item.
+          x-object: ar-account-label
+          x-mappedTo: acctlabel
+          title: accountLabel
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AR account label.
+              x-mappedTo: ACCOUNTLABELKEY
+            id:
+              type: string
+              description: Identifier for the AR account label.
+              x-mappedTo: ACCOUNTLABEL
+            href:
+              type: string
+              description: URL for the AR account label.
+              readOnly: true
+        allocation:
+          type: object
+          description: Allocation information for the line item.
+          x-mappedTo: ALLOCATION
+          title: allocation
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: '1'
+            id:
+              type: integer
+              description: ID for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: 1
+            name:
+              type: string
+              description: Name of the allocation.
+              x-mappedTo: ALLOCATION
+              readOnly: true
+              example: Alloc1-WBS-US
+            href:
+              type: string
+              description: URL for the allocation.
+              readOnly: true
+        arPayment:
+          type: object
+          description: Header level details for the AR payment's line entries.
+          x-mappedTo: arpymt
+          x-object: ar-payment
+          properties:
+            key:
+              type: string
+              description: Parent record number (Payment Record Number)
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Parent record number (Payment Record Number)
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '98545678'
+            href:
+              type: string
+              description: URL for the AR payment.
+              readOnly: true
+        glAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Account key
+              x-mappedTo: ACCOUNTKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Account number
+              x-mappedTo: ACCOUNTNO
+              example: '100'
+            name:
+              type: string
+              description: GL account title
+              x-mappedTo: ACCOUNTTITLE
+              example: Sales
+            href:
+              type: string
+              description: GL account URL
+              readOnly: true
+        offsetGLAccount:
+          type: object
+          x-mappedTo: prentryoffsetacct
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Offset GL account key
+              x-mappedTo: PRENTRYOFFSETACCOUNTKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Offset GL account number
+              x-mappedTo: PRENTRYOFFSETACCOUNTNO
+              example: '4000'
+            href:
+              type: string
+              description: Offset GL account URL
+              readOnly: true
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                location:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+                  x-object: location
+                  x-mappedTo: location
+                  title: location
+                  properties:
+                    key:
+                      type: string
+                      x-mappedTo: LOCATIONKEY
+                      example: '1'
+                    id:
+                      type: string
+                      description: Location ID
+                      x-mappedTo: LOCATIONID
+                      example: US
+                    name:
+                      type: string
+                      description: Location name
+                      x-mappedTo: LOCATIONNAME
+                      example: United States
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/location/4
+                department:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+                  x-object: department
+                  x-mappedTo: department
+                  title: department
+                  properties:
+                    key:
+                      type: string
+                      x-mappedTo: DEPARTMENTKEY
+                      example: '98545678'
+                    id:
+                      type: string
+                      description: Department ID
+                      x-mappedTo: DEPARTMENTID
+                      example: ENG
+                    name:
+                      type: string
+                      description: Department name
+                      x-mappedTo: DEPARTMENTNAME
+                      example: Engineering
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/department/9
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    ar-payment.s1.schema:
+      title: ar-payment
+      x-mappedTo: arpymt
+      type: object
+      description: An AR payment is a transaction used to record a payment against an AR invoice or an AR adjustment/debit memo.
+      properties:
+        key:
+          type: string
+          description: AR receivables payment Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '87653458'
+        id:
+          type: string
+          description: AR receivables payment Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '87653458'
+        href:
+          type: string
+          description: URL for the AR payment.
+          readOnly: true
+        recordType:
+          type: string
+          description: Record type
+          x-mappedTo: RECORDTYPE
+          readOnly: true
+          example: rp
+        financialEntity:
+          type: object
+          title: financialEntity
+          properties:
+            entityId:
+              type: string
+              description: Financial entity
+              x-mappedTo: FINANCIALENTITY
+              example: BOA
+            entityType:
+              type: string
+              description: Financial entity type
+              x-mappedTo: FINANCIALENTITYTYPE
+              readOnly: true
+              example: Bank
+            accountNumber:
+              type: string
+              description: Financial GL account number or credit card number
+              x-mappedTo: FINANCIALACCOUNT
+              readOnly: true
+            name:
+              type: string
+              description: Bank Name
+              x-mappedTo: FINANCIALACCOUNTNAME
+              readOnly: true
+            currency:
+              type: string
+              description: Bank currency
+              x-mappedTo: FINANCIALACCOUNTCURRENCY
+              readOnly: true
+        state:
+          type: string
+          description: State
+          x-mappedTo: STATE
+          readOnly: true
+          example: null
+        paymentMethod:
+          type: string
+          description: Payment Method
+          x-mappedTo: PAYMENTMETHOD
+          enum:
+            - printedCheck
+            - creditCard
+            - eft
+            - cash
+            - onlineChargeCard
+            - onlineACHDebit
+          x-mappedToValues:
+            - Printed Check
+            - Credit Card
+            - EFT
+            - Cash
+            - Online Charge Card
+            - Online ACH Debit
+        documentNumber:
+          type: string
+          description: Document number, such as a check number.
+          x-mappedTo: DOCNUMBER
+          example: '123'
+        description:
+          type: string
+          description: Memo or notes about the AR payment.
+          x-mappedTo: DESCRIPTION
+          maxLength: 1000
+          example: Memo for the line
+        baseCurrency:
+          type: string
+          description: Base currency of the company.
+          x-mappedTo: BASECURR
+          readOnly: true
+        txnCurrency:
+          type: string
+          description: Transaction Currency of the invoice
+          x-mappedTo: CURRENCY
+        exchangeRate:
+          type: object
+          title: exchangeRate
+          description: Exchange rate details used to calculate the base amount.
+          properties:
+            date:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_DATE
+              readOnly: true
+            rate:
+              type: string
+              description: Exchange rate used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCHANGE_RATE
+              readOnly: true
+              example: '1.0789'
+            typeId:
+              type: string
+              description: Exchange rate type used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              readOnly: true
+              example: '-1'
+        baseAmountToPay:
+          type: string
+          description: For payment involving multi-currency, this is the translated payment base amount. (Amount is ignored if the payment is not cross currency.)
+          x-mappedTo: AMOUNTTOPAY
+          format: decimal-precision-2
+        txnAmountToPay:
+          type: string
+          x-mappedTo: TRX_AMOUNTTOPAY
+          format: decimal-precision-2
+          description: Amount Received. For payment involving multi-currency, this is the total transaction payment amount. (Amount is ignored if the payment is not cross currency.)
+        baseTotalAmount:
+          type: string
+          description: Total amount
+          x-mappedTo: TOTALENTERED
+          example: '100.0'
+          readOnly: true
+        baseAmountDue:
+          type: string
+          description: Amount due
+          x-mappedTo: TOTALDUE
+          example: '100.0'
+          readOnly: true
+        txnTotalAmount:
+          type: string
+          description: Total transaction amount
+          format: decimal-precision-2
+          x-mappedTo: TRX_TOTALENTERED
+          maxLength: 14
+          example: '100.0'
+          readOnly: true
+        txnAmountDue:
+          type: string
+          description: Transaction amount due
+          format: decimal-precision-2
+          x-mappedTo: TRX_TOTALDUE
+          maxLength: 14
+          example: '100.0'
+          readOnly: true
+        bankReconciliationStatus:
+          type: string
+          description: Reconciliation status
+          x-mappedTo: CLEARED
+          example: 'true'
+          enum:
+            - 'true'
+            - 'false'
+            - ''
+          x-mappedToValues:
+            - T
+            - F
+            - ''
+          default: 'false'
+          readOnly: true
+        bankReconciliationDate:
+          type: string
+          description: Reconciliation date
+          x-mappedTo: CLRDATE
+          readOnly: true
+          example: '2022-04-30'
+        referenceNumber:
+          type: string
+          description: Reference no.
+          x-mappedTo: RECORDID
+          maxLength: 21
+          example: '1234'
+        paymentSummary:
+          type: object
+          title: paymentSummary
+          properties:
+            key:
+              type: string
+              description: Summary key
+              x-mappedTo: PRBATCHKEY
+              readOnly: true
+              maxLength: 8
+              example: '87345678'
+            receiptDate:
+              type: string
+              format: date
+              description: Receipt date
+              x-mappedTo: RECEIPTDATE
+              example: '2021-01-23'
+            title:
+              type: string
+              description: Summary title
+              x-mappedTo: SUMMARYTITLE
+              example: Batch 02-07-2023
+            batch:
+              type: string
+              description: Summary
+              x-mappedTo: PRBATCH
+              maxLength: 100
+              example: Batch 02-07-2023
+            undepositedGLAccountNo:
+              type: string
+              description: Undeposited funds account no.
+              x-mappedTo: UNDEPOSITEDACCOUNTNO
+              example: '100444'
+        customer:
+          type: object
+          x-mappedTo: customer
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer record number
+              x-mappedTo: CUSTOMERRECORDNO
+              readOnly: true
+            entity:
+              type: string
+              description: Customer entity
+              x-mappedTo: ENTITY
+              example: C100
+              readOnly: true
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              maxLength: 21
+              example: Cust-1
+            name:
+              type: string
+              description: Customer name
+              x-mappedTo: CUSTOMERNAME
+              example: Ganesh
+              readOnly: true
+            totalDueAmount:
+              type: string
+              description: Customer total due
+              x-mappedTo: CUSTOMERDUE
+              readOnly: true
+              example: '100.0'
+            href:
+              type: string
+              description: URL for the location.
+              readOnly: true
+        attachment:
+          type: object
+          x-mappedTo: SUPDOCID
+          description: Supporting document ID for this attachment.
+          x-object: attachment
+          properties:
+            key:
+              type: string
+              description: Attachment
+              x-mappedTo: SUPDOCID
+              example: '123'
+            id:
+              type: string
+              description: Attachment
+              x-mappedTo: SUPDOCID
+              example: '123'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/attachment/21
+        paidDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date of the payment.
+          x-mappedTo: WHENPAID
+        baseTotalPaid:
+          type: string
+          description: Total amount paid
+          x-mappedTo: TOTALPAID
+          readOnly: true
+        txnTotalPaid:
+          type: string
+          description: Total transaction paid
+          x-mappedTo: TRX_TOTALPAID
+          readOnly: true
+        overPayment:
+          type: object
+          title: over payment information
+          properties:
+            customerId:
+              type: string
+              x-mappedTo: OVERPAYMENTCUSTOMERID
+              desciption: Overpayment customer id
+            locationId:
+              type: string
+              x-mappedTo: OVERPAYMENTLOCATIONID
+              description: Overpayment location id
+            departmentId:
+              type: string
+              x-mappedTo: OVERPAYMENTDEPARTMENTID
+              description: Overpayment department id
+            classId:
+              type: string
+              x-mappedTo: OVERPAYMENTCLASSID
+              description: Overpayment Class Id
+            projectId:
+              type: string
+              x-mappedTo: OVERPAYMENTPROJECTID
+              description: Overpayment Project Id
+            amount:
+              type: string
+              x-mappedTo: OVERPAYMENTAMOUNT
+              description: Overpayment Amount
+        contacts:
+          type: object
+          description: Contact information for the AR payment.
+          title: CONTACTS
+          properties:
+            payTo:
+              type: object
+              description: Pay-to contact for the AR payment.
+              title: payTo
+              x-object: contact
+              x-mappedTo: payto
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the pay-to contact.
+                  x-mappedTo: BILLTOPAYTOKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Identifier for the pay-to contact.
+                  x-mappedTo: BILLTOPAYTONAME
+                href:
+                  type: string
+                  description: URL for the pay-to contact.
+                  readOnly: true
+        paymentDetails:
+          type: array
+          description: Details for the AR payment.
+          x-mappedTo: PYMTDETAILS
+          x-object: ar-payment-detail
+          items:
+            $ref: '#/components/schemas/ar-payment-detail.s1.schema'
+        lines:
+          type: array
+          description: Line items of the AR payment.
+          x-mappedTo: ITEMS
+          x-object: ar-payment-line
+          items:
+            $ref: '#/components/schemas/ar-payment-line.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

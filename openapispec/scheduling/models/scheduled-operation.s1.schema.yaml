@@ -1,0 +1,64 @@
+title: scheduled-operation
+x-mappedTo: scheduledoperation
+type: object
+description: Detail information for scheduled tasks.
+properties:
+  key:
+    type: string
+    description: record number
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Scheduled Operation ID
+    x-mutable: false
+    x-mappedTo: NAME
+  scheduleKey:
+    type: integer
+    description: Schedule Record
+    x-mappedTo: SCHEDULENO
+  operationKey:
+    type: integer
+    description: Operation Record
+    x-mappedTo: OPERATIONNO
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  operation:
+    type: object
+    x-mappedTo: operation
+    x-object: operation
+    properties:
+      key:
+        type: string
+        description: Operation Key
+        x-mappedTo: OPERATION.RECORDNO
+      id:
+        type: string
+        description: Operation ID
+        x-mappedTo: OPERATION.NAME
+  schedule:
+    type: object
+    x-mappedTo: schedule
+    x-object: schedule
+    properties:
+      key:
+        type: string
+        description: Schedule ID
+        x-mappedTo: SCHEDULE.RECORDNO
+      id:
+        type: string
+        description: Schedule ID
+        x-mappedTo: SCHEDULE.NAME
+      nextScheduledDate:
+        type: string
+        description: Next Scheduled Date
+        x-mappedTo: SCHEDULE.NEXTEXECDATE
+        format: date
+  userinfo:
+    type: string
+    description: Created By
+    x-mappedTo: USERNO
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

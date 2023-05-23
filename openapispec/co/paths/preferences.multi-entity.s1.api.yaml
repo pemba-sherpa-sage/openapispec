@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: preferences.multi-entity
+  description: preferences.multi-entity API
+  version: '1.0'
+  contact:
+    name: Girish Dhareshwar
+    email: Girish.dhareshwar@sage.com
+tags:
+  - name: Multi-entity preferences
+    description: In a multi-entity shared company, entities represent a separate tax identification or a separately secured, fully balancing set of books. Entities typically represent divisions, franchises, affiliates, associations, locations, chapters, self-balancing funds, or subsidiaries, with a shared chart of accounts.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/services/preferences/multi-entity':
+    get:
+      summary: Get multi-entity preferences
+      description: Returns current multi entity preference settings.
+      tags:
+        - Multi-entity preferences
+      operationId: get-services-preferences.multi-entity
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Multi-entity preferences
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Current multi-entity preferences:
+                  value:
+                    'ia::result':
+                      enableMultipleBaseCurrency: true
+                      approvalCurrency: CAD
+                      isForm1099: false
+                      restrictions:
+                        disableEntitySlideIn: false
+                        restrictSubledgerTxnToEntity: false
+                        enableCustomerRestrictions: true
+                        enableVendorRestrictions: true
+                        enableCheckingAccountRestrictions: false
+                        enableSavingsAccountRestrictions: false
+                      interEntityAccountMappingPlan: basic
+                      interEntityTransactions:
+                        enableForJournalEntry: true
+                        manuallyBalanceSubledgerTxns: false
+                        manuallyBalanceSubledgerCredits: true
+                        creditsJournal:
+                          key: '10'
+                          id: IEP
+                          name: Inter Entity Payable
+                          href: /objects/gl-journal/10
+                      balanceJournalEntryBy: entity
+                      limitAPCredit: true
+                      limitARCredit: false
+                      moduleConfigured: true
+                      audit:
+                        createdDateTime: '2021-10-29T08:00:50Z'
+                        modifiedDateTime: '2021-12-01T09:08:17Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /services/preferences/multi-entity
+                    'ia::meta':
+                      "totalCount": 1,
+                      "totalSuccess": 1,
+                      "totalError": 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update multi-entity preferences
+      description: Update the multi-entity preferences for a company. Any fields not provided remain unchanged.
+      tags:
+        - Multi-entity preferences
+      operationId: patch-services-preferences.multi-entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.multi-entity'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Enable checking account restrictions:
+                value:
+                  restrictions:
+                    enableCheckingAccountRestrictions: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated preferences.multi-entity
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+components:
+  schemas:
+    preferences.multi-entity:
+      $ref: ../models/preferences.multi-entity.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

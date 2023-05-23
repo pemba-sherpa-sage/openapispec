@@ -1,0 +1,95 @@
+title: role-assignment
+x-mappedTo: roleassignment
+type: object
+description: List of users and groups assigned to roles.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the role-assignment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Role assignments ID.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the role-assignment.
+    readOnly: true
+    example: /objects/role-assignment/23
+  user:
+    type: object
+    x-mappedTo: userinfo
+    x-object: user
+    properties:
+      key:
+        type: string
+        description: User key.
+        x-mappedTo: USER_GROUP_KEY
+        example: '10'
+      id:
+        type: string
+        description: User id. Same as key.
+        x-mappedTo: USER_GROUP_KEY
+        example: '10'
+      href:
+        type: string
+        description: URL for the user.
+        readOnly: true
+        example: /objects/user/10
+  userGroup:
+    type: object
+    x-mappedTo: usergroup
+    x-object: user-group
+    properties:
+      key:
+        type: string
+        description: User group key.
+        x-mappedTo: USER_GROUP_KEY
+        example: '21'
+      id:
+        type: string
+        description: User group id. Same as key.
+        x-mappedTo: USER_GROUP_KEY
+        example: '21'
+      href:
+        type: string
+        description: URL for the user group.
+        readOnly: true
+        example: /objects/user-group/21
+  relationshipType:
+    type: string
+    description: Relationship type for the assigned role.
+    x-mappedTo: TYPE
+    example: user
+    enum:
+      - user
+      - group
+    x-mappedToValues:
+      - U
+      - G
+  role:
+    type: object
+    x-mappedTo: roles
+    x-object: role
+    properties:
+      key:
+        type: string
+        description: Role key.
+        x-mappedTo: ROLEKEY
+        example: '23'
+      roleName:
+        type: string
+        description: Role name.
+        x-mappedTo: ROLENAME
+        example: Employee - Partial Access
+      href:
+        type: string
+        description: Endpoint for the roles.
+        readOnly: true
+        example: /objects/roles/23
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: revenue-template
+  description: revenue-template API
+  version: '1.0'
+  contact:
+    name: Niraj Singh
+    email: niraj.kumar@sage.com
+tags:
+  - name: Revenue templates
+    description: A revenue template defines the revenue recognition schedule for the flat/fixed amount associated with a contract line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/revenue-template:
+    get:
+      summary: List revenue templates
+      description: Returns a collection with a key, ID, and link for each revenue template.
+      tags:
+        - Revenue templates
+      operationId: get-objects-revenue-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of revenue templates: 
+                  value:
+                    'ia::result':
+                      - key: '26'
+                        id: Evergreen Revenue
+                        href: /objects/revenue-template/26
+                      - key: '18'
+                        id: Conprjobserved%compA
+                        href: /objects/revenue-template/18
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an revenue template
+      description: Creates a new revenue template.
+      tags:
+        - Revenue templates
+      operationId: post-objects-revenue-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/revenue-template'
+                - $ref: '#/components/schemas/revenue-templateRequiredProperties'
+            examples:
+              Creates a/an revenue template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New revenue-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New revenue template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/revenue-template/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the revenue template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an revenue template
+      description: Returns detailed information for a particular revenue template.
+      tags:
+        - Revenue templates
+      operationId: get-objects-revenue-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/revenue-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the revenue template: 
+                  value:
+                    'ia::result':
+                      key: '26'
+                      id: Evergreen Revenue
+                      description: System generated evergreen revrec template
+                      scheduleperiod: monthly
+                      postingDay: '1'
+                      method: straightLine
+                      source: estimatedHours
+                      steptemplate: false
+                      resumeoption: ''
+                      postingtype: automatic
+                      status: active
+                      audit:
+                        modifiedDateTime: '2022-04-22T05:17:12Z'
+                        createdDateTime: '2022-04-22T05:17:12Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/revenue-template/26
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an revenue template
+      description: Updates an existing revenue template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Revenue templates
+      operationId: patch-objects-revenue-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/revenue-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an revenue template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated revenue-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated revenue template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an revenue template
+      description: Deletes a/an revenue template.
+      tags:
+        - Revenue templates
+      operationId: delete-objects-revenue-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    revenue-template:
+      $ref: ../models/revenue-template.s1.schema.yaml
+    revenue-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

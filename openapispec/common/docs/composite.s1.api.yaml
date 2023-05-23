@@ -1,0 +1,393 @@
+openapi: 3.0.0
+info:
+  title: Composite Request Service
+  description: Composite request service for submitting multiple "subrequests" in a single POST request.
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Composite requests
+    description: Composite request service for submitting multiple "subrequests" in a single POST request.
+paths:
+  /services/composite:
+    post:
+      summary: Send a composite request
+      description: Sends multiple requests within a single POST request.
+      tags:
+        - Composite requests
+      operationId: post-services-composite
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/composite'
+            examples:
+              Multiple independent requests to change employee location:
+                value:
+                  - method: PATCH
+                    path: /objects/employee/26
+                    body:
+                      location:
+                        key: '6'
+                  - method: PATCH
+                    path: /objects/employee/33
+                    body:
+                      location:
+                        key: '6'
+                  - method: PATCH
+                    path: /objects/employee/62
+                    body:
+                      location:
+                        key: '6'
+              Multiple requests using data from previous:
+                value:
+                  - method: GET
+                    path: /objects/employee/52
+                    resultReference: employee
+                  - method: POST
+                    path: /services/query
+                    body:
+                      object: employee
+                      fields:
+                        - id
+                        - jobTitle
+                        - department.key
+                        - employeeType.name
+                      filters:
+                        - $eq:
+                            department.key: '@{employee.department.key}'
+                        - $eq:
+                            employeeType.name: '@{employee.employeeType.name}'
+                      filterExpression: 1 and 2
+                      orderBy:
+                        - id: asc
+              Multi-status example:
+                value:
+                  - method: GET
+                    path: /services/core/async/job-status?jobId=NjQ2NTc2MzAzMVl1Ul9qVmd6M2t4M2pPdEJya2J5Y2dBQUFBQTE
+                  - method: GET
+                    path: /objects/contact/2662
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::status:
+                    type: string
+                    description: HTTP status code
+                  ia::result:
+                    type: array
+                    description: Composite response
+                    items:
+                      type: object
+                      properties:
+                        ia::result:
+                          type: object
+                          anyOf:
+                            - type: object
+                              description: Response of GET on a single object or query results
+                            - $ref: '#/components/schemas/object-reference.schema'
+                        ia::meta:
+                          $ref: '#/components/schemas/metadata.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Multiple independent requests to change employee location:
+                  value:
+                    ia::result:
+                      - ia::result:
+                          key: '26'
+                          id: '0014'
+                          href: /objects/employee/26
+                        ia::meta:
+                          totalCount: 1
+                        ia::status: 200
+                        ia::headers:
+                          X-IA-API-ORM-Action: update
+                      - ia::result:
+                          key: '33'
+                          id: '1'
+                          href: /objects/employee/33
+                        ia::meta:
+                          totalCount: 1
+                        ia::status: 200
+                        ia::headers:
+                          X-IA-API-ORM-Action: update
+                      - ia::result:
+                          key: '62'
+                          id: '2'
+                          href: /objects/employee/62
+                        ia::meta:
+                          totalCount: 1
+                        ia::status: 200
+                        ia::headers:
+                          X-IA-API-ORM-Action: update
+                    ia::meta:
+                      totalCount: 3
+                Multiple Requests using data from previous:
+                  value:
+                    ia::result:
+                      - ia::result:
+                          key: '52'
+                          id: Emp2
+                          SSN: '100000001'
+                          jobTitle: Sr Software Eng
+                          location:
+                            id: '10'
+                            key: '15'
+                            name: Indianapolis
+                            href: /objects/location/15
+                          department:
+                            id: '10'
+                            key: '10'
+                            name: QA - II
+                            href: /objects/department/10
+                          manager:
+                            key: '11'
+                            id: '10'
+                            href: /objects/employee/11
+                          birthDate: '1984-04-14'
+                          startDate: '2021-05-01'
+                          endDate: '2025-04-02'
+                          status: active
+                          employeeType:
+                            id: Part Time
+                            name: Part Time
+                            key: '2'
+                            href: /objects/employee-type/2
+                          gender: female
+                          terminationType: involuntary
+                          primaryContact:
+                            id: abc(C02)
+                            name: abc(C02)
+                            key: '205'
+                            href: /objects/contact/205
+                          defaultCurrency: MXN
+                          earningType:
+                            key: '2'
+                            id: earningType2
+                            name: earningType2
+                            href: /objects/earning-type/2
+                          class:
+                            id: SW-Office
+                            name: Office Software
+                            key: '9'
+                            href: /objects/class/9
+                          href: /objects/employee/52
+                        ia::meta:
+                          totalCount: 1
+                        ia::status: 200
+                      - ia::result:
+                          - id: Emp2
+                            jobTitle: Sr Software Eng
+                            department.key: '10'
+                            employeeType.name: Part Time
+                          - id: Emp10
+                            jobTitle: QA Engineer
+                            department.key: '10'
+                            employeeType.name: Part Time
+                          - id: Emp22
+                            jobTitle: Architect
+                            department.key: '10'
+                            employeeType.name: Full Time
+                        ia::meta:
+                          totalCount: 3
+                          start: 1
+                          pageSize: 100
+                          next: null
+                          previous: null
+                        ia::status: 200
+                    ia::meta:
+                      totalCount: 2
+        '207':
+          description: Multi-Status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::status:
+                    type: string
+                    description: HTTP status code
+                  ia::result:
+                    type: array
+                    description: Composite response
+                    items:
+                      type: object
+                      anyOf:
+                        - title: success-response
+                          description: Success response
+                          properties:
+                            ia::result:
+                              type: object
+                              anyOf:
+                                - type: object
+                                  description: Response of GET on a single object or query results
+                                - $ref: '#/components/schemas/object-reference.schema'
+                                - $ref: '#/components/schemas/error-response.schema'
+                            ia::meta:
+                              $ref: '#/components/schemas/metadata.schema'
+                        - $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Multi-status example:
+                  value:
+                    ia::result:
+                      - ia::error:
+                          code: notFound
+                          message: Asynchronous job 6465763031YSPy9lgWtJCMGZ6UkUbA6QAAAAY1 status could not be found
+                          supportId: tqKR0%7EYsTZeDEdVao0_h01dZFQqgAAAAY
+                        ia::status: 404
+                      - ia::error:
+                          code: unprocessed
+                          message: Operation skipped due to atomic transaction failure
+                        ia::status: 422
+                    ia::meta:
+                      totalCount: 2
+                      totalSuccess: 0
+                      totalError: 2
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    composite:
+      type: array
+      x-mappedTo: __custom__
+      items:
+        $ref: '#/components/schemas/composite.s1.schema'
+    composite.s1.schema:
+      title: composite
+      description: Schema for describing a single request that will be included as part of a POST body sent to the composite request service.
+      x-mappedTo: __custom__
+      type: object
+      properties:
+        method:
+          type: string
+          description: Operation for request.
+          x-mappedTo: method
+          nullable: false
+          example: POST
+          enum:
+            - GET
+            - POST
+            - PATCH
+            - DELETE
+        path:
+          type: string
+          description: Path to the request endpoint in the Intacct REST API.
+          nullable: false
+          x-mappedTo: path
+          pattern: /^\/(objects|services)\/[a-z_][a-z_0-9.\-:]+(.*)?$/
+          example: /objects/contact
+        headers:
+          type: object
+          description: Headers needed for this request.
+          x-mappedTo: headers
+          example:
+            Idempotency-Key: e9606bb2-6be1-4c9e-a2a7-134cd644a5ee
+        body:
+          type: object
+          description: Request body for POST or PATCH operations.
+          x-mappedTo: body
+          example:
+            lastName: Doe
+            firstName: John
+            id: Doe, John
+        resultReference:
+          type: string
+          description: Reference identifier for success results, used by other requests as input data.
+          x-mappedTo: resultReference
+          nullable: false
+          example: contactRef
+      required:
+        - method
+        - path
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-extended.schema:
+      title: metadata-extended
+      description: Meta data with partial success
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            totalSuccess:
+              type: integer
+              description: Total Success
+              x-mappedTo: null
+              readOnly: true
+              example: 2
+            totalError:
+              type: integer
+              description: Total Errors
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

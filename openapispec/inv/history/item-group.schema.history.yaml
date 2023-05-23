@@ -1,0 +1,25 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/itemgroup/view
+      - pa/lists/itemgroup/view
+      - po/lists/itemgroup/view
+      - so/lists/itemgroup/view
+    POST:
+      - inv/lists/itemgroup/create
+      - pa/lists/itemgroup/create
+      - po/lists/itemgroup/create
+      - so/lists/itemgroup/create
+    PATCH:
+      - inv/lists/itemgroup/edit
+      - pa/lists/itemgroup/edit
+      - po/lists/itemgroup/edit
+      - so/lists/itemgroup/edit
+    DELETE:
+      - inv/lists/itemgroup/delete
+      - pa/lists/itemgroup/delete
+      - po/lists/itemgroup/delete
+      - so/lists/itemgroup/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,337 @@
+openapi: 3.0.0
+info:
+  title: billback-template-line
+  description: billback-template-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Billback template lines
+    description: Billback template line description -- explain what it's for and how it's used.
+paths:
+  /objects/billback-template-line:
+    get:
+      summary: List billback template lines
+      description: Returns a collection with a key, ID, and link for each billback template line.
+      tags:
+        - Billback template lines
+      operationId: get-objects-billback-template-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billback-template-line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of billback template lines: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an billback template line
+      description: Creates a new billback template line.
+      tags:
+        - Billback template lines
+      operationId: post-objects-billback-template-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billback-template-line.s1.schema'
+                - $ref: '#/components/schemas/billback-template-lineRequiredProperties'
+            examples:
+              Creates a/an billback template line: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billback-template-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New billback template line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/billback-template-line/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the billback template line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an billback template line
+      description: Returns detailed information for a particular billback template line.
+      tags:
+        - Billback template lines
+      operationId: get-objects-billback-template-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billback-template-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/billback-template-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the billback template line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an billback template line
+      description: Updates an existing billback template line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Billback template lines
+      operationId: patch-objects-billback-template-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billback-template-line.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an billback template line: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated billback-template-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated billback template line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an billback template line
+      description: Deletes a/an billback template line.
+      tags:
+        - Billback template lines
+      operationId: delete-objects-billback-template-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billback-template-line:
+      $ref: '#/components/schemas/billback-template-line.s1.schema'
+    billback-template-lineRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    billback-template-line.s1.schema:
+      title: billback-template-line
+      x-mappedTo: bbtemplateitem
+      x-ownedBy: billback-template
+      type: object
+      description: Billback template lines
+      properties:
+        key:
+          type: string
+          description: Record key
+          readOnly: true
+          x-mappedTo: RECORD#
+        id:
+          type: string
+          description: BillBack Template Line Item ID
+          readOnly: true
+          x-mappedTo: RECORD#
+        lineNumber:
+          type: string
+          description: Line No
+          x-mappedTo: LINE_NO
+          readOnly: true
+        memo:
+          type: string
+          description: Memo
+          x-mappedTo: MEMO
+        invoiceGLAccount:
+          type: object
+          x-object: gl-account
+          x-mappedTo: invglaccount
+          title: invoiceAccount
+          properties:
+            key:
+              type: string
+              x-mappedTo: INVACCOUNTKEY
+            id:
+              type: string
+              x-mappedTo: INVGLACCOUNTNO
+            name:
+              type: string
+              x-mappedTo: INVGLACCOUNTTITLE
+        billGLAccount:
+          type: object
+          x-object: gl-account
+          x-mappedTo: billglaccount
+          title: billAccount
+          properties:
+            key:
+              type: string
+              x-mappedTo: BILLACCOUNTKEY
+            id:
+              type: string
+              x-mappedTo: BILLGLACCOUNTNO
+            name:
+              type: string
+              x-mappedTo: BILLGLACCOUNTTITLE
+        department:
+          type: object
+          x-object: department
+          x-mappedTo: dept
+          properties:
+            key:
+              type: string
+              x-mappedTo: DEPARTMENT
+            id:
+              type: string
+              x-mappedTo: DEPARTMENTID
+            name:
+              type: string
+              x-mappedTo: DEPARTMENTNAME
+        billbackTemplate:
+          title: billbackTemplateRef
+          type: object
+          x-mappedTo: billbacktemplate
+          x-object: billback-template
+          properties:
+            id:
+              type: string
+              x-mappedTo: RECORDKEY
+              readOnly: true
+            key:
+              type: string
+              x-mappedTo: RECORDKEY
+              readOnly: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

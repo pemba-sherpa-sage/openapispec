@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: customer-type
+  description: customer-type API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Customer types
+    description: Customer types provide a way to group customers into categories, such as reseller and end user. Setting up meaningful customer types streamlines management and analysis of customer information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/customer-type/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer type.
+    get:
+      summary: Get a customer type
+      description: Returns detailed information for a specified customer type.
+      tags:
+        - Customer types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/customer-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a customer type:
+                  value:
+                    'ia::result':
+                      id: Client Start Trial
+                      parent:
+                        key: null
+                        id: Account Manager
+                      status: active
+                      key: '9'
+                      audit:
+                        createdDateTime: '2022-01-07T06:18:51Z'
+                        modifiedDateTime: '2022-01-07T06:18:51Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/customer-type/9
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-type-key
+    delete:
+      summary: Delete a customer type
+      description: Deletes a customer type.
+      tags:
+        - Customer types
+      operationId: delete-objects-customer-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a customer type
+      description: Updates an existing customer type by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customer types
+      operationId: patch-objects-customer-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a customer type:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: Auto ACH
+                      href: /objects/customer-type/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/customer-type:
+    get:
+      summary: List customer types
+      description: Returns a collection with a key, ID, and link for each customer type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customer types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List customer types:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: Account Manager
+                        href: /objects/customer-type/1
+                      - key: '2'
+                        id: Auto ACH
+                        href: /objects/customer-type/2
+                      - key: '3'
+                        id: Auto CC Payment
+                        href: /objects/customer-type/3
+                      - key: '4'
+                        id: Credit Card
+                        href: /objects/customer-type/4
+                    'ia::meta':
+                      totalCount: 4
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-custtype
+    post:
+      summary: Create a customer type
+      description: Creates a new customer type.
+      tags:
+        - Customer types
+      operationId: post-objects-custtype
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New customer-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a customer type:
+                  value:
+                    'ia::result':
+                      key: '9'
+                      id: Client Start Trial
+                      href: /objects/customer-type/9
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-type'
+                - $ref: '#/components/schemas/customer-typeRequiredProperties'
+            examples: {}
+components:
+  schemas:
+    customer-type:
+      $ref: ../models/customer-type.s1.schema.yaml
+    customer-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

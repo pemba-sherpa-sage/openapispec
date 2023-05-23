@@ -1,0 +1,123 @@
+title: standard-task
+type: object
+x-mappedTo: standardtask
+properties:
+  key:
+    type: string
+    description: System-assigned key for the standard task
+    example: '2'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the standard task
+    example: 1-010
+    x-mappedTo: STANDARDTASKID
+    x-mutable: false
+  href:
+    type: string
+    example: /objects/standard-task/2
+    description: URL of the standard task
+    readOnly: true
+  name:
+    type: string
+    description: Name of the standard task
+    example: Summary of Work
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description of the standard task
+    example: Summary of Work
+    x-mappedTo: DESCRIPTION
+  productionUnitDescription:
+    type: string
+    description: Production unit description of the standard task
+    example: days
+    x-mappedTo: PRODUCTIONUNITDESC
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  item:
+    $ref: ../../common/references/itemref.s1.schema.yaml
+  isBillable:
+    type: boolean
+    description: Standard task is billable
+    example: true
+    x-mappedTo: BILLABLE
+    x-mappedToType: string
+    default: false
+  isMilestone:
+    type: boolean
+    description: Standard task is a milestone
+    example: false
+    x-mappedTo: ISMILESTONE
+    x-mappedToType: string
+    default: false
+  isUtilized:
+    type: boolean
+    description: Standard task is utilized. A utilized task indicates progress on a customer project or internal project.
+    example: true
+    x-mappedTo: UTILIZED
+    x-mappedToType: string
+    default: false
+  timeType:
+    type: object
+    description: Reference to a time type
+    #x-object: time-type
+    properties:
+      key:
+        type: string
+        description: TimeType key
+        example: '2'
+        readOnly: true
+        x-mappedTo: TIMETYPEKEY
+      name:
+        type: string
+        description: TimeType name
+        readOnly: true
+        example: Hourly Salaries
+        x-mappedTo: TIMETYPENAME
+      href:
+        type: string
+        example: /objects/time-type/1
+        description: URL of the time type
+        readOnly: true        
+  wbsCode:
+    type: string
+    description: Work breakdown structure code of the standard task
+    example: Design 
+    x-mappedTo: TASKNO
+  parent:
+    type: object
+    description: Reference to the parent standard task of this standard task
+    x-object: standard-task
+    x-mappedTo: PARENT
+    properties:
+      key:
+        type: string
+        example: '1'
+        x-mappedTo: PARENTKEY
+        readOnly: true
+      id:
+        type: string
+        example: 1-000
+        x-mappedTo: PARENTID
+      name:
+        type: string
+        example: GENERAL CONDITIONS
+        x-mappedTo: PARENTNAME
+        readOnly: true
+      href:
+        type: string
+        example: /objects/standard-task/1
+        description: URL of parent standard task
+        readOnly: true   
+  class:
+    $ref: ../../common/references/classref.s1.schema.yaml
+  standardCostTypes:
+    type: array
+    x-mappedTo: STANDARDTASK_STANDARDCOSTTYPES
+    x-object: standard-task-standard-cost-type
+    items:
+      $ref: ./standard-task-standard-cost-type.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

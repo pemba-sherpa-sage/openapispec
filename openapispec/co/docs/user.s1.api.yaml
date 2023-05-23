@@ -1,0 +1,810 @@
+openapi: 3.0.0
+info:
+  title: user
+  description: user API
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca Uricariu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Users
+    description: Users are individuals who have access to some part of the system
+paths:
+  /objects/user/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the user.
+        example: 65
+    get:
+      summary: Get a user
+      description: Returns detailed information for a particular user.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the user
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/user.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: 65
+                      id: Admin
+                      userName: Admin
+                      href: /objects/user/65
+                      contact:
+                        mailingAddress:
+                          addressLine1: 744 Edgewater Blvd
+                          addressLine2: Apt 104
+                          city: San Jose
+                          state: CA
+                          postCode: 95110
+                          country: United States
+                        id: contact01650967341
+                        lastName: John
+                        firstName: E.
+                        middleName: Doe
+                        prefix: Mr
+                        printAs: John E. Doe
+                        email1: john.doe@example.com
+                        email2: john.e.doe@example.com
+                        phone1: 6692248123
+                        phone2: 1222455566
+                        mobile: 1222455566
+                        pager: 12566
+                        fax: 1222455566
+                        URL1: http://john.example.com
+                        URL2: http://john.doe.example.com
+                        companyName: Example Company
+                        key: 3446
+                        href: /objects/contact/3446
+                      adminPrivileges: 'off'
+                      userType: business
+                      webServices:
+                        enabled: true
+                        restricted: false
+                      status: active
+                      password:
+                        neverExpires: true
+                        requiresReset: false
+                        securityQuestion: What is my favourite food?
+                      sso:
+                        isSSOEnabled: true
+                        federatedSSOId: john.doe
+                      entity:
+                        unrestricted: true
+                        allowToplevelAccess: false
+                      audit:
+                        createdDateTime: '2022-04-26T10:17:12Z'
+                        modifiedDateTime: '2022-04-26T11:05:26Z'
+                        createdBy: '110'
+                        modifiedBy: '109'
+                      disableChatter: true
+                      locations:
+                        - id: 87
+                          name: London
+                          href: /objects/location/87
+                        - id: 92
+                          name: Paris
+                          href: /objects/location/92
+                      departments:
+                        - id: 55
+                          name: Sales
+                          href: /objects/department/55
+                        - id: 65
+                          name: Accounting
+                          href: /objects/department/65
+                      territories:
+                        - id: 22
+                          name: South
+                          href: /objects/territory/22
+                        - id: 32
+                          name: West
+                          href: /objects/territory/32
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-user-key
+    delete:
+      summary: Delete a user
+      description: Deletes a user.
+      tags:
+        - Users
+      operationId: delete-objects-user-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a user
+      description: Updates an existing user by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Users
+      operationId: patch-objects-user-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated user
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: 65
+                      id: Admin
+                      href: /objects/user/65
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: 1
+                    adminPrivileges:
+                      readOnly: true
+                      example: 'off'
+            examples:
+              example-1:
+                value:
+                  userName: Admin
+                  status: inactive
+  /objects/user:
+    get:
+      summary: List users
+      description: Returns a collection with a key ID and link for each user.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of user objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      - key: 1
+                        id: Admin
+                        href: /objects/user/1
+                      - key: 2
+                        id: Jane Doe
+                        href: /objects/user/2
+                      - key: 4
+                        id: Larry Smith
+                        href: /objects/user/4
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-user
+    post:
+      summary: Create a user
+      description: Creates a new user.
+      tags:
+        - Users
+      operationId: post-objects-user
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New user
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: 1
+                      id: Admin
+                      href: /objects/user/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user.s1.schema'
+                - $ref: '#/components/schemas/userRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: Admin
+                  userName: Amin
+                  userType: Business
+                  status: active
+                  isWebServicesOnlyUser: false
+                  contact:
+                    id: Smith
+                    lastName: Smith
+                    firstName: Alex
+                    email1: smith.alex@example.com
+                    mailingAddress:
+                      addressLine1: 300 Park Avenue
+                      city: San Jose
+                      state: California
+                      postCode: 95110
+                      country: United States
+                  disableChatter: true
+components:
+  schemas:
+    user:
+      $ref: '#/components/schemas/user.s1.schema'
+    userRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - lastName
+            - firstName
+            - email1
+      required:
+        - id
+        - userName
+        - userType
+    contactref.s1.schema:
+      title: contact
+      type: object
+      x-object: contact
+      x-mappedTo: contact
+      properties:
+        key:
+          type: string
+          description: Contact Key
+          readOnly: true
+          x-mappedTo: $$key
+          example: '21'
+        id:
+          type: string
+          description: Contact ID
+          x-mappedTo: $$prefix.CONTACTNAME
+          example: 3-Alice
+        href:
+          type: string
+          readOnly: true
+          example: /objects/contact/21
+        lastName:
+          type: string
+          description: Last Name
+          x-mappedTo: $$prefix.LASTNAME
+          example: Cooper
+        firstName:
+          type: string
+          description: First Name
+          x-mappedTo: $$prefix.FIRSTNAME
+          example: Alice
+        middleName:
+          type: string
+          description: Middle Name
+          x-mappedTo: $$prefix.INITIAL
+          example: Mary
+        prefix:
+          type: string
+          description: Prefix
+          x-mappedTo: $$prefix.PREFIX
+          example: Miss
+        printAs:
+          type: string
+          description: Print As
+          x-mappedTo: $$prefix.PRINTAS
+          example: Alice.Cooper
+        email1:
+          type: string
+          description: Primary Email
+          x-mappedTo: $$prefix.EMAIL1
+          example: alice@example.com
+        email2:
+          type: string
+          description: Secondary Email
+          x-mappedTo: $$prefix.EMAIL2
+          example: cooper@example.com
+        phone1:
+          type: string
+          description: Primary Phone
+          x-mappedTo: $$prefix.PHONE1
+          example: '14085551212'
+        phone2:
+          type: string
+          description: Secondary Phone
+          x-mappedTo: $$prefix.PHONE2
+          example: '14085559876'
+        mobile:
+          type: string
+          description: Mobile
+          x-mappedTo: $$prefix.CELLPHONE
+          example: '14085554420'
+        pager:
+          type: string
+          description: Pager
+          x-mappedTo: $$prefix.PAGER
+          example: '14085559987'
+        fax:
+          type: string
+          description: Fax
+          x-mappedTo: $$prefix.FAX
+          example: '14085555309'
+        URL1:
+          type: string
+          description: Primary URL
+          x-mappedTo: $$prefix.URL1
+          example: https://alice.example.com
+        URL2:
+          type: string
+          description: Secondary URL
+          x-mappedTo: $$prefix.URL2
+          example: https://cooper.example.com
+        companyName:
+          type: string
+          description: Company Name
+          x-mappedTo: $$prefix.COMPANYNAME
+          example: AlcoSoft Inc
+        mailingAddress:
+          type: object
+          description: Mailing Address
+          properties:
+            addressLine1:
+              type: string
+              description: Addess 1
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS1
+              example: 300 Park Avenue
+            addressLine2:
+              type: string
+              description: Addess 2
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS2
+              example: Suite 1400
+            city:
+              type: string
+              description: City
+              x-mappedTo: $$prefix.MAILADDRESS.CITY
+              example: San Jose
+            state:
+              type: string
+              description: State
+              x-mappedTo: $$prefix.MAILADDRESS.STATE
+              example: California
+            postCode:
+              type: string
+              description: Zip or Postal Code
+              x-mappedTo: $$prefix.MAILADDRESS.ZIP
+              example: '95110'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: $$prefix.MAILADDRESS.COUNTRY
+              example: United States of America
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    user.s1.schema:
+      title: user
+      description: User information
+      x-mappedTo: userinfo
+      type: object
+      properties:
+        key:
+          description: User key
+          type: string
+          x-mappedTo: RECORDNO
+          example: '29'
+          readOnly: true
+        id:
+          description: User Login Id
+          type: string
+          x-mappedTo: LOGINID
+          x-mutable: false
+          example: john.doe
+        userName:
+          description: Username
+          type: string
+          x-mappedTo: DESCRIPTION
+          example: John Doe
+        adminPrivileges:
+          description: User admin privileges
+          type: string
+          x-mappedTo: ADMIN
+          enum:
+            - 'off'
+            - limited
+            - full
+          x-mappedToValues:
+            - 'false'
+            - 'true'
+            - Full
+          example: 'off'
+        userType:
+          description: User type
+          type: string
+          x-mappedTo: USERTYPE
+          enum:
+            - business
+            - employee
+            - viewOnly
+            - dashboard
+            - projectManager
+            - paymentApprover
+            - platform
+            - CRM
+            - warehouse
+          x-mappedToValues:
+            - business user
+            - employee user
+            - view only user
+            - dashboard user
+            - project manager user
+            - payment approver
+            - platform user
+            - CRM user
+            - warehouse user
+          example: employee
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - lockedOut
+          x-mappedToValues:
+            - active
+            - inactive
+            - lockedout
+          description: Record status. (Default= active)
+          x-mappedTo: STATUS
+          example: active
+        webServices:
+          type: object
+          description: Web Services / API properties
+          properties:
+            isEnabled:
+              description: Whether the user can be used for web services (API)
+              type: boolean
+              x-mappedTo: VISIBLE
+              x-mappedToType: string
+              default: true
+              example: true
+            isRestricted:
+              description: Restrict user access to Web Services only
+              type: boolean
+              x-mappedTo: LOGINDISABLED
+              x-mappedToType: string
+              default: false
+              example: true
+        password:
+          type: object
+          description: Password properties
+          properties:
+            neverExpires:
+              type: boolean
+              description: Password will not expire if set to true
+              x-mappedTo: PWDNEVEREXPIRES
+              example: true
+            requiresReset:
+              type: boolean
+              description: Reset password required
+              x-mappedTo: RESETPASSWORD
+              example: false
+        sso:
+          type: object
+          description: SSO settings
+          properties:
+            isSSOEnabled:
+              type: boolean
+              description: Whether SSO is enabled for the user
+              x-mappedTo: SSO_ENABLED
+              example: true
+              default: false
+            federatedSSOId:
+              type: string
+              description: Federated SSO user id
+              x-mappedTo: SSO_FEDERATED_ID
+              example: john.doe
+        entityAccess:
+          type: object
+          description: Entity level restrictions
+          properties:
+            allowUnrestrictedAccess:
+              description: Restricted users means the user is restricted to 1 or more entities
+              type: boolean
+              x-mappedTo: UNRESTRICTED
+              default: true
+              example: true
+            allowToplevelAccess:
+              description: Enable access to top-level. Makes sense for restricted users
+              type: boolean
+              x-mappedTo: TOPLEVELACCESS
+              default: false
+              example: false
+        contact:
+          description: User contact information
+          allOf:
+            - $ref: '#/components/schemas/contactref.s1.schema'
+            - type: object
+              x-mappedToPrefix: CONTACTINFO
+              x-object: contact
+              x-mappedTo: contact
+              x-mappedToKey: CONTACTKEY
+          type: object
+        trustedDevices:
+          type: string
+          x-mappedTo: MFA_NOTRUST
+          description: Allow trusted devices. The user can specify whether to use the company setting or have it enforced
+          enum:
+            - companyDefault
+            - always
+            - never
+          x-mappedToValues:
+            - none
+            - always
+            - never
+          default: companyDefault
+          example: always
+        isChatterDisabled:
+          type: boolean
+          x-mappedTo: CHATTER_DISABLED
+          description: Prevent this user from accessing the Intacct Collaborate feature
+          x-mappedToType: string
+          default: false
+          example: false
+        hideOtherDepartmentTransactions:
+          type: boolean
+          x-mappedTo: HIDENODEPT
+          description: Hide transactions that do not belong to the user's departments
+          default: false
+          example: false
+        locations:
+          type: array
+          x-mappedTo: USERLOCATIONS
+          x-schemaOverride: true
+          x-object: location
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                x-mappedTo: LOCATIONKEY
+              id:
+                type: string
+                x-mappedTo: LOCATIONID
+              href:
+                type: string
+                readOnly: true
+                example: /objects/location/21
+        departments:
+          type: array
+          x-mappedTo: USERDEPARTMENTS
+          x-schemaOverride: true
+          x-object: department
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                x-mappedTo: DEPTKEY
+              id:
+                type: string
+                x-mappedTo: DEPARTMENTID
+              href:
+                type: string
+                readOnly: true
+                example: /objects/department/7
+        territories:
+          type: array
+          x-mappedTo: USERTERRITORIES
+          x-schemaOverride: true
+          x-object: territory
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                x-mappedTo: TERRITORYKEY
+              id:
+                type: string
+                x-mappedTo: TERRITORYID
+              href:
+                type: string
+                readOnly: true
+                example: /objects/territory/7
+        roles:
+          type: array
+          description: List of roles assigned to the user.
+          x-mappedTo: USERROLES
+          x-schemaOverride: true
+          x-object: role
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                x-mappedTo: ROLEKEY
+              id:
+                type: string
+                x-mappedTo: ROLENAME
+              href:
+                type: string
+                readOnly: true
+                example: /objects/role/7
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        href:
+          type: string
+          readOnly: true
+          description: URL for user
+          example: /objects/user/21
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,130 @@
+title: location
+x-mappedTo: location
+type: object
+description: |
+  Location is a dimension that is used to represent the geographic locations of offices or facilities. It can also be used for divisions in a company, if that is more significant than geographic locations. Once defined, locations can be set on transactions, and that information can be used to provide new insights in reports. 
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the location. Used to identify the location in URLs or JSON bodies for all operations on the location.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: 3345
+  id:
+    type: string
+    description: Unique identifier for the location.
+    x-mappedTo: LOCATIONID
+    x-mutable: false
+    example: 1-Lyon
+  href:
+    type: string
+    readOnly: true
+    description: URL for this location.
+    example: '/objects/location/21'
+  name:
+    type: string
+    description: Name of the location.
+    x-mappedTo: NAME
+    example: Lyon-France
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+  taxId:
+    type: string
+    description: State tax ID or VAT registration number.
+    x-mappedTo: TAXID
+    example: US4321112
+  startDate:
+    type: string
+    description: Start date of operation at this location.
+    x-mappedTo: STARTDATE
+    format: date
+    example: '2021-01-01'
+  endDate:
+    type: string
+    description: End date of operation at this location.
+    x-mappedTo: ENDDATE
+    format: date
+    example: '2022-04-01'
+  contacts:
+    type: object
+    title: contacts
+    description: The list of contacts for the location
+    properties:
+      primary:
+        type: object
+        description: The main Location contact specifies the company name, address, and other details as they should appear on invoices, bills, and other forms.
+        allOf:
+          - $ref: ../../common/references/contactref.s1.schema.yaml
+          - type: object
+            x-object: contact
+            x-mappedTo: contactinfo
+            x-mappedToKey: CONTACTKEY
+            x-mappedToPrefix: CONTACTINFO
+      shipTo:
+        type: object
+        description: The address for receiving goods and services, if different from the primary contact address.
+        allOf:
+          - $ref: ../../common/references/contactref.s1.schema.yaml
+          - type: object
+            x-object: contact
+            x-mappedTo: shipto
+            x-mappedToKey: SHIPTOKEY
+            x-mappedToPrefix: SHIPTO
+  locationReportingTitle:
+    type: string
+    description: Location information displayed in reports, in addition to the location name. For example, a location title might might include the address and manager name.
+    x-mappedTo: CUSTTITLE
+  parent:
+    type: object
+    x-object: location
+    x-mappedTo: PARENT
+    title: parent
+    description: Parent location, for location hierarchies.
+    properties:
+      key:
+        description: Parent location key.
+        type: string
+        x-mappedTo: PARENTKEY
+        readOnly: true
+        example: 65
+      id:
+        description: Parent location ID.
+        type: string
+        x-mappedTo: PARENTID
+        example: 1-France
+      href:
+        description: URL of parent location.
+        type: string
+        readOnly: true
+        example: '/objects/location/65'
+  manager:
+    type: object
+    x-object: employee
+    x-mappedTo: MANAGER
+    title: manager
+    description: The employee that manages the location.
+    properties:
+      key:
+        description: Manager's employee key.
+        type: string
+        x-mappedTo: SUPERVISORKEY
+        readOnly: true
+        example: 81
+      id:
+        description: ID of the manager employee.
+        type: string
+        x-mappedTo: SUPERVISORID
+        example: anne.jason
+      href:
+        description: URL of the manager employee.
+        type: string
+        readOnly: true
+        example: '/objects/employee/81'
+      name:
+        description: Name of the manager.
+        type: string
+        x-mappedTo: SUPERVISORNAME
+        readOnly: true
+        example: Donations
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

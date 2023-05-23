@@ -1,0 +1,47 @@
+fields:
+    key:
+        uiType: sequence
+        uiLabel: 'Record number'
+    isSystemGenerated:
+        uiType: enum
+        uiLabel: 'System generated field'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+refs:
+    taxSolution:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Tax solution Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Tax solution'
+    taxSchedule:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Tax schedule Record Number'
+            name:
+                uiType: ptr
+                uiLabel: 'Tax schedule ID'
+    itemTaxGroup:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Item tax group Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Item tax group'
+    contactTaxGroup:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Contact tax group Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Contact tax group'

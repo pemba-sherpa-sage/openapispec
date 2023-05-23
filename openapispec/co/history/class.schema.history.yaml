@@ -1,0 +1,19 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/class/view
+    POST:
+      - co/lists/class/create
+    PATCH:
+      - co/lists/class/edit
+    DELETE:
+      - co/lists/class/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'
+

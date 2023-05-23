@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: paas.trigger.rest-api
+  description: Trigger Rest Api service
+  version: '1.0-internal'
+  contact:
+    name: Jean-Francois Ngo
+    email: jean-francois.ngo@sage.com
+tags:
+  - name: paas.trigger.rest-api
+    description: Trigger Rest Api service
+paths:
+  /services/paas/trigger/rest-api:
+    post:
+      summary: Trigger Rest Api
+      description: Trigger rest api
+      tags:
+        - paas.trigger.rest-api
+      operationId: post-services-paas.trigger.rest-api
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paas.trigger.rest-api-req'
+            examples:
+              example-1:
+                value:
+                  objectKey: 2
+                  eventDefinitionKey: 6
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paas.trigger.rest-api-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      result:
+
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    paas.trigger.rest-api-req:
+      description: Read trigger rest api request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        objectKey:
+          type: integer
+          description: Object Key
+          x-mappedTo: objKey
+        eventDefinitionKey:
+          type: integer
+          description: Event Definition Key
+          x-mappedTo: eventDefKey
+    paas.trigger.rest-api-resp:
+      description: Read trigger rest api response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        result:
+          type: string
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  
+
+

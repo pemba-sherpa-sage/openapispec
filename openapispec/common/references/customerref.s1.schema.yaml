@@ -1,0 +1,24 @@
+title: customerref
+type: object
+x-object: customer
+properties:
+  key:
+    type: string
+    description: Customer Key
+    x-mappedTo: CUSTOMERDIMKEY
+    example: '123'
+  id:
+    type: string
+    description: Customer ID
+    x-mappedTo: CUSTOMERID
+    example: BTI
+  name:
+    type: string
+    description: Customer Name
+    readOnly: true
+    x-mappedTo: CUSTOMERNAME
+    example: Binary Trust Incorporated
+  href:
+    type: string
+    readOnly: true
+    example: /objects/customer/123

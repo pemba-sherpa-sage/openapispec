@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: lot-category
+  description: lot-category API
+  version: '1.0'
+  contact:
+    name: Artur Mirzakhanyan
+    email: artur.mirzakhanyan@sage.com
+tags:
+  - name: Lot categories
+    description: Lot categories group a specific set of items that have something in common. For example, you can create categories for items with similar characteristics, such as perishable goods, chemicals, medical supplies, or health and beauty products.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/lot-category:
+    get:
+      summary: List lot categories
+      description: Returns a collection with a key, ID, and link for each lot category. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Lot categories
+      operationId: get-objects-lot-category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of lot-category objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List lot categories: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a lot category
+      description: Creates a new lot category.
+      tags:
+        - Lot categories
+      operationId: post-objects-lot-category
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/lot-category'
+                - $ref: '#/components/schemas/lot-categoryRequiredProperties'
+            examples:
+              Create a lot category: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New lot-category
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New lot category: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/lot-category/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the lot category.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a lot category
+      description: Returns detailed information for a specified lot category.
+      tags:
+        - Lot categories
+      operationId: get-objects-lot-category-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the lot-category
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/lot-category'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a lot category: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a lot category
+      description: Updates an existing lot category by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Lot categories
+      operationId: patch-objects-lot-category-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/lot-category'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a lot category: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated lot-category
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated lot category: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a lot category
+      description: Deletes a lot category.
+      tags:
+        - Lot categories
+      operationId: delete-objects-lot-category-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    lot-category:
+      $ref: ../models/lot-category.s1.schema.yaml
+    lot-categoryRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

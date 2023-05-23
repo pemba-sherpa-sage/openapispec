@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+  title: employee-position
+  description: employee-position API
+  version: '1.0'
+  contact:
+    name: Anna Gawlas
+    email: anna.gawlas@sage.com
+tags:
+  - name: Employee positions
+    description: User-defined employee position that can be assigned to an employee, or used on timesheet lines when creating a timesheet.  Only available with Construction subscription to enhance billing capabilities for Timesheets.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-position:
+    get:
+      summary: List employee positions
+      description: 'Returns a collection with a key, ID, and link for each employee position.'
+      tags:
+        - Employee positions
+      operationId: get-objects-employee-position
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee-position objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: EP-001
+                        href: /objects/employee-position/1
+                      - key: '2'
+                        id: EP-002
+                        href: /objects/employee-position/2
+                      - key: '5'
+                        id: Max EMPLOYEEPOSITION
+                        href: /objects/employee-position/5
+                      - key: '7'
+                        id: PLUM-001
+                        href: /objects/employee-position/7
+                      - key: '8'
+                        id: FOR-001
+                        href: /objects/employee-position/8
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee position
+      description: Creates a new employee position.
+      tags:
+        - Employee positions
+      operationId: post-objects-employee-position
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-position'
+                - $ref: '#/components/schemas/employee-positionRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: FOR-001
+                  name: Foreman-01
+                  description: This employee is a foreman
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee-position
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '8'
+                      id: FOR-001
+                      href: /objects/employee-position/8
+                    'ia::meta':
+                      totalCount: 1
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-position/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee position.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee position
+      description: Returns detailed information for a particular employee position.
+      tags:
+        - Employee positions
+      operationId: get-objects-employee-position-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee-position
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-position'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '8'
+                      id: FOR-001
+                      name: Foreman-01
+                      description: (deactivated) This employee is a foreman
+                      status: inactive
+                      audit:
+                        createdDateTime: '2021-11-16T23:32:10Z'
+                        modifiedDateTime: '2021-11-17T01:24:56Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/employee-position/8
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee position
+      description: Updates an existing employee position by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee positions
+      operationId: patch-objects-employee-position-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-position'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  description: (deactivated) This employee is a foreman
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee-position
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '8'
+                      id: FOR-001
+                      href: /objects/employee-position/8
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee position
+      description: Deletes an employee position.
+      tags:
+        - Employee positions
+      operationId: delete-objects-employee-position-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-position:
+      $ref: ../models/employee-position.s1.schema.yaml
+    employee-positionRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,70 @@
+title: role
+x-mappedTo: roles
+type: object
+description: List of roles.
+properties:
+  key:
+    type: string
+    description: Roles Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: 
+  id:
+    type: string
+    description: Roles ID
+    x-mappedTo: NAME
+    x-mutable: false
+    example:
+  href:
+    type: string
+    readOnly: true
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: 
+  roleType:
+    type: string
+    description: Role for user on
+    x-mappedTo: TYPE
+    example: 
+    enum:
+      - 'enterprise'
+      - 'eConsole'
+      - 'multiEntityDistributed'
+      - 'multiEntityShared'
+    x-mappedToValues:
+      - 'Enterprise'
+      - 'E-Console'
+      - 'Multi Entity Distributed'
+      - 'Multi Entity Shared'
+  applyTo:
+    type: string
+    description: Use for
+    x-mappedTo: APPLYTO
+    example: 
+    enum:
+      - 'loginAndSlideIn'
+      - 'loginOnly'
+      - 'slideInOnly'
+    x-mappedToValues:
+      - 'Login and Slide-In'
+      - 'Login Only'
+      - 'Slide-In Only'
+  subscriptions:
+    type: object
+    properties:
+      module:
+        type: string
+        x-mappedTo: MODULE
+        example:
+      key:
+        type: string
+        x-mappedTo: POLICYKEY
+        example:
+      name:
+        type: string
+        x-mappedTo: POLICYVALUE
+        example:
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

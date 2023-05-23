@@ -1,0 +1,51 @@
+title: ownership-structure
+type: object
+x-mappedTo: gcownershipstructure
+description: Ownership Structure
+properties:
+  key:
+    type: string
+    description: Record number
+    x-mappedTo: RECORDNO
+    example: '518'
+    readOnly: true
+  id:
+    type: string
+    description: Structure name
+    x-mappedTo: STRUCTURENAME
+    example: Structure1
+    readOnly: true
+  name:
+    type: string
+    description: Structure name
+    x-mappedTo: STRUCTURENAME
+    nullable: false
+    example: Structure1
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: This is a structure description
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  enableInterEntityAutoElimination:
+    type: boolean
+    description: Is Inter-entity auto-elimination
+    x-mappedTo: AUTOELIMINATION
+    x-mappedToType: string
+    default: true
+    example: true
+  accountingMethod:
+    type: string
+    description: Accounting method
+    enum:
+      - accrual
+      - cash
+    x-mappedToValues:
+      - ACCRUAL
+      - CASH
+    x-mappedTo: SOURCEBOOKID
+    default: accrual
+    example: accrual
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

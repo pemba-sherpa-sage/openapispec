@@ -1,0 +1,162 @@
+title: warehouse
+x-mappedTo: warehouse
+type: object
+description: |
+  A warehouse can be an actual warehouse, a store, or any type of stocking location or site that requires inventory tracking and management. Warehouse also serves as a dimension that can be set on transactions to expand report functionality and insight.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the warehouse.
+    x-mappedTo: RECORDNO
+    example: '2'
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the warehouse.
+    x-mappedTo: WAREHOUSEID
+    x-mutable: false
+    example: USNA1
+  name:
+    type: string
+    description: Name of the warehouse.
+    x-mappedTo: NAME
+    example: 'US NA Warehouse-1'
+  href:
+    type: string
+    description: URL for the warehouse.
+    example: /objects/warehouse/2
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  isReplenishmentEnabled:
+    type: boolean
+    description: This property is set to `true` by default if Inventory Control is configured for replenishment. If the warehouse should not be replenished, set to `false`.
+    x-mappedTo: ENABLE_REPLENISHMENT
+    x-mappedToType: string
+    example: true
+    default: true
+  enableNegativeInv:
+    type: boolean
+    description: Set to `true` to save transactions that cause the inventory for items in this warehouse to be negative.
+    x-mappedTo: ENABLENEGATIVEINV
+    x-mappedToType: string
+    example: true
+    default: false
+  location:
+    type: object
+    description: The geographical location of the warehouse.
+    x-object: location
+    x-mappedTo: location
+    properties:
+      id:
+        type: string
+        x-mappedTo: LOC.LOCATIONID
+        example: PHO--Phoenix
+      key:
+        type: string
+        x-mappedTo: LOC.RECORDNO
+        description: System-assigned key for the location.
+        readOnly: true
+        example: '2'
+      href:
+        type: string
+        description: URL for the location.
+        readOnly: true
+        example: /objects/location/2
+  parent:
+    type: object
+    description: If this warehouse is part of a hierarchy, the parent warehouse of this warehouse.
+    x-object: warehouse
+    x-mappedTo: warehouse
+    properties:
+      id:
+        type: string
+        x-mappedTo: PARENTID
+        description: Unique identifier for the parent warehouse. 
+        example: 'WH10001--US AZ Warehouse 10001'
+      key:
+        type: string
+        x-mappedTo: PARENTKEY
+        description: System-assigned key for the parent warehouse.
+        readOnly: true
+        example: '32'
+      href:
+        type: string
+        description: URL for the parent warehouse.
+        readOnly: true
+        example: /objects/warehouse/32
+  manager:
+    type: object
+    description: Employee who is responsible for the warehouse.
+    x-object: employee
+    x-mappedTo: employee
+    properties:
+      id:
+        type: string
+        x-mappedTo: MANAGERID
+        description: Unique identifier of the employee who is the warehouse manager.
+        example: 'EM 1--Aman'
+      key:
+        type: string
+        x-mappedTo: MANAGER.RECORDNO
+        description: System-assigned key for the warehouse manager.
+        readOnly: true
+        example: '23'
+      href:
+        type: string
+        description: URL for the warehouse manager.
+        readOnly: true
+        example: /objects/employee/23
+  contacts:
+    type: object
+    description: |
+      The contact for the warehouse.
+    title: contacts
+    properties:
+      primary:
+        type: object
+        title: primary
+        x-object: contact
+        x-mappedTo: contactinfo
+        properties:
+          id:
+            type: string
+            x-mappedTo: CONTACTINFO.CONTACTNAME
+            description: Name for the warehouse contact.
+            example: Sam Smith
+          key:
+            type: string
+            x-mappedTo: CONTACTINFO.RECORDNO
+            description: System-assigned key for the warehouse contact.
+            readOnly: true
+            example: '210'
+          href:
+            type: string
+            description: URL for the warehouse contact.
+            readOnly: true
+            example: /objects/contact/210
+      shipTo:
+        type: object
+        description: Ship to contact for the warehouse.
+        title: shipTo
+        x-object: contact
+        x-mappedTo: shipto
+        properties:
+          id:
+            type: string
+            x-mappedTo: SHIPTO.CONTACTNAME
+            description: Name for the Ship to contact.
+            example: Bill North
+          key:
+            type: string
+            x-mappedTo: SHIPTO.RECORDNO
+            description: System-assigned key for the Ship to contact.
+            readOnly: true
+            example: '223'
+          href:
+            type: string
+            description: URL for the Ship to contact.
+            readOnly: true
+            example: /objects/contact/223
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,13 @@
+'ia::definition':
+  methodPermissions:
+    GET:
+      - ap/lists/providervendor/view
+      - ap/lists/vendor
+    POST:
+      - ap/lists/vendor/create
+    PATCH:
+      - ap/lists/vendor/edit
+s1:
+  hash: '0'
+  type: ownedObject
+  directAccessItemObject: true

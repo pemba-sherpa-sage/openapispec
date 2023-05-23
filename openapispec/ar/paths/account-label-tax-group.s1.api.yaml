@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: account-label-tax-group
+  description: account-label-tax-group API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Account Label Tax Groups
+    description: Account Label Tax Group description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/account-label-tax-group:
+    get:
+      summary: List Account label tax groups
+      description: Returns a collection with a key, ID, and link for each Account label tax group.
+      tags:
+        - Account Label Tax Groups
+      operationId: get-objects-account-label-tax-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of account-label-tax-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Account label tax groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Account label tax group
+      description: Creates a new Account label tax group.
+      tags:
+        - Account Label Tax Groups
+      operationId: post-objects-account-label-tax-group
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/account-label-tax-group'
+                - $ref: '#/components/schemas/account-label-tax-groupRequiredProperties'
+            examples:
+              Creates a/an Account label tax group: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New account-label-tax-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New Account label tax group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/account-label-tax-group/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Account label tax group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an Account label tax group
+      description: Returns detailed information for a particular Account label tax group.
+      tags:
+        - Account Label Tax Groups
+      operationId: get-objects-account-label-tax-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the account-label-tax-group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/account-label-tax-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Account label tax group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Account label tax group
+      description: Updates an existing Account label tax group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Account Label Tax Groups
+      operationId: patch-objects-account-label-tax-group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/account-label-tax-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an Account label tax group: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated account-label-tax-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated Account label tax group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Account label tax group
+      description: Deletes a/an Account label tax group.
+      tags:
+        - Account Label Tax Groups
+      operationId: delete-objects-account-label-tax-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    account-label-tax-group:
+      $ref: ../models/account-label-tax-group.s1.schema.yaml
+    account-label-tax-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

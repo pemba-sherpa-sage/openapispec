@@ -1,0 +1,27 @@
+type: object
+title: standard-task
+x-object: standard-task
+properties:
+  key:
+    type: string
+    description: Standard task key
+    x-mappedTo: STANDARDTASKKEY
+    example: '3'
+    readOnly: true
+  id:
+    type: string
+    description: Standard task id
+    x-mappedTo: STANDARDTASKID
+    example: 1-000
+  name:
+    type: string
+    description: Standard task name
+    x-mappedTo: STANDARDTASKNAME
+    example: GENERAL CONDITIONS
+    readOnly: true
+  href:
+    type: string
+    description: URL of the standard task    
+    readOnly: true
+    example: /objects/standard-task/3
+examples: []

@@ -1,0 +1,9 @@
+ia::definition:
+  methodPermissions:
+    GET:
+    POST:
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: rootObject

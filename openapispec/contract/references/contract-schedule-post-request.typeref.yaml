@@ -1,0 +1,59 @@
+type: object
+title: contract-schedule-post-request
+description: post request
+x-mappedTo: __custom__
+required:
+  - journal
+  - asOfDate
+properties:
+  journal:
+    type: string
+    description: Which journal to post this schedule for (J1 or J2).
+    x-mappedTo: JOURNAL
+    example: 'J1'
+    nullable: false
+    enum:
+      - J1
+      - J2
+  customer:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Customer Key. To post all schedule entries for the customer, omit customerKey. Required if not not providing contractKey or scheduleLineKeys.
+        x-mappedTo: CUSTOMERKEY
+        example: '2524'
+  contract:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Contract Key. Required if not not providing customerKey or scheduleLineKeys.
+        x-mappedTo: CONTRACTKEY
+        example: '4578'
+  scheduleLines:
+    type: array
+    description: List of schedule line keys. Required if not not providing customerKey or contractKey.
+    x-mappedTo: SCHEDULEENTRIES
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Schedule line key.
+          x-mappedTo: SCHEDULEENTRYKEY
+          example: '2524'
+  asOfDate:
+    type: string
+    description: Post any unposted entries before this date. Required if not not providing scheduleLineKeys.
+    x-mappedTo: ASOFDATE
+    format: date
+    nullable: false
+    example: '2022-02-24'
+  postingDate:
+    type: string
+    description: 'Posting date (Default: Scheduled posting date).'
+    x-mappedTo: POSTINGDATE
+    format: date
+    example: '2022-02-24'
+examples: []

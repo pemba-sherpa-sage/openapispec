@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/taxgroup/view
+    POST:
+      - co/lists/taxgroup/create
+    PATCH:
+      - co/lists/taxgroup/edit
+    DELETE:
+      - co/lists/taxgroup/delete
+s1:
+  hash: '0'
+  type: rootObject

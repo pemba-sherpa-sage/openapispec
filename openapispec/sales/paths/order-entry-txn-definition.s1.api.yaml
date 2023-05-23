@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: order-entry-txn-definition
+  description: order-entry-txn-definition API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Order entry transaction definitions
+    description: An order entry transaction definition includes the accounting rules, workflow settings, security settings, and other characteristics for a transaction.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-txn-definition:
+    get:
+      summary: List order entry transaction definitions
+      description: Returns a collection with a key, ID, and link for each order entry transaction definition. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry transaction definitions
+      operationId: get-objects-order-entry-txn-definition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-txn-definition objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List order entry transaction definitions: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an order entry transaction definition
+      description: Creates a new order entry transaction definition.
+      tags:
+        - Order entry transaction definitions
+      operationId: post-objects-order-entry-txn-definition
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-txn-definition'
+                - $ref: '#/components/schemas/order-entry-txn-definitionRequiredProperties'
+            examples:
+              Create an order entry transaction definition: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-txn-definition
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New order entry transaction definition: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-txn-definition/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry transaction definition.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an order entry transaction definition
+      description: Returns detailed information for a specified order entry transaction definition.
+      tags:
+        - Order entry transaction definitions
+      operationId: get-objects-order-entry-txn-definition-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-txn-definition
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-txn-definition'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an order entry transaction definition: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an order entry transaction definition
+      description: |
+       Updates an existing order entry transaction definition by setting field values. Any fields not provided remain unchanged. The changes you make to a transaction definition apply to transactions that are created after the changes are made. The changes do not apply to existing transactions unless you edit and save the transaction after changes are made.
+      tags:
+        - Order entry transaction definitions
+      operationId: patch-objects-order-entry-txn-definition-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-txn-definition'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an order entry transaction definition: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-txn-definition
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated order entry transaction definition: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an order entry transaction definition
+      description: Deletes an order entry transaction definition.
+      tags:
+        - Order entry transaction definitions
+      operationId: delete-objects-order-entry-txn-definition-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-txn-definition:
+      $ref: ../models/order-entry-txn-definition.s1.schema.yaml
+    order-entry-txn-definitionRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

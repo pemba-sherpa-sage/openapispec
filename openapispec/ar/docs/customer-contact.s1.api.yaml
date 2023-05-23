@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  title: customer-contact
+  description: customer-contact API
+  version: '1.0'
+  contact:
+    email: samay.jain@sage.com
+    name: Samay Jain
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Customer contacts
+    description: Contact information for a customer.
+paths:
+  /objects/customer-contact:
+    get:
+      summary: List Customer contacts
+      description: Returns a collection with a key, ID, and link for each customer contact. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customer contacts
+      operationId: get-objects-customer-contact
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-contact objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List customer contacts: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/customer-contact/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer contact.
+    get:
+      summary: Get a customer contact
+      description: Returns detailed information for a specified customer contact.
+      tags:
+        - Customer contacts
+      operationId: get-objects-customer-contact-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-contact
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/customer-contact.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a customer contact: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    customer-contact:
+      $ref: '#/components/schemas/customer-contact.s1.schema'
+    customer-contactRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - id
+        customer:
+          required:
+            - entity
+      required:
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    customer-contact.s1.schema:
+      title: customer-contact
+      x-mappedTo: customerentitycontacts
+      x-ownedBy: customer
+      type: object
+      description: Contact information for a customer.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the customer contact.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the customer contact. This value is the same as key for this object and can be ignored. Use key for all references to this object.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        name:
+          type: string
+          description: Category name for the customer contact information, such as work, home, and so forth.
+          x-mappedTo: CATEGORYNAME
+          example: null
+        contact:
+          type: object
+          description: Contact to associate with the customer.
+          x-object: contact
+          x-mappedTo: ccontact
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the contact.
+              x-mappedTo: CONTACT.NAME
+              example: Jeff Palms
+        isPrimaryContact:
+          type: boolean
+          description: Indicates whether the contact is a primary contact.
+          x-mappedTo: ISPRIMARY
+          x-mappedToType: string
+        isBillToContact:
+          type: boolean
+          description: Indicates whether the contact is a bill-to contact.
+          x-mappedTo: ISBILLTOPAYTO
+          x-mappedToType: string
+        isShipToContact:
+          type: boolean
+          description: Indicates whether the contact is a ship-to contact.
+          x-mappedTo: ISSHIPTORETURNTO
+          x-mappedToType: string
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        customer:
+          title: customerreference
+          type: object
+          description: Customer for this contact information.
+          x-mappedTo: customer
+          x-object: customer
+          properties:
+            entity:
+              type: string
+              description: Customer entity
+              x-mappedTo: ENTITY
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

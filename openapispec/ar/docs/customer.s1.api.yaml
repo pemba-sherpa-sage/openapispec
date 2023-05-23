@@ -1,0 +1,1327 @@
+openapi: 3.0.0
+info:
+  title: customer
+  description: customer API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: https://dev01.intacct.com/users/anjali.israni/projects.nextgenapi/api/v0
+    description: development
+tags:
+  - name: Customers
+    description: |
+      A customer is any company to which you sell goods and services. Sage Intacct applications use the customer information for record-keeping purposes, printing the names and addresses on forms, such as invoices, and for determining the ship-to contact so tax can be computed.
+paths:
+  /objects/customer/{key}:
+    parameters:
+      - schema:
+          type: string
+          example: '81'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer.
+    get:
+      summary: Get a customer
+      description: Returns detailed information for a specified customer.
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/customer.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a customer:
+                  value:
+                    ia::result:
+                      key: '81'
+                      id: CUST-001
+                      name: Verizon Wireless
+                      taxId: 12-3456789
+                      creditLimit: 10000
+                      defaultRevenueGLAccount:
+                        key: '1004'
+                        id: Wells Fargo Bank A/c.
+                        name: Wells Fargo Bank A/c.
+                        href: /objects/glaccount/1004
+                      shippingMethod:
+                        id: Fedex
+                        name: Fedex
+                        key: '3'
+                        href: /objects/shipmethod/3
+                      type:
+                        id: Whole Sale Dealer
+                        name: Whole Sale Dealer
+                        key: '1'
+                        href: /objects/custtype/1
+                      contacts:
+                        primary:
+                          id: Doe, John
+                          name: Doe, John
+                          key: '271'
+                          href: /objects/contact/271
+                        shipTo:
+                          id: Doe, Jane
+                          name: Doe, Jane
+                          key: '272'
+                          href: /objects/contact/272
+                        billTo:
+                          id: Doe, Jane
+                          name: Doe, Jane
+                          key: '272'
+                          href: /objects/contact/272
+                      status: active
+                      isOnHold: true
+                      audit:
+                        modifiedDateTime: '2021-03-24T17:38:40Z'
+                        createdDateTime: '2021-03-24T04:25:29Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/customer/81
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-key
+    delete:
+      summary: Delete a customer
+      description: Deletes a customer.
+      tags:
+        - Customers
+      operationId: delete-objects-customer-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a customer
+      description: Updates an existing customer by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customers
+      operationId: patch-objects-customer-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a customer:
+                value:
+                  creditLimit: 10000
+  /objects/customer:
+    get:
+      summary: List customers
+      description: Returns a collection with a key, ID, and link for each customer. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List customers:
+                  value:
+                    ia::result:
+                      - key: '68'
+                        id: CUST-100
+                        href: /objects/customer/68
+                      - key: '69'
+                        id: CUST-200
+                        href: /objects/customer/69
+                      - key: '73'
+                        id: CUST-300
+                        href: /objects/customer/73
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer
+    post:
+      summary: Create a customer
+      description: Creates a new customer.
+      tags:
+        - Customers
+      operationId: post-objects-customer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples: {}
+              schema:
+                type: object
+                title: New customer
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer.s1.schema'
+                - $ref: '#/components/schemas/customerRequiredProperties'
+            examples:
+              Create a customer:
+                value:
+                  id: CUST-002
+                  name: Starluck
+                  taxId: 12-3456789
+                  creditLimit: 50000
+                  status: active
+components:
+  schemas:
+    customer:
+      $ref: '#/components/schemas/customer.s1.schema'
+    customerRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    contactref.s1.schema:
+      title: contact
+      type: object
+      x-object: contact
+      x-mappedTo: contact
+      properties:
+        key:
+          type: string
+          description: Contact Key
+          readOnly: true
+          x-mappedTo: $$key
+          example: '21'
+        id:
+          type: string
+          description: Contact ID
+          x-mappedTo: $$prefix.CONTACTNAME
+          example: 3-Alice
+        href:
+          type: string
+          readOnly: true
+          example: /objects/contact/21
+        lastName:
+          type: string
+          description: Last Name
+          x-mappedTo: $$prefix.LASTNAME
+          example: Cooper
+        firstName:
+          type: string
+          description: First Name
+          x-mappedTo: $$prefix.FIRSTNAME
+          example: Alice
+        middleName:
+          type: string
+          description: Middle Name
+          x-mappedTo: $$prefix.INITIAL
+          example: Mary
+        prefix:
+          type: string
+          description: Prefix
+          x-mappedTo: $$prefix.PREFIX
+          example: Miss
+        printAs:
+          type: string
+          description: Print As
+          x-mappedTo: $$prefix.PRINTAS
+          example: Alice.Cooper
+        email1:
+          type: string
+          description: Primary Email
+          x-mappedTo: $$prefix.EMAIL1
+          example: alice@example.com
+        email2:
+          type: string
+          description: Secondary Email
+          x-mappedTo: $$prefix.EMAIL2
+          example: cooper@example.com
+        phone1:
+          type: string
+          description: Primary Phone
+          x-mappedTo: $$prefix.PHONE1
+          example: '14085551212'
+        phone2:
+          type: string
+          description: Secondary Phone
+          x-mappedTo: $$prefix.PHONE2
+          example: '14085559876'
+        mobile:
+          type: string
+          description: Mobile
+          x-mappedTo: $$prefix.CELLPHONE
+          example: '14085554420'
+        pager:
+          type: string
+          description: Pager
+          x-mappedTo: $$prefix.PAGER
+          example: '14085559987'
+        fax:
+          type: string
+          description: Fax
+          x-mappedTo: $$prefix.FAX
+          example: '14085555309'
+        URL1:
+          type: string
+          description: Primary URL
+          x-mappedTo: $$prefix.URL1
+          example: https://alice.example.com
+        URL2:
+          type: string
+          description: Secondary URL
+          x-mappedTo: $$prefix.URL2
+          example: https://cooper.example.com
+        companyName:
+          type: string
+          description: Company Name
+          x-mappedTo: $$prefix.COMPANYNAME
+          example: AlcoSoft Inc
+        mailingAddress:
+          type: object
+          description: Mailing Address
+          properties:
+            addressLine1:
+              type: string
+              description: Addess 1
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS1
+              example: 300 Park Avenue
+            addressLine2:
+              type: string
+              description: Addess 2
+              x-mappedTo: $$prefix.MAILADDRESS.ADDRESS2
+              example: Suite 1400
+            city:
+              type: string
+              description: City
+              x-mappedTo: $$prefix.MAILADDRESS.CITY
+              example: San Jose
+            state:
+              type: string
+              description: State
+              x-mappedTo: $$prefix.MAILADDRESS.STATE
+              example: California
+            postCode:
+              type: string
+              description: Zip or Postal Code
+              x-mappedTo: $$prefix.MAILADDRESS.ZIP
+              example: '95110'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: $$prefix.MAILADDRESS.COUNTRY
+              example: United States of America
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    customer-contact.s1.schema:
+      title: customer-contact
+      x-mappedTo: customerentitycontacts
+      x-ownedBy: customer
+      type: object
+      description: Contact information for a customer.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the customer contact.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the customer contact. This value is the same as key for this object and can be ignored. Use key for all references to this object.
+          x-mappedTo: RECORD#
+          readOnly: true
+          example: '1'
+        name:
+          type: string
+          description: Category name for the customer contact information, such as work, home, and so forth.
+          x-mappedTo: CATEGORYNAME
+          example: null
+        contact:
+          type: object
+          description: Contact to associate with the customer.
+          x-object: contact
+          x-mappedTo: ccontact
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the contact.
+              x-mappedTo: CONTACT.NAME
+              example: Jeff Palms
+        isPrimaryContact:
+          type: boolean
+          description: Indicates whether the contact is a primary contact.
+          x-mappedTo: ISPRIMARY
+          x-mappedToType: string
+        isBillToContact:
+          type: boolean
+          description: Indicates whether the contact is a bill-to contact.
+          x-mappedTo: ISBILLTOPAYTO
+          x-mappedToType: string
+        isShipToContact:
+          type: boolean
+          description: Indicates whether the contact is a ship-to contact.
+          x-mappedTo: ISSHIPTORETURNTO
+          x-mappedToType: string
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        customer:
+          title: customerreference
+          type: object
+          description: Customer for this contact information.
+          x-mappedTo: customer
+          x-object: customer
+          properties:
+            entity:
+              type: string
+              description: Customer entity
+              x-mappedTo: ENTITY
+    customer-email-template.s1.schema:
+      title: customer-email-template
+      x-mappedTo: customeremailtemplate
+      type: object
+      x-ownedBy: customer
+      description: Email templates can be associated with customers to tailor communications about transactions.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the customer email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: ID for the customer email template.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        href:
+          type: string
+          description: URL for the customer email template.
+          readOnly: true
+        customer:
+          type: object
+          description: Customer to associate with the email template.
+          x-object: customer
+          x-mappedTo: customer
+          title: customer
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the customer.
+              x-mappedTo: CUSTOMERKEY
+            id:
+              type: string
+              description: ID for the customer.
+              x-mappedTo: CUSTOMERID
+            href:
+              type: string
+              description: URL for the customer.
+              readOnly: true
+        txnDefinitionName:
+          type: string
+          description: Transaction definition, which is the template that contains accounting settings, workflow rules, and other configuration settings for a transaction.
+          x-mappedTo: DOCPARID
+        emailTemplateType:
+          type: string
+          description: Specify the type of transaction that will use the email template.
+          x-mappedTo: EMAILTEMPLATETYPE
+          enum:
+            - arInvoice
+            - arStatement
+            - contract
+            - soDocument
+            - poDocument
+          x-mappedToValues:
+            - arinvoice
+            - arstatement
+            - contract
+            - sodocument
+            - podocument
+        emailTemplate:
+          type: object
+          description: Email template to associate with the customer.
+          x-object: email-template
+          x-mappedTo: emailtemplate
+          title: emailTemplate
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+            id:
+              type: string
+              description: ID for the email template.
+              x-mappedTo: EMAILTEMPLATEKEY
+            name:
+              type: string
+              description: Name of the email template.
+              x-mappedTo: EMAILTEMPLATENAME
+            href:
+              type: string
+              description: URL for the email template.
+              readOnly: true
+    customer-item-cross-reference.s1.schema:
+      title: customer-item-cross-reference
+      x-mappedTo: customeritemcrossref
+      type: object
+      x-ownedBy: customer
+      description: list of customer item cross references
+      properties:
+        key:
+          type: string
+          description: Customer Item Cross Reference Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Customer Item Cross Reference id
+          readOnly: true
+          x-mappedTo: RECORDNO
+        href:
+          type: string
+          description: URL of the customer-item-cross-reference.
+          readOnly: true
+        customer:
+          type: object
+          description: Customer.
+          x-object: customer
+          x-mappedTo: customer
+          properties:
+            key:
+              type: string
+              description: Customer key
+              x-mappedTo: CUSTOMERKEY
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+            name:
+              type: string
+              x-mappedTo: CUSTOMERNAME
+            href:
+              type: string
+              description: URL of the customer.
+              readOnly: true
+        item:
+          type: object
+          x-mappedTo: item
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item key
+              x-mappedTo: ITEMKEY
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: null
+            name:
+              type: string
+              x-mappedTo: ITEMNAME
+              example: null
+            href:
+              type: string
+              description: URL of the item.
+              readOnly: true
+        referenceType:
+          type: string
+          description: Reference type
+          x-mappedTo: REFTYPE
+          example: null
+          enum:
+            - customer
+          x-mappedToValues:
+            - Customer
+        itemAliasId:
+          type: string
+          description: Cross-reference item ID
+          x-mappedTo: ITEMALIASID
+          example: null
+        itemAliasDescription:
+          type: string
+          description: Cross-reference item description
+          x-mappedTo: ITEMALIASDESC
+          example: null
+        unit:
+          type: string
+          description: Unit
+          x-mappedTo: UNIT
+          example: null
+        referenceTypeContext:
+          type: string
+          description: Reference type Context
+          x-mappedTo: REFTYPECONTEXT
+          example: null
+          enum:
+            - internal
+            - external
+          x-mappedToValues:
+            - Internal
+            - External
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    customer.s1.schema:
+      title: customer
+      x-mappedTo: customer
+      type: object
+      description: A customer is any company to which you sell goods and services.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the customer.
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier for the customer.
+          x-mappedTo: CUSTOMERID
+          x-mutable: false
+        name:
+          description: Name of the customer, which is usually the company name.
+          type: string
+          x-mappedTo: NAME
+        href:
+          type: string
+          description: URL for the customer.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+        customerType:
+          type: object
+          description: The category assigned to the customer (for example, Consultants, Subcontractors, or Equipment).
+          x-object: customer-type
+          x-mappedTo: custtype
+          title: Customer Type
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the customer type.
+              x-mappedTo: CUSTTYPEKEY
+            id:
+              type: string
+              description: ID for the customer type.
+              x-mappedTo: CUSTTYPE
+            href:
+              type: string
+              description: URL for the customer type.
+              readOnly: true
+        parent:
+          type: object
+          description: Parent customer, which creates a customer hierarchy.
+          x-object: customer
+          x-mappedTo: PARENT
+          title: parent
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the parent customer.
+              x-mappedTo: PARENTKEY
+            id:
+              type: string
+              description: ID of the parent customer.
+              x-mappedTo: PARENTID
+            name:
+              type: string
+              description: Name of the parent customer.
+              x-mappedTo: PARENTNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL for the parent customer.
+              readOnly: true
+        salesRepresentative:
+          type: object
+          description: Name of the employee responsible for this customer account.
+          x-object: employee
+          x-mappedTo: custrep
+          title: Sales Representative
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the employee.
+              x-mappedTo: CUSTREPKEY
+            id:
+              type: string
+              description: ID of the employee.
+              x-mappedTo: CUSTREPID
+            name:
+              type: string
+              description: Name of the employee.
+              x-mappedTo: CUSTREPNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL for the employee.
+              readOnly: true
+        taxId:
+          type: string
+          description: Tax identification number for the customer.
+          x-mappedTo: TAXID
+        defaultRevenueGLAccount:
+          type: object
+          description: GL account for customer revenue.
+          x-object: gl-account
+          x-mappedTo: araccount
+          title: Default Revenue Account
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: ACCOUNTKEY
+              readOnly: true
+            id:
+              type: string
+              description: ID of the GL account.
+              x-mappedTo: ARACCOUNT
+            name:
+              type: string
+              description: Name of the GL account.
+              x-mappedTo: ARACCOUNTTITLE
+              readOnly: true
+            href:
+              type: string
+              description: URL of the GL account.
+              readOnly: true
+        shippingMethod:
+          type: object
+          description: How goods are shipped to the customer.
+          x-object: shipping-method
+          x-mappedTo: shipmethod
+          title: Shipping Method
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the shipping method.
+              x-mappedTo: SHIPVIAKEY
+            id:
+              type: string
+              description: ID of the shipping method.
+              x-mappedTo: SHIPPINGMETHOD
+            href:
+              type: string
+              description: URL of the shipping method.
+              readOnly: true
+        creditLimit:
+          type: number
+          description: Credit limit extended to the customer.
+          x-mappedTo: CREDITLIMIT
+        isOnHold:
+          type: boolean
+          description: Indicates whether customer is on credit hold.
+          x-mappedTo: ONHOLD
+          x-mappedToType: string
+          default: false
+        contacts:
+          type: object
+          description: Contacts for the customer.
+          title: contacts
+          properties:
+            default:
+              type: object
+              description: |
+                Display contact for this customer.
+                Used as the default for other customer contacts, such as `shipTo`, that are  not defined.
+              allOf:
+                - $ref: '#/components/schemas/contactref.s1.schema'
+                - type: object
+                  x-object: contact
+                  x-mappedTo: displaycontact
+                  x-mappedToPrefix: DISPLAYCONTACT
+                  x-mappedToKey: DISPLAYCONTACTKEY
+                  properties:
+                    hideContactList:
+                      type: boolean
+                      description: Exclude from the company contact list
+                      x-mappedTo: HIDEDISPLAYCONTACT
+                      x-mappedToType: string
+                      default: false
+                    tax:
+                      type: object
+                      title: tax
+                      properties:
+                        isTaxable:
+                          type: boolean
+                          description: Is Taxable
+                          x-mappedTo: DISPLAYCONTACT.TAXABLE
+                          x-mappedToType: string
+                          default: false
+                        group:
+                          type: object
+                          x-object: contact-tax-group
+                          x-mappedTo: DISPLAYCONTACT.TAXGROUP
+                          properties:
+                            key:
+                              type: string
+                              x-mappedTo: TAXGROUPKEY
+                            id:
+                              type: string
+                              x-mappedTo: TAXGROUP
+                            href:
+                              type: string
+                              readOnly: true
+            primary:
+              type: object
+              description: Primary contact for the customer.
+              title: primary
+              x-object: contact
+              x-mappedTo: primarycontact
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: CONTACTKEY
+                id:
+                  type: string
+                  description: ID of the contact.
+                  x-mappedTo: CONTACTINFO.CONTACTNAME
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+            billTo:
+              type: object
+              description: Customer contact for company activity such as sales transactions, invoice creation, and manual deposits.
+              title: billTo
+              x-object: contact
+              x-mappedTo: billtocontact
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: BILLTOKEY
+                id:
+                  type: string
+                  description: ID of the contact.
+                  x-mappedTo: BILLTO.CONTACTNAME
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+            shipTo:
+              type: object
+              title: shipTo
+              description: Customer contact for company activity such as sales transactions, invoice creation, and tax calculations.
+              x-object: contact
+              x-mappedTo: shiptocontact
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: SHIPTOKEY
+                id:
+                  type: string
+                  description: ID of the contact.
+                  x-mappedTo: SHIPTO.CONTACTNAME
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+        contactList:
+          type: array
+          x-mappedTo: CONTACT_LIST_INFO
+          x-object: customer-contact
+          items:
+            $ref: '#/components/schemas/customer-contact.s1.schema'
+        restrictions:
+          type: object
+          properties:
+            restrictionType:
+              type: string
+              description: |
+                Restrict customers to only the top-level company or for specific locations and departments.
+                These restriction options are valid only for multi-entity companies that are [configured for restrictions](https://www.intacct.com/ia/docs/en_US/help_action/Multi-entity/Setup/configure-multi-entity.htm).
+                Learn more about [restricting customers](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Receivable/Setup/Customers/setup-customers-in-ME.htm).
+                The following values specify who can view and post transactions against this customer.
+
+                **Valid values:**
+                - `unrestricted` - The top level and all entities within the multi-entity structure.
+                - `rootOnly` - Only the top level of the multi-entity structure.
+                - `restricted` - Only the chosen locations, location groups, departments, or department groups within the multi-entity structure.
+              enum:
+                - unrestricted
+                - rootOnly
+                - restricted
+              x-mappedToValues:
+                - Unrestricted
+                - RootOnly
+                - Restricted
+              x-mappedTo: OBJECTRESTRICTION
+              example: restricted
+            locations:
+              type: array
+              description: Locations to which the customer can be restricted.
+              x-delimiter: '#~#'
+              x-mappedTo: RESTRICTEDLOCATIONS
+              example:
+                - Dallas
+                - Santa Fe
+                - Las Vegas
+              items:
+                type: string
+            departments:
+              type: array
+              description: Departments to which the customer can be restricted.
+              x-delimiter: '#~#'
+              x-mappedTo: RESTRICTEDDEPARTMENTS
+              example:
+                - Sales
+                - RDA
+                - BD
+              items:
+                type: string
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        customerEmailTemplates:
+          type: array
+          description: email templates for this customer.
+          x-mappedTo: EMAILTEMPLATES
+          x-object: customer-email-template
+          items:
+            $ref: '#/components/schemas/customer-email-template.s1.schema'
+        discountPercent:
+          type: string
+          description: Discount (%).
+          x-mappedTo: DISCOUNT
+        entity:
+          type: string
+          description: Customer entity.
+          x-mappedTo: ENTITY
+        term:
+          type: object
+          description: AR Term.
+          x-object: ar-term
+          x-mappedTo: TERMNAME
+          properties:
+            key:
+              type: string
+              x-mappedTo: TERMSKEY
+            id:
+              type: string
+              x-mappedTo: TERMNAME
+            value:
+              type: string
+              x-mappedTo: TERMVALUE
+            href:
+              type: string
+              readOnly: true
+        advanceBillBy:
+          type: string
+          description: Bill in advance
+          x-mappedTo: ADVBILLBY
+        advanceBillByType:
+          type: string
+          description: Bill in advance type.
+          title: Before contract start date
+          enum:
+            - ''
+            - days
+            - months
+          x-mappedToValues:
+            - ''
+            - days
+            - months
+          x-mappedTo: ADVBILLBYTYPE
+        totalDue:
+          type: string
+          description: Total Amount due
+          x-mappedTo: TOTALDUE
+          readOnly: true
+        lastInvoiceCreatedDate:
+          type: string
+          format: date
+          description: Last invoice created on.
+          x-mappedTo: LAST_INVOICEDATE
+          readOnly: true
+        lastStatementGeneratedDate:
+          type: string
+          format: date
+          description: Last statement generated on.
+          x-mappedTo: LAST_STATEMENTDATE
+          readOnly: true
+        resaleNumber:
+          type: number
+          description: Resale number.
+          x-mappedTo: RESALENO
+        deliveryOptions:
+          type: string
+          description: Delivery options
+          enum:
+            - print
+            - email
+            - both
+          x-mappedToValues:
+            - Print
+            - E-Mail
+            - Print#~#E-Mail
+          x-mappedTo: DELIVERY_OPTIONS
+        overridePriceList:
+          type: string
+          description: Price List Override
+          enum:
+            - Customer
+            - Billing contact
+            - Shipping contact
+          x-mappedToValues:
+            - C
+            - B
+            - S
+          x-mappedTo: PRCLST_OVERRIDE
+          default: C
+        customerMessageId:
+          type: string
+          description: Default customer message.
+          x-mappedTo: CUSTMESSAGEID
+        currency:
+          type: string
+          description: Currency.
+          x-mappedTo: CURRENCY
+          readOnly: true
+          example: CAD
+        priceScheduleKey:
+          type: string
+          description: Price schedule record number.
+          x-mappedTo: PRICESCHEDULEKEY
+        emailOptIn:
+          type: boolean
+          description: Accepts emailed invoices
+          x-mappedTo: EMAILOPTIN
+          x-mappedToType: string
+          default: false
+        activationDate:
+          type: string
+          format: date
+          description: MRR activation date.
+          x-mappedTo: ACTIVATIONDATE
+          readOnly: true
+        subscriptionEndDate:
+          type: string
+          format: date
+          description: MRR subscription date.
+          x-mappedTo: SUBSCRIPTIONENDDATE
+          readOnly: true
+        territory:
+          type: object
+          properties:
+            key:
+              type: number
+              description: Territory key.
+              x-mappedTo: TERRITORYKEY
+            id:
+              type: number
+              description: Territory id.
+              x-mappedTo: TERRITORYID
+            name:
+              type: string
+              description: Territory name.
+              x-mappedTo: TERRITORYNAME
+        enableOnlineACHPayment:
+          type: boolean
+          description: Enable online ACH debit
+          x-mappedTo: ENABLEONLINEACHPAYMENT
+          default: true
+        enableOnlineCardPayment:
+          type: boolean
+          description: Enable online charge card
+          x-mappedTo: ENABLEONLINECARDPAYMENT
+          default: true
+        customerItemCrossRefs:
+          type: array
+          x-mappedTo: ITEMCROSSREFERENCES
+          x-object: customer-item-cross-reference
+          items:
+            $ref: '#/components/schemas/customer-item-cross-reference.s1.schema'
+        isOneTimeUse:
+          type: boolean
+          description: One-time use
+          x-mappedTo: ONETIME
+          x-mappedToType: string
+          default: false
+        accountGroup:
+          type: object
+          description: Customer GL Group.
+          x-object: customer-account-group
+          x-mappedTo: GLGROUP
+          title: Customer GL Group
+          properties:
+            key:
+              type: string
+              x-mappedTo: GLGRPKEY
+            id:
+              type: string
+              x-mappedTo: GLGROUP
+            href:
+              type: string
+              readOnly: true
+        accountLabel:
+          type: object
+          description: Account Label.
+          x-object: ar-account-label
+          x-mappedTo: ACCOUNTLABEL
+          title: account label
+          properties:
+            key:
+              type: string
+              x-mappedTo: ACCOUNTLABELKEY
+            id:
+              type: string
+              x-mappedTo: ACCOUNTLABEL
+            href:
+              type: string
+              readOnly: true
+        attachment:
+          type: object
+          description: Supporting document ID.
+          x-object: attachment
+          x-mappedTo: SUPDOCID
+          properties:
+            key:
+              type: string
+              x-mappedTo: SUPDOCID
+            id:
+              type: string
+              x-mappedTo: SUPDOCID
+            href:
+              type: string
+              readOnly: true
+        retainagePercentage:
+          type: number
+          description: Default retainage percentage.
+          x-mappedTo: RETAINAGEPERCENTAGE
+        notes:
+          type: string
+          description: Notes.
+          x-mappedTo: COMMENTS
+        priceList:
+          type: object
+          description: Customer Price List.
+          x-object: order-entry-price-list
+          x-mappedTo: PRICELIST
+          properties:
+            key:
+              type: string
+              x-mappedTo: OEPRCLSTKEY
+            id:
+              type: string
+              x-mappedTo: PRICELIST
+            href:
+              type: string
+              readOnly: true
+        priceSchedule:
+          type: object
+          description: Price Schedule.
+          x-object: purchasing-price-schedule
+          x-mappedTo: PRICESCHEDULE
+          properties:
+            key:
+              type: string
+              x-mappedTo: OEPRICESCHEDKEY
+            id:
+              type: string
+              x-mappedTo: PRICESCHEDULE
+            href:
+              type: string
+              readOnly: true
+        overrideOffsetGLAccount:
+          type: object
+          description: Default AR Override Offset Account.
+          x-object: gl-account
+          x-mappedTo: OFFSETGLACCOUNTNO
+          properties:
+            key:
+              type: string
+              x-mappedTo: OFFSETACCOUNTKEY
+            id:
+              type: string
+              x-mappedTo: OFFSETGLACCOUNTNO
+            name:
+              type: string
+              x-mappedTo: OFFSETGLACCOUNTNOTITLE
+              readOnly: true
+            href:
+              type: string
+              readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

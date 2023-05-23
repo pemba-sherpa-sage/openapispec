@@ -1,0 +1,11 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/services/modules/view
+    PATCH:
+      - co/setup/cssetup/edit
+    POST:
+      - co/setup/cssetup/create
+s1:
+  hash: '0'
+  type: preference

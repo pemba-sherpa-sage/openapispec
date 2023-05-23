@@ -1,0 +1,20 @@
+title: employee-type
+x-mappedTo: employeetype
+type: object
+description: List of the Employee types
+properties:
+  key:
+    type: string
+    description: Employee Type Key
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Employee Type Name
+    x-mappedTo: NAME
+    x-mutable: false
+  name:
+    type: string
+    description: Employee Type Name
+    x-mappedTo: NAME
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

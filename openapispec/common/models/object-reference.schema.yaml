@@ -1,0 +1,12 @@
+title: object-reference
+type: object
+description: Reference Object definition
+properties:
+  key:
+    type: string
+  id:
+    type: string
+  href:
+    type: string
+    readOnly: true
+

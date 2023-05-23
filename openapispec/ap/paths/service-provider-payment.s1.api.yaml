@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: service-provider-payment
+  description: service-provider-payment API
+  version: '1.0'
+  contact:
+    name: Pavan Sankannanavar
+    email: pavan.sankannanavar@sage.com
+tags:
+  - name: Service provider payments
+    description: The payment requests that are processed by a payment provider.
+servers:
+  - url: 'dev01.intacct.com/users/pavan.sankannanavar/ppnextgen/v0'
+paths:
+  /objects/service-provider-payment:
+    get:
+      summary: List Service provider payments
+      description: Returns a collection with a key, ID, and link for each Service Provider Payment.
+      tags:
+        - Service provider payments
+      operationId: get-objects-service-provider-payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of service-provider-payment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Service provider payments:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/service-provider-payment/1
+                      - key: '21'
+                        id: '21'
+                        href: /objects/service-provider-payment/21
+                      - key: '40'
+                        id: '40'
+                        href: /objects/service-provider-payment/40
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/service-provider-payment/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Provider Payment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a Service Provider Payment
+      description: Returns detailed information for a particular Service Provider Payment.
+      tags:
+        - Service Provider payments
+      operationId: get-objects-service-provider-payment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the service-provider-payment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/service-provider-payment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Service Provider Payment:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      batchId: 'e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906'
+                      externalPaymentId: 'e7a8a5c8-ff0c-4aa8-beb5-064fac1d6906-00000'
+                      paymentId: 252
+                      status: 'processingCompleted'
+                      remittanceSentByUser: 'notRequested'
+                      refundStatus: ''
+                      failedPostingToGL: false
+                      audit:
+                        createdDateTime: '2022-12-15T03:33:32Z'
+                        modifiedDateTime: '2023-01-04T05:34:49Z'
+                        createdBy: '71'
+                        modifiedBy: '71'
+                      href: /objects/service-provider-payment/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    service-provider-payment:
+      $ref: ../models/service-provider-payment.s1.schema.yaml
+    service-provider-paymentRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

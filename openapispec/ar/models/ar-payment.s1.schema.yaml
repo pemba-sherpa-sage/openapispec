@@ -1,0 +1,389 @@
+title: ar-payment
+x-mappedTo: arpymt
+type: object
+description: An AR payment is a transaction used to record a payment against an AR invoice or an AR adjustment/debit memo.
+properties:
+  key:
+    type: string
+    description: AR receivables payment Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '87653458'
+  id:
+    type: string
+    description: AR receivables payment Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '87653458'
+  href:
+    type: string
+    description: URL for the AR payment.
+    readOnly: true
+  recordType:
+    type: string
+    description: Record type
+    x-mappedTo: RECORDTYPE
+    readOnly: true
+    example: 'rp'
+  financialEntity:
+    type: object
+    title: financialEntity
+    properties:
+      entityId:
+        type: string
+        description: Financial entity
+        x-mappedTo: FINANCIALENTITY
+        example: 'BOA'
+      entityType:
+        type: string
+        description: Financial entity type
+        x-mappedTo: FINANCIALENTITYTYPE
+        readOnly: true
+        example: 'Bank'
+      accountNumber:
+        type: string
+        description: Financial GL account number or credit card number
+        x-mappedTo: FINANCIALACCOUNT
+        readOnly: true
+      name:
+        type: string
+        description: Bank Name
+        x-mappedTo: FINANCIALACCOUNTNAME
+        readOnly: true
+      currency:
+        type: string
+        description: Bank currency
+        x-mappedTo: FINANCIALACCOUNTCURRENCY
+        readOnly: true
+  state:
+    type: string
+    description: State
+    x-mappedTo: STATE
+    readOnly: true
+    example:
+  paymentMethod:
+    type: string
+    description: Payment Method
+    x-mappedTo: PAYMENTMETHOD
+    enum:
+      - 'printedCheck'
+      - 'creditCard'
+      - 'eft'
+      - 'cash'
+      - 'onlineChargeCard'
+      - 'onlineACHDebit'
+    x-mappedToValues:
+      - 'Printed Check'
+      - 'Credit Card'
+      - 'EFT'
+      - 'Cash'
+      - 'Online Charge Card'
+      - 'Online ACH Debit'
+  documentNumber:
+    type: string
+    description: Document number, such as a check number.
+    x-mappedTo: DOCNUMBER
+    example: '123'
+  description:
+    type: string
+    description: Memo or notes about the AR payment.
+    x-mappedTo: DESCRIPTION
+    maxLength: 1000
+    example: 'Memo for the line'
+  baseCurrency:
+    type: string
+    description: Base currency of the company.
+    x-mappedTo: BASECURR
+    readOnly: true
+  txnCurrency:
+    type: string
+    description: Transaction Currency of the invoice
+    x-mappedTo: CURRENCY
+  exchangeRate:
+    type: object
+    title: exchangeRate
+    description: Exchange rate details used to calculate the base amount.
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Exchange rate date used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCH_RATE_DATE
+        readOnly: true
+      rate:
+        type: string
+        description: Exchange rate used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCHANGE_RATE
+        readOnly: true
+        example: '1.0789'
+      typeId:
+        type: string
+        description: Exchange rate type used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        readOnly: true
+        example: '-1'
+  baseAmountToPay:
+    type: string
+    description: For payment involving multi-currency, this is the translated payment base amount. (Amount is ignored if the payment is not cross currency.)
+    x-mappedTo: AMOUNTTOPAY
+    format: decimal-precision-2
+  txnAmountToPay:
+    type: string
+    x-mappedTo: TRX_AMOUNTTOPAY
+    format: decimal-precision-2
+    description: Amount Received. For payment involving multi-currency, this is the total transaction payment amount. (Amount is ignored if the payment is not cross currency.)
+  baseTotalAmount:
+    type: string
+    description: Total amount
+    x-mappedTo: TOTALENTERED
+    example: '100.0'
+    readOnly: true
+  baseAmountDue:
+    type: string
+    description: Amount due
+    x-mappedTo: TOTALDUE
+    example: '100.0'
+    readOnly: true
+  txnTotalAmount:
+    type: string
+    description: Total transaction amount
+    format: decimal-precision-2
+    x-mappedTo: TRX_TOTALENTERED
+    maxLength: 14
+    example: '100.0'
+    readOnly: true
+  txnAmountDue:
+    type: string
+    description: Transaction amount due
+    format: decimal-precision-2
+    x-mappedTo: TRX_TOTALDUE
+    maxLength: 14
+    example: '100.0'
+    readOnly: true
+  bankReconciliationStatus:
+    type: string
+    description: Reconciliation status
+    x-mappedTo: CLEARED
+    example: 'true'
+    enum:
+      - 'true'
+      - 'false'
+      - ''
+    x-mappedToValues:
+      - 'T'
+      - 'F'
+      - ''
+    default: 'false'
+    readOnly: true
+  bankReconciliationDate:
+    type: string
+    description: Reconciliation date
+    x-mappedTo: CLRDATE
+    readOnly: true
+    example: '2022-04-30'
+  referenceNumber:
+    type: string
+    description: Reference no.
+    x-mappedTo: RECORDID
+    maxLength: 21
+    example: '1234'
+  paymentSummary:
+    type: object
+    title: paymentSummary
+#    x-object: batch
+    properties:
+      key:
+        type: string
+        description: Summary key
+        x-mappedTo: PRBATCHKEY
+        readOnly: true
+        maxLength: 8
+        example: '87345678'
+      receiptDate:
+        type: string
+        format: date
+        description: Receipt date
+        x-mappedTo: RECEIPTDATE
+        example: '2021-01-23'
+      title:
+        type: string
+        description: Summary title
+        x-mappedTo: SUMMARYTITLE
+        example: 'Batch 02-07-2023'
+      batch:
+        type: string
+        description: Summary
+        x-mappedTo: PRBATCH
+        maxLength: 100
+        example: 'Batch 02-07-2023'
+      undepositedGLAccountNo:
+        type: string
+        description: Undeposited funds account no.
+        x-mappedTo: UNDEPOSITEDACCOUNTNO
+        example: '100444'
+  customer:
+    type: object
+    x-mappedTo: customer
+    x-object: customer
+    properties:
+      key:
+        type: string
+        description: Customer record number
+        x-mappedTo: CUSTOMERRECORDNO
+        readOnly: true
+      entity:
+        type: string
+        description: Customer entity
+        x-mappedTo: ENTITY
+        example: 'C100'
+        readOnly: true
+      id:
+        type: string
+        description: Customer ID
+        x-mappedTo: CUSTOMERID
+        maxLength: 21
+        example: 'Cust-1'
+      name:
+        type: string
+        description: Customer name
+        x-mappedTo: CUSTOMERNAME
+        example: 'Ganesh'
+        readOnly: true
+      totalDueAmount:
+        type: string
+        description: Customer total due
+        x-mappedTo: CUSTOMERDUE
+        readOnly: true
+        example: '100.0'
+      href:
+        type: string
+        description: URL for the location.
+        readOnly: true
+  attachment:
+    type: object
+    x-mappedTo: SUPDOCID
+    description: Supporting document ID for this attachment.
+    x-object: attachment
+    properties:
+      key:
+        type: string
+        description: Attachment
+        x-mappedTo: SUPDOCID
+        example: '123'
+      id:
+        type: string
+        description: Attachment
+        x-mappedTo: SUPDOCID
+        example: '123'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/attachment/21
+  paidDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date of the payment.
+    x-mappedTo: WHENPAID
+  baseTotalPaid:
+    type: string
+    description: Total amount paid
+    x-mappedTo: TOTALPAID
+    readOnly: true
+  txnTotalPaid:
+    type: string
+    description: Total transaction paid
+    x-mappedTo: TRX_TOTALPAID
+    readOnly: true
+  overPayment:
+    type: object
+    title: over payment information
+    properties:
+      customerId:
+        type: string
+        x-mappedTo: OVERPAYMENTCUSTOMERID
+        desciption: Overpayment customer id
+      locationId:
+        type: string
+        x-mappedTo: OVERPAYMENTLOCATIONID
+        description: Overpayment location id
+      departmentId:
+        type: string
+        x-mappedTo: OVERPAYMENTDEPARTMENTID
+        description: Overpayment department id
+      classId:
+        type: string
+        x-mappedTo: OVERPAYMENTCLASSID
+        description: Overpayment Class Id
+      projectId:
+        type: string
+        x-mappedTo: OVERPAYMENTPROJECTID
+        description: Overpayment Project Id
+      amount:
+        type: string
+        x-mappedTo: OVERPAYMENTAMOUNT
+        description: Overpayment Amount
+  contacts:
+    type: object
+    description: Contact information for the AR payment.
+    title: CONTACTS
+    properties:
+      payTo:
+        type: object
+        description: Pay-to contact for the AR payment. 
+        title: payTo
+        x-object: contact
+        x-mappedTo: payto
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the pay-to contact.
+            x-mappedTo: BILLTOPAYTOKEY
+            readOnly: true
+          id:
+            type: string
+            description: Identifier for the pay-to contact.
+            x-mappedTo: BILLTOPAYTONAME
+          href:
+            type: string
+            description: URL for the pay-to contact.
+            readOnly: true
+#  taxSolution:
+#    type: object
+#    description: Tax solution used to calculate and capture taxes on this payment.
+#    x-object: tax-solution
+#    x-mappedTo: taxsolution
+#    properties:
+#      key:
+#        type: string
+#        description: System-assigned key for the tax solution.
+#        x-mappedTo: TAXSOLUTIONKEY
+#      id:
+#        type: string
+#        description: ID for the tax solution.
+#        x-mappedTo: TAXSOLUTIONID
+#      method:
+#        type: string
+#        description: Tax method used for the payment.
+#        x-mappedTo: TAXMETHOD
+#      href:
+#        type: string
+#        description: URL for the tax solution.
+#        readOnly: true
+  paymentDetails:
+    type: array
+    description: Details for the AR payment.
+    x-mappedTo: PYMTDETAILS
+    x-object: ar-payment-detail
+    items:
+      $ref: ar-payment-detail.s1.schema.yaml
+  lines:
+    type: array
+    description: Line items of the AR payment.
+    x-mappedTo: ITEMS
+    x-object: ar-payment-line
+    items:
+      $ref: ar-payment-line.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

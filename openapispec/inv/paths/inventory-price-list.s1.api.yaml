@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: inventory-price-list
+  description: inventory-price-list API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Inventory price lists
+    description: An inventory price list is a container for price list entries.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/inventory-price-list/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the inventory price list.
+        example: '1'
+    get:
+      summary: Get an inventory price list
+      description: Returns detailed information for a specified inventory price list.
+      tags:
+        - Inventory price lists
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the inventory-price-list
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/inventory-price-list'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an inventory price list:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Base Price List
+                      href: /objects/inventory-price-list/1
+                      startDate: '2000-01-01'
+                      endDate: '2100-12-31'
+                      appliesTo: orderEntry
+                      status: active
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-inventory-price-list-key
+    delete:
+      summary: Delete an inventory price list
+      description: Deletes an inventory price list.
+      tags:
+        - Inventory price lists
+      operationId: delete-objects-inventory-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an inventory price list
+      description: Updates an existing inventory price list by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Inventory price lists
+      operationId: patch-objects-inventory-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated inventory-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a price list:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Base Price List
+                      href: /objects/inventory-price-list/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/inventory-price-list'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: '1'
+            examples:
+              Update a price list:
+                value:
+                  startDate: '2018-02-01'
+  /objects/inventory-price-list:
+    get:
+      summary: List inventory price lists
+      description: Returns a collection with a key, ID, and link for each inventory price list. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Inventory price lists
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of inventory-price-list objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List price lists:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: Base Price List
+                        href: /objects/inventory-price-list/1
+                      - key: '2'
+                        id: Initial Purchase Cost
+                        href: /objects/inventory-price-list/2
+                      - key: '3'
+                        id: Initial Sales Price
+                        href: /objects/inventory-price-list/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-inventory-price-list
+    post:
+      summary: Create an inventory price list
+      description: Creates a new inventory price list.
+      tags:
+        - Inventory price lists
+      operationId: post-objects-inventory-price-list
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New inventory-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a price list:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Base Price List
+                      href: /objects/inventory-price-list/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/inventory-price-list'
+                - $ref: '#/components/schemas/inventory-price-listRequiredProperties'
+            examples:
+              Create a price list:
+                value:
+                  id: Base Price List
+                  startDate: '2015-01-01'
+                  endDate: '2022-01-01'
+                  appliesTo: orderEntry
+                  status: active
+components:
+  schemas:
+    inventory-price-list:
+      $ref: ../models/inventory-price-list.s1.schema.yaml
+    inventory-price-listRequiredProperties:
+      type: object
+      required:
+        - id
+        - appliesTo
+      example: 
+        id: Base Price List
+        appliesTo: orderEntry
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

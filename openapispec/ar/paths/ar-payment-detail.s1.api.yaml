@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: ar-payment-detail
+  description: ar-payment-detail API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+tags:
+  - name: AR payment details
+    description: An AR payment detail object can specify either an object, like an invoice or an adjustment, as a whole (header level), or it can specify a line item. An AR payment detail object also provides the transaction amount that was received.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-payment-detail:
+    get:
+      summary: List AR payment details
+      description: Returns a collection with a key, ID, and link for each AR payment details object. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR payment details
+      operationId: get-objects-ar-payment-detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-payment-detail objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR payment details:
+                  value:
+                    "ia::result":
+                      - key: "117"
+                        id: "117"
+                        href: "/objects/ar-payment-detail/117"
+                      - key: "118"
+                        id: "118"
+                        href: "/objects/ar-payment-detail/118"
+                    "ia::meta":
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-payment-detail/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR payment details.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get AR payment details
+      description: Returns detailed information for a specified AR payment details object.
+      tags:
+        - AR payment details
+      operationId: get-objects-ar-payment-detail-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-payment-detail
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-payment-detail'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get AR payment details:
+                  value:
+                    "ia::result":
+                      id: "117"
+                      key: "117"
+                      arInvoice:
+                        id: "426"
+                        key: "426"
+                        entry:
+                          id: "929"
+                          key: "929"
+                        href: "/objects/ar-invoice/426"
+                      positiveAdjustment:
+                        key: null,
+                        entry:
+                          id: null
+                          key: null
+                      inlineTxn:
+                        key: "428"
+                        entry:
+                          id: "933"
+                          key: "933"
+                        baseAmount: "10"
+                        txnAmount: "10.00"
+                        href: "/objects/ar-invoice/428"
+                      postedAdvance:
+                        key: null
+                        entry:
+                          id: null
+                          key: null
+                        baseAmount: null
+                        txnAmount: null
+                      postedOverPayment:
+                        key: null
+                        entry:
+                          id: null
+                          key: null
+                        baseAmount: null
+                        txnAmount: null
+                      arAdjustment:
+                        key: null
+                        entry:
+                          id: null
+                          key: null
+                        baseAmount: null
+                        txnAmount: null
+                      arPayment:
+                        id: "433"
+                        key: "433"
+                        entry:
+                          id: null
+                          key: null
+                        href: "/objects/ar-payment/433"
+                      paymentDate: "2022-11-25"
+                      basePaymentAmount: null
+                      txnPaymentAmount: null
+                      bankCurrency: "USD"
+                      audit:
+                        createdDateTime: "2022-11-25T07:09:13Z"
+                        modifiedDateTime: "2022-11-25T07:09:13Z"
+                        createdBy: "1"
+                        modifiedBy: "1"
+                      href: "/objects/ar-payment-detail/117"
+                    "ia::meta":
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-payment-detail:
+      $ref: ../models/ar-payment-detail.s1.schema.yaml
+    ar-payment-detailRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

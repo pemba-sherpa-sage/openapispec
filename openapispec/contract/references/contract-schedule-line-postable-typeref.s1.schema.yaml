@@ -1,0 +1,47 @@
+type: object
+title: contract-schedule-line-postable
+required:
+  - scheduledPostingDate
+properties:
+  scheduledPostingDate:
+    type: string
+    description: Schedule line scheduled posting date.
+    x-mappedTo: POSTINGDATE
+    format: date
+    example: '2022-04-30'
+    nullable: false
+  posted:
+    type: boolean
+    description: Schedule line posted flag.
+    x-mappedTo: POSTED
+    readOnly: true
+    example: false
+  actualPostingDate:
+    type: string
+    description: Schedule line actual posting date.
+    x-mappedTo: ACTUALPOSTINGDATE
+    readOnly: true
+    format: date
+    example: '2022-04-30'
+  journalEntry:
+    type: object
+    x-object: journal-entry
+    properties:
+      key:
+        type: string
+        description: Journal entry key.
+        x-mappedTo: GLBATCHKEY
+        readOnly: true
+        example: 8153
+      id:
+        type: string
+        description: Journal entry ID.
+        x-mappedTo: GLBATCHNO
+        readOnly: true
+        example: 4765
+      href:
+        type: string
+        description: Journal entry URL.
+        readOnly: true
+        example: /objects/journal-entry/1981
+examples: []

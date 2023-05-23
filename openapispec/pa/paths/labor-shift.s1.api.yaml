@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  title: labor-shift
+  description: labor-shift API
+  version: '1.0'
+  contact:
+    name: Anna Gawlas
+    email: anna.gawlas@sage.com
+tags:
+  - name: Labor shifts
+    description: User-defined labor shift that can be used on timesheet lines when creating a timesheet.  Only available with Construction subscription to enhance billing capabilities for Timesheets.
+
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/labor-shift:
+    get:
+      summary: List labor shifts
+      description: 'Returns a collection with a key, ID, and link for each labor shift.'
+      tags:
+        - Labor shifts
+      operationId: get-objects-labor-shift
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of labor-shift objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: LS-AM
+                        href: /objects/labor-shift/2
+                      - key: '3'
+                        id: LS-PM
+                        href: /objects/labor-shift/3
+                      - key: '4'
+                        id: LS-NT
+                        href: /objects/labor-shift/4
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a labor shift
+      description: Creates a new labor shift.
+      tags:
+        - Labor shifts
+      operationId: post-objects-labor-shift
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-shift'
+                - $ref: '#/components/schemas/labor-shiftRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: LS-AM
+                  name: AM Shift
+                  description: Morning shift (6am-2pm)
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New labor-shift
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: LS-AM
+                      href: /objects/labor-shift/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/labor-shift/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the labor shift.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a labor shift
+      description: Returns detailed information for a particular labor shift.
+      tags:
+        - Labor shifts
+      operationId: get-objects-labor-shift-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the labor-shift
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/labor-shift'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: LS-AM
+                      name: AM Shift
+                      description: Morning shift (6am-2pm)
+                      status: active
+                      audit:
+                        createdDateTime: '2021-11-21T23:05:29Z'
+                        modifiedDateTime: '2021-11-21T23:05:29Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/labor-shift/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a labor shift
+      description: Updates an existing labor shift by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Labor shifts
+      operationId: patch-objects-labor-shift-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-shift'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  description: (unused) Graveyard shift (10pm-6am)
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated labor-shift
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '4'
+                      id: LS-NT
+                      href: /objects/labor-shift/4
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a labor shift
+      description: Deletes a labor shift.
+      tags:
+        - Labor shifts
+      operationId: delete-objects-labor-shift-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    labor-shift:
+      $ref: ../models/labor-shift.s1.schema.yaml
+    labor-shiftRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

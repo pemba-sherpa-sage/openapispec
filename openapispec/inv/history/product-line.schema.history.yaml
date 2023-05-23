@@ -1,0 +1,31 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/productline/view
+      - po/lists/productline/view
+      - so/lists/productline/view
+    POST:
+      - inv/lists/productline/create
+      - po/lists/productline/create
+      - so/lists/productline/create
+    PATCH:
+      - inv/lists/productline/edit
+      - po/lists/productline/edit
+      - so/lists/productline/edit
+    DELETE:
+      - inv/lists/productline/delete
+      - po/lists/productline/delete
+      - so/lists/productline/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

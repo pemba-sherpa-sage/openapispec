@@ -1,0 +1,18 @@
+key: order-entry-tax-schedule::active
+id: active
+object: order-entry-tax-schedule
+name: Active
+description: Specifies active order-entry-tax-schedules
+query:
+  object: order-entry-tax-schedule
+  fields:
+    - name
+    - description
+    - taxSolution.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default

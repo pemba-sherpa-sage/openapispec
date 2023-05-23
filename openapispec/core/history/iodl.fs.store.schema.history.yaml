@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - co/runtime/platform
+s1:
+  hash: '0'
+  type: functionService

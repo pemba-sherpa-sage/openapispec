@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/apterm/view
+    POST:
+      - ap/lists/apterm/create
+    PATCH:
+      - ap/lists/apterm/edit
+    DELETE:
+      - ap/lists/apterm/delete
+s1:
+  hash: '0'
+  type: rootObject

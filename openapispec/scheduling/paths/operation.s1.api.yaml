@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: operation
+  description: operation API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Operations
+    description: Operation description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/operation:
+    get:
+      summary: List operations
+      description: Returns a collection with a key, ID, and link for each operation.
+      tags:
+        - Operations
+      operationId: get-objects-operation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of operation objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an operation
+      description: Creates a new operation.
+      tags:
+        - Operations
+      operationId: post-objects-operation
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/operation'
+                - $ref: '#/components/schemas/operationRequiredProperties'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New operation
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/operation/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the operation.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an operation
+      description: Returns detailed information for a particular operation.
+      tags:
+        - Operations
+      operationId: get-objects-operation-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the operation
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/operation'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an operation
+      description: Updates an existing operation by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Operations
+      operationId: patch-objects-operation-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/operation'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated operation
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an operation
+      description: Deletes a/an operation.
+      tags:
+        - Operations
+      operationId: delete-objects-operation-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    operation:
+      $ref: ../models/operation.s1.schema.yaml
+    operationRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

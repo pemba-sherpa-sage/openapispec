@@ -1,0 +1,94 @@
+type: object
+title: contract-billing-schedule-line
+x-mappedTo: contractbillingscheduleentry
+x-ownedBy: contract-billing-schedule
+description: Contract billing schedule line.
+required:
+  - scheduledBillingDate
+properties:
+  href:
+    type: string
+    description: Schedule line URL.
+    readOnly: true
+    example: /objects/contract-billing-schedule-line/145
+  scheduledBillingDate:
+    type: string
+    description: Schedule line scheduled billing date.
+    x-mappedTo: POSTINGDATE
+    format: date
+    example: '2022-04-30'
+    nullable: false
+  billed:
+    type: boolean
+    description: Schedule line billed flag.
+    x-mappedTo: POSTED
+    readOnly: true
+    example: false
+  actualBillingDate:
+    type: string
+    description: Schedule line actual billing date.
+    x-mappedTo: ACTUALPOSTINGDATE
+    readOnly: true
+    format: date
+    example: '2022-04-30'
+  actualBaseAmount:
+    type: string
+    description: Schedule line actual billing base amount.
+    x-mappedTo: POSTEDBASEAMOUNT
+    format: decimal-precision-2
+    example: '137.52'
+  actualExchangeRate:
+    type: string
+    description: Schedule line actual billing exchange rate.
+    x-mappedTo: POSTEDEXCHANGE_RATE
+    format: decimal-precision-12
+    example: '1.345'
+  sourceHours:
+    type: string
+    description: Schedule line source hours from project or task.  Used with approvedHours to determine percentage to use for billing.
+    x-mappedTo: SOURCEQTY
+    example: '118'
+  approvedHours:
+    type: string
+    description: Schedule line approved hours.  Used with sourceHours to determine percentage to use for billing.
+    x-mappedTo: APPROVEDHOURS
+    example: '16'
+  documentId:
+    type: string
+    description: Schedule line document ID.
+    x-mappedTo: DOCID
+    readOnly: true
+    example: Contract Invoice-CONIN#0100#doc
+  computationMemo:
+    type: string
+    description: Schedule line computation memo.  This is a system generated memo to explain how the amount was calculated.
+    x-mappedTo: COMPUTATIONMEMO
+    readOnly: true
+    example: 'MEA amount 1000, adjustment amount 333.32. Prorated amount before effective date 03/01/2022 is 0.'
+  linkedBillingScheduleLine:
+    type: object
+    x-object: contract-billing-schedule-line
+    description: The linked billing schedule line, used for linking a negative discount line to the original line.
+    properties:
+      key:
+        type: string
+        description: Contract billing schedule line system-assigned key.
+        x-mappedTo: BILLSCHEDULEENTRYKEY
+        readOnly: true
+        example: '145'
+      id:
+        type: string
+        description: Contract billing schedule line unique identifier.
+        x-mappedTo: BILLSCHEDULEENTRYKEY
+        readOnly: true
+        example: '145'
+      href:
+        type: string
+        description: Contract billing schedule line URL.
+        readOnly: true
+        example: /objects/contract-billing-schedule-line/145
+  contractBillingSchedule:
+    $ref: ../references/contract-billing-schedule-typeref.s1.schema.yaml
+  contractUsage:
+    $ref: ../references/contract-usage-typeref.s1.schema.yaml
+examples: []

@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.retrieve
+  description: IODL Retrieve service
+  version: '1.0-internal'
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.retrieve
+    description: Retrieve IODL in the IODL file service
+paths:
+  /services/iodl/file/store:
+    post:
+      summary: Retrieve IODL
+      description: Retrieve IODL with options to compile, overwrite and cache
+      tags:
+        - iodl.file.anon.retrieve
+      operationId: post-iodl-file-retrieve
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.retrieve-request'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.retrieve-response'
+              examples:
+                example-1:
+                  value:
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.retrieve-request:
+      description: Retrieve IODL request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        prepend:
+          x-mappedTo: prepend
+          type: string
+        append:
+          x-mappedTo: append
+          type: string
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+        options:
+          type: object
+          properties:
+            compile:
+              x-mappedTo: options.compile
+              type: boolean
+              default: true
+            cache:
+              x-mappedTo: options.cache
+              type: boolean
+              default: false
+            sandboxCollection:
+              x-mappedTo: options.sandboxCollection
+              type: string
+    iodl.file.retrieve-response:
+      description: Retrieve IODL response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          x-mappedTo: status
+          type: boolean
+        result:
+          x-mappedTo: result
+          type: array
+          items:
+            type: string
+        tokens:
+          x-mappedTo: tokens
+          type: array
+          items:
+            type: string
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+        content:
+          $ref: ../models/iodl.file.component.content.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

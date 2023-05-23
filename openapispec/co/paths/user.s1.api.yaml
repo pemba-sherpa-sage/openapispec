@@ -1,0 +1,308 @@
+openapi: 3.0.0
+info:
+  title: user
+  description: user API
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca Uricariu
+tags:
+  - name: Users
+    description: Users are individuals who have access to some part of the system
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/user/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the user.
+        example: 65
+    get:
+      summary: Get a user
+      description: Returns detailed information for a particular user.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the user
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/user'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: 65
+                      id: Admin
+                      userName: Admin
+                      href: /objects/user/65
+                      contact:
+                        mailingAddress:
+                          addressLine1: 744 Edgewater Blvd
+                          addressLine2: Apt 104
+                          city: San Jose
+                          state: CA
+                          postCode: 95110
+                          country: United States
+                        id: contact01650967341
+                        lastName: John
+                        firstName: E.
+                        middleName: Doe
+                        prefix: Mr
+                        printAs: John E. Doe
+                        email1: john.doe@example.com
+                        email2: john.e.doe@example.com
+                        phone1: 6692248123
+                        phone2: 1222455566
+                        mobile: 1222455566
+                        pager: 12566
+                        fax: 1222455566
+                        URL1: http://john.example.com
+                        URL2: http://john.doe.example.com
+                        companyName: Example Company
+                        key: 3446
+                        href: /objects/contact/3446
+                      adminPrivileges: off
+                      userType: business
+                      webServices:
+                        enabled: true
+                        restricted: false
+                      status: active
+                      password:
+                        neverExpires: true
+                        requiresReset: false
+                        securityQuestion: What is my favourite food?
+                      sso:
+                        isSSOEnabled: true
+                        federatedSSOId: john.doe
+                      entity:
+                        unrestricted: true
+                        allowToplevelAccess: false
+                      audit:
+                        createdDateTime: 2022-04-26T10:17:12Z
+                        modifiedDateTime: 2022-04-26T11:05:26Z
+                        createdBy: '110'
+                        modifiedBy: '109'
+                      disableChatter: true
+                      locations:
+                        - id: 87
+                          name: London
+                          href: /objects/location/87
+                        - id: 92
+                          name: Paris
+                          href: /objects/location/92
+                      departments:
+                        - id: 55
+                          name: Sales
+                          href: /objects/department/55
+                        - id: 65
+                          name: Accounting
+                          href: /objects/department/65
+                      territories:
+                        - id: 22
+                          name: South
+                          href: /objects/territory/22
+                        - id: 32
+                          name: West
+                          href: /objects/territory/32
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-user-key
+    delete:
+      summary: Delete a user
+      description: Deletes a user.
+      tags:
+        - Users
+      operationId: delete-objects-user-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a user
+      description: Updates an existing user by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Users
+      operationId: patch-objects-user-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated user
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: 65
+                      id: Admin
+                      href: /objects/user/65
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: 1
+                    adminPrivileges:
+                      readOnly: true
+                      example: off
+            examples:
+              example-1:
+                value:
+                  userName: Admin
+                  status: inactive
+  /objects/user:
+    get:
+      summary: List users
+      description: Returns a collection with a key ID and link for each user.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of user objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: 1
+                        id: Admin
+                        href: /objects/user/1
+                      - key: 2
+                        id: Jane Doe
+                        href: /objects/user/2
+                      - key: 4
+                        id: Larry Smith
+                        href: /objects/user/4
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-user
+    post:
+      summary: Create a user
+      description: Creates a new user.
+      tags:
+        - Users
+      operationId: post-objects-user
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New user
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: 1
+                      id: Admin
+                      href: /objects/user/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user'
+                - $ref: '#/components/schemas/userRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: Admin
+                  userName: Amin
+                  userType: Business
+                  status: active
+                  isWebServicesOnlyUser: false
+                  contact:
+                    id: Smith
+                    lastName: Smith
+                    firstName: Alex
+                    email1: smith.alex@example.com
+                    mailingAddress:
+                      addressLine1: 300 Park Avenue
+                      city: San Jose
+                      state: California
+                      postCode: 95110
+                      country: United States
+                  disableChatter: true
+components:
+  schemas:
+    user:
+      $ref: ../models/user.s1.schema.yaml
+    userRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - lastName
+            - firstName
+            - email1
+      required:
+        - id
+        - userName
+        - userType
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

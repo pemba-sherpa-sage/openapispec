@@ -1,0 +1,238 @@
+openapi: 3.0.0
+info:
+  title: ownership-structure
+  description: Ownership structure API
+  version: '1.0'
+  contact:
+    name: Shashikant Kuswaha
+    email: shashikant.kuswaha@sage.com
+tags:
+  - name: Ownership Structure
+    description: Ownership structure for creating a structure of entities under which user can add multiple parent/child entities
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/ownership-structure/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the ownership structure.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a ownership structure
+      description: Returns information for a particular ownership structure.
+      tags:
+        - Ownership Structure
+      operationId: get-objects-ownership-structure-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ownership-structure
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ownership-structure'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                GET a ownership structure:
+                  value:
+                    'ia::result':
+                      key: '16'
+                      id: igc
+                      name: igc
+                      description: This updated structure description
+                      status: active
+                      enableInterEntityAutoElimination: false
+                      accountingMethod: accrual
+                      audit:
+                        createdDateTime: '2022-07-20T10:05:10Z'
+                        modifiedDateTime: '2023-03-06T12:20:25Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/ownership-structure/16
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a ownership structure
+      description: Deletes a ownership structure.
+      tags:
+        - Ownership Structure
+      operationId: delete-objects-ownership-structure-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a ownership structure
+      description: Updates an existing ownership structure by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Ownership Structure
+      operationId: patch-objects-ownership-structure-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ownership-structure'
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                      readOnly: true
+                    enableInterEntityAutoElimination:
+                      type: boolean
+                      default: true
+                      readOnly: true
+            examples:
+              Update a ownership structure:
+                value:
+                  description: This is a structure description- updated
+                  status: active
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ownership-structure
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated ownership structure:
+                  value:
+                    'ia::result':
+                      key: '16'
+                      id: igc
+                      name: igc
+                      href: /objects/ownership-structure/16
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ownership-structure:
+    get:
+      summary: List ownership structures
+      description: 'Returns a collection with a key, ID, and link for each ownership structure.'
+      tags:
+        - Ownership Structure
+      operationId: get-objects-ownership-structure
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ownership-structure objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of ownership structures:
+                  value:
+                    'ia::result':
+                      - key: '41'
+                        id: Shashi_structure1
+                        href: /objects/ownership-structure/41
+                      - key: '25'
+                        id: test3
+                        href: /objects/ownership-structure/25
+                      - key: '28'
+                        id: test5
+                        href: /objects/ownership-structure/28
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a ownership structure
+      description: Creates a new ownership structure
+      tags:
+        - Ownership Structure
+      operationId: post-objects-ownership-structure
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ownership-structure'
+                - $ref: '#/components/schemas/ownership-structureRequiredProperties'
+            examples:
+              Create a ownership structure:
+                value:
+                  id: Shashi_structure2
+                  name: Shashi_structure2
+                  description: This is a structure description
+                  status: active
+                  enableInterEntityAutoElimination: true
+                  accountingMethod: accrual
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ownership-structure
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New ownership structure:
+                  value:
+                    'ia::result':
+                      key: '42'
+                      id: Shashi_structure2
+                      name: Shashi_structure2
+                      href: /objects/ownership-structure/42
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ownership-structure:
+      $ref: ../models/ownership-structure.s1.schema.yaml
+    ownership-structureRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

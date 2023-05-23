@@ -1,0 +1,32 @@
+title: Billback Template
+x-mappedTo: billbacktemplate
+type: object
+description: Billback template
+properties:
+  key:
+    type: string
+    description: BillBack Template Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: BillBack Template ID
+    readOnly: true
+    x-mappedTo: TEMPLATEID
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  enableInterEntityPostings:
+    type: boolean
+    description: Enable inter-entity postings
+    x-mappedTo: USEIETOFFSET
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  lines:
+    type: array
+    x-mappedTo: ITEMS
+    x-object: billback-template-line
+    items:
+      $ref: billback-template-line.s1.schema.yaml
+x-internal: true

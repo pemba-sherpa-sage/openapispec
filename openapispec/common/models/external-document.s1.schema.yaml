@@ -1,0 +1,86 @@
+title: external-document
+type: object
+properties:
+  referenceNumber:
+    type: string
+    description: External reference number
+    example: A23
+    x-mappedTo: EXTERNALREFNO 
+  verbalApprovalBy:
+    type: object
+    description: Verbal approval by
+    x-object: contact
+    x-mappedTo: externalverbal
+    properties:
+      key:
+        type: string
+        description: Contact key
+        example: '6'
+        x-mappedTo: EXTERNALVERBALBYKEY
+        readOnly: true
+      name:
+        type: string
+        description: Contact name
+        example: Johnson
+        x-mappedTo: EXTERNALVERBALBY
+      href:
+        type: string
+        description: URL of the contact
+        example: /objects/contact/6
+        readOnly: true
+  approvedBy:
+    type: object
+    description: Approved by
+    x-object: contact
+    x-mappedTo: externalapproved
+    properties:
+      key:
+        type: string
+        description: Contact key
+        example: 51
+        x-mappedTo: EXTERNALAPPROVEDBYKEY
+        readOnly: true        
+      name:
+        type: string
+        description: Contact name
+        example: Jagadish
+        x-mappedTo: EXTERNALAPPROVEDBY
+      href:
+        type: string
+        description: URL of the contact
+        example: /objects/contact/51
+        readOnly: true
+  approvedOnDate:
+    type: string
+    description: Approved on date
+    format: date
+    example: 2021-11-03
+    x-mappedTo: EXTERNALAPPROVEDON
+  signedBy:
+    type: object
+    description: Signed by
+    x-object: contact
+    x-mappedTo: externalsigned
+    properties:
+      key:
+        type: string
+        description: Contact key
+        example: '200'
+        x-mappedTo: EXTERNALSIGNEDBYKEY
+        readOnly: true        
+      name:
+        type: string
+        description: Contact name
+        example: Modulus Industries
+        x-mappedTo: EXTERNALSIGNEDBY
+      href:
+        type: string
+        description: URL of the contact
+        example: /objects/contact/200
+        readOnly: true
+  signedOnDate:
+    type: string
+    description: Signed on date
+    format: date
+    example: 2021-12-01
+    x-mappedTo: EXTERNALSIGNEDON

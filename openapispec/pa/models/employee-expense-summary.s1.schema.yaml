@@ -1,0 +1,48 @@
+title: employee-expense-summary
+x-mappedTo: eebatch
+type: object
+description: Payment Batches of all payment processed in the system.
+properties:
+  key:
+    type: string
+    description: Summary Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '13'
+  id:
+    type: string
+    description: Summary ID
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '13'
+  title:
+    type: string
+    description: Summary name
+    x-mappedTo: TITLE
+    example: 'Expenses - Expenses (USD) 2021/09/01 Batch'
+  postingDate:
+    type: string
+    description: GL posting date
+    format: date
+    example: '2021-01-23'
+    x-mappedTo: CREATED
+  total:
+    type: string
+    description: Total
+    x-mappedTo: TOTAL
+    example: '100'
+  state:
+    type: string
+    enum:
+      - 'open'
+      - 'closed'
+    x-mappedToValues:
+      - 'open'
+      - 'closed'
+    description: Open/close
+    x-mappedTo: OPEN
+    example: open
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: customer-item-cross-reference
+  description: customer-item-cross-reference API
+  version: '1.0'
+  contact:
+    name: Samay Jain
+    email: samay.jain@sage.com
+tags:
+  - name: Customer item cross references
+    description: Customer item cross reference description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/customer-item-cross-reference:
+    get:
+      summary: List Customer item cross references
+      description: Returns a collection with a key, ID, and link for each Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: get-objects-customer-item-cross-reference
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-item-cross-reference objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Customer item cross references: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Customer item cross reference
+      description: Creates a new Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: post-objects-customer-item-cross-reference
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-item-cross-reference'
+                - $ref: '#/components/schemas/customer-item-cross-referenceRequiredProperties'
+            examples:
+              Creates a/an Customer item cross reference: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New customer-item-cross-reference
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/customer-item-cross-reference/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Customer item cross reference.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an Customer item cross reference
+      description: Returns detailed information for a particular Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: get-objects-customer-item-cross-reference-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-item-cross-reference
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/customer-item-cross-reference'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Customer item cross reference
+      description: Updates an existing Customer item cross reference by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customer item cross references
+      operationId: patch-objects-customer-item-cross-reference-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-item-cross-reference'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an Customer item cross reference: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer-item-cross-reference
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Customer item cross reference
+      description: Deletes a/an Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: delete-objects-customer-item-cross-reference-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    customer-item-cross-reference:
+      $ref: ../models/customer-item-cross-reference.s1.schema.yaml
+    customer-item-cross-referenceRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

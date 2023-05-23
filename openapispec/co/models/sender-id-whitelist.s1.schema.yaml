@@ -1,0 +1,30 @@
+title: sender-id-whitelist
+x-mappedTo: senderidwhitelist
+type: object
+description:
+properties:
+  key:
+    type: string
+    description: System-assigned key for the sender-id-whitelist.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Sender ID information ID.
+    x-mappedTo: SENDERID
+    example:
+  href:
+    type: string
+    description: URL for the sender-id-whitelist.
+    readOnly: true
+    example: /objects/sender-id-whitelist/23
+  description:
+    type: string
+    description: Description.
+    x-mappedTo: DESCRIPTION
+    example:
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

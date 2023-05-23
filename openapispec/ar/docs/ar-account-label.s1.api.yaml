@@ -1,0 +1,423 @@
+openapi: 3.0.0
+info:
+  title: ar-account-label
+  description: ar-account-label API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR account labels
+    description: |
+      AR account labels give accounts more descriptive names that are displayed anywhere the accounts are referenced in the product and in reports. Account labels is an optional feature that must be turned on in Accounts Receivable. See [Enable functionality](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Receivable/Setup/configure-accounts-receivable.htm#Enable) for more information.
+paths:
+  /objects/ar-account-label:
+    get:
+      summary: List AR account labels
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each label. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View AR Account Labels
+      tags:
+        - AR account labels
+      operationId: get-objects-ar-account-label
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-account-label objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AR account labels:
+                  value:
+                    ia::result:
+                      - key: '9'
+                        id: Retail Sales
+                        href: /objects/ar-account-label/9
+                      - key: '41'
+                        id: Retail Sales 2
+                        href: /objects/ar-account-label/41
+                      - key: '10'
+                        id: Sales
+                        href: /objects/ar-account-label/10
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR account label
+      description: Creates a new AR account label.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add AR Account Labels
+      tags:
+        - AR account labels
+      operationId: post-objects-ar-account-label
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-account-label.s1.schema'
+                - $ref: '#/components/schemas/ar-account-labelRequiredProperties'
+            examples:
+              Create an AR account label:
+                value:
+                  id: Wholesale Sales
+                  description: Wholesale sales north america
+                  glAccount:
+                    id: '2050'
+                  status: active
+                  offsetGLAccount:
+                    id: '1200.01'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create an AR account label:
+                  value:
+                    ia::result:
+                      key: '110'
+                      id: Wholesale Sales
+                      href: /objects/ar-account-label/110
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-account-label/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AR Account Label.
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 110
+    get:
+      summary: Get an AR account label
+      description: Returns detailed information for a specified AR account label.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View AR Account Labels
+      tags:
+        - AR account labels
+      operationId: get-objects-ar-account-label-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-account-label.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AR account label:
+                  value:
+                    ia::result:
+                      key: '110'
+                      id: Wholesale Sales
+                      description: Wholesale Sales north america
+                      glAccount:
+                        id: 2050--Accured Compensation
+                        key: '197'
+                        href: /objects/account/197
+                      status: active
+                      offsetGLAccount:
+                        id: 1200.01--Accounts Receivable - a/c label offset
+                        key: '168'
+                        href: /objects/account/168
+                      href: /objects/ar-account-label/110
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR account label
+      description: Updates an existing AR account label by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit AR Account Labels
+      tags:
+        - AR account labels
+      operationId: patch-objects-ar-account-label-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-account-label.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-account-label
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a single value:
+                  value:
+                    ia::result:
+                      key: '110'
+                      id: Test_AR_Account_Label
+                      href: /objects/ar-account-label/110
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR account label
+      description: Deletes an AR account label.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete AR Account Labels
+      tags:
+        - AR account labels
+      operationId: delete-objects-ar-account-label-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-account-label:
+      $ref: '#/components/schemas/ar-account-label.s1.schema'
+    ar-account-labelRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    ar-account-label.s1.schema:
+      title: ar-account-label
+      x-mappedTo: araccountlabel
+      type: object
+      description: AR account labels provide more descriptive names for accounts.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AR account label.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '8'
+        id:
+          type: string
+          description: Name or other unique identifier for the account label. This unique identifier cannot be modified.
+          x-mappedTo: ACCOUNTLABEL
+          x-mutable: false
+          example: Software
+        description:
+          type: string
+          description: A note about the purpose and use of the account label.
+          x-mappedTo: DESCRIPTION
+          example: Software sales
+        href:
+          type: string
+          description: URL for the AR account label.
+          readOnly: true
+          example: /objects/ar-account-label/8
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+          description: Status of the account label.
+          default: active
+        glAccount:
+          type: object
+          description: General ledger account this AR account label is assigned to.
+          x-object: gl-account
+          x-mappedTo: GLACCOUNT
+          properties:
+            id:
+              type: string
+              description: General ledger account number.
+              x-mappedTo: GLACCOUNTNO
+              example: '1501'
+            key:
+              type: string
+              description: System-assigned key for the general ledger account.
+              x-mappedTo: GLACCOUNTRECORDNO
+              example: '356'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/356
+        offsetGLAccount:
+          type: object
+          description: The general ledger account where the system posts offsets to this label.
+          x-object: gl-account
+          x-mappedTo: OFFSETGLACCOUNT
+          properties:
+            id:
+              type: string
+              description: Account number for the offset general ledger account.
+              x-mappedTo: OFFSETGLACCOUNTNO
+              example: '9999'
+            key:
+              type: string
+              description: System-assigned key for the offset general ledger account.
+              x-mappedTo: OFFSETGLACCOUNTRECORDNO
+              example: '406'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/406
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

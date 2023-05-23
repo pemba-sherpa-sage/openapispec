@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: employee-type
+  description: employee-type API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Employee types
+    description: Employee type description -- explain what it's for and how it's used.
+paths:
+  /objects/employee-type/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the employee type.
+    get:
+      summary: Get an employee type
+      description: Returns detailed information for a particular employee type.
+      tags:
+        - Employee types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee-type.s1.schema'
+        '400':
+          description: Bad Request
+      operationId: get-objects-employee-type-key
+components:
+  schemas:
+    employee-type:
+      $ref: '#/components/schemas/employee-type.s1.schema'
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    employee-type.s1.schema:
+      title: employee-type
+      x-mappedTo: employeetype
+      type: object
+      description: List of the Employee types
+      properties:
+        key:
+          type: string
+          description: Employee Type Key
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Employee Type Name
+          x-mappedTo: NAME
+          x-mutable: false
+        name:
+          type: string
+          description: Employee Type Name
+          x-mappedTo: NAME
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'

@@ -1,0 +1,21 @@
+title: txn-definition
+type: object
+description: Transaction definition
+x-mappedTo: documentparams
+properties:
+  key:
+    type: string
+    description: key
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '154'
+  id:
+    type: string
+    description: id
+    x-mappedTo: DOCID
+    x-mutable: false
+    example: Sales Invoice
+  href:
+    type: string
+    readOnly: true
+    example: /objects/txn-definition/154

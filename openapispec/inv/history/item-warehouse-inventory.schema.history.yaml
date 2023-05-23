@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/item/view
+    POST:
+      - inv/lists/item/create
+    PATCH:
+      - inv/lists/item/edit
+    DELETE:
+      - inv/lists/item/delete
+s1:
+  hash: '0'
+  type: ownedObject
+  directAccessItemObject: true

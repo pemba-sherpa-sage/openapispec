@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/earningtype/view
+    POST:
+      - co/lists/earningtype/create
+    PATCH:
+      - co/lists/earningtype/edit
+    DELETE:
+      - co/lists/earningtype/delete
+s1:
+  hash: '0'
+  type: rootObject

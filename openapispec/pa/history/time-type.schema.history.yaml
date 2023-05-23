@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/timetype/view
+      - pa/lists/timetype/view
+    POST:
+      - ar/lists/timetype/create
+      - pa/lists/timetype/create
+    PATCH:
+      - ar/lists/timetype/edit
+      - pa/lists/timetype/edit
+    DELETE:
+      - ar/lists/timetype/delete
+      - pa/lists/timetype/delete
+s1:
+  hash: '0'
+  type: rootObject

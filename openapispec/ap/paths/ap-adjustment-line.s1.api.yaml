@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: ap-adjustment-line
+  description: ap-adjustment-line API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: AP adjustment lines
+    description: Line items in an AP adjustment represent transactions captured in that adjustment.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/ap-adjustment-line/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the AP adjustment line.
+    get:
+      summary: Get an AP adjustment line
+      description: Returns detailed information for a specified AP adjustment line.
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-adjustment-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-adjustment-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment-line-key
+    delete:
+      summary: Delete an AP adjustment line
+      description: Deletes an AP adjustment line.
+      tags:
+        - AP adjustment lines
+      operationId: delete-objects-ap-adjustment-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP adjustment line
+      operationId: patch-objects-ap-adjustment-line-key
+      description: Updates an existing AP adjustment line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-adjustment-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/ap-adjustment-line:
+    get:
+      summary: List AP adjustment lines
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-adjustment-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment-line
+      description: Returns a collection with a key, ID, and link for each AP adjustment line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+    post:
+      summary: Create an AP adjustment line
+      tags:
+        - AP adjustment lines
+      operationId: post-objects-ap-adjustment-line
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-adjustment-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      description: Creates a new AP adjustment line.
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment-line'
+                - $ref: '#/components/schemas/ap-adjustment-lineRequiredProperties'
+            examples: {}
+components:
+  schemas:
+    ap-adjustment-line:
+      $ref: ../models/ap-adjustment-line.s1.schema.yaml
+    ap-adjustment-lineRequiredProperties:
+      type: object
+      properties:
+        apAdjustment:
+          required:
+            - key
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

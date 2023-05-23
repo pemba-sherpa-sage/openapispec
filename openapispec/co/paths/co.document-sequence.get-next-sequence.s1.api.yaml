@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: co.document-sequence
+  description: co document-sequence API
+  version: '1.0'
+  contact:
+    name: Teodora Brasovianu
+    email: teodora.brasovianu@sage.com
+tags:
+  - name: co document-sequences
+    description: Function service incrementing and returning the next sequence value given a document sequence KEY/ID.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/co/document-sequence/get-next-sequence:
+    post:
+      summary: co document-sequence get-next-sequence
+      description: Function service incrementing and returning the next sequence value given a document sequence KEY/ID.
+      tags:
+        - co document-sequences
+      operationId: post-co-document-sequence-get-next-sequence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/co-document-sequence-get-next-sequence-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/co-document-sequence-get-next-sequence-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    co-document-sequence-get-next-sequence-request:
+      description: get-next-sequence request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        key:
+          type: string
+          description: Document sequence Key
+          x-mappedTo: KEY
+          example: '14'
+        id:
+          type: string
+          description: Document sequence ID
+          x-mappedTo: ID
+          example: 'AR Inv'
+    co-document-sequence-get-next-sequence-response:
+      description: get-next-sequence response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        nextSequence:
+          type: string
+          description: the value of the next sequence
+          x-mappedTo: NEXT
+          example: 'INV-16'
+        key:
+          type: string
+          description: the value of the sequence key given in the request
+          x-mappedTo: KEY
+          example: '14'
+        id:
+          type: string
+          description: the value of the sequence id given in the request
+          x-mappedTo: ID
+          example: 'AR Inv'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

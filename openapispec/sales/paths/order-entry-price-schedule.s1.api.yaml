@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: order-entry-price-schedule
+  description: order-entry-price-schedule API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Order entry price schedules
+    description: Order entry price schedule description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-price-schedule:
+    get:
+      summary: List order entry price schedules
+      description: Returns a collection with a key, ID, and link for each order entry price schedule.
+      tags:
+        - Order entry price schedules
+      operationId: get-objects-order-entry-price-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-price-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of order entry price schedules: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an order entry price schedule
+      description: Creates a new order entry price schedule.
+      tags:
+        - Order entry price schedules
+      operationId: post-objects-order-entry-price-schedule
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-price-schedule'
+                - $ref: '#/components/schemas/order-entry-price-scheduleRequiredProperties'
+            examples:
+              Create a/an order entry price schedule: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Created order entry price schedule: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-price-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry price schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an order entry price schedule
+      description: Returns detailed information for a particular order entry price schedule.
+      tags:
+        - Order entry price schedules
+      operationId: get-objects-order-entry-price-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-price-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of order entry price schedule: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an order entry price schedule
+      description: Updates an existing order entry price schedule by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry price schedules
+      operationId: patch-objects-order-entry-price-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-price-schedule'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a/an order entry price schedule: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated order entry price schedule: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an order entry price schedule
+      description: Deletes a/an order entry price schedule.
+      tags:
+        - Order entry price schedules
+      operationId: delete-objects-order-entry-price-schedule-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-price-schedule:
+      $ref: ../models/order-entry-price-schedule.s1.schema.yaml
+    order-entry-price-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

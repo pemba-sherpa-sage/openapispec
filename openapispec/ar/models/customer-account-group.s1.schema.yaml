@@ -1,0 +1,35 @@
+title: customer-account-group
+x-mappedTo: custglgroup
+type: object
+properties:
+  key:
+    type: string
+    description: Customer account group key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Customer account group name
+    x-mappedTo: NAME
+    x-mutable: false
+  groupType:
+    type: string
+    description: Customer account group type
+    enum:
+      - customer
+    x-mappedToValues:
+      - Customer
+    x-mappedTo: ENTITYTYPE
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  href:
+    type: string
+    readOnly: true
+    example: /objects/customer-account-group/1
+examples:
+  - key: string
+    id: string
+    groupType: customer
+    status: active
+    href: /objects/customer-account-group/1
+x-extension-2: null

@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: employee-group
+  description: employee-group API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Employee groups
+    description: An employee group is a specified set of employees, or a set of employees that meet certain criteria. You can use groups to filter or display information in multiple ways, for instance by showing data from only certain employees.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-group:
+    get:
+      summary: List employee groups
+      description: |
+        Returns up to 100 employee groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find employee groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - Employee groups
+      operationId: get-objects-employee-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee groups
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of employee groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-group/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the employee group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee group
+      description: Returns detailed information for a specified employee group.
+      tags:
+        - Employee groups
+      operationId: get-objects-employee-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-group:
+      $ref: ../models/employee-group.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

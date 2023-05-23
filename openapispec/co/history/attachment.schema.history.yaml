@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/supportingdocuments/view
+      - mp/lists/supportingdocuments/view
+    POST:
+      - co/lists/supportingdocuments/create
+      - mp/lists/supportingdocuments/create
+    PATCH:
+      - co/lists/supportingdocuments/edit
+      - mp/lists/supportingdocuments/edit
+    DELETE:
+      - co/lists/supportingdocuments/delete
+      - mp/lists/supportingdocuments/delete
+s1:
+  hash: '0'
+  type: rootObject

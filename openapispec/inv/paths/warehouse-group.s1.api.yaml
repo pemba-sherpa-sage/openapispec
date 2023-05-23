@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: warehouse-group
+  description: warehouse-group API
+  version: '1.0'
+  contact:
+    name: Artur Mirzakhanyan
+    email: artur.mirzakhanyan@sage.com
+tags:
+  - name: Warehouse groups
+    description: A warehouse group categorizes warehouse dimension records, mainly for the purpose of structuring financial reporting.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/warehouse-group:
+    get:
+      summary: List warehouse groups
+      description: Returns a collection with a key, ID, and link for each warehouse group. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned. 
+      tags:
+        - Warehouse groups
+      operationId: get-objects-warehouse-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of warehouse-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List warehouse groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/warehouse-group/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the warehouse group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a warehouse group
+      description: Returns detailed information for a specified warehouse group.
+      tags:
+        - Warehouse groups
+      operationId: get-objects-warehouse-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the warehouse-group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/warehouse-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a warehouse group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a warehouse group
+      description: Updates an existing warehouse group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Warehouse groups
+      operationId: patch-objects-warehouse-group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/warehouse-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a warehouse group: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated warehouse-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a warehouse group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a warehouse group
+      description: Deletes a warehouse group.
+      tags:
+        - Warehouse groups
+      operationId: delete-objects-warehouse-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    warehouse-group:
+      $ref: ../models/warehouse-group.s1.schema.yaml
+    warehouse-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

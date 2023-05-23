@@ -1,0 +1,42 @@
+title: vendor-contact
+x-mappedTo: vendorentitycontacts
+x-ownedBy: vendor
+type: object
+description: Contact information for a vendor.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor contact information.
+    x-mappedTo: RECORD#
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the vendor contact information.
+    x-mappedTo: RECORD#
+    readOnly: true
+    example: '1'
+  name:
+    type: string
+    description: Category name for the vendor contact information.
+    x-mappedTo: CATEGORYNAME
+    example: 'Main Office'
+  contact:
+    type: object
+    description: Contact to associate with the vendor.
+    x-object: contact
+    x-mappedTo: vcontact
+    properties:
+      id:
+        type: string
+        description: Contact Name
+        x-mappedTo: CONTACT.NAME
+        example: 'Jeffrey Palms'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  vendor:
+    title: vendorreference
+    type: object
+    description: Vendor for this contact.
+    x-mappedTo: vendor
+    x-object: vendor

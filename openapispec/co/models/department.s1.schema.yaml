@@ -1,0 +1,104 @@
+title: department
+x-mappedTo: department
+type: object
+description: Information about each department.
+properties:
+  key:
+    type: string
+    description: Department key
+    x-mappedTo: RECORDNO
+    example: '28'
+    readOnly: true
+  id:
+    type: string
+    description: Department id
+    x-mappedTo: DEPARTMENTID
+    x-mutable: false
+    nullable: false
+    example: 'PS'
+  name:
+    type: string
+    description: Department name
+    x-mappedTo: TITLE
+    nullable: false
+    example: 'Professional Services'
+  reportTitle:
+    type: string
+    description: Department title displayed in reports
+    x-mappedTo: CUSTTITLE
+    example: 'Professional Services Report Title'
+    nullable: true
+    default: null
+  parent:
+    type: object
+    x-object: department
+    x-mappedTo: PARENT
+    title: parent
+    description: Reference to the parent department for this department
+    properties:
+      key:
+        type: string
+        description: Parent department key
+        x-mappedTo: PARENTKEY
+        example: '7'
+        readOnly: false
+        nullable: true
+        default: null
+      id:
+        type: string
+        x-mappedTo: PARENTID
+        example: 'CS--Client Services'
+        description: Parent department id
+        readOnly: true
+      name:
+        type: string
+        description: Parent department Name
+        x-mappedTo: PARENTNAME
+        example: 'Client Services'
+        readOnly: true
+      href:
+        type: string
+        example: '/objects/department/7'
+        description: Parent department URL
+        readOnly: true
+  supervisor:
+    type: object
+    x-object: employee
+    x-mapptedTo: manager
+    title: supervisor
+    description: Employee that is supervisor for this department
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPERVISORKEY
+        example: '5'
+        description: Supervisor key
+        readOnly: false
+        nullable: true
+        default: null
+      id:
+        type: string
+        x-mappedTo: SUPERVISORID
+        example: 'MGR1--PS Dept - Manager'
+        description: Supervisor id
+        readOnly: true
+      name:
+        type: string
+        description: Supervisor Name
+        x-mappedTo: SUPERVISORNAME
+        example: 'PS Dept - Manager'
+        readOnly: true
+      href:
+        type: string
+        example: '/objects/employee/5'
+        description: Supervisor URL
+        readOnly: true
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  href:
+    type: string
+    example: '/objects/department/28'
+    description: Department URL
+    readOnly: true

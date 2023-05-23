@@ -1,0 +1,349 @@
+openapi: 3.0.0
+info:
+  title: timesheet-line
+  description: timesheet-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Timesheet lines
+    description: 'A timesheet line is an entry on a timesheet that represents work done by one employee on a single day. Each timesheet line should reflect the dimensions used by the company. That is, work done for one customer or project should be recorded in a separate timesheet line from work done for another customer or project, etc. Reports and invoices use the dimension values to group timesheet lines for billing.'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/timesheet-line:
+    get:
+      summary: List timesheet lines
+      description: 'Returns up to 100 object references from the collection with a key, ID, and link for each timesheet line. This operation is mostly for use in testing; use query to find timesheet lines that meet certain criteria and to specify properties that are returned.'
+      tags:
+        - Timesheet lines
+      operationId: get-objects-timesheet-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of timesheet lines
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of timesheet lines:
+                  value:
+                    'ia::result':
+                      - key: '4101'
+                        id: '4101'
+                        href: /objects/timesheet-line/4101
+                      - key: '4102'
+                        id: '4102'
+                        href: /objects/timesheet-line/4102
+                      - key: '4103'
+                        id: '4103'
+                        href: /objects/timesheet-line/4103
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a timesheet line
+      description: Creates a new timesheet line.
+      tags:
+        - Timesheet lines
+      operationId: post-objects-timesheet-line
+      requestBody:
+        description: timesheet-line
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/timesheet-line'
+                - $ref: '#/components/schemas/timesheet-lineRequiredProperties'
+            examples:
+              Creates a timesheet line:
+                value:
+                  timesheet:
+                    key: '11'
+                  dimensions:
+                    department:
+                      key: '11'
+                    location:
+                      key: '22'
+                    project:
+                      key: '1'
+                    costType:
+                      key: '2'
+                    task:
+                      key: '1'
+                    customer:
+                      key: '13'
+                    item:
+                      key: '13'
+                  entryDate: '2023-04-01'
+                  quantity: 6
+                  description: Week of 04/01/23
+                  notes: Talked to client regarding project
+
+                  timeType:
+                    key: '1'
+                  isBillable: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New timesheet-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New timesheet line created:
+                  value:
+                    'ia::result':
+                      key: '4108'
+                      id: '4108'
+                      href: /objects/timesheet-line/4108
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/timesheet-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned unique key for the timesheet line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a timesheet line
+      description: Returns detailed information for a specified timesheet line.
+      tags:
+        - Timesheet lines
+      operationId: get-objects-timesheet-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the timesheet-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/timesheet-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the timesheet line:
+                  value:
+                    'ia::result':
+                      key: '1411'
+                      id: '1411'
+                      href: /objects/timesheet-line/1411
+                      timesheet:
+                        key: '11'
+                        id: '11'
+                        href: /objects/timesheet/11
+                      dimensions:
+                        employee:
+                          key: '10'
+                          id: EMP-10
+                          name: 'Thomas, Glenn'
+                          href: /objects/employee/10
+                        department:
+                          key: '11'
+                          id: DEP-11
+                          name: Sales and Marketing
+                          href: /objects/department/11
+                        location:
+                          key: '22'
+                          id: LOC-22
+                          name: California
+                          href: /objects/location/22
+                        project:
+                          key: '1'
+                          id: Proj-001
+                          name: Implementation
+                          href: /objects/project/1
+                        costType:
+                          key: '2'
+                          id: '2'
+                          name: Project Expense
+                          href: /objects/cost-type/2
+                        task:
+                          id: '1'
+                          key: '1'
+                          name: Project Task
+                          href: /objects/task/1
+                        customer:
+                          key: '13'
+                          id: CUST-13
+                          name: Jack In the Box
+                          href: /objects/customer/13
+                        item:
+                          key: '13'
+                          id: Case 13
+                          name: Platform pack
+                          href: /objects/item/13
+                      entryDate: '2023-04-01'
+                      quantity: 6
+                      lineNumber: 1
+                      description: Week of 04/01/23
+                      notes: Talked to client regarding project
+                      state: approved
+                      timeType:
+                        key: '1'
+                        id: Salaries At Root
+                        name: Salaries At Root
+                        href: /objects/time-type/1
+                      isBillable: true
+                      isBilled: 'false'
+                      statisticalJournal:
+                        key: '7483'
+                        id: 'TSSJ'
+                        href: /objects/statistical-gl-account/10
+                      billableUtilizedAccount:
+                        key: '8293'
+                        id: '9293'
+                        href: /objects/statistical-gl-account/8293
+                      nonBbillableUtilizedAccount:
+                        key: '8294'
+                        id: '9294'
+                        href: /objects/statistical-gl-account/8294
+                      billableNonUtilizedAccount:
+                        key: '8295'
+                        id: '9295'
+                        href: /objects/statistical-gl-account/8295
+                      nonBillableNonUtilizedAccount:
+                        key: '8296'
+                        id: '9296'
+                        href: /objects/statistical-gl-account/8296
+                      hours:
+                        billable: 8
+                        nonBillable: 2
+                        approved: 10
+                        approvedBillable: 8
+                        approvedNonBillable: 2
+                        utilized: 10
+                        nonUtilized: 4
+                        approvedUtilized: 3
+                        approvedNonUtilized: 2
+                      externalPayroll:
+                        costRate: 1
+                        billingRate: 1
+                        amount: '90'
+                        employerTaxes: 15
+                        fringes: 10
+                        cashFringes: 2
+                      laborClass:
+                        key: '15'
+                        id: 'LC001'
+                        name: Labor Class
+                        href: /objects/labor-class/15
+                      laborShift:
+                        key: '18'
+                        id: 'LS001'
+                        name: Labor Shift
+                        href: /objects/labor-class/18
+                      laborUnion:
+                        key: '20'
+                        id: 'LU001'
+                        name: Labor Union
+                        href: /objects/labor-class/20
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a timesheet line
+      description: Updates an existing timesheet line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Timesheet lines
+      operationId: patch-objects-timesheet-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/timesheet-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a timesheet line:
+                value:
+                  key: '40'
+                  description: Week of 04/01/23
+                  notes: Talked to client regarding project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated timesheet-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Timesheet-line updated:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/timesheet-line/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a timesheet line
+      description: Deletes a timesheet line.
+      tags:
+        - Timesheet lines
+      operationId: delete-objects-timesheet-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    timesheet-line:
+      $ref: ../models/timesheet-line.s1.schema.yaml
+    timesheet-lineRequiredProperties:
+      type: object
+      required:
+        - entryDate
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

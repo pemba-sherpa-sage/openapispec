@@ -1,0 +1,971 @@
+openapi: 3.0.0
+info:
+  title: ar-adjustment
+  description: ar-adjustment API
+  version: '1.0'
+  contact:
+    name: Praveen
+    email: praveen.anjinappa@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR adjustments
+    description: An AR adjustment is a transaction that applies a credit or debit in order to modify the amount owed by a customer.
+paths:
+  /objects/ar-adjustment:
+    get:
+      summary: List AR adjustments
+      description: Returns a collection with a key, ID, and link for each AR adjustment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR adjustments
+      operationId: get-objects-ar-adjustment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-adjustment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Get ar adjustments:
+                  value:
+                    ia::result:
+                      key: '270'
+                      id: '270'
+                      href: /objects/ar-adjustment/270
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR adjustment
+      description: Creates a new AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: post-objects-ar-adjustment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-adjustment.s1.schema'
+                - $ref: '#/components/schemas/ar-adjustmentRequiredProperties'
+            examples:
+              Create an adjustment:
+                value:
+                  customer:
+                    id: Cust01
+                  createdDate: '2023-03-23'
+                  adjustmentNumber: adjno-100
+                  description: desc testing update
+                  documentNumber: INV100
+                  lines:
+                    txnAmount: '95'
+                    glAccount:
+                      id: '7510'
+                    location:
+                      id: '2'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-adjustment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create an adjustment:
+                  value:
+                    ia::result:
+                      id: '270'
+                      key: '270'
+                      href: /objects/ar-adjustment/270
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-adjustment/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AR adjustment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR adjustment
+      description: Returns detailed information for a specified AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: get-objects-ar-adjustment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-adjustment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-adjustment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an adjustment:
+                  value:
+                    ia::result:
+                      id: '270'
+                      key: '270'
+                      txnType: ra
+                      adjustmentNumber: adjno-100
+                      state: posted
+                      rawState: A
+                      customer:
+                        id: Cust01
+                        key: '258'
+                        name: Cust_Test01
+                        totalDue: '2329.82'
+                        href: /objects/customer/Cust01
+                        documentNumber: INV100
+                      description: desc testing update
+                      createdDate: '2023-03-23'
+                      audit:
+                        createdDateTime: '2023-03-23T00:00:00Z'
+                        modifiedDateTime: '2023-03-24T10:45:23Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      postingDate: '2023-03-23'
+                      paymentInformation:
+                        paidDate: null
+                        totalSelected: '0'
+                        totalPaid: '0'
+                        totalDue: '95'
+                        txnTotalEntered: '95'
+                        txnTotalSelected: '0'
+                        txnTotalPaid: '0'
+                        txnTotalDue: '95'
+                      currency:
+                        baseCurrency: USD
+                        txnCurrency: USD
+                        exchangeRateDate: null
+                        exchangeRateTypeId: null
+                        exchangeRate: null
+                      totalEntered: '95'
+                      contacts:
+                        billTo:
+                          id: Cust_Test01(CCust01)
+                          key: '488'
+                          billToContactName: Cust_Test01(CCust01)
+                          href: /objects/contact/488
+                        shipTo:
+                          id: Cust_Test01(CCust01)
+                          key: '488'
+                          shipToContactName: Cust_Test01(CCust01)
+                          href: /objects/contact/488
+                      moduleKey: 4.AR
+                      lines:
+                        id: '625'
+                        key: '625'
+                        arAdjustment:
+                          id: '270'
+                          key: '270'
+                          href: /objects/ar-adjustment/270
+                        glAccount:
+                          key: '348'
+                          id: '7510'
+                          name: Other Expense
+                          href: /objects/gl-account/348
+                        accountLabel:
+                          key: '36'
+                          id: praveena_test
+                          href: /objects/ar-account-label/36
+                        baseAmount: '95'
+                        txnAmount: '95'
+                        department:
+                          key: 9,
+                          id: '11'
+                          name: Accounting
+                          href: /objects/department/9
+                        location:
+                          key: 1
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        description: null
+                        currency:
+                          exchangeRateDate: null
+                          exchangeRateTypeId: null
+                          exchangeRate: 1
+                          txnCurrency: USD
+                          baseCurrency": USD
+                        lineNumber: '1'
+                        state: approved
+                        adjustmentType: ra
+                        isTax: false
+                        audit:
+                          createdDateTime: '2023-03-23T13:10:29Z'
+                          modifiedDateTime: '2023-03-24T10:45:23Z'
+                          createdBy: '1'
+                          modifiedBy: '1'
+                        href: /objects/ar-adjustment-line/625
+                      href: /objects/ar-adjustment/270
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR adjustment
+      description: Updates an existing AR adjustment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR adjustments
+      operationId: patch-objects-ar-adjustment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-adjustment.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an adjustment:
+                value:
+                  customer:
+                    id: Cust01
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                    exchangeRateDate: null
+                    exchangeRateTypeId: null
+                    exchangeRate: null
+                  createdDate: '2023-03-23'
+                  adjustmentNumber: adjno-100
+                  description: desc testing update
+                  lines:
+                    key: '625'
+                    txnAmount: '95'
+                    glAccount:
+                      id: '7510'
+                    department:
+                      id: '11'
+                    location:
+                      id: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-adjustment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update an adjustment:
+                  value:
+                    ia::result:
+                      id: '270'
+                      key: '270'
+                      href: /objects/ar-adjustment/270
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR adjustment
+      description: Deletes an AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: delete-objects-ar-adjustment-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-adjustment:
+      $ref: '#/components/schemas/ar-adjustment.s1.schema'
+    ar-adjustmentRequiredProperties:
+      type: object
+      required:
+        - customer
+        - createdDate
+        - currency
+        - lines
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    line-item-state.s1.schema:
+      title: line-item-state
+      type: string
+      enum:
+        - submitted
+        - approved
+        - draft
+        - partiallyApproved
+        - declined
+        - draft
+        - partiallyDeclined
+        - saved
+      x-mappedToValues:
+        - S
+        - A
+        - D
+        - X
+        - R
+        - I
+        - E
+        - V
+      description: State for all line items
+      x-mappedTo: STATE
+      example: draft
+    gl-accountref.s1.schema:
+      title: accountref
+      type: object
+      x-object: gl-account
+      properties:
+        key:
+          type: string
+          description: GL Account Key
+          x-mappedTo: ACCOUNTKEY
+          example: '144'
+        id:
+          type: string
+          description: GL Account ID
+          x-mappedTo: ACCOUNTNO
+          example: '1112'
+        name:
+          type: string
+          description: GL Account Title
+          x-mappedTo: ACCOUNTTITLE
+          example: Employee Advances
+        href:
+          type: string
+          readOnly: true
+          example: /objects/gl-account/144
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ar-adjustment-line.s1.schema:
+      title: ar-adjustment-line
+      x-mappedTo: aradjustmentitem
+      x-ownedBy: ar-adjustment
+      type: object
+      description: Line items in an AR adjustment represent debits or credits to modify the amount owed by a customer.
+      properties:
+        id:
+          type: string
+          description: ID for the AR adjustment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '125'
+        key:
+          type: string
+          description: System-assigned key for the AR adjustment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '125'
+        baseAmount:
+          type: string
+          description: Base amount
+          x-mappedTo: AMOUNT
+          readOnly: true
+          example: '120.20'
+        txnAmount:
+          type: string
+          description: Transaction amount
+          x-mappedTo: TRX_AMOUNT
+          example: '145'
+        description:
+          type: string
+          description: Memo to describe the line item.
+          x-mappedTo: ENTRYDESCRIPTION
+          example: 50 USD line item 1
+        lineNumber:
+          type: string
+          description: Number of the line item.
+          x-mappedTo: LINE_NO
+          readOnly: true
+          example: '125'
+        currency:
+          type: object
+          description: Currency information for the line item.
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: Base currency
+              x-mappedTo: BASECURR
+              readOnly: true
+              example: USD
+            txnCurrency:
+              type: string
+              description: Transaction currency
+              x-mappedTo: CURRENCY
+              example: INR
+            exchangeRateDate:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Date used to calculate the exchange rate.
+              x-mappedTo: EXCH_RATE_DATE
+            exchangeRate:
+              type: number
+              description: Exchange rate used.
+              x-mappedTo: EXCHANGE_RATE
+              readOnly: true
+              example: '1.4'
+            exchangeRateTypeId:
+              type: integer
+              description: Exchange rate type.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              example: GBP-Rate
+        adjustmentType:
+          type: string
+          description: Record type
+          x-mappedTo: RECORDTYPE
+          example: ra
+        isTax:
+          type: boolean
+          description: Is tax
+          x-mappedTo: ISTAX
+          x-mappedToType: string
+          default: 'false'
+          readOnly: true
+          example: false
+        accountLabel:
+          type: object
+          description: Label for the AR account.
+          x-mappedTo: ACCOUNTLABEL
+          x-object: ar-account-label
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the account label.
+              x-mappedTo: ACCOUNTLABELKEY
+              example: '1'
+            id:
+              type: string
+              description: ID for the account label.
+              x-mappedTo: ACCOUNTLABEL
+              example: '1'
+            href:
+              type: string
+              description: URL for the account label.
+              readOnly: true
+              example: /objects/ar-account-label/9
+        arAdjustment:
+          type: object
+          description: Header level details for the AR adjustment's line entries.
+          x-mappedTo: aradjustment
+          x-object: ar-adjustment
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AR adjustment.
+              x-mappedTo: RECORDKEY
+              example: '10'
+            id:
+              type: string
+              description: ID of the AR adjustment.
+              x-mappedTo: RECORDKEY
+              example: '10'
+            href:
+              type: string
+              description: URL for the AR adjustment.
+              readOnly: true
+              example: /objects/ar-adjustment/1
+        department:
+          type: object
+          description: Department to assign the expense to.
+          x-mappedTo: department
+          x-object: department
+          properties:
+            key:
+              type: integer
+              description: System-assigned key for the department.
+              x-mappedTo: DEPT#
+              example: '1'
+            id:
+              type: string
+              description: ID of the department.
+              x-mappedTo: DEPARTMENTID
+              example: '1'
+            name:
+              type: string
+              description: Name of the department.
+              x-mappedTo: DEPARTMENTNAME
+              example: Accounting
+            href:
+              type: string
+              description: URL of the department.
+              readOnly: true
+              example: /objects/department/1
+        location:
+          type: object
+          description: Location to assign the expense to.
+          x-mappedTo: location
+          x-object: location
+          properties:
+            key:
+              type: integer
+              description: System-assigned key for the location.
+              x-mappedTo: LOCATION#
+              example: '1'
+            id:
+              type: string
+              description: ID of the location.
+              x-mappedTo: LOCATIONID
+              example: '1'
+            name:
+              type: string
+              description: Name of the location.
+              x-mappedTo: LOCATIONNAME
+              example: India
+            href:
+              type: string
+              description: URL of the location.
+              readOnly: true
+              example: /objects/location/1
+        state:
+          $ref: '#/components/schemas/line-item-state.s1.schema'
+        glAccount:
+          $ref: '#/components/schemas/gl-accountref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    ar-adjustment.s1.schema:
+      title: ar-adjustment
+      x-mappedTo: ARADJUSTMENT
+      type: object
+      description: An AR adjustment is a transaction that applies a credit or debit in order to modify the amount owed by a customer.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AR adjustment.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: ID for the AR adjustment.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        txnType:
+          type: string
+          description: Record type to identify the type of transaction. AR Adjustment record type refers to `ra`.
+          x-mappedTo: RECORDTYPE
+          example: ra
+        adjustmentNumber:
+          type: string
+          description: Number that can be used to track the AR adjustment.
+          x-mappedTo: RECORDID
+          example: ADJ001
+        href:
+          type: string
+          description: URL for the AR adjustment.
+          readOnly: true
+          example: /objects/ar-adjustment/1
+        contacts:
+          type: object
+          description: Associated contacts for this AR adjustment.
+          title: contacts
+          properties:
+            billTo:
+              type: object
+              description: Customer to contact to invoice for this sale.
+              title: billTo
+              x-object: contact
+              x-mappedTo: BILLTOCONTACT
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: BILLTOPAYTOKEY
+                  example: '916'
+                id:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: BILLTOPAYTOKEY
+                  example: '916'
+                name:
+                  type: string
+                  description: Name of the bill to contact.
+                  x-mappedTo: BILLTOPAYTOCONTACTNAME
+                  example: Power Aerospace Materials(C1)
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+                  example: /objects/contact/1
+            shipTo:
+              type: object
+              description: Customer contact for shipping.
+              title: shipTo
+              x-object: contact
+              x-mappedTo: SHIPTTOCONTACT
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: SHIPTORETURNTOKEY
+                  example: '916'
+                id:
+                  type: string
+                  description: System-assigned key for the contact.
+                  x-mappedTo: SHIPTORETURNTOKEY
+                  example: '916'
+                name:
+                  type: string
+                  description: Name of the ship to contact.
+                  x-mappedTo: SHIPTORETURNTOCONTACTNAME
+                  example: Power Aerospace Materials(C1)
+                href:
+                  type: string
+                  description: URL for the contact.
+                  readOnly: true
+                  example: /objects/contact/1
+        state:
+          type: string
+          description: Processing state of the AR adjustment.
+          x-mappedTo: STATE
+          readOnly: true
+          enum:
+            - reversed
+            - reversal
+            - draft
+            - noValue
+            - posted
+            - paid
+            - partiallyPaid
+            - selected
+          x-mappedToValues:
+            - Reversed
+            - Reversal
+            - Draft
+            - No Value
+            - Posted
+            - Paid
+            - Partially Paid
+            - Selected
+          example: paid
+        rawState:
+          type: string
+          description: Raw state
+          x-mappedTo: RAWSTATE
+          readOnly: true
+          example: A
+        description:
+          type: string
+          description: Description of the AR adjustment.
+          x-mappedTo: DESCRIPTION
+          example: Computer Hardware & Software Expenses 03/01/20 - 08/31/21 Subscription charges.
+        documentNumber:
+          type: string
+          description: Invoice number selected as reference for the AR Adjustment
+          x-mappedTo: DOCNUMBER
+          example: Apply to INV-1602
+        paymentInformation:
+          type: object
+          description: Payment information for the AR adjustment.
+          title: paymentInformation
+          properties:
+            paidDate:
+              type: string
+              format: date
+              description: Payment date
+              x-mappedTo: WHENPAID
+              example: 01-11-2022
+            totalPaid:
+              type: string
+              description: Total paid
+              x-mappedTo: TOTALPAID
+              readOnly: true
+              example: '1117.8'
+            totalSelected:
+              type: string
+              description: Total selected
+              x-mappedTo: TOTALSELECTED
+              readOnly: true
+              example: '100.10'
+            totalDue:
+              type: string
+              description: Total due
+              x-mappedTo: TOTALDUE
+              example: '251464.01'
+            txnTotalEntered:
+              type: string
+              description: Total amount
+              x-mappedTo: TRX_TOTALENTERED
+              readOnly: true
+              example: '1000.20'
+            txnTotalSelected:
+              type: string
+              description: Total transaction amount selected
+              x-mappedTo: TRX_TOTALSELECTED
+              readOnly: true
+              example: '1000.05'
+            txnTotalPaid:
+              type: string
+              description: Total transaction amount paid
+              x-mappedTo: TRX_TOTALPAID
+              readOnly: true
+              example: '2000.50'
+            txnTotalDue:
+              type: string
+              description: Total transaction amount due
+              x-mappedTo: TRX_TOTALDUE
+              readOnly: true
+              example: '100.50'
+        currency:
+          type: object
+          description: Currency information for the AR adjustment.
+          title: currency
+          properties:
+            baseCurrency:
+              type: string
+              description: Base currency
+              x-mappedTo: BASECURR
+              example: USD
+            txnCurrency:
+              type: string
+              description: Transaction currency
+              x-mappedTo: CURRENCY
+              example: INR
+            exchangeRateDate:
+              type: string
+              format: date
+              description: Date used to calculate the exchange rate.
+              x-mappedTo: EXCH_RATE_DATE
+              example: 01-03-2023
+            exchangeRate:
+              type: string
+              description: The exchange rate to use.
+              x-mappedTo: EXCHANGE_RATE
+              example: '86.2'
+            exchangeRateTypeId:
+              type: string
+              description: Exchange rate type.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              example: INR-Rate
+        totalEntered:
+          type: string
+          description: Total entered
+          x-mappedTo: TOTALENTERED
+          readOnly: true
+          example: '100.20'
+        moduleKey:
+          type: string
+          description: Module key, source module from which transaction got created.
+          x-mappedTo: MODULEKEY
+          readOnly: true
+          example: 3.AR
+        customer:
+          type: object
+          description: The customer who is the target of the adjustment.
+          x-mappedTo: CUSTOMER
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the customer.
+              x-mappedTo: CUSTOMERRECORDNO
+              example: '16'
+            id:
+              type: string
+              description: ID of the customer.
+              x-mappedTo: CUSTOMERID
+              example: Customer_01
+            name:
+              type: string
+              description: name of the customer.
+              x-mappedTo: CUSTOMERNAME
+              example: Logic Solutions
+            totalDue:
+              type: string
+              description: Transaction customer total due.
+              readOnly: true
+              x-mappedTo: TRX_ENTITYDUE
+              example: '1125.10'
+            href:
+              type: string
+              description: URL for the customer.
+              readOnly: true
+              example: /objects/customer/1
+        createdDate:
+          type: string
+          format: date
+          example: '2021-01-23'
+          description: Date the AR adjustment was created.
+          x-mappedTo: WHENCREATED
+        postingDate:
+          type: string
+          format: date
+          description: GL posting date.
+          x-mappedTo: WHENPOSTED
+          example: 24-03-2023
+        lines:
+          type: array
+          description: Line items of the AR adjustment.
+          x-mappedTo: ITEMS
+          x-object: ar-adjustment-line
+          items:
+            $ref: '#/components/schemas/ar-adjustment-line.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+      x-mappings:
+        audit:
+          createdDateTime:
+            type: string
+            x-mappedTo: AUWHENCREATED
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

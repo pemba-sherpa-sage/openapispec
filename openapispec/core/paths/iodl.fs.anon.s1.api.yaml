@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.anon
+  description: IODL Anonymous service
+  version: '1.0-internal'
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.anon
+    description: Anonymous IODL compilation
+paths:
+  /services/iodl/file/store:
+    post:
+      summary: Anonymous IODL
+      description: Anonymous IODL compilation with option to cache
+      tags:
+        - iodl.file.anon
+      operationId: post-iodl-file-anon
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.anon-request'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.anon-response'
+              examples:
+                example-1:
+                  value:
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.anon-request:
+      description: Anonymous IODL request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        prepend:
+          x-mappedTo: prepend
+          type: string
+        append:
+          x-mappedTo: append
+          type: string
+        options:
+          type: object
+          properties:
+            cache:
+              x-mappedTo: options.cache
+              type: boolean
+              default: false
+        content:
+          $ref: ../models/iodl.file.component.content.s1.schema.yaml
+    iodl.file.anon-response:
+      description: Anonymous IODL response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          x-mappedTo: status
+          type: boolean
+        result:
+          x-mappedTo: result
+          type: array
+          items:
+            type: string
+        tokens:
+          x-mappedTo: tokens
+          type: array
+          items:
+            type: string
+        content:
+          $ref: ../models/iodl.file.component.content.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

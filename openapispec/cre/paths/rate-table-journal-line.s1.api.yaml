@@ -1,0 +1,212 @@
+openapi: 3.0.0
+info:
+  title: rate-table-journal-line
+  description: rate-table-journal-line API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Rate table journal lines
+    description: Rate table journal lines contain criteria for applying a default markup % to matching general ledger transactions during invoicing.
+      Each line requires only 1 value be provided.  If the markup % is not provided it defaults to 0%.  The description and start date are optional.
+      Lines with the exact same values (excluding description and markup %) are considered duplicates and are not allowed.
+      If no value is given for a property then the line will match on any transaction, otherwise it will only match on transactions with that property.
+      Lines with the most matches will be used as the invoice default markup %.  If multiple lines have the same number of matches then the one with
+      the most recent start date will be used.  If multiple lines have the same number of matches and the same start date (or none at all) then the
+      line with the lowest line number will be used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/rate-table-journal-line:
+    get:
+      summary: List rate table journal lines
+      description: Returns a collection with a key, ID, and link for each rate table journal line.
+      tags:
+        - Rate table journal lines
+      operationId: get-objects-rate-table-journal-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of rate-table-journal-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of rate table journal lines:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: '84'
+                        href: /objects/rate-table-journal-line/84
+                      - key: '85'
+                        id: '85'
+                        href: /objects/rate-table-journal-line/85
+                      - key: '60'
+                        id: '60'
+                        href: /objects/rate-table-journal-line/60
+                      - key: '78'
+                        id: '78'
+                        href: /objects/rate-table-journal-line/78
+                      - key: '79'
+                        id: '79'
+                        href: /objects/rate-table-journal-line/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../references/error-response-nokeyref.s1.schema.yaml
+              examples:
+                List error:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [rate-table-journal-line] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  '/objects/rate-table-journal-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the rate table journal line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a rate table journal line
+      description: Returns detailed information for a particular rate table journal line.
+      tags:
+        - Rate table journal lines
+      operationId: get-objects-rate-table-journal-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the rate-table-journal-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/rate-table-journal-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of rate table journal line:
+                  value:
+                    'ia::result':
+                      - key: '64'
+                        id: '64'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-journal-line/64
+                        lineNumber: 1
+                        description: Aug John Smith
+                        startDate: '2021-08-01'
+                        markupPercent: 12.5
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: 'Thomas, Glenn'
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: 1605212096809
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../references/error-response-keyref.s1.schema.yaml
+              examples:
+                Get error:
+                  value:
+                    key: '145'
+                    href: /objects/rate-table-journal-line/145
+                    'ia::result':
+                      'ia::error':
+                        code: notFound
+                        message: 'The requested resource [rate-table-journal-line] with key(s) [145] could not be found but may be available in the future'
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    rate-table-journal-line:
+      $ref: ../models/rate-table-journal-line.s1.schema.yaml

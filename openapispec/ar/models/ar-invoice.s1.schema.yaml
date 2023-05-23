@@ -1,0 +1,429 @@
+title: ar-invoice
+x-mappedTo: arinvoice
+type: object
+description: An AR invoice object represents an invoice sent to a customer for goods or services provided.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AR invoice.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the AR invoice.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  recordType:
+    type: string
+    description: The record type for the invoice.
+    x-mappedTo: RECORDTYPE
+    readOnly: true
+  moduleKey:
+    type: string
+    description: Module Key
+    x-mappedTo: MODULEKEY
+    readOnly: true
+  invoiceNumber:
+    type: string
+    description: |
+      Customer-assigned identifier for the invoice.
+      This is the customer-assigned number provided on the invoice. This number is unique and can be used to look up invoice details.
+      You must specify a invoice number while creating a invoice unless document sequencing is configured, in which case the number is auto-generated.
+    x-mappedTo: RECORDID
+    example: INV-001
+  state:
+    type: string
+    description: |
+      A invoices's state shows the current status of the invoice within the workflow.
+    enum:
+      - reversed
+      - reversal
+      - draft
+      - noValue
+      - posted
+      - paid
+      - partiallyPaid
+      - selected
+    x-mappedToValues:
+      - Reversed
+      - Reversal
+      - Draft
+      - No Value
+      - Posted
+      - Paid
+      - Partially Paid
+      - Selected
+    x-mappedTo: STATE
+    example: posted
+    readOnly: true
+  dueInDays:
+    type: string
+    description: Number of days until invoice is due.
+    x-mappedTo: DUE_IN_DAYS
+    readOnly : true
+  referenceNumber:
+    type: string
+    description: Customer purchase order number or another reference number.
+    x-mappedTo: DOCNUMBER
+  description:
+    type: string
+    description: Description of the invoice, which prints on the Custmer Ledger report.
+    x-mappedTo: DESCRIPTION
+  documentId:
+    type: string
+    description: ID of the associated document.
+    x-mappedTo: DESCRIPTION2
+  discountCutOffDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date of the discount.
+    x-mappedTo: WHENDISCOUNT
+    readOnly: true
+  invoiceDate:
+    type: string
+    format: date
+    description: Date the invoice was created.
+    x-mappedTo:  WHENCREATED
+    x-mutable: false
+  dueDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the invoice is due.
+    x-mappedTo: WHENDUE
+  currency:
+    type: object
+    description: Currency details for this invoice.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency for the invoice.
+        x-mappedTo: BASECURR
+        example: USD
+        readOnly: true
+      txnCurrency:
+        type: string
+        description: The transaction currency to use for this invoice. If this currency is different from the base currency, provide an exchange rate.
+        x-mappedTo: CURRENCY
+        example: USD
+        x-mutable: false
+      exchangeRate:
+        type: object
+        description: Exchange rate details used to calculate the base amount.
+        title: exchangeRate
+        properties:
+          date:
+            type: string
+            format: date
+            example: '2021-01-23'
+            description: Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.
+            x-mappedTo: EXCH_RATE_DATE
+            x-mutable: false
+          rate:
+            type: string
+            description: Exchange rate used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCHANGE_RATE
+            example: '1.0789'
+            x-mutable: false
+          typeId:
+            type: string
+            description: Exchange rate type used to calculate the base amount from the transaction amount.
+            x-mappedTo: EXCH_RATE_TYPE_ID
+            x-mutable: false
+            example: '1'
+  totalBaseAmount:
+    type: string
+    description: Total entered
+    x-mappedTo: TOTALENTERED
+    readOnly: true
+  totalBaseAmountDue:
+    type: string
+    description: Total due
+    x-mappedTo: TOTALDUE
+    readOnly: true
+  totalTxnAmount:
+    type: string
+    description: Total transaction amount
+    x-mappedTo: TRX_TOTALENTERED
+    readOnly: true
+  totalTxnAmountDue:
+    type: string
+    description: Total transaction amount due
+    x-mappedTo: TRX_TOTALDUE
+    readOnly: true
+  dunningCount:
+    type: number
+    description: Number of associated dunning notices
+    x-mappedTo: DUNNINGCOUNT
+    readOnly: true
+  customerMessageId:
+    type: string
+    x-mappedTo: CUSTMESSAGEID
+    x-mutable: false
+  customerMessage:
+    type: string
+    x-mappedTo: CUSTMESSAGE.MESSAGE
+    readOnly: true
+  recurringSchedule:
+    type: object
+    description: Recurring schedule used to automate the billing process.
+    title: recurring schedule
+    properties:
+      key:
+        type: string
+        description: System-assigned key to uniquely identify the recurring schedule.
+        x-mappedTo: SCHOPKEY
+        readOnly: true
+        example: '20'
+  paymentInformation:
+    type: object
+    title: paymentInformation
+    description: Payment information for the invoice.
+    properties:
+      fullyPaidDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Date the invoice was paid.
+        x-mappedTo: WHENPAID
+        readOnly: true
+      totalBaseAmountPaid:
+        type: string
+        description: Total paid
+        x-mappedTo: TOTALPAID
+        readOnly: true
+      totalBaseAmountSelectedForPayment:
+        type: string
+        description: Total selected
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+      totalTxnAmountSelectedForPayment:
+        type: string
+        description: Total transaction selected
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+      totalTxnAmountPaid:
+        type: string
+        description: Total transaction paid
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+  contacts:
+    type: object
+    description: Associated contacts
+    title: contacts
+    properties:
+      payTo:
+        type: object
+        description: Pay to contact information from the customer record.
+        title: payTo
+        x-object: contact
+        x-mappedTo: paytocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key to uniquely identify the contact.
+            x-mappedTo: BILLTOPAYTOKEY
+            readOnly: true
+          id:
+            type: string
+            description: Name of the contact.
+            x-mappedTo: BILLTOPAYTOCONTACTNAME
+            x-mutable: false
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+            example: /objects/contact/416
+      returnTo:
+        type: object
+        title: returnTo
+        description: Return to contact information from the customer record.
+        x-object: contact
+        x-mappedTo: returntocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key to uniquely identify the contact.
+            x-mappedTo: SHIPTORETURNTOKEY
+            readOnly: true
+          id:
+            type: string
+            description: Name of the contact
+            x-mappedTo: SHIPTORETURNTOCONTACTNAME
+            x-mutable: false
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+            example: /objects/contact/416
+  isSystemGeneratedDocument:
+    type: boolean
+    readOnly: true
+    description: |
+      If `T`, then this bill record is created by the system internally and not created based on user input.
+    x-mappedTo: SYSTEMGENERATED
+    example: F
+    default: F
+    x-mappedToType: string
+  billbackTemplate:
+    type: object
+    x-object: billback-template
+    x-mappedTo: billbacktemplate
+    title: billbacktemplate
+    properties:
+      key:
+        type: string
+        x-mappedTo: BILLBACKTEMPLATEKEY
+        readOnly: true
+      id:
+        type: string
+        x-mappedTo: BILLBACKTEMPLATE
+      href:
+        type: string
+        description: URL for Billback template.
+        readOnly: true
+        example: /objects/billback-template/18
+  attachment:
+    type: object
+    description: Supporting document attached to the invoice.
+    x-object: attachment
+    x-mappedTo: SUPDOCID
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the supporting document.
+        x-mappedTo: SUPDOCID
+        example: '18'
+        readOnly: true
+      id:
+        type: string
+        description: System-assigned ID for the supporting document.
+        x-mappedTo: SUPDOCID
+        example: '18'
+      href:
+        type: string
+        description: URL for the term.
+        readOnly: true
+        example: /objects/attachment/18
+  customer:
+    type: object
+    x-object: customer
+    x-mappedTo: customer
+    title: customer
+    description: Customer to which this invoice is linked to.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the customer.
+        x-mappedTo: CUSTOMERRECORDNO
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier of the customer.
+        x-mappedTo: CUSTOMERID
+        x-mutable: false
+      name:
+        type: string
+        description: Name of the customer.
+        x-mappedTo: CUSTOMERNAME
+        readOnly: true
+      emailOption:
+        type: boolean
+        x-mappedTo: CUSTEMAILOPTIN
+        readOnly: true
+      customerDue:
+        type: string
+        x-mappedTo: TRX_ENTITYDUE
+        readOnly: true
+      deliveryOptions:
+        type: string
+        x-mappedTo: DELIVERY_OPTIONS
+        x-mutable: false
+        enum:
+          - 'print'
+          - 'email'
+          - 'both'
+        x-mappedToValues:
+          - 'Print'
+          - 'E-Mail'
+          - 'Print#~#E-Mail'
+      href:
+        type: string
+        description: URL for the tax solution.
+        readOnly: true
+        example: /objects/customer/15
+  term:
+    type: object
+    x-object: ar-term
+    x-mappedTo: arterm
+    title: term
+    description: Term details for the invoice.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the term.
+        x-mappedTo: TERMKEY
+        readOnly: true
+      id:
+        type: string
+        description: Name of the term.
+        x-mappedTo: TERMNAME
+      href:
+        type: string
+        readOnly: true
+        example: /objects/ar-term/16
+  invoiceSummary:
+    type: object
+    description: Summary details for this invoice. Summaries are collections of the same types of transactions grouped together for processing.
+    title: arinvoicebatch
+    properties:
+      key:
+        type: string
+        description: System-assigned key to uniquely identify the summary.
+        x-mappedTo: PRBATCHKEY
+        readOnly: true
+      id:
+        type: string
+        description: System-assigned ID for the summary.
+        x-mappedTo: PRBATCHKEY
+        x-mutable: false
+      glPostingDate:
+        type: string
+        format: date
+        x-mappedTo: WHENPOSTED
+        readOnly: true
+      title:
+        type: string
+        description: Name of the summary.
+        x-mappedTo: PRBATCH
+        readOnly: true
+      isSummaryOpen:
+        type: string
+        description: A summary can be open or closed. Items, such as invoices, can be added to open summaries.
+        x-mappedTo: PRBATCH_OPEN
+        enum:
+          - open
+          - closed
+        x-mappedToValues:
+          - Open
+          - Closed
+        example: open
+        readOnly: true
+      isSummaryPosted:
+        type: string
+        description: If `true`, the summary has been posted to the General Ledger.
+        x-mappedTo: PRBATCH_NOGL
+        readOnly: true
+        example: 'false'
+  lines:
+    type: array
+    description: Line items of the invoice.
+    x-mappedTo: ITEMS
+    x-object: ar-invoice-line
+    items:
+      $ref: ar-invoice-line.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+

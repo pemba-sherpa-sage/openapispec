@@ -1,0 +1,531 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-template
+  description: contract-expense-template API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract expense templates
+    description: Contract expense template description -- explain what it's for and how it's used.
+paths:
+  /objects/contract-expense-template:
+    get:
+      summary: List Contract expense templates
+      description: Returns a collection with a key, ID, and link for each Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: get-objects-contract-expense-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract-expense-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '2'
+                        id: EXPSTRAIGHTLINE_AUTO
+                        href: /objects/contract-expense-template/2
+                    ia::meta:
+                      totalCount: 1
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Contract expense template
+      description: Creates a new Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: post-objects-contract-expense-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense-template.s1.schema'
+                - $ref: '#/components/schemas/contract-expense-templateRequiredProperties'
+            examples:
+              Example-1:
+                value:
+                  id: EXPSTRAIGHTLINE_MAN1
+                  description: test
+                  amortizationMethod: straightLine
+                  defaultPostingType: manual
+                  amortizationSchedulePeriod: monthly
+                  postingDay: '1'
+                  status: inactive
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract-expense-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '26'
+                        id: EXPSTRAIGHTLINE_MAN1
+                        href: /objects/contract-expense-template/26
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/contract-expense-template/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the Contract expense template.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
+    get:
+      summary: Get a/an Contract expense template
+      description: Returns detailed information for a particular Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: get-objects-contract-expense-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-expense-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-expense-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '26'
+                        id: EXPSTRAIGHTLINE_MAN1
+                        description: test
+                        defaultPostingType: manual
+                        amoritizationSchedulePeriod: monthly
+                        postingDay: '1'
+                        amoritizationMethod: straightLine
+                        status: active
+                        audit:
+                          modifiedDateTime: '2022-05-24T07:17:05Z'
+                          createdDateTime: '2022-05-24T07:11:39Z'
+                          createdBy: '1'
+                          modifiedBy: '1'
+                        href: /objects/contract-expense-template/26
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Contract expense template
+      description: Updates an existing Contract expense template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract expense templates
+      operationId: patch-objects-contract-expense-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense-template.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Example-1:
+                value:
+                  status: active
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract-expense-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '26'
+                        id: EXPSTRAIGHTLINE_MAN1
+                        href: /objects/contract-expense-template/26
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Contract expense template
+      description: Deletes a/an Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: delete-objects-contract-expense-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-template:
+      $ref: '#/components/schemas/contract-expense-template.s1.schema'
+    contract-expense-templateRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-expense-template-entry.s1.schema:
+      title: contract-expense-template-entry
+      x-mappedTo: contractexpensetemplateentry
+      x-ownedBy: contract-expense-template
+      type: object
+      description: Contract expense template entry
+      properties:
+        href:
+          type: string
+          example: /objects/contract-expense-template-entry/1
+          readOnly: true
+        key:
+          type: string
+          description: Contract Expense Template Entry Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Contract Expense Template Entry Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        periodOffset:
+          type: string
+          description: number of months offset
+          x-mappedTo: PERIODOFFSET
+          example: '2'
+        periodPercent:
+          type: string
+          format: decimal-precision-8
+          description: Percentage to recognize
+          x-mappedTo: PERIODPERCENT
+          example: '10.12312000'
+        stepPercent:
+          type: string
+          format: decimal-precision-8
+          description: Threshold percentage
+          x-mappedTo: STEPPERCENT
+          example: '90.12312000'
+        contractExpenseTemplate:
+          type: object
+          x-mappedTo: contractexpensetemplate
+          x-object: contract-expense-template
+          properties:
+            key:
+              type: string
+              description: Template Key
+              x-mappedTo: TEMPLATEKEY
+              example: '1'
+            id:
+              type: string
+              description: Contract Expense Template ID
+              x-mappedTo: NAME
+              example: EXPSTRAIGHTLINE_MAN
+            href:
+              type: string
+              example: /objects/contract-expense-template/1
+              readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    contract-expense-template.s1.schema:
+      title: contract-expense-template
+      x-mappedTo: contractexpensetemplate
+      type: object
+      description: Header information for contract expense templates.
+      properties:
+        href:
+          type: string
+          example: /objects/contract-expense-template/1
+          readOnly: true
+        key:
+          type: string
+          description: Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Contract Expense Template ID
+          x-mappedTo: NAME
+          example: EXPSTRAIGHTLINE_MAN
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+          example: Expense straight line manual
+        amortizationSchedulePeriod:
+          type: string
+          description: Amortization Schedule Period
+          x-mappedTo: SCHEDULEPERIOD
+          example: annually
+          enum:
+            - monthly
+            - quarterly
+            - semiAnnually
+            - annually
+          x-mappedToValues:
+            - Monthly
+            - Quarterly
+            - Semi-annually
+            - Annually
+          default: monthly
+        postingDay:
+          type: string
+          description: Posting Day
+          x-mappedTo: POSTINGDAY
+          example: '1'
+          enum:
+            - '1'
+            - '2'
+            - '3'
+            - '4'
+            - '5'
+            - '6'
+            - '7'
+            - '8'
+            - '9'
+            - '10'
+            - '11'
+            - '12'
+            - '13'
+            - '14'
+            - '15'
+            - '16'
+            - '17'
+            - '18'
+            - '19'
+            - '20'
+            - '21'
+            - '22'
+            - '23'
+            - '24'
+            - '25'
+            - '26'
+            - '27'
+            - '28'
+            - '29'
+            - '30'
+            - '31'
+          default: '1'
+        amortizationMethod:
+          type: string
+          description: Amortization method
+          x-mappedTo: METHOD
+          example: straightLine
+          enum:
+            - straightLine
+            - dailyRate
+            - predefinedPercentages
+          x-mappedToValues:
+            - Straight line
+            - Daily rate
+            - Predefined percentages
+          default: straightLine
+        defaultPostingType:
+          type: string
+          description: Default Posting type
+          x-mappedTo: POSTINGTYPE
+          example: manual
+          enum:
+            - automatic
+            - manual
+          x-mappedToValues:
+            - Automatic
+            - Manual
+          default: manual
+        templateEntries:
+          type: array
+          x-mappedTo: TEMPLATEENTRY
+          description: Contract expense template entries
+          x-object: contract-expense-template-entry
+          items:
+            $ref: '#/components/schemas/contract-expense-template-entry.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

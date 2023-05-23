@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - co/lists/seqnum/edit
+s1:
+  hash: '0'
+  type: functionService

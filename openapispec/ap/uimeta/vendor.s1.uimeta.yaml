@@ -1,0 +1,507 @@
+fields:
+    key:
+        uiType: sequence
+        uiLabel: 'Record Number'
+    id:
+        uiType: text
+        uiLabel: 'Vendor ID'
+    name:
+        uiType: text
+        uiLabel: 'Vendor Name'
+    isOneTimeUse:
+        uiType: enum
+        uiLabel: 'One-time use'
+        enumsLabels:
+            -
+                label: 'IA.TRUE'
+                value: true
+            -
+                label: 'IA.FALSE'
+                value: false
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: 'Active non-posting'
+                value: activeNonPosting
+            -
+                label: Inactive
+                value: inactive
+    defaultLeadTime:
+        uiType: integer
+        uiLabel: 'Lead time default (days)'
+    taxId:
+        uiType: text
+        uiLabel: 'Tax ID'
+    isOnHold:
+        uiType: enum
+        uiLabel: 'On Hold'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    doNotPay:
+        uiType: enum
+        uiLabel: 'Don''t pay'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    creditLimit:
+        uiType: currency
+        uiLabel: 'IA.CREDIT_LIMIT'
+    retainagePercentage:
+        uiType: decimal
+        uiLabel: 'Default retainage percentage'
+    notes:
+        uiType: multitext
+        uiLabel: Comments
+    discountPercent:
+        uiType: decimal
+        uiLabel: 'Discount (%)'
+    preferredPaymentMethod:
+        uiType: enum
+        uiLabel: 'Preferred Payment Method'
+        enumsLabels:
+            -
+                label: Check
+                value: printedCheck
+            -
+                label: 'Charge Card'
+                value: chargeCard
+            -
+                label: 'Record Transfer'
+                value: EFT
+            -
+                label: Cash
+                value: cash
+            -
+                label: 'ACH / Bank File'
+                value: ACH
+            -
+                label: 'WF Check'
+                value: wellsFargoCheck
+            -
+                label: 'WF USD Wire'
+                value: wellsFargoUSDWire
+            -
+                label: 'WF Domestic ACH'
+                value: wellsFargoDomesticACH
+    mergePaymentRequests:
+        uiType: enum
+        uiLabel: 'Merge payment requests'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    sendPaymentNotification:
+        uiType: enum
+        uiLabel: 'Send Automatic Payment Notification'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    billingType:
+        uiType: enum
+        uiLabel: 'Vendor Billing Type'
+        enumsLabels:
+            -
+                label: 'IA.SOMETHING_SOMETHING'
+                value: openItem
+            -
+                label: 'Balance Forward'
+                value: balanceForward
+    paymentPriority:
+        uiType: enum
+        uiLabel: 'Payment Priority'
+        enumsLabels:
+            -
+                label: Urgent
+                value: urgent
+            -
+                label: High
+                value: high
+            -
+                label: Normal
+                value: normal
+            -
+                label: Low
+                value: low
+    displayTermDiscountOnCheckStub:
+        uiType: enum
+        uiLabel: 'Display the term discount on the check stub'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    defaultBillPaymentDate:
+        uiType: enum
+        uiLabel: 'Default Bill Payment Date'
+        enumsLabels:
+            -
+                label: None
+                value: none
+            -
+                label: 'Due Date'
+                value: dueDate
+            -
+                label: 'Bill Date'
+                value: billDate
+            -
+                label: 'Discount Date'
+                value: discountDate
+    paymentDateOffset:
+        uiType: enum
+        uiLabel: 'PLUSMINUS'
+        enumsLabels:
+            -
+                label: '+'
+                value: 'ia::unknown'
+            -
+                label: '-'
+                value: 'ia::unknown'
+    impliedDueDate:
+        uiType: integer
+        uiLabel: 'DUEDATEDIFF'
+    impliedInvoiceDate:
+        uiType: integer
+        uiLabel: 'INVOICEDATEDIFF'
+    vendorAccountNumber:
+        uiType: text
+        uiLabel: Number
+    displayVendorAccountOnCheckStub:
+        uiType: enum
+        uiLabel: 'Display the vendor-assigned account number, per entity, on the check stub'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    totalDue:
+        uiType: currency
+        uiLabel: 'Total Due'
+groups:
+    form1099:
+        fields:
+            is1099Eligible:
+                uiType: enum
+                uiLabel: '1099 Eligible'
+                enumsLabels:
+                    -
+                        label: 'true'
+                        value: true
+                    -
+                        label: 'false'
+                        value: false
+            nameOn1099:
+                uiType: text
+                uiLabel: '1099 Name'
+            type:
+                uiType: text
+                uiLabel: 'Form 1099 Type'
+            box:
+                uiType: text
+                uiLabel: 'Form 1099 Box'
+    contacts:
+        fields: {  }
+        refs:
+            default:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: 'Display Contact Record Number'
+                    id:
+                        uiType: text
+                        uiLabel: 'Contact name'
+                    lastName:
+                        uiType: text
+                        uiLabel: 'Last Name'
+                    firstName:
+                        uiType: text
+                        uiLabel: 'First Name'
+                    middleName:
+                        uiType: text
+                        uiLabel: 'Middle Name'
+                    prefix:
+                        uiType: text
+                        uiLabel: Mr./Ms./Mrs.
+                    printAs:
+                        uiType: text
+                        uiLabel: 'Print As'
+                    email1:
+                        uiType: text
+                        uiLabel: 'Email Address'
+                    email2:
+                        uiType: text
+                        uiLabel: 'Secondary email addresses'
+                    phone1:
+                        uiType: text
+                        uiLabel: 'Phone Number'
+                    phone2:
+                        uiType: text
+                        uiLabel: 'Secondary phone'
+                    mobile:
+                        uiType: text
+                        uiLabel: 'Cellular Phone Number'
+                    pager:
+                        uiType: text
+                        uiLabel: 'Pager Number'
+                    fax:
+                        uiType: text
+                        uiLabel: 'Fax Number'
+                    URL1:
+                        uiType: text
+                        uiLabel: URL
+                    URL2:
+                        uiType: text
+                        uiLabel: 'Secondary URL'
+                    companyName:
+                        uiType: text
+                        uiLabel: 'Company name'
+                    hideContactList:
+                        uiType: enum
+                        uiLabel: 'Don''t include in Company''s Contact List'
+                        enumsLabels:
+                          -
+                               label: 'true'
+                               value: true
+                          -
+                               label: 'false'
+                               value: false
+                groups:
+                  mailingAddress:
+                    fields:
+                      addressLine1:
+                        uiType: text
+                        uiLabel: "Address Line 1"
+                      city:
+                        uiType: text
+                        uiLabel: "City"
+                      country:
+                        uiType: text
+                        uiLabel: "Country"
+                      postCode:
+                        uiType: text
+                        uiLabel: "Postal Code"
+                      state:
+                        uiType: text
+                        uiLabel: "State"
+            primary:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: 'Primary Contact Record Number'
+                    id:
+                        uiType: enum
+                        uiLabel: 'Primary Contact'
+            payTo:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: 'Pay-to Contact Record Number'
+                    id:
+                        uiType: enum
+                        uiLabel: 'Pay To Contact'
+            returnTo:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: 'Return-to Contact Record Number'
+                    id:
+                        uiType: enum
+                        uiLabel: 'Return To Contact'
+            recipient1099:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: '1099 Contact Record Number'
+                    id:
+                        uiType: enum
+                        uiLabel: '1099 Contact'
+    ACH:
+        fields:
+            enablePayments:
+                uiType: enum
+                uiLabel: 'Enable ACH'
+                enumsLabels:
+                    -
+                        label: 'true'
+                        value: true
+                    -
+                        label: 'false'
+                        value: false
+            routingNumber:
+                uiType: text
+                uiLabel: 'ACH Bank Routing Number'
+            accountNumber:
+                uiType: text
+                uiLabel: 'Account Number'
+            accountType:
+                uiType: enum
+                uiLabel: 'Account Type'
+                enumsLabels:
+                    -
+                        label: 'Checking Account'
+                        value: checkingAccount
+                    -
+                        label: 'Savings Account'
+                        value: savingsAccount
+            remittanceType:
+                uiType: enum
+                uiLabel: 'Account classification'
+                enumsLabels:
+                    -
+                        label: Business(CTX)
+                        value: businessCTX
+                    -
+                        label: Personal(PPD)
+                        value: personalPPD
+                    -
+                        label: Business(CCD)
+                        value: businessCCD
+    restrictions:
+        fields:
+            restrictionType:
+                uiType: radio
+                uiLabel: 'OBJECTRESTRICTION'
+                enumsLabels:
+                    -
+                        label: 'Unrestricted Vendor'
+                        value: unrestricted
+                    -
+                        label: 'Restricted to top-level only'
+                        value: rootOnly
+                    -
+                        label: 'Restricted Vendor'
+                        value: restricted
+            locations:
+                uiType: multipick
+                uiLabel: 'Locations/Location groups'
+            departments:
+                uiType: multipick
+                uiLabel: 'Departments/Department groups'
+    audit:
+        fields:
+            createdDateTime:
+                uiType: timestamp
+                uiLabel: 'When created'
+            modifiedDateTime:
+                uiType: timestamp
+                uiLabel: 'When modified'
+            createdBy:
+                uiType: ptr
+                uiLabel: 'Created by'
+            modifiedBy:
+                uiType: ptr
+                uiLabel: 'Modified by'
+refs:
+    vendorType:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Vendor Type Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Vendor Type ID'
+    parent:
+        fields:
+            key:
+                uiType: null
+                uiLabel: 'Parent Key'
+            id:
+                uiType: ptr
+                uiLabel: 'Parent Vendor'
+            name:
+                uiType: ptr
+                uiLabel: 'Parent Vendor Name'
+    accountGroup:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'GL Group Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'GL Group'
+    accountlabel:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Account Label Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Account Label'
+    attachment:
+        fields:
+            key:
+                uiType: supdocptr
+                uiLabel: "Attachment Key"
+            id:
+                uiType: supdocptr
+                uiLabel: "Attachment ID"
+    priceList:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'OE Price List Key'
+            id:
+                uiType: ptr
+                uiLabel: 'Vendor Price List'
+    priceSchedule:
+        fields:
+            key:
+                uiType: ptr
+                uiLabel: 'Price Schedule'
+            id:
+                uiType: ptr
+                uiLabel: 'Price Schedule'
+    overrideOffsetGLAccount:
+        fields:
+            key:
+                uiType: ptr
+                uiLabel: 'AP Account'
+            id:
+                uiType: ptr
+                uiLabel: 'AP Account'
+            name:
+                uiType: null
+                uiLabel: 'Default AP Account'
+    defaultExpenseGLAccount:
+        fields:
+            key:
+                uiType: ptr
+                uiLabel: 'Default expense account'
+            id:
+                uiType: ptr
+                uiLabel: 'Default expense account'
+            name:
+                uiType: null
+                uiLabel: 'AP Account Title'
+    term:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Term Record Number'
+            id:
+                uiType: ptr
+                uiLabel: Term

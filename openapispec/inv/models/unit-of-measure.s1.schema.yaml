@@ -1,0 +1,116 @@
+title: unit-of-measure
+x-mappedTo: uom
+type: object
+description: Units of measure, like count or weight, are provided for items handled under Inventory Control, Order Entry, and Purchasing.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the unit of measure group. Used to identify the unit of measure group in URLs or JSON bodies for all operations on the group.
+    x-mappedTo: RECORDNO
+    example: '16'
+    readOnly: true
+  id:
+    type: string
+    description: Name of the unit of measure group.
+    x-mappedTo: NAME
+    example: 'Time'
+    nullable: false
+    x-mutable: false
+  baseUnit:
+    type: string
+    description: Base unit for the group. The base unit is the smallest reasonable unit for pricing within the unit of measure group.
+    x-mappedTo: BASEUNIT
+    example: 'Seconds'
+    nullable: false
+  abbreviation: 
+    type: string
+    description: Abbreviation for the base unit.
+    x-mappedTo: ABBREVIATION
+    example: 'SEC'
+  defaults:
+    type: object
+    description: | 
+      Default unit of measure for Inventory, Order Entry, and Purchasing transactions. This is the default unit within a unit of measure group for transactions that contain items associated with the group.
+      For example, Count is a standard unit of measure group with Each, Pair, and Dozen defined as related units. The Each unit can be set to be the default unit for inventory transactions. 
+      For more information, see [Unit of measure groups](https://www.intacct.com/ia/docs/en_US/help_action/Order_Entry/Setting_up_Order_Entry/UOM_groups/UOM-groups-OE.htm).
+    properties:
+      inventory:
+        type: object
+        description: Default unit of measure for Inventory transactions.
+        x-object: unit-of-measure-detail
+        x-mappedTo: uomdetail
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the default unit of measure for Inventory transactions.
+            x-mappedTo: INVDEFUNITKEY
+            example: '3'
+          id:
+            type: string
+            description: Default unit for Inventory transactions.
+            x-mappedTo: INVUOM
+            example: 'Each'
+            readOnly: true
+          href:
+            type: string
+            description: URL for the details about this default unit of measure.
+            readOnly: true
+            example: /objects/unit-of-measure-detail/3
+      purchaseOrder:
+        type: object
+        description: Default unit of measure for Purchasing transactions.
+        x-object: unit-of-measure-detail
+        x-mappedTo: uomdetail
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the default unit of measure for Purchasing transactions.
+            x-mappedTo: PODEFUNITKEY
+            example: '3'
+          id:
+            type: string
+            description: Default unit for Purchasing transactions.
+            x-mappedTo: POUOM
+            example: 'Each'
+            readOnly: true
+          href:
+            type: string
+            description: URL for the details about this default unit of measure.
+            readOnly: true
+            example: /objects/unit-of-measure-detail/3
+      orderEntry:
+        type: object
+        description: Default unit of measure for Order Entry (Sales) transactions.
+        x-object: unit-of-measure-detail
+        x-mappedTo: uomdetail
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the default unit of measure for Order Entry (Sales) transactions.
+            x-mappedTo: SODEFUNITKEY
+            example: '3'
+          id:
+            type: string
+            description: Default unit for Order Entry (Sales) transactions
+            x-mappedTo: OEUOM
+            example: 'Each'
+            readOnly: true
+          href:
+            type: string
+            description: URL for the details about this default unit of measure.
+            readOnly: true
+            example: /objects/unit-of-measure-detail/3
+  uomDetails:
+    type: array
+    x-mappedTo: ENTRIES
+    x-object: unit-of-measure-detail
+    description: Related units of measure included in the group.
+    items:
+      $ref: unit-of-measure-detail.s1.schema.yaml
+  href:
+    type: string
+    description: Unit of measure URL.
+    readOnly: true
+    example: /objects/unit-of-measure/41
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

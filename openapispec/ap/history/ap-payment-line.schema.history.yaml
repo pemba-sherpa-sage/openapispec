@@ -1,0 +1,10 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/appymt/view
+    POST:
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: ownedObject

@@ -1,0 +1,333 @@
+openapi: 3.0.0
+info:
+  title: ar-adjustment
+  description: ar-adjustment API
+  version: '1.0'
+  contact:
+    name: Praveen
+    email: praveen.anjinappa@sage.com
+tags:
+  - name: AR adjustments
+    description: An AR adjustment is a transaction that applies a credit or debit in order to modify the amount owed by a customer.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-adjustment:
+    get:
+      summary: List AR adjustments
+      description: Returns a collection with a key, ID, and link for each AR adjustment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR adjustments
+      operationId: get-objects-ar-adjustment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-adjustment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Get ar adjustments:
+                  value:
+                    ia::result:
+                      key: "270"
+                      id: "270"
+                      href: "/objects/ar-adjustment/270"
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR adjustment
+      description: Creates a new AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: post-objects-ar-adjustment
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-adjustment'
+                - $ref: '#/components/schemas/ar-adjustmentRequiredProperties'
+            examples:
+              Create an adjustment:
+                value:
+                  customer:
+                    id: "Cust01"
+                  createdDate: "2023-03-23"
+                  adjustmentNumber: "adjno-100"
+                  description: "desc testing update"
+                  documentNumber: "INV100"
+                  lines:
+                    txnAmount: "95"
+                    glAccount:
+                      id: "7510"
+                    location:
+                      id: "2"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-adjustment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an adjustment:
+                  value:
+                    ia::result:
+                      id: "270"
+                      key: "270"
+                      href: "/objects/ar-adjustment/270"
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-adjustment/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR adjustment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR adjustment
+      description: Returns detailed information for a specified AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: get-objects-ar-adjustment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-adjustment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-adjustment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an adjustment:
+                  value:
+                    ia::result:
+                      id: "270"
+                      key: "270"
+                      txnType: "ra"
+                      adjustmentNumber: "adjno-100"
+                      state: "posted"
+                      rawState: "A"
+                      customer:
+                        id: "Cust01"
+                        key: "258"
+                        name: "Cust_Test01"
+                        totalDue: "2329.82"
+                        href: "/objects/customer/Cust01"
+                        documentNumber: "INV100"
+                      description: "desc testing update"
+                      createdDate: "2023-03-23"
+                      audit:
+                        createdDateTime: "2023-03-23T00:00:00Z"
+                        modifiedDateTime: "2023-03-24T10:45:23Z"
+                        createdBy: "1"
+                        modifiedBy: "1"
+                      postingDate: "2023-03-23"
+                      paymentInformation:
+                        paidDate: null
+                        totalSelected: "0"
+                        totalPaid: "0"
+                        totalDue: "95"
+                        txnTotalEntered: "95"
+                        txnTotalSelected: "0"
+                        txnTotalPaid: "0"
+                        txnTotalDue: "95"
+                      currency:
+                        baseCurrency: "USD"
+                        txnCurrency: "USD"
+                        exchangeRateDate: null
+                        exchangeRateTypeId: null
+                        exchangeRate: null
+                      totalEntered: "95"
+                      contacts:
+                        billTo:
+                          id: "Cust_Test01(CCust01)"
+                          key: "488"
+                          billToContactName: "Cust_Test01(CCust01)"
+                          href: "/objects/contact/488"
+                        shipTo:
+                          id: "Cust_Test01(CCust01)"
+                          key: "488"
+                          shipToContactName: "Cust_Test01(CCust01)"
+                          href: "/objects/contact/488"
+                      moduleKey: "4.AR"
+                      lines:
+                        id: "625"
+                        key: "625"
+                        arAdjustment:
+                          id: "270"
+                          key: "270"
+                          href: "/objects/ar-adjustment/270"
+                        glAccount:
+                          key: "348"
+                          id: "7510"
+                          name: "Other Expense"
+                          href: "/objects/gl-account/348"
+                        accountLabel:
+                          key: "36"
+                          id: "praveena_test"
+                          href: "/objects/ar-account-label/36"
+                        baseAmount: "95"
+                        txnAmount: "95"
+                        department:
+                          key: 9,
+                          id: "11"
+                          name: "Accounting"
+                          href: "/objects/department/9"
+                        location:
+                          key: 1
+                          id: "1"
+                          name: "United States of America"
+                          href: "/objects/location/1"
+                        description: null
+                        currency:
+                          exchangeRateDate: null
+                          exchangeRateTypeId: null
+                          exchangeRate: 1
+                          txnCurrency: "USD"
+                          baseCurrency": "USD"
+                        lineNumber: "1"
+                        state: "approved"
+                        adjustmentType: "ra"
+                        isTax: false
+                        audit:
+                          createdDateTime: "2023-03-23T13:10:29Z"
+                          modifiedDateTime: "2023-03-24T10:45:23Z"
+                          createdBy: "1"
+                          modifiedBy: "1"
+                        href: "/objects/ar-adjustment-line/625"
+                      href: "/objects/ar-adjustment/270"
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR adjustment
+      description: Updates an existing AR adjustment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR adjustments
+      operationId: patch-objects-ar-adjustment-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-adjustment'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an adjustment:
+                value:
+                    customer:
+                      id: "Cust01"
+                    currency:
+                      baseCurrency: "USD"
+                      txnCurrency: "USD"
+                      exchangeRateDate: null
+                      exchangeRateTypeId: null
+                      exchangeRate: null
+                    createdDate: "2023-03-23"
+                    adjustmentNumber: "adjno-100"
+                    description: "desc testing update"
+                    lines:
+                      key: "625"
+                      txnAmount: "95"
+                      glAccount:
+                        id: "7510"
+                      department:
+                        id: "11"
+                      location:
+                        id: "1"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-adjustment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an adjustment:
+                  value:
+                      ia::result:
+                        id: "270"
+                        key: "270"
+                        href: "/objects/ar-adjustment/270"
+                      ia::meta:
+                        totalCount: 1
+                        totalSuccess: 1
+                        totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR adjustment
+      description: Deletes an AR adjustment.
+      tags:
+        - AR adjustments
+      operationId: delete-objects-ar-adjustment-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-adjustment:
+      $ref: ../models/ar-adjustment.s1.schema.yaml
+    ar-adjustmentRequiredProperties:
+      type: object
+      required:
+        - customer
+        - createdDate
+        - currency
+        - lines
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

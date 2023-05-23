@@ -1,0 +1,385 @@
+openapi: 3.0.0
+info:
+  title: customer-item-cross-reference
+  description: customer-item-cross-reference API
+  version: '1.0'
+  contact:
+    name: Samay Jain
+    email: samay.jain@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Customer item cross references
+    description: Customer item cross reference description -- explain what it's for and how it's used.
+paths:
+  /objects/customer-item-cross-reference:
+    get:
+      summary: List Customer item cross references
+      description: Returns a collection with a key, ID, and link for each Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: get-objects-customer-item-cross-reference
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-item-cross-reference objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of Customer item cross references: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Customer item cross reference
+      description: Creates a new Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: post-objects-customer-item-cross-reference
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-item-cross-reference.s1.schema'
+                - $ref: '#/components/schemas/customer-item-cross-referenceRequiredProperties'
+            examples:
+              Creates a/an Customer item cross reference: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New customer-item-cross-reference
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/customer-item-cross-reference/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the Customer item cross reference.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an Customer item cross reference
+      description: Returns detailed information for a particular Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: get-objects-customer-item-cross-reference-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-item-cross-reference
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/customer-item-cross-reference.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Customer item cross reference
+      description: Updates an existing Customer item cross reference by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customer item cross references
+      operationId: patch-objects-customer-item-cross-reference-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-item-cross-reference.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an Customer item cross reference: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer-item-cross-reference
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated Customer item cross reference: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Customer item cross reference
+      description: Deletes a/an Customer item cross reference.
+      tags:
+        - Customer item cross references
+      operationId: delete-objects-customer-item-cross-reference-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    customer-item-cross-reference:
+      $ref: '#/components/schemas/customer-item-cross-reference.s1.schema'
+    customer-item-cross-referenceRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    customer-item-cross-reference.s1.schema:
+      title: customer-item-cross-reference
+      x-mappedTo: customeritemcrossref
+      type: object
+      x-ownedBy: customer
+      description: list of customer item cross references
+      properties:
+        key:
+          type: string
+          description: Customer Item Cross Reference Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Customer Item Cross Reference id
+          readOnly: true
+          x-mappedTo: RECORDNO
+        href:
+          type: string
+          description: URL of the customer-item-cross-reference.
+          readOnly: true
+        customer:
+          type: object
+          description: Customer.
+          x-object: customer
+          x-mappedTo: customer
+          properties:
+            key:
+              type: string
+              description: Customer key
+              x-mappedTo: CUSTOMERKEY
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+            name:
+              type: string
+              x-mappedTo: CUSTOMERNAME
+            href:
+              type: string
+              description: URL of the customer.
+              readOnly: true
+        item:
+          type: object
+          x-mappedTo: item
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item key
+              x-mappedTo: ITEMKEY
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: null
+            name:
+              type: string
+              x-mappedTo: ITEMNAME
+              example: null
+            href:
+              type: string
+              description: URL of the item.
+              readOnly: true
+        referenceType:
+          type: string
+          description: Reference type
+          x-mappedTo: REFTYPE
+          example: null
+          enum:
+            - customer
+          x-mappedToValues:
+            - Customer
+        itemAliasId:
+          type: string
+          description: Cross-reference item ID
+          x-mappedTo: ITEMALIASID
+          example: null
+        itemAliasDescription:
+          type: string
+          description: Cross-reference item description
+          x-mappedTo: ITEMALIASDESC
+          example: null
+        unit:
+          type: string
+          description: Unit
+          x-mappedTo: UNIT
+          example: null
+        referenceTypeContext:
+          type: string
+          description: Reference type Context
+          x-mappedTo: REFTYPECONTEXT
+          example: null
+          enum:
+            - internal
+            - external
+          x-mappedToValues:
+            - Internal
+            - External
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

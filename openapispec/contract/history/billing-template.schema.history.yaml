@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/contractbillingtemplate/view
+    POST:
+      - cn/lists/contractbillingtemplate/create
+    PATCH:
+      - cn/lists/contractbillingtemplate/edit
+    DELETE:
+      - cn/lists/contractbillingtemplate/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ee/activities/eebatch/view
+    POST:
+      - ee/activities/eebatch/create
+    PATCH:
+      - ee/activities/eebatch/edit
+    DELETE:
+      - ee/activities/eebatch/delete
+s1:
+  hash: '0'
+  type: rootObject

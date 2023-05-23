@@ -1,0 +1,8 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - rest_api
+s1:
+  hash: '0'
+  type: rootObject
+  orchestrator: SystemViewOrchestrator

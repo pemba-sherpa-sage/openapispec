@@ -1,0 +1,1201 @@
+openapi: 3.0.0
+info:
+  title: contract-expense
+  description: contract-expense API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract expenses
+    description: Contract expense
+paths:
+  /objects/contract-expense:
+    get:
+      summary: List contract expenses
+      description: Returns a collection with a key, ID, and link for each contract expense.
+      tags:
+        - Contract expenses
+      operationId: get-objects-contract-expense
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract-expense objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: '84'
+                        href: /objects/contract-expense/84
+                    ia::meta:
+                      totalCount: 1
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an contract expense
+      description: Creates a new contract expense.
+      tags:
+        - Contract expenses
+      operationId: post-objects-contract-expense
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense.s1.schema'
+                - $ref: '#/components/schemas/contract-expenseRequiredProperties'
+            examples:
+              Example-1:
+                value:
+                  contract:
+                    id: EXP_TEST
+                  expenseType: contract
+                  item:
+                    id: '1'
+                  dimensions:
+                    location:
+                      id: '1'
+                    department:
+                      id: '11'
+                  template:
+                    expenseJournal1:
+                      expenseTemplate:
+                        id: EXPSTRAIGHTLINE_MAN
+                        startDate: '2022-05-01'
+                        endDate: '2022-12-30'
+                        defaultPostingType: M
+                        postingType: manual
+                    expenseJournal2:
+                      expenseTemplate:
+                        id: EXPSTRAIGHTLINE_MAN
+                        startDate: '2022-05-01'
+                        endDate: '2022-12-30'
+                        defaultPostingType: M
+                        postingType: manual
+                  txnAmount: '1000.00'
+                  baseAmount: '1000.00'
+                  currency:
+                    exchangeRateType: Intacct Daily Rate
+                    exchangeRateDate: '2022-05-01'
+                    exchangeRate: '1'
+                  postingDate: '2022-06-01'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract-expense
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '2'
+                        id: '2'
+                        href: /objects/contract-expense/2
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/contract-expense/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract expense.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '17'
+    get:
+      summary: Get a/an contract expense
+      description: Returns detailed information for a particular contract expense.
+      tags:
+        - Contract expenses
+      operationId: get-objects-contract-expense-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-expense
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-expense.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Contract Expense:
+                  value:
+                    ia::result:
+                      - id: '17'
+                        key: '17'
+                        contract:
+                          key: '59'
+                          id: EXP_TEST
+                          href: /objects/contract/59
+                        expenseType: contract
+                        item:
+                          key: '1'
+                          id: '1'
+                          name: PC Computer
+                          href: /objects/item/1
+                        dimensions:
+                          location:
+                            key: '1'
+                            id: '1'
+                            name: United States of America
+                            href: /objects/location/1
+                          department:
+                            key: '9'
+                            id: '11'
+                            name: Accounting
+                            href: /objects/department/9
+                        template:
+                          expenseJournal1:
+                            expenseTemplate:
+                              key: '1'
+                              id: EXPSTRAIGHTLINE_MAN
+                              startDate: '2022-05-01'
+                              endDate: '2022-12-30'
+                              defaultPostingType: M
+                              href: /objects/contract-expense-template/1
+                            schedule:
+                              key: '795'
+                              status: In progress
+                              href: /objects/contract-expense-schedule/795
+                            journalDetails:
+                              key: '52'
+                              href: /objects/gl-journal/52
+                            postingType: manual
+                            postingConversionDate: null
+                          expenseJournal2:
+                            expenseTemplate:
+                              key: '1'
+                              id: EXPSTRAIGHTLINE_MAN
+                              startDate: '2022-05-01'
+                              endDate: '2022-12-30'
+                              defaultPostingType: M
+                              href: /objects/contract-expense-template/1
+                            schedule:
+                              key: '796'
+                              status: In progress
+                              href: /objects/contract-expense-schedule/796
+                            journalDetails:
+                              key: '54'
+                              href: /objects/gl-journal/54
+                            postingType: manual
+                            postingConversionDate: null
+                        txnAmount: 10000
+                        baseAmount: 10000
+                        currency:
+                          exchangeRateType: Intacct Daily Rate
+                          exchangeRateDate: '2022-05-01'
+                          exchangeRate: '1'
+                        postingDate: '2022-06-01'
+                        cancelDate: null
+                        deferredExpenseGLAccount:
+                          key: '423'
+                          href: /objects/gl-account/423
+                        recognizedExpenseGLAccount:
+                          key: '429'
+                          href: /objects/gl-account/429
+                        expenseAccrualGLAccount:
+                          key: '435'
+                          href: /objects/gl-account/435
+                        state: inProgress
+                        audit:
+                          createdDateTime: '2022-06-29T23:03:06Z'
+                          modifiedDateTime: '2022-06-29T23:03:06Z'
+                          createdBy: '1'
+                          modifiedBy: '1'
+                        calculatedExpensePostingType: M
+                        memo: null
+                        lineNo: '8'
+                        nsp::CE_CHECKBOX: false
+                        nsp::CE_CURRENCY: null
+                        nsp::CE_DATE: null
+                        nsp::CE_EMAIL: null
+                        nsp::CE_MULTIPICKLIST: []
+                        nsp::CE_NUMBER: null
+                        nsp::CE_PASSWORD: null
+                        nsp::CE_PERCENT: null
+                        nsp::CE_PICKLIST: ''
+                        nsp::CE_TEXT: null
+                        nsp::CE_TEXTAREA: null
+                        nsp::CE_URL: null
+                        nsp::EXPENSE_CBX_DEFAULT_UN_CHECKED_NF: false
+                        nsp::EXPENSE_CB_DEFAULT_CHECKED: true
+                        nsp::EXPENSE_CB_DEFAULT_CHECKED_HIDDEN: true
+                        nsp::EXPENSE_CB_DEFAULT_UN_CHECKED_NT: false
+                        nsp::EXPENSE_CURRENCY: null
+                        nsp::EXPENSE_CURRENCY_HIDDEN: null
+                        nsp::EXPENSE_CURRENCY_NF: null
+                        nsp::EXPENSE_CURRENCY_NT: null
+                        nsp::EXPENSE_DATE_DEFAULT_TODAY: null
+                        nsp::EXPENSE_DATE_HIDDEN: null
+                        nsp::EXPENSE_DATE_NF: null
+                        nsp::EXPENSE_DATE_NT: null
+                        nsp::EXPENSE_EMAIL: null
+                        nsp::EXPENSE_EMAIL_HIDDEN: null
+                        nsp::EXPENSE_EMAIL_NF: null
+                        nsp::EXPENSE_EMAIL_NT: null
+                        nsp::EXPENSE_MULTIPICKLIST:
+                          - Val 1
+                        nsp::EXPENSE_MULTIPICKLIST_HIDDEN: []
+                        nsp::EXPENSE_MULTIPICKLIST_NF: []
+                        nsp::EXPENSE_MULTIPICKLIST_NT: []
+                        nsp::EXPENSE_NUMBER: null
+                        nsp::EXPENSE_NUMBER_HIDDEN: null
+                        nsp::EXPENSE_NUMBER_NF: null
+                        nsp::EXPENSE_NUMBER_NT: null
+                        nsp::EXPENSE_PERCENT: null
+                        nsp::EXPENSE_PERCENT_HIDDEN: null
+                        nsp::EXPENSE_PERCENT_NF: null
+                        nsp::EXPENSE_PERCENT_NT: null
+                        nsp::EXPENSE_PICKLIST: FALL
+                        nsp::EXPENSE_PICKLIST_HIDDEN: null
+                        nsp::EXPENSE_PICKLIST_NF: null
+                        nsp::EXPENSE_PICKLIST_NT: null
+                        nsp::EXPENSE_TEXT: null
+                        nsp::EXPENSE_TEXT_AREA: null
+                        nsp::EXPENSE_TEXT_AREA_HIDDEN: null
+                        nsp::EXPENSE_TEXT_AREA_NF: null
+                        nsp::EXPENSE_TEXT_AREA_NT: null
+                        nsp::EXPENSE_TEXT_HIDDEN: null
+                        nsp::EXPENSE_TEXT_NF: null
+                        nsp::EXPENSE_TEXT_NT: null
+                        nsp::EXPENSE_URL: null
+                        nsp::EXPENSE_URL_HIDDEN: null
+                        nsp::EXPENSE_URL_NF: null
+                        nsp::EXPENSE_URL_NT: null
+                        nsp::GLDIMPRODUCT_LINES: null
+                        nsp::GLDIMREGION: null
+                        nsp::GLDIMVERTICAL: null
+                        nsp::RDETAIL_ONE_MANY: null
+                        nsp::RDETAIL_ONE_ONE: null
+                        href: /objects/contract-expense/17
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an contract expense
+      description: Updates an existing contract expense by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract expenses
+      operationId: patch-objects-contract-expense-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Example-1:
+                value:
+                  currency:
+                    exchangeRateDate: '2022-05-01'
+                  postingDate: '2022-06-01'
+                  txnAmount: 1200
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract-expense
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '2'
+                        id: '2'
+                        href: /objects/contract-expense/2
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an contract expense
+      description: Deletes a/an contract expense.
+      tags:
+        - Contract expenses
+      operationId: delete-objects-contract-expense-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense:
+      $ref: '#/components/schemas/contract-expense.s1.schema'
+    contract-expenseRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    itemref.s1.schema:
+      title: itemref
+      type: object
+      x-object: item
+      properties:
+        key:
+          type: string
+          description: Item key
+          example: '319'
+          x-mappedTo: ITEMKEY
+          readOnly: true
+        id:
+          type: string
+          description: Item ID
+          example: Overhead
+          x-mappedTo: ITEMID
+        name:
+          type: string
+          description: Item name
+          example: Overhead
+          readOnly: true
+          x-mappedTo: ITEMNAME
+        href:
+          type: string
+          description: URL of the item
+          readOnly: true
+          example: /objects/item/319
+    contract-dimensionref.s1.schema:
+      type: object
+      title: contract dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATIONID
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/731
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENTID
+              example: DEP-11
+            href:
+              type: string
+              readOnly: true
+              example: /objects/department/731
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: 1605212096809
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+      x-tags:
+        - reference
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-expense.s1.schema:
+      title: contract-expense
+      x-mappedTo: contractexpense
+      type: object
+      description: Information for contract expense lines.
+      properties:
+        href:
+          type: string
+          example: /objects/contract-expense/1
+          readOnly: true
+        key:
+          type: string
+          description: System-assigned key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier of the expense line
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        txnAmount:
+          type: string
+          format: decimal-precision-2
+          description: Amount
+          x-mappedTo: AMOUNT
+          example: '100.00'
+        baseAmount:
+          type: string
+          format: decimal-precision-2
+          description: Base amount
+          x-mappedTo: BASEAMOUNT
+          example: '100.00'
+        expenseType:
+          type: string
+          description: Type
+          x-mappedTo: TYPE
+          enum:
+            - contract
+            - contractLine
+          x-mappedToValues:
+            - Contract
+            - Contract line
+          default: contract
+          example: contract
+        currency:
+          title: currency
+          type: object
+          properties:
+            exchangeRateDate:
+              type: string
+              format: date
+              description: Exchange rate date
+              x-mappedTo: EXCH_RATE_DATE
+              example: '2022-01-01'
+            exchangeRate:
+              type: string
+              format: decimal-precision-8
+              description: Exchange rate
+              x-mappedTo: EXCHANGE_RATE
+              example: '1'
+            exchangeRateType:
+              type: string
+              description: Exchange rate type name
+              x-mappedTo: EXCHRATETYPE
+              example: Custom
+        location:
+          type: object
+          x-object: location
+          x-mappedTo: location
+          properties:
+            key:
+              type: string
+              description: Location key
+              x-mappedTo: LOCATIONKEY
+              readOnly: true
+              example: '5'
+            id:
+              type: string
+              description: Location id
+              x-mappedTo: LOCATIONID
+              example: CA
+            name:
+              type: string
+              description: Location name
+              x-mappedTo: LOCATIONNAME
+              example: California
+            href:
+              type: string
+              readOnly: true
+              example: /objects/location/5
+        lineNo:
+          type: string
+          description: Line number
+          x-mappedTo: LINENO
+          example: '1'
+        postingDate:
+          type: string
+          format: date
+          description: GL posting date
+          x-mappedTo: POSTINGDATE
+          example: '2022-02-01'
+        cancellationDate:
+          type: string
+          format: date
+          description: Cancellation date
+          x-mappedTo: CANCELDATE
+          example: '2022-11-01'
+        state:
+          type: string
+          description: State
+          x-mappedTo: STATE
+          enum:
+            - draft
+            - inProgress
+            - cancelled
+          x-mappedToValues:
+            - Draft
+            - In progress
+            - Cancelled
+          example: inProgress
+        calculatedExpensePostingType:
+          type: string
+          description: expense posting type
+          x-mappedTo: CALCULATEDEXPENSEPOSTINGTYPE
+          example: manual
+        memo:
+          type: string
+          description: Post memo
+          x-mappedTo: POSTMEMO
+          example: Test
+        contract:
+          type: object
+          x-mappedTo: contract
+          x-object: contract
+          description: contract
+          properties:
+            key:
+              type: string
+              description: Contract key
+              x-mappedTo: CONTRACTKEY
+              example: '59'
+            id:
+              type: string
+              description: Contract
+              x-mappedTo: CONTRACTID
+              example: CON-0045
+            href:
+              type: string
+              example: /objects/contract/1
+              readOnly: true
+        contractLine:
+          type: object
+          x-mappedTo: contractdetail
+          x-object: contract-line
+          properties:
+            id:
+              type: string
+              description: Contract detail key
+              x-mappedTo: CONTRACTDETAILKEY
+              example: '2'
+            state:
+              type: string
+              description: contract detail state
+              example: completed
+              x-mappedTo: CONTRACTDETAILSTATE
+            href:
+              type: string
+              example: /objects/contract-line/1
+              readOnly: true
+        template:
+          type: object
+          title: template
+          properties:
+            expenseJournal1:
+              type: object
+              title: Expense Journal 1
+              properties:
+                postingType:
+                  type: string
+                  description: Journal 1 expense posting type
+                  x-mappedTo: EXPENSEPOSTINGTYPE
+                  enum:
+                    - automatic
+                    - manual
+                  x-mappedToValues:
+                    - Automatic
+                    - Manual
+                  example: manual
+                postingConversionDate:
+                  type: string
+                  format: date
+                  description: Journal 1 expense posting conversion date
+                  x-mappedTo: EXPPOSTINGCONVERSIONDATE
+                  example: '2022-05-01'
+                journalDetails:
+                  type: object
+                  x-mappedTo: gljournal
+                  x-object: gl-journal
+                  description: Journal details
+                  properties:
+                    key:
+                      type: string
+                      description: Expense journal key
+                      x-mappedTo: EXPENSEJOURNALKEY
+                      example: '3'
+                    title:
+                      type: string
+                      x-mappedTo: EXPENSEJOURNALTITLE
+                      example: Expense Journal
+                    symbol:
+                      type: string
+                      x-mappedTo: EXPENSEJOURNAL
+                      example: EJ
+                    href:
+                      type: string
+                      example: /objects/gl-journal/3
+                      readOnly: true
+                expenseTemplate:
+                  type: object
+                  description: Expense template
+                  x-mappedTo: contractexpensetemplate
+                  x-object: contract-expense-template
+                  properties:
+                    defaultPostingType:
+                      type: string
+                      description: expense template posting type
+                      x-mappedTo: EXPENSETEMPLATEPOSTINGTYPE
+                      example: manual
+                    id:
+                      type: string
+                      description: Expense template 1
+                      x-mappedTo: TEMPLATENAME
+                      example: EXPSTRAIGHTLINE_MAN
+                    key:
+                      type: string
+                      x-mappedTo: TEMPLATEKEY
+                      example: '1'
+                    startDate:
+                      type: string
+                      format: date
+                      description: Expense start
+                      x-mappedTo: STARTDATE
+                      example: '2022-01-01'
+                    endDate:
+                      type: string
+                      format: date
+                      description: Expense end
+                      x-mappedTo: ENDDATE
+                      example: '2022-12-01'
+                schedule:
+                  type: object
+                  x-object: contract-expense-schedule
+                  x-mappedTo: contractexpenseschedulenxg
+                  description: contract expense schedule
+                  properties:
+                    key:
+                      type: string
+                      description: expense Schedule key
+                      x-mappedTo: SCHEDULEKEY
+                      readOnly: true
+                      example: '12'
+                    status:
+                      type: string
+                      description: Schedule1 status
+                      x-mappedTo: SCHEDULESTATUS
+                      example: inProgress
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/contract-expense-schedule/12
+            expenseJournal2:
+              type: object
+              title: Expense Journal 2
+              properties:
+                postingType:
+                  type: string
+                  description: Journal 2 expense posting type
+                  x-mappedTo: EXPENSE2POSTINGTYPE
+                  enum:
+                    - automatic
+                    - manual
+                  x-mappedToValues:
+                    - Automatic
+                    - Manual
+                  example: manual
+                postingConversionDate:
+                  type: string
+                  format: date
+                  description: Journal 2 expense posting conversion date
+                  x-mappedTo: EXP2POSTINGCONVERSIONDATE
+                  example: '2022-05-01'
+                journalDetails:
+                  type: object
+                  x-mappedTo: gljournal
+                  x-object: gl-journal
+                  description: Journal details
+                  properties:
+                    key:
+                      type: string
+                      description: Expense journal key
+                      x-mappedTo: EXPENSE2JOURNALKEY
+                      example: '3'
+                    title:
+                      type: string
+                      x-mappedTo: EXPENSE2JOURNALTITLE
+                      example: Expense Journal
+                    symbol:
+                      type: string
+                      x-mappedTo: EXPENSE2JOURNAL
+                      example: EJ
+                    href:
+                      type: string
+                      example: /objects/gl-journal/3
+                      readOnly: true
+                expenseTemplate:
+                  type: object
+                  x-mappedTo: contractexpensetemplate
+                  x-object: contract-expense-template
+                  description: Expense template
+                  properties:
+                    id:
+                      type: string
+                      description: Expense template 2
+                      x-mappedTo: TEMPLATE2NAME
+                      example: EXPSTRAIGHTLINE_MAN
+                    defaultPostingType:
+                      type: string
+                      x-mappedTo: EXPENSE2TEMPLATEPOSTINGTYPE
+                      example: manual
+                    key:
+                      type: string
+                      x-mappedTo: TEMPLATE2KEY
+                      example: '1'
+                    startDate:
+                      type: string
+                      format: date
+                      description: Expense2 start
+                      x-mappedTo: START2DATE
+                      example: '2022-01-01'
+                    endDate:
+                      type: string
+                      format: date
+                      description: Expense2 end
+                      x-mappedTo: END2DATE
+                      example: '2022-12-01'
+                    href:
+                      type: string
+                      example: /objects/contract-expense-template/1
+                      readOnly: true
+                schedule:
+                  type: object
+                  x-object: contract-expense-schedule
+                  x-mappedTo: contractexpenseschedulenxg
+                  description: contract expense schedule
+                  properties:
+                    key:
+                      type: string
+                      description: expense Schedule key
+                      x-mappedTo: SCHEDULE2KEY
+                      readOnly: true
+                      example: '12'
+                    status:
+                      type: string
+                      description: Schedule2 status
+                      x-mappedTo: SCHEDULE2STATUS
+                      example: inProgress
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/contract-expense-schedule/12
+        deferredExpenseGLAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          description: Deferred expense account Details
+          properties:
+            name:
+              type: string
+              description: Deferred expense account title
+              x-mappedTo: DEFERREDEXPENSEACCTTITLE
+              example: Expense Account
+            id:
+              type: string
+              description: Deferred expense account number
+              x-mappedTo: DEFERREDEXPENSEACCTNO
+              example: '150'
+            key:
+              type: string
+              description: Deferred expense account key
+              x-mappedTo: DEFERREDEXPENSEACCTKEY
+              example: '411'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/411
+        expenseAccrualGLAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          description: Expense accural account Details
+          properties:
+            name:
+              type: string
+              x-mappedTo: EXPENSEACCRUALACCTTITLE
+              example: Expense Account
+            id:
+              type: string
+              description: Expense accrual account number
+              x-mappedTo: EXPENSEACCRUALACCTNO
+              example: '4113'
+            key:
+              type: string
+              description: Expense accrual account key
+              x-mappedTo: EXPENSEACCRUALACCTKEY
+              example: '412'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/412
+        recognizedExpenseGLAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            id:
+              type: string
+              description: Recognized expense
+              x-mappedTo: RECOGNIZEDEXPENSEACCTNO
+              example: '1501'
+            name:
+              type: string
+              description: Recognized expense account title
+              x-mappedTo: RECOGNIZEDEXPENSEACCTTITLE
+              example: Expense Account
+            key:
+              type: string
+              description: Recognized expense account key
+              x-mappedTo: RECOGNIZEDEXPENSEACCTKEY
+              example: '413'
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account/413
+        item:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/itemref.s1.schema'
+            - type: object
+              properties:
+                key:
+                  type: string
+                  description: Item key
+                  x-mappedTo: ITEMKEY
+                  example: '319'
+                id:
+                  type: string
+                  description: Item ID
+                  x-mappedTo: ITEMID
+                  example: Overhead
+                name:
+                  type: string
+                  description: Item name
+                  x-mappedTo: ITEMNAME
+                  example: Overhead
+                href:
+                  type: string
+                  description: URL of the item
+                  readOnly: true
+                  example: /objects/item/319
+        dimensions:
+          $ref: '#/components/schemas/contract-dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

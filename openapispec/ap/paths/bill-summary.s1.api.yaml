@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: bill-summary
+  description: bill-summary API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Bill summaries
+    description: Accounts Payable (AP) summaries are collections of the same type of transactions, grouped together for processing.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/bill-summary:
+    get:
+      summary: List bill summaries
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each bill summary. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Bill summaries
+      operationId: get-objects-bill-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bill-summary objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bill summaries:
+                  value:
+                    'ia::result':
+                      - key: '94'
+                        id: '94'
+                        href: /objects/bill-summary/94
+                      - key: '96'
+                        id: '96'
+                        href: /objects/bill-summary/96
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/bill-summary/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the bill summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a bill summary
+      description: Returns detailed information for a specified bill summary.
+      tags:
+        - Bill summaries
+      operationId: get-objects-bill-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bill-summary
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bill-summary'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a bill summary:
+                  value:
+                    'ia::result':
+                      key: '98'
+                      id: '98'
+                      name: August 2001 Bills
+                      postingDate: '2001-08-31'
+                      status: active
+                      type: pi
+                      total: 47789.94
+                      parent:
+                        key: null
+                      preventGLPosting: null
+                      glAccount:
+                        key: null
+                      createdBy: manual
+                      href: /objects/bill-summary/98
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bill-summary:
+      $ref: ../models/bill-summary.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

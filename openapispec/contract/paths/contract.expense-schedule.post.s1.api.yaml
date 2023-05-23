@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-schedule post
+  description: API to post contract-expense-schedules
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract expense schedules
+    description: contract expense schedules
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/expense-schedule/post:
+    post:
+      summary: Post contract expense schedule
+      description: Post all J1 contract expense schedule entries for a given customer (across contracts) or for a given contract.
+      tags:
+       - Contract expense schedules
+      operationId: post-contract-expense-schedule-post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-schedule-post-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-schedule-post-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-schedule-post-request:
+      $ref: ../references/contract-schedule-post-request.typeref.yaml
+    contract-expense-schedule-post-response:
+      $ref: ../references/contract-schedule-post-response.typeref.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

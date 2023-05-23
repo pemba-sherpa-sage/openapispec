@@ -1,0 +1,196 @@
+openapi: 3.0.0
+info:
+  title: txn-definition
+  description: txn-definition API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Transaction definition
+    description: Transaction definition description.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/txn-definition:
+    get:
+      summary: List transaction definition
+      description: Returns a collection with a key, ID, and link for each transaction definition.
+      tags:
+        - Transaction definition
+      operationId: get-objects-txn-definition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of txn-definition objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '33'
+                        id: '33'
+                        href: /objects/txn-definition/33
+                    'ia::meta':
+                      totalCount: 1
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an transaction definition
+      description: Creates a new transaction definition.
+      tags:
+        - Transaction definition
+      operationId: post-objects-txn-definition
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/txn-definition'
+                - $ref: '#/components/schemas/txn-definitionRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: Sales Invoice
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New txn-definition
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/txn-definition/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the transaction definition.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a transaction definition
+      description: Returns detailed information for a particular transaction definition.
+      tags:
+        - Transaction definition
+      operationId: get-objects-txn-definition-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the txn-definition
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/txn-definition'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '154'
+                      id: Sales Invoice
+                      href: /objects/txn-definition/154
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an transaction definition
+      description: Updates an existing transaction definition by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Transaction definition
+      operationId: patch-objects-txn-definition-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/txn-definition'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: 'true'
+            examples:
+              example-1:
+                value:
+                  key: '154'
+                  id: 'true'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated txn-definition
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '33'
+                      id: '33'
+                      href: /objects/txn-definition/33
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an transaction definition
+      description: Deletes a/an transaction definition.
+      tags:
+        - Transaction definition
+      operationId: delete-objects-txn-definition-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    txn-definition:
+      $ref: ../models/txn-definition.s1.schema.yaml
+    txn-definitionRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

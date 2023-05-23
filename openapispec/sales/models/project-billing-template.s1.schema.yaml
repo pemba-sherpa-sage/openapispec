@@ -1,0 +1,80 @@
+title: project-billing-template
+x-mappedTo: billingtemplate
+type: object
+description: List of project billing templates.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the billing-template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Billing template ID.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: Endpoint for the billing-template.
+    readOnly: true
+    example: /objects/billing-template/23
+  templateId:
+    type: string
+    description: Template ID.
+    x-mappedTo: TEMPLATEID
+    example:
+  description:
+    type: string
+    description: Template description.
+    x-mappedTo: DESCRIPTION
+    example:
+  billingMethod:
+    type: string
+    description: Billing method.
+    x-mappedTo: BILLINGMETHOD
+    example:
+    enum:
+      - 'percentCompleted'
+      - 'milestone'
+    x-mappedToValues:
+      - 'Percent Completed'
+      - 'Milestone'
+  calculateOn:
+    type: string
+    description: Calculate on.
+    x-mappedTo: CALCMETHOD
+    example:
+    enum:
+      - 'project'
+      - 'task'
+    x-mappedToValues:
+      - 'Project'
+      - 'Task'
+    default: 'Project'
+  basedOn:
+    type: string
+    description: Based on.
+    x-mappedTo: CALCHOURS
+    example:
+    enum:
+      - 'plannedHours'
+      - 'estimatedHours'
+      - 'budgetedHours'
+      - 'observed%Completed'
+    x-mappedToValues:
+      - 'Planned Hours'
+      - 'Estimated Hours'
+      - 'Budgeted Hours'
+      - 'Observed % Completed'
+    default: 'Estimated Hours'
+  historical:
+    type: boolean
+    description: Historical.
+    x-mappedTo: HISTORICAL
+    example:
+    x-mappedToType: string
+    default: 'false'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

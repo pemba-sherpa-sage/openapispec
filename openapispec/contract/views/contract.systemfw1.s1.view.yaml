@@ -1,0 +1,26 @@
+key: contract::systemContractFW1
+id: systemContractFW1
+object: contract
+name: All
+description: Specifies all active contracts
+query:
+  object: contract
+  fields:
+    - id
+    - name
+    - customer.name
+    - startDate
+    - endDate
+    - state
+    - currency.txnCurrency
+    - location.id
+    - total
+    - billed
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+contexts:
+  - __default
+

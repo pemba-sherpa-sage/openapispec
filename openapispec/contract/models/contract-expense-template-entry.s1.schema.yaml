@@ -1,0 +1,62 @@
+title: contract-expense-template-entry
+x-mappedTo: contractexpensetemplateentry
+x-ownedBy: contract-expense-template
+type: object
+description: Contract expense template entry
+properties:
+  href:
+    type: string
+    example: '/objects/contract-expense-template-entry/1'
+    readOnly: true
+  key:
+    type: string
+    description: Contract Expense Template Entry Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Contract Expense Template Entry Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  periodOffset:
+    type: string
+    description: number of months offset
+    x-mappedTo: PERIODOFFSET
+    example: '2'
+  periodPercent:
+    type: string
+    format: decimal-precision-8
+    description: Percentage to recognize
+    x-mappedTo: PERIODPERCENT
+    example: '10.12312000'
+  stepPercent:
+    type: string
+    format: decimal-precision-8
+    description: Threshold percentage
+    x-mappedTo: STEPPERCENT
+    example: '90.12312000'
+  contractExpenseTemplate:
+    type: object
+    x-mappedTo: contractexpensetemplate
+    x-object: contract-expense-template
+    properties:
+      key:
+        type: string
+        description: Template Key
+        x-mappedTo: TEMPLATEKEY
+        example: '1'
+      id:
+        type: string
+        description: Contract Expense Template ID
+        x-mappedTo: NAME
+        example: 'EXPSTRAIGHTLINE_MAN'
+      href:
+        type: string
+        example: '/objects/contract-expense-template/1'
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

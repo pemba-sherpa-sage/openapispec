@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/icrow/view
+    POST:
+      - inv/lists/icrow/create
+    PATCH:
+      - inv/lists/icrow/edit
+    DELETE:
+      - inv/lists/icrow/delete
+s1:
+  hash: '0'
+  type: rootObject

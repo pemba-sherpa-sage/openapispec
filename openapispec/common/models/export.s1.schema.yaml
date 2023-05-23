@@ -1,0 +1,23 @@
+title: export
+description: Export
+type: object
+x-mappedTo: __custom__
+properties:
+  fileType:
+    x-mappedTo: __custom__
+    description: Export file type. Allowed values are - 'pdf', 'csv', 'word', 'xml', 'xls'
+    enum:
+      - pdf
+      - csv
+      - word
+      - xml
+      - xls
+    type: string
+    example: csv
+  query:
+    type: object
+    description: Query Parameters
+    allOf:
+      - $ref: ../../common/models/query.schema.yaml
+      - type: object
+        x-mappedTo: QUERY

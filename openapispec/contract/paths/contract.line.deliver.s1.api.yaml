@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: contract.line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+tags:
+  - name: contract-line
+    description: This function is applicable when using event-driven revenue recognition. It changes the Delivery status of the given contract line to Delivered.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/line/deliver:
+    post:
+      summary: contract-line deliver
+      description: This function is applicable when using event-driven revenue recognition. It changes the Delivery status of the given contract line to Delivered.
+      tags:
+        - contract-lines
+      operationId: post-contract-line-deliver
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-line-deliver-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-line-deliver-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line-deliver-request:
+      description: deliver request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+        - deliveryDate
+      properties:
+        key:
+          type: string
+          description: Contract line key
+          x-mappedTo: CONTRACTDETAILKEY
+          nullable: false
+          example: '2'
+        deliveryDate:
+          type: string
+          format: date
+          description: deliver date
+          x-mappedTo: DELIVERYDATE
+          nullable: false
+          example: '2022-01-01'
+    contract-line-deliver-response:
+      description: deliver response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,16 @@
+key: sandbox::all
+id: all
+object: sandbox
+name: All
+description: Specifies all sandboxes
+query:
+  object: sandbox
+  fields:
+    - name
+    - state
+    - audit.createdDateTime
+    - expirationDate
+  orderBy:
+    - name: asc
+contexts:
+  - __default

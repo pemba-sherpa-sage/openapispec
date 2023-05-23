@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/bin/view
+    POST:
+      - inv/lists/bin/create
+    PATCH:
+      - inv/lists/bin/edit
+    DELETE:
+      - inv/lists/bin/delete
+s1:
+  hash: '0'
+  type: rootObject

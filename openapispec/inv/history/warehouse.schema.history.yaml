@@ -1,0 +1,21 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/warehouse/view
+      - po/lists/warehouse/view
+      - so/lists/warehouse/view
+    POST:
+      - inv/lists/warehouse/create
+      - po/lists/warehouse/create
+      - so/lists/warehouse/create
+    PATCH:
+      - inv/lists/warehouse/edit
+      - po/lists/warehouse/edit
+      - so/lists/warehouse/edit
+    DELETE:
+      - inv/lists/warehouse/delete
+      - po/lists/warehouse/delete
+      - so/lists/warehouse/delete
+s1:
+  hash: '0'
+  type: rootObject

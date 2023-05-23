@@ -1,0 +1,83 @@
+fields:
+    key:
+        uiType: integer
+        uiLabel: 'Record number'
+    id:
+        uiType: text
+        uiLabel: ID
+    name:
+        uiType: text
+        uiLabel: Name
+    description:
+        uiType: multitext
+        uiLabel: Description
+    costUnitDescription:
+        uiType: text
+        uiLabel: 'Cost unit description'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+groups:
+    accumulationType:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Accumulation type'
+            id:
+                uiType: ptr
+                uiLabel: 'Accumulation type name'
+    audit:
+        fields:
+            createdDateTime:
+                uiType: timestamp
+                uiLabel: 'When created'
+            modifiedDateTime:
+                uiType: timestamp
+                uiLabel: 'When modified'
+            createdBy:
+                uiType: ptr
+                uiLabel: 'Created by'
+            modifiedBy:
+                uiType: ptr
+                uiLabel: 'Modified by'
+refs:
+    glAccount:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'GL account key'
+            id:
+                uiType: ptr
+                uiLabel: 'GL account'
+            name:
+                uiType: text
+                uiLabel: 'GL account name'
+    parent:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Parent standard cost type key'
+            id:
+                uiType: ptr
+                uiLabel: 'Parent ID'
+            name:
+                uiType: text
+                uiLabel: 'Parent name'
+    item:
+        fields:
+            key:
+                uiType: integer
+                uiLabel: 'Item key'
+            id:
+                uiType: ptr
+                uiLabel: 'Item ID'
+            name:
+                uiType: text
+                uiLabel: 'Item name'

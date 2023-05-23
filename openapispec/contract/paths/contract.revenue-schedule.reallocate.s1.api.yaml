@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: contract-revenue-schedule reallocate
+  description: API to reallocate contract-revenue-schedules
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract revenue schedules
+    description: contract revenue schedules
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/revenue-schedule/reallocate:
+    post:
+      summary: Re-allocate contract revenue schedule
+      description: Reallocate J1 daily rate or straight line revenue schedules based on different start and/or end dates.
+      tags:
+        - Contract revenue schedules
+      operationId: reallocate-contract-revenue-schedule-reallocate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-revenue-schedule-reallocate-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-revenue-schedule-reallocate-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-revenue-schedule-reallocate-request:
+      $ref: ../references/contract-schedule-reallocate-request.typeref.yaml
+    contract-revenue-schedule-reallocate-response:
+      $ref: ../references/contract-schedule-reallocate-response.typeref.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

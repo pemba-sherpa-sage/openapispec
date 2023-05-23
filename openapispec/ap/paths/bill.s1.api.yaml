@@ -1,0 +1,478 @@
+openapi: 3.0.0
+info:
+  title: bill
+  description: bill API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Bills
+    description: |
+      A bill is a statement of charges for money owed to a vendor for goods or services. After creating a bill, you can move it along the normal Accounts Payable (AP) workflow. For example, that might mean approving the bill, creating a payment request for the bill, and paying the bill.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/bill/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the bill.
+    get:
+      summary: Get a bill
+      description: Returns detailed information for a specified bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View Bills
+      tags:
+        - Bills
+      operationId: get-objects-bill-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bill
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bill'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a bill:
+                  value:
+                    'ia::result':
+                      key: '63'
+                      id: '63'
+                      recordType: pi
+                      billNumber: bill_withtax_retainage
+                      state: noValue
+                      vendor:
+                        id: V-00014
+                        name: Pac bell
+                        form1099:
+                          type: NEC
+                          box: 15A
+                          vendorTypeForm1099Type: NEC
+                        vendorDue: -334
+                      referenceNumber: Ref-123
+                      description: This bill contains both tax and retainage.
+                      purchasing:
+                        documentId: Vendor Invoice-root-VI#0031#doc
+                      term:
+                        id: N0
+                        key: '21'
+                        href: /objects/ap-term/21
+                      createdDate: '2022-02-21'
+                      audit:
+                        createdDateTime: '2022-02-21T00:00:00Z'
+                        modifiedDateTime: '2022-02-22T07:59:56Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      postingDate: '2022-02-21'
+                      discountCutoffDate: '2022-02-21'
+                      dueDate: '2022-03-08'
+                      paymentInformation:
+                        fullyPaidDate: '2022-02-21'
+                        totalBaseAmountSelectedForPayment: 0
+                        totalBaseAmountPaid: 0
+                        totalTxnAmountSelectedForPayment: 0
+                        totalTxnAmountPaid: 0
+                      recommendedPaymentDate: '2022-02-26'
+                      paymentPriority: normal
+                      isOnHold: false
+                      currency:
+                        baseCurrency: GBP
+                        txnCurrency: GBP
+                        exchangeRate:
+                          date: '2022-02-21'
+                          typeId: '-1'
+                          rate: 1.0789
+                      totalBaseAmount: 0
+                      totalBaseAmountDue: 0
+                      totalTxnAmount: 0
+                      totalTxnAmountDue: 0
+                      contacts:
+                        payTo:
+                          id: 'Klay Vanderbilt'
+                          key: '226'
+                          tax:
+                            group:
+                              key: '288'
+                              id: Goods Zero Rate - CA
+                            taxId: 252-85-7897
+                          href: /objects/contact/226
+                        returnTo:
+                          id: 'Yusuf Pringle'
+                          key: '226'
+                          href: /objects/contact/226
+                      billSummary:
+                        name: 'AP Purchase Invoices: 2022/02/21 Batch'
+                        key: '280'
+                        id: '66'
+                        isSummaryOpen: open
+                        isSummaryPosted: 'false'
+                        href: /objects/bill-summary/280
+                      recurringSchedule:
+                        key: '20'
+                      isSystemGenerated: F
+                      dueInDays: '8'
+                      isTaxInclusive: true
+                      taxSolution:
+                        key: '2'
+                        id: Australia - GST
+                        showMultiLineTax: true
+                        method: VAT
+                        href: /objects/tax-solution/2
+                      retainage:
+                        defaultPercentage: 2
+                        totalTxnAmountRetained: 0
+                        totalTxnAmountReleased: 0
+                        totalBaseAmountRetained: 0
+                      attachment:
+                        key: '18'
+                        id: Attach-01
+                        href: /objects/attachment/18
+                      smartTransactions:
+                        documentSource: email
+                        fileUpload:
+                          importExceptions: resolve
+                          importIssuesErrorMessage: The vendor A100 is invalid
+                        email:
+                          recipientEmail: joe.smith@abcompany.com
+                          senderEmail: john.doe@acme.com
+                      sourceModule: accountsPayable
+                      location:
+                        key: '4'
+                      lines:
+                        - id: '181'
+                          key: '181'
+                          bill:
+                            id: '63'
+                            key: '63'
+                            href: /objects/bill/63
+                          glAccount:
+                            key: '245'
+                            id: '6000'
+                            name: G&A Salaries
+                            href: /objects/gl-account/245
+                          overriddenOffsetGLAccount:
+                            key: '384'
+                            id: '1234.34'
+                            name: AP ACCOUNT
+                            href: /objects/gl-account/384
+                          accountLabel:
+                            key: '14'
+                            id: Accounting Fees
+                          createdDate: '2022-02-21'
+                          baseAmount: -5
+                          txnAmount: -5
+                          dimensions:
+                            department:
+                              key: '9'
+                              id: '11'
+                              name: Accounting
+                            location:
+                              key: '4'
+                              id: '4'
+                              name: Australia
+                              href: /objects/location/4
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                          baselocation:
+                            name: Australia
+                            key: '4'
+                            href: /objects/location/4
+                          memo: this bill contains both tax and retainage
+                          currency:
+                            exchangeRate:
+                              date: '2021-01-23'
+                              typeId: '1'
+                              rate: 1.0789
+                            txnCurrency: GBP
+                            baseCurrency: GBP
+                          allocation:
+                            name: Alloc1-WBS-US
+                            key: '1'
+                            id: 1
+                          hasForm1099: 'false'
+                          lineNumber: 1
+                          paymentInformation:
+                            totalBaseAmountPaid: -5
+                            totalTxnAmountPaid: -5
+                            totalBaseAmountSelectedForPayment: 0
+                            totalTxnAmountSelectedForPayment: 0
+                          project:
+                            isBillable: false
+                            billed: false
+                          releaseToPay: false
+                          tax:
+                            parentEntryKey: 288
+                            parentTaxEntryKey: 289
+                            isPartialExemption: false
+                          state: A
+                          form1099:
+                            type: NEC
+                            box: A
+                          purchasing:
+                            taxDetail:
+                              id: Stationary Tax
+                              key: '15'
+                            document:
+                              key: '2437'
+                              id: Sales Invoice-INV0110
+                            documentLine:
+                              key: '3'
+                              id: '750'
+                          retainage:
+                            percentage: 2
+                            txnAmountRetained: 10
+                            baseAmountRetained: 10
+                            hasRetainage: true
+                            txnAmountReleased: 5
+                            release: true
+                          isSubTotal: subtotal
+                          href: /objects/bill-line/181
+                      href: /objects/bill/63
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bill
+      description: |
+        Deletes a bill. You can only delete a bill that's in a Posted, Draft, or Declined state. For partially paid bills, first cancel the payment request, which changes the bill's state to Posted. Bills in an Approved state can only be deleted if no payment has been made against them.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, Delete Bills 
+      tags:
+        - Bills
+      operationId: delete-objects-bill-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a bill
+      description: Updates an existing bill by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Bills
+      tags: 
+        - Bills
+      operationId: patch-objects-bill-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  billNumber: bill10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bill
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '63'
+                      id: '198376'
+                      href: /objects/bill/63
+                    'ia::meta':
+                      totalCount: 1  
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/bill:
+    get:
+      summary: List bills
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each bill. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List Bills
+      tags:
+        - Bills
+      operationId: get-objects-bill
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bill objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bills:
+                  value:
+                    'ia::result':
+                      - key: '299'
+                        id: '299'
+                        href: /objects/bill/299
+                      - key: '294'
+                        id: '294'
+                        href: /objects/bill/294
+                      - key: '295'
+                        id: '295'
+                        href: /objects/bill/295
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bill
+      description: |
+        Creates a new bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Add Bills  
+      tags:
+        - Bills
+      operationId: post-objects-bill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill'
+                - $ref: '#/components/schemas/billRequiredProperties'
+            examples:
+              Create a bill:
+                value:
+                  billNumber: Bill-001
+                  vendor:
+                    id: 1099 Int
+                  referenceNumber: Ref-123
+                  description: bill - 001 - vendor 1099
+                  term:
+                    id: N15
+                  createdDate: '2022-02-21'
+                  postingDate: '2022-02-21'
+                  discountCutoffDate: '2022-02-21'
+                  dueDate: '2022-03-08'
+                  recommendedPaymentDate: '2022-02-26'
+                  paymentPriority: normal
+                  isOnHold: false
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                    exchangeRate:
+                      date: '2022-02-21'
+                      typeId: '-1'
+                      rate: 1.0679
+                  contacts:
+                    payTo:
+                      id: 1099 Int
+                    returnTo:
+                      id: 1099 Int
+                  isTaxInclusive: false
+                  attachment:
+                    id: '10'
+                  lines:
+                    - glAccount:
+                        id: '6000'
+                      txnAmount: 5
+                      location:
+                        id: '1'
+                      description: bill - 001 - vendor 1099
+                      form1099:
+                        hasForm1099: false
+                      isBillable: false
+                      isPartialExemption: false
+                    - glAccount:
+                        id: '6002'
+                      txnAmount: 15
+                      location:
+                        id: '1'
+                      description: bill - 001 - vendor 1099
+                      form1099:
+                        hasForm1099: false
+                      isBillable: false
+                      isPartialExemption: false
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bill
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a bill:
+                  value:
+                    'ia::result':
+                      key: '299'
+                      id: '299'
+                      href: /objects/bill/299
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bill:
+      $ref: ../models/bill.s1.schema.yaml
+    billRequiredProperties:
+      type: object
+      required:
+        - postingDate
+        - dueDate
+        - vendor
+        - lines
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

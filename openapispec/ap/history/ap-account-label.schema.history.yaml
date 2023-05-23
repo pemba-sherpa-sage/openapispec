@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/apaccountlabel/view
+    POST:
+      - ap/lists/apaccountlabel/create
+    PATCH:
+      - ap/lists/apaccountlabel/edit
+    DELETE:
+      - ap/lists/apaccountlabel/delete
+s1:
+  hash: '0'
+  type: rootObject

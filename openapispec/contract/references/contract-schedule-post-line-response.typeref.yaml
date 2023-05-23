@@ -1,0 +1,13 @@
+type: object
+title: contract-schedule-post-line-response
+description: post line response
+x-mappedTo: __custom__
+properties:
+  status:
+    type: string
+    description: status of the result
+    x-mappedTo: STATUS
+    example: completed
+    enum:
+      - completed
+examples: []

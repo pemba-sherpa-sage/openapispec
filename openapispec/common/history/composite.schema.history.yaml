@@ -1,0 +1,9 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - rest_api
+s1:
+  hash: '0'
+  type: coreService
+  adapter: GenericCompositeServiceAdapter
+  orchestrator: CompositeServiceOrchestrator

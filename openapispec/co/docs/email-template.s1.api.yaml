@@ -1,0 +1,436 @@
+openapi: 3.0.0
+info:
+  title: email-template
+  description: email-template API
+  version: '1.0'
+  contact:
+    email: tim.miller@sage.com
+    name: tmiller
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Email templates
+    description: Email template description -- explain what it's for and how it's used.
+paths:
+  /objects/email-template/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the email-template.
+    get:
+      summary: Get an email template
+      description: Returns detailed information for a particular email-template.
+      tags:
+        - Email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the email-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/email-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-email-template-key
+    delete:
+      summary: Delete an email template
+      description: Deletes an email template.
+      tags:
+        - Email templates
+      operationId: delete-objects-email-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an email template
+      description: Updates an existing email-template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Email templates
+      operationId: patch-objects-email-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated email-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/email-template.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  name: New Email Template patched
+                  email:
+                    to: mitcrellim@gmail.com
+                  includeTxnAttachments: true
+  /objects/email-template:
+    get:
+      summary: List email templates
+      description: Returns a collection with a key, ID, and link for each email template.
+      tags:
+        - Email templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of email-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-email-template
+    post:
+      summary: Create an email template
+      description: Creates a new email template.
+      tags:
+        - Email templates
+      operationId: post-objects-email-template
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New email-template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/email-template.s1.schema'
+                - $ref: '#/components/schemas/email-templateRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  name: New Email Template
+                  description: test for New Email Template
+                  templateType: purchasingTxn
+                  email:
+                    replyTo: tmiller@intacct.com
+                    to: tim.miller@sage.com
+                  subject: test subject
+                  body: test message for all to see
+components:
+  schemas:
+    email-template:
+      $ref: '#/components/schemas/email-template.s1.schema'
+    email-templateRequiredProperties:
+      type: object
+      properties:
+        email:
+          required:
+            - replyTo
+      required:
+        - name
+        - subject
+        - body
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    email-template.s1.schema:
+      title: email-template
+      x-mappedTo: emailtemplate
+      type: object
+      description: Listing of the templates for sending out any electronic order entry transaction with the person who created it. (Legacy)
+      properties:
+        key:
+          type: string
+          description: Email Template Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Email Template ID
+          readOnly: true
+          x-mappedTo: RECORDNO
+        href:
+          type: string
+          description: URL of the email-template.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+        name:
+          type: string
+          description: name for the email template.
+          x-mappedTo: EMAILTEMPLATENAME
+        description:
+          type: string
+          description: Description
+          x-mappedTo: DESCRIPTION
+        email:
+          type: object
+          title: email
+          properties:
+            replyTo:
+              type: string
+              description: Enter an email address you want the recipient to reply to. This corresponds to the From email address the user sees in the Print/Email dialog box when they send an email from a transaction.
+              x-mappedTo: FROMADDRESS
+            to:
+              type: string
+              description: To The recipients of the email. You can enter one or more merge fields in each field.
+              x-mappedTo: TOADDRESS
+            cc:
+              type: string
+              description: Carbon Copy the recipients of the email. You can enter one or more merge fields in each field.
+              x-mappedTo: CCADDRESS
+            bcc:
+              type: string
+              description: Blind Carbon Copy the recipients of the email. You can enter one or more merge fields in each field.
+              x-mappedTo: BCCADDRESS
+        subject:
+          type: string
+          description: Subject  Enter a combination of text and merge fields as desired to create an informative subject line. This field is required
+          x-mappedTo: SUBJECT
+        body:
+          type: string
+          description: Message  Enter a combination of text, merge fields, and HTML markup as desired to create and customize your message. This field is required.
+          x-mappedTo: BODY
+        logo:
+          type: object
+          title: logo
+          properties:
+            isLogoIncluded:
+              type: boolean
+              x-mappedToType: string
+              description: Include logo Select this checkbox to include the logo image file identified on the Company Information page in the email template.
+              x-mappedTo: INCLUDE_LOGO
+            verticalPosition:
+              type: string
+              enum:
+                - top
+                - bottom
+              x-mappedToValues:
+                - Top
+                - Bottom
+              description: Vertical logo position  Select whether the logo should appear at the top or bottom of the email.
+              x-mappedTo: VERTICAL_LOGO_POSITION
+              default: bottom
+            horizontalPosition:
+              type: string
+              enum:
+                - left
+                - right
+              x-mappedToValues:
+                - Left
+                - Right
+              description: Horizontal logo position  Select whether the logo should appear on the left or right side of the email.
+              x-mappedTo: HORIZONTAL_LOGO_POSITION
+              default: left
+        includeTxnAttachments:
+          type: boolean
+          x-mappedToType: string
+          description: Select this checkbox to include documents attached to the transaction, such as receipts, in the email you send from a transaction. Attachments are emailed in the format in which they were attached to the transaction. For example, if you attached a TXT file, the file is sent as a TXT file.
+          x-mappedTo: INCLUDE_ATTACHMENTS
+        includeProjectInvoiceTxnAttachments:
+          type: boolean
+          x-mappedToType: string
+          description: Select this checkbox to include all source document attachments linked to a project invoice when emailing the invoice. Attachments are emailed in the format in which they were attached to the transaction. For example, if you attached a TXT file, the file is sent as a TXT file.
+          x-mappedTo: INCLUDE_SRC_ATTACHMENTS
+        templateType:
+          type: string
+          enum:
+            - arInvoice
+            - arStatement
+            - Contract
+            - orderEntryTxn
+            - purchasingTxn
+          x-mappedToValues:
+            - arinvoice
+            - arstatement
+            - contract
+            - sodocument
+            - podocument
+          description: Application
+          x-mappedTo: OBJNAME
+          default: arInvoice
+        useSendersPreferredDateFormat:
+          type: boolean
+          x-mappedToType: string
+          description: Display dates in the user preference setting
+          x-mappedTo: USERPREFDATEFORMAT
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

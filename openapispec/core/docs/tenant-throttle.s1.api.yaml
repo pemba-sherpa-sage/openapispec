@@ -1,0 +1,365 @@
+openapi: 3.0.0
+info:
+  title: tenant-throttle
+  description: tenant-throttle API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Tenant throttle
+    description: Tenant throttle escription -- explain what it's for and how it's used.
+paths:
+  /objects/tenant-throttle:
+    get:
+      summary: List tenant throttles
+      description: Returns a collection with a key, ID, and link for each tenant throttle.
+      tags:
+        - Tenant throttles
+      operationId: get-objects-tenant-throttle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of tenant-throttle objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of tenant throttles:
+                  value:
+                    ia::result:
+                      - key: '15'
+                        id: '44289581'
+                        href: /objects/tenant-throttle/15
+                      - key: '14'
+                        id: '44308321'
+                        href: /objects/tenant-throttle/14
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an tenant throttle
+      description: Creates a new tenant throttle.
+      tags:
+        - Tenant throttle
+      operationId: post-objects-tenant-throttle
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tenant-throttle.s1.schema'
+                - $ref: '#/components/schemas/tenant-throttleRequiredProperties'
+            examples:
+              Creates a/an tenant throttle: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New tenant-throttle
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New tenant throttle: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/tenant-throttle/{key}:
+    parameters:
+      - name: key
+        description: system-assigned unique key for the tenant throttle.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '15'
+    get:
+      summary: Get a/an tenant throttle
+      description: Returns detailed information for a particular tenant throttle.
+      tags:
+        - Tenant throttle
+      operationId: get-objects-tenant-throttle-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the tenant-throttle
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/tenant-throttle.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the tenant throttle:
+                  value:
+                    ia::result:
+                      key: '15'
+                      id: '44289581'
+                      limit: null
+                      override:
+                        limit: 0
+                        endDate: null
+                      notes: null
+                      status: active
+                      audit:
+                        createdDateTime: '2023-03-30T23:56:22Z'
+                        modifiedDateTime: '2023-03-30T23:57:05Z'
+                      href: /objects/tenant-throttle/15
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an tenant throttle
+      description: Updates an existing tenant throttle by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Tenant throttle
+      operationId: patch-objects-tenant-throttle-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tenant-throttle.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an tenant throttle: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated tenant-throttle
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated tenant throttle: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an tenant throttle
+      description: Deletes a/an tenant throttle.
+      tags:
+        - Tenant throttle
+      operationId: delete-objects-tenant-throttle-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    tenant-throttle:
+      $ref: '#/components/schemas/tenant-throttle.s1.schema'
+    tenant-throttleRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    tenant-throttle.s1.schema:
+      title: tenant-throttle
+      x-mappedTo: tenantthrottle
+      type: object
+      description: null
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the tenant throttle limit.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Unique identifier for tenant throttle limit
+          x-mappedTo: CNY#
+          example: '49200'
+        href:
+          type: string
+          description: Endpoint for the tenant-throttle.
+          readOnly: true
+          example: /objects/tenant-throttle/23
+        limit:
+          type: integer
+          description: Throttle limit.
+          x-mappedTo: THROTTLE_LIMIT
+          example: 10
+        notes:
+          type: string
+          x-mappedTo: NOTES
+          description: Notes or comments about the change
+          example: Limit override for customer escalation resolution
+        override:
+          type: object
+          properties:
+            limit:
+              type: integer
+              x-mappedTo: THROTTLE_LIMIT_OVERRIDE
+              description: Override the throttle limit
+              example: 20
+            endDate:
+              type: string
+              format: date
+              x-mappedTo: END_DATE
+              description: End data for throttle Limit overide
+              example: '2023-10-10'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          type: object
+          properties:
+            createdDateTime:
+              description: Time of the submission
+              type: string
+              format: date-time
+              example: '2022-04-20T16:20:00Z'
+              x-mappedTo: WHENCREATED
+              readOnly: true
+            modifiedDateTime:
+              description: Time of the modification
+              type: string
+              format: date-time
+              example: '2022-04-20T16:20:00Z'
+              x-mappedTo: WHENMODIFIED
+              readOnly: true
+          readOnly: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

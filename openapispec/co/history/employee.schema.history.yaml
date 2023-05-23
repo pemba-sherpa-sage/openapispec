@@ -1,0 +1,28 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/employee/view
+      - ee/lists/employee/view
+      - pa/lists/employee/view
+      - rs/lists/employee/view
+    POST:
+      - co/lists/employee/create
+      - co/quickadds/employee/create
+      - ee/lists/employee/create
+      - ee/quickadds/employee/create
+      - pa/lists/employee/create
+      - rs/lists/employee/create
+      - rs/quickadds/employee/create
+    PATCH:
+      - co/lists/employee/edit
+      - ee/lists/employee/edit
+      - pa/lists/employee/edit
+      - rs/lists/employee/edit
+    DELETE:
+      - co/lists/employee/delete
+      - ee/lists/employee/delete
+      - pa/lists/employee/delete
+      - rs/lists/employee/delete
+s1:
+  hash: '0'
+  type: rootObject

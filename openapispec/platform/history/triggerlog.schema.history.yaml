@@ -1,0 +1,10 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/triggerlogs/view
+    DELETE:
+      - co/lists/triggerlogs/delete
+s1:
+  hash: '0'
+  type: rootObject
+

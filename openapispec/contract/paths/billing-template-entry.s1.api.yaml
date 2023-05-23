@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: billing-template-entry
+  description: billing-template-entry API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Contract billing template entries
+    description: Contract billing template entry.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/billing-template-entry:
+    get:
+      summary: List Contract billing template entries
+      description: Returns a collection with a key, ID, and link for each Contract billing template entry.
+      tags:
+        - Contract billing template entries
+      operationId: get-objects-billing-template-entry
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing-template-entry objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '7'
+                        id: '7'
+                        href: '/objects/billing-template-entry/7'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/billing-template-entry/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Contract billing template entry.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '7'
+    get:
+      summary: Get a/an Contract billing template entry
+      description: Returns detailed information for a particular Contract billing template entry.
+      tags:
+        - Contract billing template entries
+      operationId: get-objects-billing-template-entry-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billing-template-entry
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/billing-template-entry'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '7'
+                        billingTemplate:
+                          key: '37'
+                          href: '/objects/billing-template/37'
+                        periodOffset: '1'
+                        stepPercent: '1.00000000'
+                        periodPercent: '50.00000000'
+                        href: '/objects/billing-template-entry/7'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billing-template-entry:
+      $ref: ../models/billing-template-entry.s1.schema.yaml
+    billing-template-entryRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

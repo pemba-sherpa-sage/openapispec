@@ -1,0 +1,153 @@
+title: revenue-template
+x-mappedTo: contractrevenuetemplate
+type: object
+description: 
+properties:
+  key:
+    type: string
+    description: Revenue Template Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '2'
+  id:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+    x-mutable: false
+    example: STRAIGHTLINE_MANUAL
+  href:
+    type: string
+    description: URL of the revenue template.
+    readOnly: true
+    example: /objects/revenue-template/2
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: STRAIGHTLINE MANUAL
+  schedulePeriod:
+    type: string
+    description: Recognition schedule period
+    x-mappedTo: SCHEDULEPERIOD
+    enum:
+      - 'monthly'
+      - 'quarterly'
+      - 'semiAnnually'
+      - 'annually'
+    x-mappedToValues:
+      - 'Monthly'
+      - 'Quarterly'
+      - 'Semi-annually'
+      - 'Annually'
+    default: 'Monthly'
+    example: 'monthly'
+  postingDay:
+    type: string
+    description: Posting day
+    x-mappedTo: POSTINGDAY
+    enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '18'
+      - '19'
+      - '20'
+      - '21'
+      - '22'
+      - '23'
+      - '24'
+      - '25'
+      - '26'
+      - '27'
+      - '28'
+      - '29'
+      - '30'
+      - '31'
+    default: '1'
+    example: '2'
+  recognitionMethod:
+    type: string
+    description: Recognition method
+    x-mappedTo: METHOD 
+    enum:
+      - 'straightLine'
+      - 'dailyRate'
+      - 'quantityBased'
+      - 'predefinedPercentages'
+      - 'projectPercentComplete'
+      - 'taskPercentComplete'
+    x-mappedToValues:
+      - 'Straight line'
+      - 'Daily rate'
+      - 'Quantity based'
+      - 'Predefined percentages'
+      - 'Project percent complete'
+      - 'Task percent complete'
+    default: 'Straight line'
+    example: 'straightLine'
+  recognitionSource:
+    type: string
+    description: Recognition method source
+    x-mappedTo: SOURCE 
+    enum:
+      - 'estimatedHours'
+      - 'observedPercentCompleted'
+      - 'budgetedHours'
+      - 'plannedHours'
+    x-mappedToValues:
+      - 'Estimated hours'
+      - 'Observed % completed'
+      - 'Budgeted hours'
+      - 'Planned hours'
+    default: 'Estimated hours'
+    example: 'estimatedHours'
+  isStep:
+    type: boolean
+    description: Step revenue
+    x-mappedTo: STEPTEMPLATE 
+    x-mappedToType: string
+    default: false
+    example: false
+  defaultPostingType:
+    type: string
+    description: Default posting type
+    x-mappedTo: POSTINGTYPE
+    enum:
+      - 'automatic'
+      - 'manual'
+    x-mappedToValues:
+      - 'Automatic'
+      - 'Manual'
+    default: 'manual'
+    example: 'automatic'
+  resumeAdjustmentOption:
+    type: string
+    description: Revenue adjustment option
+    x-mappedTo: RESUMEOPTION
+    enum:
+      - 'oneTime'
+      - 'distributed'
+      - 'walkForward'
+    x-mappedToValues:
+      - 'One time'
+      - 'Distributed'
+      - 'Walk forward'
+    example: 'oneTime'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

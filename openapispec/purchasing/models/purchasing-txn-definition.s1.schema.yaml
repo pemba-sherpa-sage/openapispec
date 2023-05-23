@@ -1,0 +1,681 @@
+title: purchasing-txn-definition
+x-mappedTo: PODOCUMENTPARAMS
+type: object
+description: A purchasing transaction can be a purchase requisition, purchase order, receipt, vendor invoice, or adjustment.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the purchasing transaction definition.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example:
+  id:
+    type: string
+    description: Name or other unique identifier for the purchasing transaction definition.
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example:
+  documentId:
+    type: string
+    description: ID for the purchasing transaction definition.
+    x-mappedTo: DOCID
+    x-mutable: false
+    example:
+  href:
+    type: string
+    description: URL for the purchasing transaction definition.
+    readOnly: true
+  templateType:
+    type: string
+    description: Type of purchasing transaction.
+    x-mappedTo: DOCCLASS
+    example: adjustment
+    enum:
+      - 'quote'
+      - 'order'
+      - 'list'
+      - 'invoice'
+      - 'adjustment'
+      - 'other'
+    x-mappedToValues:
+      - 'Quote'
+      - 'Order'
+      - 'List'
+      - 'Invoice'
+      - 'Adjustment'
+      - 'Other'
+    default: 'quote'
+  workflowCategory:
+    type: string
+    description: Workflow category for the purchasing transaction.
+    x-mappedTo: CATEGORY
+    example: return
+    enum:
+      - 'quote'
+      - 'order'
+      - 'shipping'
+      - 'invoice'
+      - 'return'
+    x-mappedToValues:
+      - 'Quote'
+      - 'Order'
+      - 'Shipping'
+      - 'Invoice'
+      - 'Return'
+    default: 'quote'
+#  salesPurchaseTransaction:
+#    type: string
+#    description: Sale/purchase/internal ???
+#    x-mappedTo: SALE_PUR_TRANS
+#    example:
+#    enum:
+#      - 'sale'
+#      - 'purchase'
+#      - 'internal'
+#      - 'timeBill'
+#    x-mappedToValues:
+#      - 'Sale'
+#      - 'Purchase'
+#      - 'Internal'
+#      - 'TimeBill'
+  disableVAT:
+    type: boolean
+    description: Set to `true` to disable taxes for the transaction.
+    x-mappedTo: DISABLEVAT
+    example: true
+    x-mappedToType: string
+    default: false
+  enableUserPermissions:
+    type: boolean
+    description: Enable permissions for specific users or groups.
+    x-mappedTo: USERPERM
+    example:
+    x-mappedToType: string
+  enableOverrideTax:
+    type: boolean
+    description: Set to `true` to enable line item tax.
+    x-mappedTo: ENABLEOVERRIDETAX
+    example:
+    x-mappedToType: string
+  enableSequentialNumbering:
+    type: boolean
+    description: Set to `true` to enable numbering sequence for the transaction.
+    x-mappedTo: ENABLE_SEQNUM
+    example:
+    x-mappedToType: string
+    default: false
+  preserveSequentialNumbering:
+    type: boolean
+    description: Set to `true` to preserve sequence numbers.
+    x-mappedTo: PRESERVE_SEQNUM
+    example:
+    x-mappedToType: string
+    default: false
+  inheritSourceDocumentNumber:
+    type: boolean
+    description: Set to `true` to inherit the source document number.
+    x-mappedTo: INHERIT_SOURCE_DOCNO
+    example:
+    x-mappedToType: string
+  xslTemplate:
+    type: string
+    description: Template for printed documents of the purchasing transaction definition.
+    x-mappedTo: XSLTEMPLATE
+    example:
+  description:
+    type: string
+    description: Description of the purchasing transaction definition.
+    x-mappedTo: DESCRIPTION
+    example:
+  updatesInventory:
+    type: string
+    description: Determines if and how the purchasing transaction definition affects inventory.
+    x-mappedTo: UPDATES_INV
+    example:
+    enum:
+      - 'no'
+      - 'quantity'
+      - 'value'
+      - 'quantityAndValue'
+    x-mappedToValues:
+      - 'No'
+      - 'Quantity'
+      - 'Value'
+      - 'Quantity and Value'
+    default: 'no'
+  updatesGL:
+    type: string
+    description: Establishes where the transaction is posted, AP, GL, or none.
+    x-mappedTo: UPDATES_GL
+    example:
+    enum:
+      - 'ap'
+      - 'gl'
+      - 'none'
+    x-mappedToValues:
+      - 'A'
+      - 'G'
+      - 'N'
+    default: 'none'
+  conversionType:
+    type: string
+    description: Establishes partial conversion handling for the purchasing transaction definition.
+    x-mappedTo: CONVTYPE
+    example:
+    enum:
+      - 'leaveTransactionOpen'
+      - 'closeOriginalAndCreateBackOrder'
+      - 'closeTransaction'
+    x-mappedToValues:
+      - 'Leave Transaction Open'
+      - 'Close Original and Create Back Order'
+      - 'Close Transaction'
+    default: 'closeTransaction'
+  updatesCost:
+    type: boolean
+    description: Set to `true` if the transaction affects cost.
+    x-mappedTo: UPDATES_COST
+    example:
+    x-mappedToType: string
+  exchangeRateType:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Exchange rate type for multi-currency companies.
+        x-mappedTo: EXCHRATETYPES.NAME
+        example:
+      override:
+        type: boolean
+        description: Set to `true` to override the exchange rate and exchange rate type for multi-currency companies.
+        x-mappedTo: OVERRIDE_EXCH_RATE_TYPE
+        example:
+        x-mappedToType: string
+        default: true
+  displayBaseCurrency:
+    type: boolean
+    description: Set to `true` to display the base currency.
+    x-mappedTo: DISPLAY_BASECURRENCY
+    example:
+    x-mappedToType: string
+    default: false
+  forceCreditLimitCheck:
+    type: boolean
+    description: Set to `true` to enforce a credit limit.
+    x-mappedTo: CREDITLIMITCHECK
+    example:
+    x-mappedToType: string
+  convertUnits:
+    type: boolean
+    description: Set to `true` to convert units to standard on save.
+    x-mappedTo: CONVERT_UNITS
+    example:
+    x-mappedToType: string
+  inOut:
+    type: string
+    description: Establish whether to increase or decrease inventory and billings for the purchasing transaction definition.
+    x-mappedTo: IN_OUT
+    example:
+    enum:
+      - 'increase'
+      - 'decrease'
+    x-mappedToValues:
+      - 'Increase'
+      - 'Decrease'
+    default: 'increase'
+  customerVendorWarehouse:
+    type: string
+    description: Customer, vendor, or warehouse
+    x-mappedTo: CUST_VEND
+    example:
+    enum:
+      - 'customer'
+      - 'vendor'
+      - 'warehouse'
+    x-mappedToValues:
+      - 'Customer'
+      - 'Vendor'
+      - 'Warehouse'
+  recallOnly:
+    type: boolean
+    description: Set to `true` to freeze recalled values.
+    x-mappedTo: RECALLONLY
+    example:
+    x-mappedToType: string
+  isPriceEditable:
+    type: boolean
+    description: Set to `true` to make prices editable.
+    x-mappedTo: EDITABLE_PRICE
+    example:
+    x-mappedToType: string
+  overridePrice:
+    type: boolean
+    description: Set to `true` to override the suggested price.
+    x-mappedTo: OVERRIDE_PRICE
+    example:
+    x-mappedToType: string
+    default: true
+  showTotals:
+    type: boolean
+    description: Set to `true` to enable subtotals.
+    x-mappedTo: SHOW_TOTALS
+    example:
+    x-mappedToType: string
+  showExpandedTotals:
+    type: boolean
+    description: Set to `true` to show expanded tax details.
+    x-mappedTo: SHOWEXPANDEDTOTALS
+    example:
+    x-mappedToType: string
+  overrideDepartment:
+    type: boolean
+    description: Set to `true` to override department setting.
+    x-mappedTo: DEPTOVERRIDE
+    example:
+    x-mappedToType: string
+  overrideLocation:
+    type: boolean
+    description: Set to `true` to override location setting.
+    x-mappedTo: LOCOVERRIDE
+    example:
+    x-mappedToType: string
+  forcePrices:
+    type: boolean
+    description: Set to `true` to enforce that a price must be supplied.
+    x-mappedTo: FORCE_PRICES
+    example:
+    x-mappedToType: string
+  fixedMessage:
+    type: string
+    description: Optional default text.
+    x-mappedTo: FIXED_MESG
+    example:
+  editType:
+    type: string
+    description: Edit policy for the purchasing transaction definition.
+    x-mappedTo: EDITTYPE
+    example:
+    enum:
+      - 'noEdit'
+      - 'beforePrinting'
+      - 'editInDraftOnly'
+      - 'all'
+    x-mappedToValues:
+      - 'No Edit'
+      - 'Before Printing'
+      - 'Edit in Draft Only'
+      - 'All'
+    default: 'noEdit'
+  deleteType:
+    type: string
+    description: Delete policy for the purchasing transaction definition.
+    x-mappedTo: DELTYPE
+    example:
+    enum:
+      - 'noDelete'
+      - 'beforePrinting'
+      - 'all'
+    x-mappedToValues:
+      - 'No Delete'
+      - 'Before Printing'
+      - 'All'
+    default: 'noDelete'
+  allowEditOfVendor:
+    type: string
+    description: Establishes whether the vendor can be edited and when.
+    x-mappedTo: ALLOWEDITCUSTVEND
+    example:
+    enum:
+      - 'always'
+      - 'exceptConvertedDocuments'
+      - 'never'
+    x-mappedToValues:
+      - 'Always'
+      - 'Except converted documents'
+      - 'Never'
+    default: 'never'
+  showPayTo:
+    type: boolean
+    description: Set to `true` to show the Pay to contact on printed purchasing transaction definitions.
+    x-mappedTo: SHOWTITLE1
+    example:
+    x-mappedToType: string
+  showReturnTo:
+    type: boolean
+    description: Set to `true` to show the Return to contact on printed purchasing transaction definitions.
+    x-mappedTo: SHOWTITLE2
+    example:
+    x-mappedToType: string
+  showDeliverTo:
+    type: boolean
+    description: Set to `true` to show the Deliver to contact on printed purchasing transaction definitions.
+    x-mappedTo: SHOWTITLE3
+    example:
+    x-mappedToType: string
+  allowEditPayTo:
+    type: boolean
+    description: Set to `true` to allow editing of the Pay to contact.
+    x-mappedTo: ALLOWEDITBILLTO
+    example:
+    x-mappedToType: string
+  allowEditReturnTo:
+    type: boolean
+    description: Set to `true` to allow editing of the Return to contact.
+    x-mappedTo: ALLOWEDITSHIPTO
+    example:
+    x-mappedToType: string
+  allowEditDeliverTo:
+    type: boolean
+    description: Set to `true` to allow editing of the Deliver to contact.
+    x-mappedTo: ALLOWEDITDELIVERTO
+    example:
+    x-mappedToType: string
+  contactTitle1:
+    type: string
+    description: Title of contact 1.
+    x-mappedTo: CONTACTTITLE1
+    example:
+    default: 'Pay to'
+  contactTitle2:
+    type: string
+    description: Title of contact 2.
+    x-mappedTo: CONTACTTITLE2
+    example:
+    default: 'Return to'
+  contactTitle3:
+    type: string
+    description: Title of contact 3.
+    x-mappedTo: CONTACTTITLE3
+    example:
+    default: 'Deliver to'
+  warnOnLowQty:
+    type: boolean
+    description: Set to `true` to warn the user if the item on hand quantity falls below 0.
+    x-mappedTo: WARNONLOWQTY
+    example:
+    x-mappedToType: string
+    default: true
+  warehouseSelectionMethod:
+    type: string
+    description: Establishes the warehouse selection method for the purchasing transaction definition.
+    x-mappedTo: WAREHOUSESELMETHOD
+    example:
+    enum:
+      - 'sortByID'
+      - 'sortByName'
+      - 'warehouseWithAvailableInventory'
+      - 'useTheDefaultWarehouse'
+    x-mappedToValues:
+      - 'Sort by ID'
+      - 'Sort by Name'
+      - 'Warehouse with Available Inventory'
+      - 'Use the default warehouse'
+    default: 'sortByID'
+  postToGL:
+    type: boolean
+    description: Set to `true` to enable additional posting for the purchasing transaction definition.
+    x-mappedTo: POSTTOGL
+    example:
+    x-mappedToType: string
+  allowAllocations:
+    type: boolean
+    description: Set to `true` to enable allocations.
+    x-mappedTo: ALLOW_ALLOCATIONS
+    example:
+    x-mappedToType: string
+  createPolicyType:
+    type: string
+    description: Establishes the Create policy for the purchasing transaction definition.
+    x-mappedTo: CREATETYPE
+    example:
+    enum:
+      - 'newDocumentOnly'
+      - 'newDocumentOrConvert'
+      - 'convertOnly'
+    x-mappedToValues:
+      - 'New document only'
+      - 'New document or Convert'
+      - 'Convert only'
+    default: 'newDocumentOrConvert'
+  createTransactionsIn:
+    type: string
+    description: For multi-entity companies, establishes where to create transactions.
+    x-mappedTo: TD_CREATION_RULE
+    example:
+    enum:
+      - 'topLevelOrEntity'
+      - 'topLevelOnly'
+      - 'entityOnly'
+    x-mappedToValues:
+      - 'Top level or Entity'
+      - 'Top level only'
+      - 'Entity only'
+    default: 'topLevelOrEntity'
+  enableLineLevelSimpleTax:
+    type: boolean
+    description: Set to `true` to enable line level simple tax.
+    x-mappedTo: LINELEVELSIMPLETAX
+    example:
+    x-mappedToType: string
+  enableRetainage:
+    type: boolean
+    description: Set to `true` to enable retainage.
+    x-mappedTo: ENABLE_RETAINAGE
+    example:
+    x-mappedToType: string
+  enableScope:
+    type: boolean
+    description: For companies subscribed to Construction, set to `true` to enable scoping included and excluded work.
+    x-mappedTo: ENABLEADDINFOSCOPE
+    example:
+    x-mappedToType: string
+    default: false
+  enableSchedule:
+    type: boolean
+    description: For companies subscribed to Construction, set to `true` to enable scheduling of work milestones.
+    x-mappedTo: ENABLEADDINFOSCHEDULE
+    example:
+    x-mappedToType: string
+    default: false
+  enableInternalReference:
+    type: boolean
+    description: For companies subscribed to Construction, set to `true` to enable identification of the internal resource who authorized the work.
+    x-mappedTo: ENABLEADDINFOINTERNALREF
+    example:
+    x-mappedToType: string
+    default: false
+  enableExternalReference:
+    type: boolean
+    description: For companies subscribed to Construction, set to `true` to enable identification of the external resource who authorized the work.
+    x-mappedTo: ENABLEADDINFOEXTERNALREF
+    example:
+    x-mappedToType: string
+    default: false
+  enableBond:
+    type: boolean
+    description: For companies subscribed to Construction, set to `true` to enable addition of information about performance and payment bonds.
+    x-mappedTo: ENABLEADDINFOBOND
+    example:
+    x-mappedToType: string
+    default: false
+  enableDocumentChange:
+    type: string
+    description: For companies subscribed to Construction, establish whether document values can be changed and how.
+    x-mappedTo: ENABLEDOCCHANGE
+    example:
+    enum:
+      - 'noChange'
+      - 'enableChange'
+      - 'changeOrder'
+    x-mappedToValues:
+      - 'No Change'
+      - 'Enable Change'
+      - 'Change Order'
+  enablePrimaryDocumentWorkflow:
+    type: boolean
+    description: Set to `true` to enable primary document workflow.
+    x-mappedTo: PRIMARYDOC
+    example:
+    x-mappedToType: string
+  reportingCategory:
+    type: string
+    description: Establish the reporting category for the purchasing transaction definition.
+    x-mappedTo: REPORTINGCATEGORY
+    example:
+    enum:
+      - ''
+      - 'bidsAndQuotes'
+      - 'purchaseOrders'
+      - 'purchaseOrderChangeOrders'
+      - 'purchaseReceivers'
+      - 'purchaseOrderInvoices'
+      - 'purchaseReturns'
+      - 'purchaseCredits'
+      - 'purchaseDebits'
+      - 'purchaseClearingReceivers'
+      - 'subcontractBids'
+      - 'subcontracts'
+      - 'subcontractChangeOrders'
+      - 'subcontractInvoices'
+      - 'internalSupplyRequisitions'
+      - 'purchaseRequisitions'
+      - 'blanketPOsOrVendorContracts'
+      - 'grantRequests'
+      - 'grantAwards'
+    x-mappedToValues:
+      - ''
+      - 'Bids and Quotes'
+      - 'Purchase Orders'
+      - 'Purchase Order Change Orders'
+      - 'Purchase Receivers'
+      - 'Purchase Order Invoices'
+      - 'Purchase Returns'
+      - 'Purchase Credits'
+      - 'Purchase Debits'
+      - 'Purchase Clearing Receivers'
+      - 'Subcontract Bids'
+      - 'Subcontracts'
+      - 'Subcontract Change Orders'
+      - 'Subcontract Invoices'
+      - 'Internal Supply Requisitions'
+      - 'Purchase Requisitions'
+      - 'Blanket POs or Vendor Contracts'
+      - 'Grant Requests'
+      - 'Grant Awards'
+  sequenceNumber:
+    type: object
+    x-mappedTo: seqnum
+    x-object: document-sequence-number
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the document sequence number.
+        x-mappedTo: seqnumkey
+        example:
+      printTitle:
+        type: string
+        description: Title for the sequence number.
+        x-mappedTo: PRINTTITLE
+        example:
+      href:
+        type: string
+        description: URL for the sequence number.
+        example: /objects/document-sequence-number/2
+        readOnly: true
+  priceList:
+    type: object
+    x-mappedTo: pricelist
+    x-object: purchasing-price-list
+    properties:
+      id:
+        type: string
+        description: Identifier for the associated purchasing price list.
+        x-mappedTo: PRICELISTID
+        example:
+#  spclPriceList:
+#    type: object
+#    x-mappedTo: spclpricelist
+#    x-object: purchasing-price-list
+#    properties:
+#      id:
+#        type: string
+#        description: Special price list
+#        x-mappedTo: SPECIAL_PRICELISTID
+#        example:
+#  updatePriceList:
+#    type: object
+#    x-mappedTo: updpricelist
+#    x-object: purchasing-price-list
+#    properties:
+#      id:
+#        type: string
+#        description: Price list to update
+#        x-mappedTo: UPDATES_PRICELISTID
+#        example:
+  subtotalTemplate:
+    type: object
+    x-mappedTo: posubtotaltemplate
+    x-object: purchasing-subtotal-template
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the purchasing subtotal template.
+        x-mappedTo: POSUBTOTALTEMPLATEKEY
+        example: '1'
+      id:
+        type: string
+        description: ID for the purchasing subtotal template.
+        x-mappedTo: POSUBTOTALTEMPLATE
+        example:
+      href:
+        type: string
+        description: URL for the purchasing subtotal template.
+        example: /objects/purchasing-subtotal-template/2
+        readOnly: true
+  term:
+    type: object
+    x-mappedTo: apterm
+    x-object: ap-term
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the associated AP term.
+        x-mappedTo: TERMKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Identifier for the associated AP term.
+        x-mappedTo: NAME
+        example:
+      href:
+        type: string
+        description: URL for the associated AP term.
+        readOnly: true
+        example: /objects/tax-solution/4
+  warehouse:
+    type: object
+    x-mappedTo: warehouse
+    x-object: warehouse
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the associated warehouse.
+        x-mappedTo: defaultwhsekey
+        example: '2'
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier for the associated warehouse.
+        x-mappedTo: WAREHOUSEID
+        x-mutable: false
+        example: "USNA1"
+      href:
+        type: string
+        description: URL for the associated warehouse.
+        example: /objects/warehouse/2
+        readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

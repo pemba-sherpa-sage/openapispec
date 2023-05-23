@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+  title: ar-payment-line
+  description: ar-payment-line API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+tags:
+  - name: AR payment lines
+    description: AR payment information, including invoices and the line items in those invoices.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-payment-line:
+    get:
+      summary: List AR payment lines
+      description: Returns a collection with a key, ID, and link for each AR payment line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR payment lines
+      operationId: get-objects-ar-payment-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-payment-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR payment lines:
+                  value:
+                    "ia::result":
+                      - key: "7"
+                        id: "7"
+                        href: "/objects/ar-payment-line/7"
+                      - key: "13"
+                        id: "13"
+                        href: "/objects/ar-payment-line/13"
+                    "ia::meta":
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-payment-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR payment line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR payment line
+      description: Returns detailed information for a specified AR payment line.
+      tags:
+        - AR payment lines
+      operationId: get-objects-ar-payment-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-payment-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-payment-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR payment line: {
+                  "value": {
+                    "id": "7",
+                    "key": "7",
+                    "arPayment": {
+                      "key": "4",
+                      "id": "4",
+                      "href": "/objects/ar-payment/4"
+                    },
+                    "glAccount": {
+                      "key": "36",
+                      "id": "1200",
+                      "name": "Accounts Receivable",
+                      "href": "/objects/gl-account/36"
+                    },
+                    "baseAmount": "0",
+                    "txnAmount": "0.00",
+                    "dimensions": {
+                      "department": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "location": {
+                        "key": "1",
+                        "id": "1",
+                        "name": "United States of America",
+                        "href": "/objects/location/1"
+                      },
+                      "project": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "customer": {
+                        "key": "150",
+                        "id": "ADJ",
+                        "name": "ADJ",
+                        "href": "/objects/customer/150"
+                      },
+                      "vendor": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "employee": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "item": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "class": {
+                        "key": null,
+                        "id": null,
+                        "name": null
+                      },
+                      "nsp::rgldim43491134_10019": {
+                        "key": null,
+                        "id": null
+                      }
+                    },
+                    "memo": null,
+                    "exchangeRate": {
+                      "date": null,
+                      "typeId": null,
+                      "rate": "1"
+                    },
+                    "txnCurrency": "USD",
+                    "baseCurrency": "USD",
+                    "lineNumber": 1,
+                    "baseTotalPaid": "0",
+                    "txnTotalPaid": "0",
+                    "baseTotalSelected": "0",
+                    "txnTotalSelected": "0",
+                    "recordType": "rp",
+                    "offsetGLAccount": {
+                      "key": "9",
+                      "href": "/objects/gl-account/9"
+                    },
+                    "audit": {
+                      "createdDateTime": "2022-04-21T12:34:02Z",
+                      "modifiedDateTime": "2022-07-04T08:18:29Z",
+                      "createdBy": "1",
+                      "modifiedBy": "1"
+                    },
+                    "href": "/objects/ar-payment-line/7"
+                  }
+                }
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-payment-line:
+      $ref: ../models/ar-payment-line.s1.schema.yaml
+    ar-payment-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

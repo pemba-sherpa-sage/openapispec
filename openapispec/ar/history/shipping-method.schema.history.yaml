@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/shipmethod/view
+    POST:
+      - ar/lists/shipmethod/create
+    PATCH:
+      - ar/lists/shipmethod/edit
+    DELETE:
+      - ar/lists/shipmethod/delete
+s1:
+  hash: '0'
+  type: rootObject

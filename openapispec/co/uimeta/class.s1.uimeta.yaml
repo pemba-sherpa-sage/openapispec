@@ -1,0 +1,50 @@
+fields:
+    key:
+        uiType: integer
+        uiLabel: 'Record number'
+    id:
+        uiType: text
+        uiLabel: 'Class ID'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: 'Active non-posting'
+                value: activeNonPosting
+            -
+                label: Inactive
+                value: inactive
+    description:
+        uiType: text
+        uiLabel: Description
+    name:
+        uiType: text
+        uiLabel: Name
+groups:
+    audit:
+        fields:
+            createdDateTime:
+                uiType: timestamp
+                uiLabel: 'When created'
+            modifiedDateTime:
+                uiType: timestamp
+                uiLabel: 'When modified'
+            createdBy:
+                uiType: ptr
+                uiLabel: 'Created by'
+            modifiedBy:
+                uiType: ptr
+                uiLabel: 'Modified by'
+refs:
+    parent:
+        fields:
+            id:
+                uiType: ptr
+                uiLabel: 'Parent ID'
+            key:
+                uiType: integer
+                uiLabel: 'Parent Key'

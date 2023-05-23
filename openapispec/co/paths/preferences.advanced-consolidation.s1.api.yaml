@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: preferences.advanced-consolidation
+  description: preferences.advanced-consolidation API
+  version: '1.0'
+  contact:
+    name: Arpit Jain
+    email: arpit.jain@sage.com
+tags:
+  - name: Advanced consolidation preferences
+    description: Configure preferences for advanced consolidation.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/services/preferences/advanced-consolidation':
+    get:
+      summary: Get Advanced consolidation preferences
+      description: Returns detailed information for the Advanced consolidation preferences.
+      tags:
+        - Advanced consolidation preferences
+      operationId: get-services-preferences.advanced-consolidation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the preferences.advanced-consolidation
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/preferences.advanced-consolidation'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              example:
+                Advanced consolidation preference:
+                  value:
+                    ia::result:
+                      notificationEmail: arpit.jain@sage.com
+                      consolidatingLocation:
+                        key: '19'
+                        id: FF
+                        name: Frankfurt
+                        href: "/objects/location/19"
+                      minorityInterestGLAccounts:
+                        interestLiabilityGLAccount:
+                          key: '256'
+                          id: '6252'
+                          name: Entertainment
+                          href: "/objects/gl-account/256"
+                        incomeOrExpenseGLAccount:
+                          key: '10'
+                          id: '1001'
+                          name: CitiBank
+                          href: "/objects/gl-account/10"
+                      audit:
+                        createdDateTime: '2023-02-03T11:23:11Z'
+                        modifiedDateTime: '2023-02-03T11:23:11Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: "/services/preferences/advanced-consolidation"
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update Advanced consolidation preferences
+      description: Updates an existing advanced consolidation preferences by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Advanced consolidation preferences
+      operationId: patch-services-preferences.advanced-consolidation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.advanced-consolidation'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Change Advanced consolidation preference:
+                value:
+                  notificationEmail: arpit.jain@sage.com
+                  consolidatingLocation:
+                    key: '19'
+                  minorityInterestGLAccounts:
+                    interestLiabilityGLAccount:
+                      key: '13'
+                    incomeOrExpenseGLAccount:
+                      key: '23'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated preferences.advanced-consolidation
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Advanced consolidation preference updated:
+                  value:
+                    ia::result:
+                      href: "/services/preferences/advanced-consolidation"
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a Advanced consolidation preferences
+      description: |-
+        Creates a new Advanced consolidation preferences for a company. A company can only create one consolidation 
+        preferences, i.e. This is a one-time task.
+      tags:
+        - Advanced consolidation
+      operationId: post-services-preferences.advanced-consolidation
+      requestBody:
+        description: Create Advanced consolidation preferences object
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.advanced-consolidation'
+                - $ref: '#/components/schemas/preferences.advanced-consolidationRequiredProperties'
+            examples:
+              Create a Advanced consolidation preferences:
+                value:
+                  notificationEmail: arpit.jain@sage.com
+                  consolidatingLocation:
+                    key: '19'
+                  minorityInterestGLAccounts:
+                    interestLiabilityGLAccount:
+                      key: '13'
+                    incomeOrExpenseGLAccount:
+                      key: '23'
+      responses:
+        '201':
+          description: Advanced consolidation preferences created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New Advanced consolidation preferences
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'      
+components:
+  schemas:
+    preferences.advanced-consolidation:
+      $ref: ../models/preferences.advanced-consolidation.s1.schema.yaml
+    preferences.advanced-consolidationRequiredProperties:
+      type: object
+      required:
+        - notificationEmail
+        - consolidatingLocation
+        - minorityInterestGLAccounts
+          - interestLiabilityGLAccount
+          - incomeOrExpenseGLAccount
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

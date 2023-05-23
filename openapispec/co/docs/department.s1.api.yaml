@@ -1,0 +1,480 @@
+openapi: 3.0.0
+info:
+  title: department
+  description: department API
+  version: '1.0'
+  contact:
+    email: adrian.cretu@sage.com
+    name: Adrian Cretu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Departments
+    description: Department description -- explain what it's for and how it's used.
+paths:
+  /object/department/{key}:
+    parameters:
+      - schema:
+          type: string
+          example: '28'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the department.
+    get:
+      summary: Get a department
+      description: Returns detailed information for a particular department.
+      tags:
+        - Departments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the department
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/department.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '28'
+                      id: PS
+                      name: Professional Services
+                      reportTitle: Professional Services Report Title
+                      parent:
+                        key: '7'
+                        id: CS--Client Services
+                        name: Client Services
+                        href: /objects/department/7
+                      supervisor:
+                        key: '5'
+                        id: MGR1--PS Dept - Manager
+                        name: PS Dept - Manager
+                        href: /objects/employee/5
+                      status: active
+                      audit:
+                        createdDateTime: '2014-01-08T11:28:12Z'
+                        modifiedDateTime: '2014-01-08T11:28:12Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      href: /objects/department/28
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-department-key
+    patch:
+      summary: Update a department
+      description: Updates an existing department by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Departments
+      operationId: patch-object-department-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated department
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: DemoId
+                      href: /objects/department/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/department.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  name: Demo Name Patched
+                  reportTitle: Demo Report Title Patched
+                  status: active
+                  parent:
+                    key: '12'
+                  supervisor:
+                    key: '5'
+    delete:
+      summary: Delete a department
+      description: Deletes a department.
+      tags:
+        - Departments
+      operationId: delete-object-department-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+  /object/department:
+    get:
+      summary: List departments
+      description: Returns a collection with a key, ID, and link for each department.
+      tags:
+        - Departments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of department objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      - key: '11'
+                        id: Eng
+                        href: /objects/department/1
+                      - key: '2'
+                        id: Fin
+                        href: /objects/department/2
+                      - key: '3'
+                        id: HR
+                        href: /objects/department/3
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-object-department
+    post:
+      summary: Create a department
+      tags:
+        - Departments
+      description: Creates a new department.
+      operationId: post-object-department
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: DemoId
+                      href: /objects/department/1
+                    ia::meta:
+                      totalCount: 1
+              schema:
+                type: object
+                title: New department
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/department.s1.schema'
+                - $ref: '#/components/schemas/departmentRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: DemoId
+                  name: Demo Name
+                  reportTitle: Demo Report Title
+                  status: active
+                  parent:
+                    key: '28'
+                  supervisor:
+                    key: '5'
+components:
+  schemas:
+    department:
+      $ref: '#/components/schemas/department.s1.schema'
+    departmentRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    department.s1.schema:
+      title: department
+      x-mappedTo: department
+      type: object
+      description: Information about each department.
+      properties:
+        key:
+          type: string
+          description: Department key
+          x-mappedTo: RECORDNO
+          example: '28'
+          readOnly: true
+        id:
+          type: string
+          description: Department id
+          x-mappedTo: DEPARTMENTID
+          x-mutable: false
+          nullable: false
+          example: PS
+        name:
+          type: string
+          description: Department name
+          x-mappedTo: TITLE
+          nullable: false
+          example: Professional Services
+        reportTitle:
+          type: string
+          description: Department title displayed in reports
+          x-mappedTo: CUSTTITLE
+          example: Professional Services Report Title
+          nullable: true
+          default: null
+        parent:
+          type: object
+          x-object: department
+          x-mappedTo: PARENT
+          title: parent
+          description: Reference to the parent department for this department
+          properties:
+            key:
+              type: string
+              description: Parent department key
+              x-mappedTo: PARENTKEY
+              example: '7'
+              readOnly: false
+              nullable: true
+              default: null
+            id:
+              type: string
+              x-mappedTo: PARENTID
+              example: CS--Client Services
+              description: Parent department id
+              readOnly: true
+            name:
+              type: string
+              description: Parent department Name
+              x-mappedTo: PARENTNAME
+              example: Client Services
+              readOnly: true
+            href:
+              type: string
+              example: /objects/department/7
+              description: Parent department URL
+              readOnly: true
+        supervisor:
+          type: object
+          x-object: employee
+          x-mapptedTo: manager
+          title: supervisor
+          description: Employee that is supervisor for this department
+          properties:
+            key:
+              type: string
+              x-mappedTo: SUPERVISORKEY
+              example: '5'
+              description: Supervisor key
+              readOnly: false
+              nullable: true
+              default: null
+            id:
+              type: string
+              x-mappedTo: SUPERVISORID
+              example: MGR1--PS Dept - Manager
+              description: Supervisor id
+              readOnly: true
+            name:
+              type: string
+              description: Supervisor Name
+              x-mappedTo: SUPERVISORNAME
+              example: PS Dept - Manager
+              readOnly: true
+            href:
+              type: string
+              example: /objects/employee/5
+              description: Supervisor URL
+              readOnly: true
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        href:
+          type: string
+          example: /objects/department/28
+          description: Department URL
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

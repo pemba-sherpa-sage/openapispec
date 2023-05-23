@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: contact
+  description: Contact API
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca Uricariu
+tags:
+  - name: Contacts
+    description: |
+      Contacts serve as a common, shared address book that's used across a company by many people for a variety of purposes. Contacts hold all the information needed to contact an individual or business, including name, email address, phone number, mailing address, and more. 
+      
+      Contacts are almost always used with other Sage Intacct objects, such as vendors, customers, or locations. For example, you specify a contact in Order Entry and Purchasing transactions to set a ship-to, bill-to, pay-to, or return-to addresses, and to determine tax on transactions.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contact:
+    get:
+      summary: List contacts
+      description: |-
+        Returns up to 100 contacts from the collection with a key, ID, and link for each contact. This operation is mostly for use in testing; use the query service to find contacts that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Contacts
+      tags:
+        - Contacts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contact objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List contacts:
+                  value:
+                    'ia::result':
+                      - key: '265'
+                        id: Mary Cooper
+                        href: /objects/contact/265
+                      - key: '263'
+                        id: John Doe
+                        href: /objects/contact/263
+                      - key: '264'
+                        id: Alfred Mike
+                        href: /objects/contact/264
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-contact
+    post:
+      summary: Create a contact
+      description: |
+        Creates a new contact.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Add Contacts
+      tags:
+        - Contacts
+      operationId: post-objects-contact
+      requestBody:
+        description: Contact object to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contact'
+                - $ref: '#/components/schemas/contactRequiredProperties'
+            examples:
+              Create a contact:
+                value:
+                  id: AMoore
+                  prefix: Mr
+                  firstName: Andy
+                  lastName: Moore
+                  middleName: Robert
+                  printAs: Andy Moore
+                  companyName: Sage
+                  phone1: '9134598676'
+                  mobile: '9133132299'
+                  fax: '9134598677'
+                  email1: andy.moore@mycompany.com
+                  URL1: 'http://andy.exampledomain.com'
+                  mailingAddress:
+                    addressLine1: 744 Edgewater Blvd
+                    city: Kansas City
+                    state: KS
+                    postCode: '66104'
+                    country: United States
+                  tax:
+                    isTaxable: true
+                    taxId: 123-12-1234
+                    group:
+                      id: New York
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contact
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New contact created:
+                  value:
+                    'ia::result':
+                      key: '312'
+                      id: Moore
+                      href: /objects/contact/312
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/contact/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contact.
+        in: path
+        required: true
+        example: '65'
+        schema:
+          type: string
+    get:
+      summary: Get a contact
+      description: |
+        Returns detailed information for a specified contact.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Contacts
+      tags:
+        - Contacts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contact
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contact'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a contact:
+                  value:
+                    'ia::result':
+                      key: '1257'
+                      id: AMoore
+                      companyName: Sage
+                      prefix: Mr
+                      firstName: Andy
+                      lastName: Moore
+                      middleName: Robert
+                      printAs: Andy Moore
+                      tax:
+                        isTaxable: true
+                        group:
+                          id: New York
+                          key: '6'
+                          href: /objects/contact-tax-group/6
+                        taxId: 123-12-1234
+                      phone1: '9134598676'
+                      phone2: null
+                      mobile: '9133132299'
+                      pager: null
+                      fax: '9134598677'
+                      email1: andy.moore@mycompany.com
+                      email2: null
+                      URL1: 'http://andy.exampledomain.com'
+                      URL2: null
+                      showInContactList: true
+                      mailingAddress:
+                        addressLine1: 744 Edgewater Blvd
+                        addressLine2: null
+                        city: Kansas City
+                        country: United States
+                        isoCountryCode: US
+                        postCode: '66104'
+                        state: KS
+                      status: active
+                      priceSchedule:
+                        id: null
+                        key: null
+                      discount: null
+                      priceList:
+                        id: null
+                        key: null
+                      href: /objects/contact/1257
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-contact-key
+    patch:
+      summary: Update a contact
+      description: |
+        Updates an existing contact by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Edit Contacts
+      tags:
+        - Contacts
+      operationId: patch-objects-contact-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contact'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Change contact's company name:
+                value:
+                  companyName: Google
+              Set a contact as non-taxable:
+                value:
+                  tax:
+                    isTaxable: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contact
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Contact updated:
+                  value:
+                    'ia::result':
+                      key: '312'
+                      id: John
+                      name: Doe
+                      href: /objects/contact/312
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a contact
+      description: |
+        Deletes a contact. You can delete a contact if it is not being used or referenced. Deleted contacts cannot be recovered.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Delete Contacts
+      tags:
+        - Contacts
+      operationId: delete-objects-contact-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contact:
+      $ref: ../models/contact.s1.schema.yaml
+    contactRequiredProperties:
+      type: object
+      required:
+        - id
+        - printAs
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

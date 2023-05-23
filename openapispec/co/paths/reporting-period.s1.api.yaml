@@ -1,0 +1,195 @@
+openapi: 3.0.0
+info:
+  title: reporting-period
+  description: reporting-period API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Reporting periods
+    description: Reporting periods are used when creating reports and budgets, and when opening and closing books. They limit the information in a report to specific time ranges.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/reporting-period:
+    get:
+      summary: List reporting periods
+      description: |-
+        Returns up to 100 reporting periods from the collection with a key, ID, and link for each period. This operation is mostly for use in testing; use the query service to find reporting periods that meet specific criteria and to specify the properties that you want in the response.
+      tags:
+        - Reporting periods
+      operationId: get-objects-reporting-period
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of reporting-period objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List reporting periods:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/reporting-period/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/reporting-period/2
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a reporting period
+      description: Creates a new reporting period.
+      tags:
+        - Reporting periods
+      operationId: post-objects-reporting-period
+      requestBody:
+        description: Reporting period to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/reporting-period'
+                - $ref: '#/components/schemas/reporting-periodRequiredProperties'
+            examples:
+              Create a reporting period: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New reporting period
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New reporting period created:
+                  value:
+                    'ia::result':
+                      key: '22'
+                      id: '22'
+                      href: /objects/reporting-period/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/reporting-period/{key}':
+    parameters:
+      - name: key
+        description: System-assigned unique key for the reporting period.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a reporting period
+      description: Returns detailed information for a specified reporting period.
+      tags:
+        - Reporting periods
+      operationId: get-objects-reporting-period-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the reporting period
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/reporting-period'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the reporting period: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a reporting period
+      description: Updates an existing reporting period by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Reporting periods
+      operationId: patch-objects-reporting-period-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/reporting-period'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a reporting period: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated reporting-period
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Reporting period updated:
+                  value:
+                    'ia::result':
+                      key: '312'
+                      id: '312'
+                      href: /objects/reporting-period/312
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a reporting period
+      description: Deletes a reporting period.
+      tags:
+        - Reporting periods
+      operationId: delete-objects-reporting-period-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    reporting-period:
+      $ref: ../models/reporting-period.s1.schema.yaml
+    reporting-periodRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

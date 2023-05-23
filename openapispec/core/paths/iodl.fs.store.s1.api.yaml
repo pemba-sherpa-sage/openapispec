@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.store
+  description: IODL Store service
+  version: '1.0-internal'
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.store
+    description: Store IODL in the IODL file service
+paths:
+  /services/iodl/file/store:
+    post:
+      summary: Store IODL
+      description: Store IODL with options to compile, overwrite and cache
+      tags:
+        - iodl.file.store
+      operationId: post-iodl-file-store
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.store-request'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.store-response'
+              examples:
+                example-1:
+                  value:
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.store-request:
+      description: Store IODL request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        prepend:
+          x-mappedTo: prepend
+          type: string
+        append:
+          x-mappedTo: append
+          type: string
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+        options:
+          type: object
+          properties:
+            compile:
+              x-mappedTo: options.compile
+              type: boolean
+              default: true
+            cache:
+              x-mappedTo: options.cache
+              type: boolean
+              default: false
+            overwrite:
+              x-mappedTo: options.overwrite
+              type: boolean
+              default: true
+            sandboxCollection:
+              x-mappedTo: options.sandboxCollection
+              type: string
+        content:
+          $ref: ../models/iodl.file.component.content.s1.schema.yaml
+    iodl.file.store-response:
+      description: Store IODL response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          x-mappedTo: status
+          type: boolean
+        result:
+          x-mappedTo: result
+          type: array
+          items:
+            type: string
+        tokens:
+          x-mappedTo: tokens
+          type: array
+          items:
+            type: string
+        id:
+          $ref: ../models/iodl.file.component.id.s1.schema.yaml
+        content:
+          $ref: ../models/iodl.file.component.content.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

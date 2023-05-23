@@ -1,0 +1,529 @@
+openapi: 3.0.0
+info:
+  title: ar-term
+  description: ar-term API
+  version: '1.0'
+  contact:
+    name: Divya Hiremath
+    email: divya.hiremath@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR terms
+    description: Accounts Receivable (AR) terms are the rules a company establishes for extending credit to customers. AR terms can be associated with AR transactions and with customers.
+paths:
+  /objects/ar-term:
+    get:
+      summary: List AR terms
+      description: Returns a collection with a key, ID, and link for each AR term. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR terms
+      operationId: get-objects-ar-term
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-term objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AR terms:
+                  value:
+                    ia::result:
+                      - key: '5'
+                        id: N15
+                        href: /objects/ar-term/5
+                      - key: '8'
+                        id: N30
+                        href: /objects/ar-term/8
+                      - key: '9'
+                        id: NET15
+                        href: /objects/ar-term/9
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR term
+      description: Creates a new AR term.
+      tags:
+        - AR terms
+      operationId: post-objects-ar-term
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-term.s1.schema'
+                - $ref: '#/components/schemas/ar-termRequiredProperties'
+            examples:
+              Create an AR term:
+                value:
+                  ia::result:
+                    key: '29'
+                    id: arterm3
+                    href: /objects/ar-term/29
+                  ia::meta:
+                    totalCount: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-term
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Create an AR term: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-term/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AR term.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR term
+      description: Returns detailed information for a specified AR term.
+      tags:
+        - AR terms
+      operationId: get-objects-ar-term-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-term
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-term.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AR term:
+                  value:
+                    ia::result:
+                      id: arterm5
+                      description: desc5
+                      status: active
+                      key: '24'
+                      audit:
+                        modifiedDateTime: '2021-04-30T20:37:48Z'
+                        createdDateTime: '2021-04-30T20:37:48Z'
+                        modifiedBy: '1'
+                        createdBy: '1'
+                      due:
+                        days: 2
+                        from: of5thMonthFromBillDate
+                      discount:
+                        days: 1
+                        from: of3rdMonthFromBillDate
+                        amount: 10
+                        unit: amount
+                        graceDays: 15
+                        calculateOn: billTotal
+                      penalty:
+                        cycle: quarterly
+                        amount: 101
+                        unit: amount
+                        graceDays: 16
+                      href: /objects/ar-term/24
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR term
+      description: Updates an existing AR term by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR terms
+      operationId: patch-objects-ar-term-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-term.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR term: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-term
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated AR term:
+                  value:
+                    ia::result:
+                      key: '26'
+                      id: arterm1
+                      href: /objects/ar-term/26
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR term
+      description: Deletes an AR term.
+      tags:
+        - AR terms
+      operationId: delete-objects-ar-term-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-term:
+      $ref: '#/components/schemas/ar-term.s1.schema'
+    ar-termRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ar-term.s1.schema:
+      title: ar-term
+      x-mappedTo: arterm
+      type: object
+      description: Accounts Receivable (AR) terms are the rules a company establishes for extending credit to customers.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the AR term.
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Name or other unique identifier for the AR term.
+          x-mappedTo: NAME
+          x-mutable: false
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        description:
+          type: string
+          description: Note about the purpose and use of the AR term.
+          x-mappedTo: DESCRIPTION
+        value:
+          type: string
+          description: Value
+          x-mappedTo: VALUE
+          readOnly: true
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+        due:
+          type: object
+          description: The due date is a combination of a number of days and a reference point. For example, to set terms that reference the number of days from the invoice date, set the number of days in `day`, and set `fromBillbillDate` in `from`.
+          title: due
+          properties:
+            days:
+              type: integer
+              description: Number of days until the term is due.
+              x-mappedTo: DUEDATE
+            from:
+              type: string
+              description: The reference point from which to begin counting the number of days until the term is due.
+              enum:
+                - fromInvoiceDate
+                - ofTheMonthOfInvoiceDate
+                - ofNextMonthFromInvoiceDate
+                - of2ndMonthFromInvoiceDate
+                - of3rdMonthFromInvoiceDate
+                - of4thMonthFromInvoiceDate
+                - of5thMonthFromInvoiceDate
+                - of6thMonthFromInvoiceDate
+                - afterEndOfMonthOfInvoiceDate
+                - fromInvoiceDateExtendingToEom
+              x-mappedToValues:
+                - from invoice/bill date
+                - of the month of invoice/bill date
+                - of next month from invoice/bill date
+                - of 2nd month from invoice/bill date
+                - of 3rd month from invoice/bill date
+                - of 4th month from invoice/bill date
+                - of 5th month from invoice/bill date
+                - of 6th month from invoice/bill date
+                - after end of month of invoice/bill date
+                - from invoice/bill date extending to eom
+              x-mappedTo: DUEFROM
+        discount:
+          type: object
+          description: A discount is a combination of a number of days, a reference point, and the amount of the discount.
+          title: discount
+          properties:
+            days:
+              type: integer
+              description: Number of days until the discount goes into effect.
+              x-mappedTo: DISCDATE
+            amount:
+              type: integer
+              description: Amount of the discount.
+              x-mappedTo: DISCAMOUNT
+            from:
+              type: string
+              description: The reference point from which to begin counting the number of days until the discount goes into effect.
+              enum:
+                - fromInvoiceDate
+                - ofTheMonthOfInvoiceDate
+                - ofNextMonthFromInvoiceDate
+                - of2ndMonthFromInvoiceDate
+                - of3rdMonthFromInvoiceDate
+                - of4thMonthFromInvoiceDate
+                - of5thMonthFromInvoiceDate
+                - of6thMonthFromInvoiceDate
+                - afterEndOfMonthOfInvoiceDate
+                - fromInvoiceDateExtendingToEom
+              x-mappedToValues:
+                - from invoice/bill date
+                - of the month of invoice/bill date
+                - of next month from invoice/bill date
+                - of 2nd month from invoice/bill date
+                - of 3rd month from invoice/bill date
+                - of 4th month from invoice/bill date
+                - of 5th month from invoice/bill date
+                - of 6th month from invoice/bill date
+                - after end of month of invoice/bill date
+                - from invoice/bill date extending to eom
+              x-mappedTo: DISCFROM
+            unit:
+              type: string
+              enum:
+                - amount
+                - percentage
+              x-mappedToValues:
+                - $
+                - '%'
+              description: The type of discount, which can be a dollar amount or a percentage.
+              x-mappedTo: DISCPERCAMN
+            graceDays:
+              type: integer
+              description: Number of days before the discount is withdrawn.
+              x-mappedTo: DISCFUDGEDAYS
+            calculateOn:
+              type: string
+              enum:
+                - lineItemsTotal
+                - invoiceTotal
+              x-mappedToValues:
+                - Line items total
+                - Invoice total
+              description: How the system calculates discounts in transactions that use this term. The calculation can be based on the line item total, excluding added charges (such as shipping and taxes), or on the invoice total, including all charges.
+              x-mappedTo: DISCCALCON
+        penalty:
+          type: object
+          description: Penalty for paying after the due date.
+          title: penalty
+          properties:
+            cycle:
+              type: string
+              enum:
+                - noPenalty
+                - daily
+                - weekly
+                - biweekly
+                - monthly
+                - bimonthly
+                - quarterly
+                - halfYearly
+                - annually
+              x-mappedToValues:
+                - No Penalty
+                - Daily
+                - Weekly
+                - Biweekly
+                - Monthly
+                - Bimonthly
+                - Quarterly
+                - Half yearly
+                - Annually
+              description: Time span in which the penalty accrues.
+              x-mappedTo: PEN_TYPES
+            amount:
+              type: integer
+              description: Amount of the penalty.
+              x-mappedTo: PENAMOUNT
+            unit:
+              type: string
+              enum:
+                - amount
+                - percentage
+              x-mappedToValues:
+                - $
+                - '%'
+              description: The type of penalty, which can be a dollar amount or a percentage.
+              x-mappedTo: PENPERCAMN
+            graceDays:
+              type: integer
+              description: The number of days after the due date that the penalty takes effect.
+              x-mappedTo: PENFUDGEDAYS
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

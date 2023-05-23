@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/contract/view
+    POST:
+      - cn/lists/contract/create
+    PATCH:
+      - cn/lists/contract/edit
+    DELETE:
+      - cn/lists/contract/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

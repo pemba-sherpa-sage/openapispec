@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: core.paas.refresh
+  description: Standard object read service
+  version: '1.0-internal'
+  contact:
+    name: Valer Crisan
+    email: valer.crisan@sage.com
+tags:
+  - name: core.paas.refresh
+    description: Refresh hook for domain services
+paths:
+  /services/core/paas/refresh:
+    post:
+      summary: Refresh PaaS metadata
+      description: Refresh PaaS metadata
+      tags:
+        - core.paas.refresh
+      operationId: post-services-core-paas-refresh
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/core.paas.refresh-req'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/core.paas.refresh-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    core.paas.refresh-req:
+      description: Refresh PaaS metadata request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        cache:
+          type: boolean
+          description: Flag to indicate PaaS cache refresh
+          x-mappedTo: cache
+        dimensions:
+          type: boolean
+          description: Flag to indicate UDD refresh
+          x-mappedTo: dimensions
+    core.paas.refresh-resp:
+      description: Refresh PaaS metadata response
+      type: object
+      x-mappedTo: __custom__
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  
+
+

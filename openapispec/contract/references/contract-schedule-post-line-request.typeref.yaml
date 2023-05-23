@@ -1,0 +1,23 @@
+type: object
+title: contract-schedule-post-line-request
+description: post line request
+x-mappedTo: __custom__
+properties:
+  scheduleLine:
+    type: object
+    required:
+      - key
+    properties:
+      key:
+        type: string
+        description: Key of the contract schedule entry to post.
+        x-mappedTo: RECORDNO
+        nullable: false
+        example: '5'
+  postingDate:
+    type: string
+    description: Posting date.
+    x-mappedTo: POSTINGDATE
+    format: date
+    example: '2022-02-24'
+examples: []

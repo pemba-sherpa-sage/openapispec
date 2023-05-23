@@ -1,0 +1,1141 @@
+openapi: 3.0.0
+info:
+  title: project-change-order
+  description: project-change-order API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Project change orders
+    description: Project change orders provide project managers or contract administrators at construction companies a mechanism to group several change requests together, for the purpose of presenting them to the customer for approval, and ultimately, for billing
+paths:
+  /objects/project-change-order:
+    get:
+      summary: List project change orders
+      description: Returns a collection with a key, ID, and link for each project change order
+      tags:
+        - Project change orders
+      operationId: get-objects-project-change-order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-change-order objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-list-project-change-orders:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: PCO-BTI-1
+                        href: /objects/project-change-order/1
+                      - key: '2'
+                        id: PCO-BTI-2
+                        href: /objects/project-change-order/2
+                      - key: '3'
+                        id: PCO-BTI-3
+                        href: /objects/project-change-order/3
+                      - key: '4'
+                        id: PCO-BTI-4
+                        href: /objects/project-change-order/4
+                      - key: '5'
+                        id: PCO-BTI-5
+                        href: /objects/project-change-order/5
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project change order
+      description: Creates a new project change order.
+      tags:
+        - Project change orders
+      operationId: post-objects-project-change-order
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-change-order.s1.schema'
+                - $ref: '#/components/schemas/project-change-orderRequiredProperties'
+            examples:
+              example-create-project-change-order:
+                value:
+                  id: PCO-BTI-9
+                  project:
+                    id: DIM - BTI
+                  projectChangeOrderDate: '2021-12-09'
+                  priceEffectiveDate: '2021-12-01'
+                  changeRequestStatus:
+                    id: Pending
+                  state: draft
+                  description: Change Oder 9 for BTI Project
+                  sendToContact:
+                    id: Aaron
+                  item:
+                    id: Development
+                  scope: Planning only
+                  inclusions: Design scope
+                  exclusions: Maintenance
+                  terms: Standard
+                  schedule:
+                    scheduledStartDate: '2022-01-01'
+                    scheduleImpact: NA
+                  attachment:
+                    id: pco-bti-1-att1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-change-order
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-create-project-change-order:
+                  value:
+                    ia::result:
+                      key: '6'
+                      id: PCO-BTI-6
+                      href: /objects/project-change-order/6
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/project-change-order/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the project change order.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project change order
+      description: Returns detailed information for a particular project change order.
+      tags:
+        - Project change orders
+      operationId: get-objects-project-change-order-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-change-order
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/project-change-order.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-get-project-change-order:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: PCO-BTI-1
+                      project:
+                        key: '1'
+                        id: DIM - BTI
+                        name: Dimensions - Berkeley Technology Inc
+                        href: /objects/project/1
+                      location:
+                        key: 1
+                        id: 1
+                        name: United States of America
+                        href: /objects/location/1
+                      customer:
+                        key: '14'
+                        id: BTI
+                        name: Berkeley Technology Inc
+                        href: /objects/customer/14
+                      projectChangeOrderDate: '2021-12-15'
+                      state: posted
+                      changeRequestStatus:
+                        key: '2'
+                        id: Approved
+                      description: Change Oder 1 for BTI Project
+                      priceEffectiveDate: '2021-12-15'
+                      projectContract:
+                        key: '3'
+                        id: BTI-02
+                        name: BTI - 02
+                        href: /objects/project-contract/3
+                      projectContractLine:
+                        key: '28'
+                        id: bti-02.1
+                        name: bti-02.1
+                        href: /objects/project-contract-line/28
+                      totalCost: '1000.00'
+                      totalPrice: '1500.00'
+                      sendToContact:
+                        key: '4'
+                        id: Chandler
+                        href: /objects/contact/4
+                      item:
+                        key: '21'
+                        id: Maintenance
+                        name: Maintenance
+                        href: /objects/item/21
+                      scope: scope
+                      inclusions: incl
+                      exclusions: excl
+                      terms: terms
+                      schedule:
+                        scheduledStartDate: '2022-01-12'
+                        actualStartDate: null
+                        scheduledCompletionDate: '2022-04-30'
+                        revisedCompletionDate: null
+                        substantialCompletionDate: null
+                        actualCompletionDate: null
+                        noticeToProceedDate: null
+                        responseDueDate: null
+                        executedOnDate: null
+                        scheduleImpact: None
+                      internalReference:
+                        referenceNumber: BTI-01-REF-034-M
+                        initiatedBy:
+                          key: '28'
+                          id: '22'
+                          name: Chandler
+                          href: /objects/employee/28
+                        verbalBy:
+                          key: '28'
+                          id: '22'
+                          name: Chandler
+                          href: /objects/employee/28
+                        issuedBy:
+                          key: '31'
+                          id: '23'
+                          name: Jurasek
+                          href: /objects/employee/31
+                        issuedOnDate: '2021-12-08'
+                        approvedBy:
+                          key: '30'
+                          id: '2345'
+                          name: Johnson
+                          href: /objects/employee/30
+                        approvedOnDate: '2021-12-09'
+                        signedBy:
+                          key: '30'
+                          id: '2345'
+                          name: Johnson
+                          href: /objects/employee/30
+                        signedOnDate: '2021-12-09'
+                        source: null
+                        sourceReferenceNumber: null
+                      externalReference:
+                        referenceNumber: NA
+                        verbalBy:
+                          key: '11'
+                          name: Baechtel
+                          href: /objects/contact/11
+                        approvedBy:
+                          key: '11'
+                          name: Baechtel
+                          href: /objects/contact/11
+                        approvedOnDate: '2021-12-10'
+                        signedBy:
+                          key: '224'
+                          name: Able and Sons, Accountants
+                          href: /objects/contact/224
+                        signedOnDate: '2021-12-10'
+                      attachment:
+                        id: pco-bti-1-att1
+                        key: '6'
+                        href: /objects/attachment/6
+                      audit:
+                        modifiedDateTime: '2021-12-30T22:28:51Z'
+                        createdDateTime: '2021-12-08T23:30:01Z'
+                        modifiedBy: '1'
+                        createdBy: '1'
+                      href: /objects/project-change-order/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project change order
+      description: Updates an existing project change order by setting field values. Any fields not provided remain unchanged
+      tags:
+        - Project change orders
+      operationId: patch-objects-project-change-order-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-change-order.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-change-order:
+                value:
+                  project:
+                    id: DIM - BTI
+                  projectChangeOrderDate: '2021-12-15'
+                  priceEffectiveDate: '2021-12-15'
+                  state: posted
+                  description: Change Oder 1 for BTI Project
+                  changeRequestStatus:
+                    id: Approved
+                  sendToContact:
+                    id: Chandler
+                  item:
+                    id: Maintenance
+                  scope: scope
+                  inclusions: incl
+                  exclusions: excl
+                  terms: terms
+                  schedule:
+                    scheduledStartDate: '2022-01-12'
+                  attachment:
+                    id: pco-bti-1-att2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-change-order
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-project-change-order:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: PCO-BTI-1
+                      href: /objects/project-change-order/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project change order
+      description: Deletes a project change order.
+      tags:
+        - Project change orders
+      operationId: delete-objects-project-change-order-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-change-order:
+      $ref: '#/components/schemas/project-change-order.s1.schema'
+    project-change-orderRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    schedule-calendar.s1.schema:
+      title: schedule-calendar
+      type: object
+      properties:
+        scheduledStartDate:
+          type: string
+          description: Scheduled start date
+          format: date
+          example: '2021-06-15'
+          x-mappedTo: SCHEDULEDSTARTDATE
+        actualStartDate:
+          type: string
+          description: Actual start date
+          format: date
+          example: '2021-06-30'
+          x-mappedTo: ACTUALSTARTDATE
+        scheduledCompletionDate:
+          type: string
+          description: Scheduled completion date
+          format: date
+          example: '2022-11-15'
+          x-mappedTo: SCHEDULEDCOMPLETIONDATE
+        revisedCompletionDate:
+          type: string
+          description: Revised completion date
+          format: date
+          example: '2021-12-15'
+          x-mappedTo: REVISEDCOMPLETIONDATE
+        substantialCompletionDate:
+          type: string
+          description: Substantial completion date
+          format: date
+          example: '2021-09-30'
+          x-mappedTo: SUBSTANTIALCOMPLETIONDATE
+        actualCompletionDate:
+          type: string
+          description: Actual completion date
+          format: date
+          example: '2021-12-15'
+          x-mappedTo: ACTUALCOMPLETIONDATE
+        noticeToProceedDate:
+          type: string
+          description: Notice to proceed date
+          format: date
+          example: '2021-05-30'
+          x-mappedTo: NOTICETOPROCEED
+        responseDueDate:
+          type: string
+          description: Response due date
+          format: date
+          example: '2021-06-05'
+          x-mappedTo: RESPONSEDUE
+        executedOnDate:
+          type: string
+          description: Executed on date
+          format: date
+          example: '2021-06-01'
+          x-mappedTo: EXECUTEDON
+        scheduleImpact:
+          type: string
+          description: Schedule Impact
+          example: None
+          x-mappedTo: SCHEDULEIMPACT
+    internal-document.s1.schema:
+      title: internal-document
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+          description: Reference number
+          example: INT-01
+          x-mappedTo: INTERNALREFNO
+        initiatedBy:
+          type: object
+          description: Initiated by
+          x-object: employee
+          x-mappedTo: internalinitiated
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '2'
+              x-mappedTo: INTERNALINITIATEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 2
+              x-mappedTo: INTERNALINITIATEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Hatcher
+              x-mappedTo: INTERNALINITIATEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/2
+              readOnly: true
+        verbalApprovalBy:
+          type: object
+          description: Verbal approval by
+          x-object: employee
+          x-mappedTo: internalverbal
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '2'
+              x-mappedTo: INTERNALVERBALBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 2
+              x-mappedTo: INTERNALVERBALBY
+            name:
+              type: string
+              description: Employee name
+              example: Hatcher
+              x-mappedTo: INTERNALVERBALBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/2
+              readOnly: true
+        issuedBy:
+          type: object
+          description: Issued by
+          x-object: employee
+          x-mappedTo: internalissued
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '25'
+              x-mappedTo: INTERNALISSUEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 123
+              x-mappedTo: INTERNALISSUEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Marquess
+              x-mappedTo: INTERNALISSUEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/25
+              readOnly: true
+        issuedOnDate:
+          type: string
+          description: Issued on date
+          format: date
+          example: '2021-05-30'
+          x-mappedTo: INTERNALISSUEDON
+        approvedBy:
+          type: object
+          description: Approved by
+          x-object: employee
+          x-mappedTo: internalapproved
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '1'
+              x-mappedTo: INTERNALAPPROVEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 1
+              x-mappedTo: INTERNALAPPROVEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Reser
+              x-mappedTo: INTERNALAPPROVEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/1
+              readOnly: true
+        approvedOnDate:
+          type: string
+          description: Approved on date
+          format: date
+          example: '2021-10-02'
+          x-mappedTo: INTERNALAPPROVEDON
+        signedBy:
+          type: object
+          description: Signed by
+          x-object: employee
+          x-mappedTo: internalsigned
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: 32
+              x-mappedTo: INTERNALSIGNEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: Robert
+              x-mappedTo: INTERNALSIGNEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Robert
+              x-mappedTo: INTERNALSIGNEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/32
+              readOnly: true
+        signedOnDate:
+          type: string
+          description: Signed on date
+          format: date
+          example: '2021-05-31'
+          x-mappedTo: INTERNALSIGNEDON
+        source:
+          type: string
+          description: Internal source
+          example: Internal
+          x-mappedTo: INTERNALSOURCE
+        sourceReferenceNumber:
+          type: string
+          description: Internal source reference number
+          example: REF-INT-01
+          x-mappedTo: INTERNALSOURCEREFNO
+    external-document.s1.schema:
+      title: external-document
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+          description: External reference number
+          example: A23
+          x-mappedTo: EXTERNALREFNO
+        verbalApprovalBy:
+          type: object
+          description: Verbal approval by
+          x-object: contact
+          x-mappedTo: externalverbal
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: '6'
+              x-mappedTo: EXTERNALVERBALBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Johnson
+              x-mappedTo: EXTERNALVERBALBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/6
+              readOnly: true
+        approvedBy:
+          type: object
+          description: Approved by
+          x-object: contact
+          x-mappedTo: externalapproved
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: 51
+              x-mappedTo: EXTERNALAPPROVEDBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Jagadish
+              x-mappedTo: EXTERNALAPPROVEDBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/51
+              readOnly: true
+        approvedOnDate:
+          type: string
+          description: Approved on date
+          format: date
+          example: '2021-11-03'
+          x-mappedTo: EXTERNALAPPROVEDON
+        signedBy:
+          type: object
+          description: Signed by
+          x-object: contact
+          x-mappedTo: externalsigned
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: '200'
+              x-mappedTo: EXTERNALSIGNEDBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Modulus Industries
+              x-mappedTo: EXTERNALSIGNEDBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/200
+              readOnly: true
+        signedOnDate:
+          type: string
+          description: Signed on date
+          format: date
+          example: '2021-12-01'
+          x-mappedTo: EXTERNALSIGNEDON
+    attachmentref.s1.schema:
+      title: attachmentref
+      type: object
+      description: Supporting document ID.
+      x-object: attachment
+      x-mappedTo: SUPDOC
+      properties:
+        key:
+          type: string
+          description: Attachment key
+          example: 6
+          x-mappedTo: SUPDOCKEY
+          readOnly: true
+        id:
+          type: string
+          description: Attachment id
+          example: att-1
+          x-mappedTo: SUPDOCID
+        href:
+          type: string
+          description: URL of the attachment
+          example: /objects/attachment/6
+          readOnly: true
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    project-change-order.s1.schema:
+      title: project-change-order
+      type: object
+      x-mappedTo: projectchangeorder
+      properties:
+        key:
+          type: string
+          description: System-assigned key of the project change order
+          example: '5'
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the project change order
+          example: PCO-BTI-1
+          x-mappedTo: PROJECTCHANGEORDERID
+          x-mutable: false
+        href:
+          type: string
+          description: URL of the project change order
+          example: /objects/project-change-order/5
+          readOnly: true
+        project:
+          type: object
+          description: Reference to a project
+          x-object: project
+          x-mappedTo: project
+          properties:
+            key:
+              type: string
+              description: Project key
+              example: '1'
+              x-mappedTo: PROJECTKEY
+              readOnly: true
+            id:
+              type: string
+              description: Project id
+              example: DIM-BTI
+              x-mappedTo: PROJECTID
+            name:
+              type: string
+              description: Project name
+              example: Dimensions - Berkeley Technology Inc
+              x-mappedTo: PROJECTNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the project
+              example: /objects/project/1
+              readOnly: true
+        location:
+          type: object
+          description: Reference to a location
+          x-object: location
+          x-mappedTo: location
+          properties:
+            key:
+              type: integer
+              description: Location key
+              example: '1'
+              x-mappedTo: LOCATIONKEY
+              readOnly: true
+            id:
+              type: integer
+              description: Location id
+              example: 1
+              x-mappedTo: LOCATIONID
+              readOnly: true
+            name:
+              type: string
+              description: Location name
+              example: United States of America
+              x-mappedTo: LOCATIONNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the location
+              example: /objects/location/1
+              readOnly: true
+        projectChangeOrderDate:
+          type: string
+          format: date
+          description: Project change order date
+          example: '2021-10-15'
+          x-mappedTo: PROJECTCHANGEORDERDATE
+        state:
+          type: string
+          x-mappedTo: PROJECTCHANGEORDERSTATE
+          description: Project change order state
+          example: draft
+          enum:
+            - draft
+            - posted
+          default: draft
+          x-mappedToValues:
+            - Draft
+            - Posted
+        changeRequestStatus:
+          type: object
+          description: Reference to a change request status
+          properties:
+            key:
+              type: string
+              example: '1'
+              x-mappedTo: CHANGEREQUESTSTATUSKEY
+              readOnly: true
+            id:
+              type: string
+              example: Pending
+              x-mappedTo: CHANGEREQUESTSTATUSNAME
+            href:
+              type: string
+              description: URL of the change request status
+              example: /objects/change-request-status/1
+              readOnly: true
+        description:
+          type: string
+          description: Describes the project change order
+          example: Change order 1 for NW Food Warehouse
+          x-mappedTo: DESCRIPTION
+        projectContract:
+          type: object
+          description: Reference to a project contract
+          x-object: project-contract
+          properties:
+            key:
+              type: string
+              example: '1'
+              x-mappedTo: PROJECTCONTRACTKEY
+              readOnly: true
+            id:
+              type: string
+              example: Pending
+              x-mappedTo: PROJECTCONTRACTID
+            name:
+              type: string
+              example: Pending
+              x-mappedTo: PROJECTCONTRACTNAME
+            href:
+              type: string
+              description: URL of the project contract
+              example: /objects/project-contract/1
+              readOnly: true
+        projectContractLine:
+          type: object
+          description: Reference to a project contract line
+          x-object: project-contract-line
+          properties:
+            key:
+              type: string
+              example: '1'
+              x-mappedTo: PROJECTCONTRACTLINEKEY
+              readOnly: true
+            id:
+              type: string
+              example: Pending
+              x-mappedTo: PROJECTCONTRACTLINEID
+            name:
+              type: string
+              example: Pending
+              x-mappedTo: PROJECTCONTRACTLINENAME
+            href:
+              type: string
+              description: URL of the project contract line
+              example: /objects/project-contract-line/1
+              readOnly: true
+        priceEffectiveDate:
+          type: string
+          format: date
+          description: Price effective date
+          example: 2021-9-15
+          x-mappedTo: PRICEEFFECTIVEDATE
+        totalCost:
+          type: string
+          format: decimal-precision-2
+          description: Total cost
+          example: 1575.25
+          readOnly: true
+          x-mappedTo: TOTALCOST
+        totalPrice:
+          type: string
+          format: decimal-precision-2
+          description: Total price
+          example: 1575.25
+          readOnly: true
+          x-mappedTo: TOTALPRICE
+        sendToContact:
+          type: object
+          description: Reference to a contact
+          x-object: contact
+          x-mappedTo: SENDTO
+          properties:
+            key:
+              type: string
+              example: '4'
+              readOnly: true
+              x-mappedTo: SENDTOKEY
+            id:
+              type: string
+              example: Chandler
+              x-mappedTo: SENDTO
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/4
+              readOnly: true
+        item:
+          type: object
+          description: Reference to an item
+          x-object: item
+          x-mappedTo: ITEM
+          properties:
+            key:
+              type: string
+              readOnly: true
+              example: '21'
+              x-mappedTo: ITEMKEY
+            id:
+              type: string
+              x-mappedTo: ITEMID
+            name:
+              type: string
+              readOnly: true
+              example: Maintenance
+              x-mappedTo: ITEMNAME
+            href:
+              type: string
+              description: URL of the contact
+              example: /object/item/4
+              readOnly: true
+        customer:
+          type: object
+          description: Reference to a customer
+          x-object: customer
+          x-mappedTo: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              example: '14'
+              readOnly: true
+              x-mappedTo: CUSTOMERKEY
+            id:
+              type: string
+              description: Customer ID
+              example: BTI
+              readOnly: true
+              x-mappedTo: CUSTOMERID
+            name:
+              type: string
+              description: Customer Name
+              example: Berkeley Technologies Inc
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+            href:
+              type: string
+              description: URL of the customer
+              example: /objects/customer/14
+              readOnly: true
+        scope:
+          type: string
+          description: Scope
+          example: Design
+          x-mappedTo: SCOPE
+        inclusions:
+          type: string
+          description: Inclusions
+          example: Original plan
+          x-mappedTo: INCLUSIONS
+        exclusions:
+          type: string
+          description: Exclusions
+          example: Hardware accessories
+          x-mappedTo: EXCLUSIONS
+        terms:
+          type: string
+          description: Terms
+          example: Standard terms and conditions
+          x-mappedTo: TERMS
+        schedule:
+          $ref: '#/components/schemas/schedule-calendar.s1.schema'
+        internalReference:
+          $ref: '#/components/schemas/internal-document.s1.schema'
+        externalReference:
+          $ref: '#/components/schemas/external-document.s1.schema'
+        attachment:
+          $ref: '#/components/schemas/attachmentref.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

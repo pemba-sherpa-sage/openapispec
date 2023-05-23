@@ -1,0 +1,400 @@
+openapi: 3.0.0
+info:
+  title: Employee expense
+  description: Employee expense API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Employee expense
+    description: Expense report for an employee.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/employee-expense:
+    get:
+      summary: List of employee expenses
+      description: 'Returns a collection with a key, ID, and link for each employee expense.'
+      tags:
+        - Employee expense
+      operationId: get-objects-employee-expense
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee expense objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Get list of employee expenses:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: EXP-00001
+                        href: /objects/employee-expense/84
+                      - key: '85'
+                        id: EXP-00002
+                        href: /objects/employee-expense/85
+                      - key: '60'
+                        id: EXP-00003
+                        href: /objects/employee-expense/60
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an employee expense
+      description: Creates a new employee expense.
+      tags:
+        - Employee expense
+      operationId: post-objects-employee-expense
+      requestBody:
+        description: Creates an employee expense
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense'
+                - $ref: '#/components/schemas/employeeExpenseRequiredProperties'
+            examples:
+              Creates an employee expense:
+                value:
+                  state: 'submitted'
+                  expenseReportNumber: 'EXP-00001'
+                  employee:
+                    id: '10'
+                  createdDate: '2021-03-11'
+                  expenseSummary:
+                    postingDate: '2021-01-31'
+                    title: 'Expenses - 2021/01/31 Batch'
+                  basePaymentInformation:
+                    baseCurrency: 'USD'
+                  reimbursementInformation:
+                    reimbursementCurrency: 'EUR'
+                  description: 'Travel expense'
+                  memo: 'memo'
+                  lines:
+                    - account:
+                      id: '6775.30'
+                      paidTo: 'paid To'
+                      paidFor: 'paid For'
+                      isBillable: false
+                      form1099:
+                        isForm1099: true
+                        type: 'MISC'
+                        box: '3'
+                      paymentType:
+                        key: '1'
+                        name: 'Non-reimburse'
+                        isNonreimbursable: false
+                      quantity: '10'
+                      unitrate: '20'
+                      txnCurrency: 'INR'
+                      txnAmount: '100'
+                      transactionToReimburseConversion:
+                        exchangeRateDate: '2021-03-11'
+                        exchangeRateTypeId: 'Intacct Daily Rate'
+                      dimensions:
+                        location:
+                          id: '1'
+                        department:
+                          id: '1'
+                        class:
+                          id: 'REST_CLS_001'
+                        item:
+                          id: 'Case 13'
+                        employee:
+                          id: '10'
+                        vendor:
+                          id: '1605212096809'
+                        customer:
+                          id: '113'
+                        project:
+                          id: 'NET-XML30-2'
+                        warehouse:
+                          id: 'WH01'
+                        task:
+                          id: 'tet'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee expense
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New employee expense:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: '/objects/employee-expense/124'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/employee-expense/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the employee-expense.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee expense
+      description: Returns detailed information for a particular employee expense.
+      tags:
+        - Employee expense
+      operationId: get-objects-employee-expense-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee expense
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/employee-expense'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the employee expense:
+                  value:
+                    'ia::result':
+                      expenseReportNumber: 'ER-0152'
+                      employee:
+                        firstName: 'Glenn'
+                        lastName: 'Thomas'
+                        name: 'Thomas, Glenn'
+                        employeeId: '10'
+                        key: '10'
+                        href: '/objects/employee/10'
+                      key: '124'
+                      id: '124'
+                      createdDate: '2021-03-11'
+                      expenseSummary:
+                        postingDate: '2021-01-31'
+                        title: 'Expenses- 2021/01/31 Batch'
+                        key: '3'
+                        id: '3'
+                        href: '/objects/employee-expense-summary/3'
+                      basePaymentInformation:
+                        totalEntered: '1.38'
+                        totalPaid: '0'
+                        totalSelected: '0'
+                        totalDue: '1.38'
+                        baseCurrency: 'USD'
+                      state: 'approved'
+                      reimbursementInformation:
+                        totalEntered: '1.16'
+                        totalSelected: '0'
+                        totalPaid: '0'
+                        totalDue: '1.16'
+                        reimbursementCurrency: 'EUR'
+                      description: 'Supplies for customer training'
+                      nonReimbursable:
+                        baseTotalEntered: '0'
+                        reimbusementTotalEntered: '0'
+                      lines:
+                        - key: '288'
+                          id: '288'
+                          employee-expense:
+                            id: '124'
+                            key: '124'
+                            href: '/objects/employee-expense/124'
+                          quantity: '0'
+                          glAccount:
+                            key: '158'
+                            id: '6775.30'
+                            name: 'Travel'
+                            href: '/objects/account/158'
+                          entryDate: '2021-03-11'
+                          paidTo: 'paid To'
+                          paidFor: 'paid For'
+                          baseAmount: '1.38'
+                          reimburseToBase:
+                            exchangeRateDate: '2021-03-11'
+                            exchangeRateTypeId: '-1'
+                            exchangeRate: '1.1899'
+                          expenseType:
+                            key: 'Meals'
+                            id: '6000'
+                          reimbursementInformation:
+                            reimbursementAmount: '1.16'
+                            totalSelected: '0'
+                            totalPaid: '0'
+                          isBillable: false
+                          isBilled: false
+                          state: 'approved'
+                          form1099:
+                            isForm1099: true
+                            type: 'MISC'
+                            box: '3'
+                          paymentType:
+                            isNonreimbursable: false
+                          unitrate: '10'
+                          lineNumber: 1
+                          currency:
+                            txnCurrency: 'INR'
+                            txnAmount: '100'
+                            exchangeRateDate: '2021-03-11'
+                            exchangeRateTypeId: 'Intacct Daily Rate'
+                            exchangeRate: '1'
+                          attachment:
+                            key: '1'
+                            id: '1'
+                          dimensions:
+                            location:
+                              key: '1'
+                              id: '1'
+                              name: 'USA'
+                              href: '/objects/location/1'
+                            department:
+                              key: '1'
+                              id: '1'
+                              name: 'IT'
+                              href: '/objects/department/1'
+                            class:
+                              key: '731'
+                              id: 'REST_CLS_001'
+                              name: 'Education'
+                              href: '/objects/class/731'
+                            item:
+                              key: '13'
+                              id: '13'
+                              name: 'Support'
+                              href: '/objects/item/13'
+                            employee:
+                              key: '10'
+                              id: '10'
+                              name: 'Thomas, Glenn'
+                              href: '/objects/employee/10'
+                            vendor:
+                              key: '357'
+                              id: '1605212096809'
+                              name: 'Boston Properties'
+                              href: '/objects/vendor/357'
+                            customer:
+                              key: '13'
+                              id: '113'
+                              name: 'Jack In the Box'
+                              href: '/objects/customer/13'
+                            project:
+                              key: '2'
+                              id: 'NET-XML30-2'
+                              name: 'Binford Implementation'
+                              href: '/objects/project/2'
+                            task:
+                              key: '2'
+                              id: 'tet'
+                              name: 'Implementation services'
+                              href: '/objects/task/2'
+                            warehouse:
+                              key: '6'
+                              id: 'WH01'
+                              name: 'WH01 Name'
+                              href: '/objects/warehouse/6'
+                          href: '/objects/employee-expense-line/288'
+                      memo: 'Covered by customer'
+                      href: '/objects/employee-expense/124'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an employee expense
+      description: Updates an existing employee expense by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employee expense
+      operationId: patch-objects-employee-expense-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee-expense'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an employee expense:
+                value:
+                  memo: 'Covered by customer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee expense
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated employee expense:
+                  value:
+                    'ia::result':
+                      key: '124'
+                      id: '124'
+                      href: '/objects/employee-expense/124'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete  an employee expense
+      description: Deletes an employee expense.
+      tags:
+        - Employee expense
+      operationId: delete-objects-employee-expense-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee-expense:
+      $ref: ../models/employee-expense.s1.schema.yaml
+    employeeExpenseRequiredProperties:
+      type: object
+      properties:
+        employee:
+          required:
+            - key
+      required:
+        - createdDate
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

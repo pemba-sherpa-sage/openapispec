@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    POST:
+      - cn/lists/contractdetail/deliver
+s1:
+  hash: '0'
+  type: functionService

@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/sandbox/view
+    DELETE:
+      - co/lists/sandbox/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    all:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

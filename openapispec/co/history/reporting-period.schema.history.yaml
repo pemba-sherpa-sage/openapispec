@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/reportingperiod/view
+      - gl/lists/reportingperiod/view
+    POST:
+      - co/lists/reportingperiod/create
+      - co/quickadds/reportingperiod/create
+      - gl/lists/reportingperiod/create
+    PATCH:
+      - co/lists/reportingperiod/edit
+      - gl/lists/reportingperiod/edit
+    DELETE:
+      - co/lists/reportingperiod/delete
+      - gl/lists/reportingperiod/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,21 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/lotcategory/view
+      - po/lists/lotcategory/view
+      - so/lists/lotcategory/view
+    POST:
+      - inv/lists/lotcategory/create
+      - po/lists/lotcategory/create
+      - so/lists/lotcategory/create
+    PATCH:
+      - inv/lists/lotcategory/edit
+      - po/lists/lotcategory/edit
+      - so/lists/lotcategory/edit
+    DELETE:
+      - inv/lists/lotcategory/delete
+      - po/lists/lotcategory/delete
+      - so/lists/lotcategory/delete
+s1:
+  hash: '0'
+  type: rootObject

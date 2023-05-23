@@ -1,0 +1,62 @@
+title: schedule-calendar
+type: object
+properties:
+  scheduledStartDate:
+    type: string
+    description: Scheduled start date
+    format: date
+    example: 2021-06-15
+    x-mappedTo: SCHEDULEDSTARTDATE
+  actualStartDate:
+    type: string
+    description: Actual start date
+    format: date
+    example: 2021-06-30
+    x-mappedTo: ACTUALSTARTDATE
+  scheduledCompletionDate:
+    type: string
+    description: Scheduled completion date
+    format: date
+    example: 2022-11-15
+    x-mappedTo: SCHEDULEDCOMPLETIONDATE
+  revisedCompletionDate:
+    type: string
+    description: Revised completion date
+    format: date
+    example: 2021-12-15
+    x-mappedTo: REVISEDCOMPLETIONDATE
+  substantialCompletionDate:
+    type: string
+    description: Substantial completion date
+    format: date
+    example: 2021-09-30
+    x-mappedTo: SUBSTANTIALCOMPLETIONDATE
+  actualCompletionDate:
+    type: string
+    description: Actual completion date
+    format: date
+    example: 2021-12-15
+    x-mappedTo: ACTUALCOMPLETIONDATE
+  noticeToProceedDate:
+    type: string
+    description: Notice to proceed date
+    format: date
+    example: 2021-05-30
+    x-mappedTo: NOTICETOPROCEED
+  responseDueDate:
+    type: string
+    description: Response due date
+    format: date
+    example: 2021-06-05
+    x-mappedTo: RESPONSEDUE
+  executedOnDate:
+    type: string
+    description: Executed on date
+    format: date
+    example: 2021-06-01
+    x-mappedTo: EXECUTEDON
+  scheduleImpact:
+    type: string
+    description: Schedule Impact
+    example: None
+    x-mappedTo: SCHEDULEIMPACT

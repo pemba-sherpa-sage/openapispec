@@ -1,0 +1,129 @@
+purchasing-tax-detail :
+fields:
+    key:
+        uiType: integer
+        uiLabel: 'Record number'
+    id:
+        uiType: text
+        uiLabel: 'Detail ID'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+    taxUniqueId:
+        uiType: text
+        uiLabel: 'Tax UID'
+    taxRate:
+        uiType: enum
+        uiLabel: 'Tax Rate'
+        enumsLabels:
+            -
+                label: Standard
+                value: standard
+            -
+                label: Reduced
+                value: reduced
+            -
+                label: Exempt
+                value: exempt
+            -
+                label: Zero
+                value: zero
+            -
+                label: Federal
+                value: federal
+            -
+                label: Provincial
+                value: provincial
+    amountToTax:
+        uiType: enum
+        uiLabel: 'Include in taxable amount'
+        enumsLabels:
+            -
+                label: 'Full Amount'
+                value: fullAmount
+            -
+                label: 'Amount Within Range'
+                value: amountWithinRange
+    description:
+        uiType: multitext
+        uiLabel: Description
+    taxPercent:
+        uiType: decimal
+        uiLabel: Percent
+    reverseCharge:
+        uiType: boolean
+        uiLabel: 'Is reverse charge'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: true
+    useExpenseAccount:
+        uiType: enum
+        uiLabel: 'Assign taxes to expense account'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+    isSystemGenerated:
+        uiType: enum
+        uiLabel: 'System generated field'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+groups:
+    taxLimit:
+        fields:
+            minTaxable:
+                uiType: decimal
+                uiLabel: 'Minimum taxable amount'
+            maxTaxable:
+                uiType: decimal
+                uiLabel: 'Maximum taxable amount'
+            minTax:
+                uiType: decimal
+                uiLabel: 'Minimum tax'
+            maxTax:
+                uiType: decimal
+                uiLabel: 'Maximum tax'
+refs:
+  taxAuthority:
+    fields:
+      id:
+        uiType: ptr
+        uiLabel: 'Tax  authority'
+      key:
+        uiType: sequence
+        uiLabel: 'Tax  authority Record Number'
+  purchaseGLAccount:
+    fields:
+      id:
+        uiType: ptr
+        uiLabel: 'GL account'
+      key:
+        uiType: sequence
+        uiLabel: 'GL account Record Number'
+  taxSolution:
+    fields:
+      key:
+        uiType: sequence
+        uiLabel: 'Tax solution Record Number'
+      id:
+        uiType: ptr
+        uiLabel: 'Tax solution'

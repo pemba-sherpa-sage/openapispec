@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/arinvoice/view
+    POST:
+      - ar/lists/arinvoice/create
+      - ar/quickadds/arinvoice/create
+    PATCH:
+      - ar/lists/arinvoice/edit
+    DELETE:
+      - ar/lists/arinvoice/delete
+s1:
+  hash: '0'
+  type: rootObject

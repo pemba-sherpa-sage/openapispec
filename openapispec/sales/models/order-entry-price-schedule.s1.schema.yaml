@@ -1,0 +1,45 @@
+title: order-entry-price-schedule
+type: object
+description: Sales Price Schedule
+x-mappedTo: sopriceschedule
+properties:
+  key:
+    type: string
+    description: Schedule Code
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Schedule Code
+    x-mappedTo: SCHEDULE
+    x-mutable: false
+  href:
+    type: string
+    readOnly: true
+  description:
+    type: string
+    description: Price schedule description
+    x-mappedTo: DESCRIPTION
+  priceList:
+    type: object
+    x-object: order-entry-price-list
+    x-mappedTo: sopricelist
+    properties:
+      key:
+        type: string
+        description: Price List
+        x-mappedTo: PRICELISTID
+        readOnly: true
+      id:
+        type: string
+        description: Price List
+        x-mappedTo: PRICELISTID
+      href:
+        type: string
+        readOnly: true
+  discountPercent:
+    type: string
+    description: Discount %
+    x-mappedTo: DISCOUNT
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

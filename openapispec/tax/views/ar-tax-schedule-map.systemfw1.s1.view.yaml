@@ -1,0 +1,31 @@
+key: ar-tax-schedule-map::systemARTaxScheduleMapFW1
+id: systemARTaxScheduleMapFW1
+object: ar-tax-schedule-map
+name: All
+description: Specifies all ar-tax-schedule-maps
+query:
+  object: ar-tax-schedule-map
+  fields:
+    - itemTaxGroup.id
+    - contactTaxGroup.id
+    - taxSchedule.name
+    - taxSolution.id
+  orderBy:
+    - id: asc
+metadata:
+  frozenColumnsCount: 2
+  columns:
+    - id: "itemTaxGroup.id"
+      format: "clip"
+      size: 40
+    - id: "contactTaxGroup.id"
+      format: "clip"
+      size: 40
+    - id: "taxSchedule.name"
+      format: "clip"
+      size: 40
+    - id: "taxSolution.id"
+      format: "clip"
+      size: 40
+contexts:
+  - __default

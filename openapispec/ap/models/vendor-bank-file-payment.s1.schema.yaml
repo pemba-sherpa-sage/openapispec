@@ -1,0 +1,88 @@
+title: vendor-bank-file-payment
+x-mappedTo: vendorbankfiledetail
+x-ownedBy: vendor
+type: object
+description: A bank file enables electronic payments to be made to vendors using a local bank file format. Bank files are standard files used by banks to make multiple payments.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor bank file payment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Identifier for the vendor bank file payment. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  bankAccountNumber:
+    type: string
+    description: Bank account number for the bank file payment.
+    x-mappedTo: BANKACCOUNTNUMBER
+    example: 
+  bankAccountName:
+    type: string
+    description: Bank account name for the bank file payment.
+    x-mappedTo: ACCOUNTNAME
+    example: 
+  bsbNumber:
+    type: string
+    description: Bank branch number for the vendor bank.
+    x-mappedTo: BSBNUMBER
+    example: 
+  sortCode:
+    type: string
+    description: Sort code for the bank file payment.
+    x-mappedTo: SORTCODE
+    example: 
+  paymentReference:
+    type: string
+    description: Payment reference number to connect the bank file and the bills to be paid.
+    x-mappedTo: PYMTREFERENCE
+    example: 
+  branchCode:
+    type: string
+    description: Branch code for the vendor bank account to which payments are made.
+    x-mappedTo: BRANCHCODE
+    example: 
+  bankAccountType:
+    type: string
+    description: Account type for the vendor bank account to which payments are made.
+    x-mappedTo: ACCOUNTTYPE
+    example: 
+  bankAccountCode:
+    type: string
+    description: Account code for the vendor bank account to which payments are made.
+    x-mappedTo: ACCOUNTCODE
+    example: 
+  proofOfPayment:
+    type: string
+    description: Specify whether to print the proof of payment when the bank file payment batch is authorized.
+    x-mappedTo: PROOFOFPYMT
+    example: 
+  businessIdCode:
+    type: string
+    description: Creditor bank identifier code for the bank account.
+    x-mappedTo: BUSINESSIDCODE
+    example: 
+  vendor:
+    type: object
+    x-mappedTo: vendor
+    x-object: vendor
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the vendor.
+        x-mappedTo: VENDORKEY
+        example: '518'
+      id:
+        type: string
+        description: Unique identifier of the vendor.
+        x-mappedTo: VENDORID
+        example: 'V-00014'
+      href:
+        type: string
+        description: URL of the vendor.
+        readOnly: true
+        example: /objects/vendor/518

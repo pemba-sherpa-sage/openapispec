@@ -1,0 +1,336 @@
+openapi: 3.0.0
+info:
+  title: location-group
+  description: location-group API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Location groups
+    description: A location group is a specified set of locations, or a set of locations that meet certain criteria. You can use groups to filter or display information in multiple ways, for instance by showing data from only certain locations.
+paths:
+  /objects/location-group:
+    get:
+      summary: List location groups
+      description: |
+        Returns up to 100 location groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find location groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - Location groups
+      operationId: get-objects-location-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of location groups
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of location groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/location-group/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the location group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a location group
+      description: Returns detailed information for a specified location group.
+      tags:
+        - Location groups
+      operationId: get-objects-location-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the location group
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/location-group.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the location group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    location-group:
+      $ref: '#/components/schemas/location-group.s1.schema'
+    location-groupRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    location-group.s1.schema:
+      title: location-group
+      x-mappedTo: locationgroup
+      type: object
+      description: A specified set of locations, or a set of locations that meet certain criteria.
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the location group.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '33'
+        id:
+          type: string
+          description: Location group ID. Displayed together with the group name in Sage Intacct (_ID_--_Name_). Location group IDs cannot be changed.
+          x-mappedTo: ID
+          example: WH1
+        href:
+          type: string
+          description: Endpoint for the location group.
+          readOnly: true
+          example: /objects/location-group/33
+        name:
+          type: string
+          description: Location group name. Displayed together with the group ID in Sage Intacct (_ID_--_Name_).
+          x-mappedTo: NAME
+          example: Western Region Warehouses
+        description:
+          type: string
+          description: Description of the location group.
+          x-mappedTo: DESCRIPTION
+          example: Western Region Warehouses
+        primaryContact:
+          type: object
+          description: Default contact for this group
+          x-object: contact
+          x-mappedTo: groupcontact
+          properties:
+            key:
+              type: string
+              x-mappedTo: PRIMARYCONTACTKEY
+              example: '7'
+            id:
+              type: string
+              x-mappedTo: CONTACTINFO.CONTACTNAME
+              readOnly: true
+              example: Jeff Pinkerton
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contact/7
+        groupType:
+          type: string
+          description: |
+            Group membership type. The group type and options that you select determine which locations will be included in report data when you filter on this location group.
+
+            If you are creating financial reports that show locations in rows or columns, your selection will also determine the column headings and row headings that will appear, and the order in which they will be listed.
+
+            * `specific` - Specify the locations to include and their order in the `members` array.
+            * `all` - All locations that match the `memberFilter` criteria.
+          x-mappedTo: GROUPTYPE
+          example: specific
+          enum:
+            - all
+            - specific
+          x-mappedToValues:
+            - ALL
+            - SPECIFIC
+          default: all
+        sortOrder:
+          type: string
+          description: Sort order for locations that match the `memberFilter`. Only applicable when `groupType` = `all`.
+          x-mappedTo: SORTORDER
+          example: null
+          enum:
+            - ascending
+            - descending
+          x-mappedToValues:
+            - ASC
+            - DESC
+          default: ascending
+        maxMatches:
+          type: string
+          description: The maximum number of locations that match the `memberFilter` to include in the location group. Only applicable when `groupType` = `all`.
+          x-mappedTo: RESTRICTTO
+          example: null
+        memberFilter:
+          type: array
+          title: memberFilter
+          description: One or more filters to select the locations to include in the location group.
+          nullable: true
+          x-mappedTo: MEMBERFILTERS
+          items:
+            title: children
+            properties:
+              field:
+                type: string
+                description: Location field to filter on, such as ID or Country Code.
+                x-mappedTo: FIELD
+                example: STATUS
+              operator:
+                type: string
+                description: Comparison operator.
+                x-mappedTo: OPERATOR
+                example: '!='
+              value:
+                type: string
+                description: Value to compare against.
+                x-mappedTo: VALUE
+                example: inactive
+        glAccountGroup:
+          type: object
+          description: Location report structure that controls how this location group is used in reports. If not specified, the group can be used only for filtering reports.
+          x-mappedTo: glacctgrp
+          x-object: gl-account-group
+          properties:
+            key:
+              type: string
+              x-mappedTo: GLACCTGRP.RECORDNO
+              example: '145'
+            id:
+              type: string
+              x-mappedTo: DIMGRPCOMP
+              readOnly: true
+              example: Los Angeles
+            href:
+              type: string
+              readOnly: true
+              example: /objects/gl-account-group/145
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

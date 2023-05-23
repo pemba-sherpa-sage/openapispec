@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: subledger-record
+  description: subledger-record API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Subledger records
+    description: Subledger record description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/subledger-record:
+    get:
+      summary: List subledger records
+      description: Returns a collection with a key, ID, and link for each subledger record.
+      tags:
+        - Subledger records
+      operationId: get-objects-subledger-record
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of subledger-record objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of subledger records: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an subledger record
+      description: Creates a new subledger record.
+      tags:
+        - Subledger records
+      operationId: post-objects-subledger-record
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record'
+                - $ref: '#/components/schemas/subledger-recordRequiredProperties'
+            examples:
+              Creates a/an subledger record: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New subledger-record
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/subledger-record/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the subledger record.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an subledger record
+      description: Returns detailed information for a particular subledger record.
+      tags:
+        - Subledger records
+      operationId: get-objects-subledger-record-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the subledger-record
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/subledger-record'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an subledger record
+      description: Updates an existing subledger record by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Subledger records
+      operationId: patch-objects-subledger-record-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/subledger-record'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an subledger record: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated subledger-record
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated subledger record: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an subledger record
+      description: Deletes a/an subledger record.
+      tags:
+        - Subledger records
+      operationId: delete-objects-subledger-record-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    subledger-record:
+      $ref: ../models/subledger-record.s1.schema.yaml
+    subledger-recordRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

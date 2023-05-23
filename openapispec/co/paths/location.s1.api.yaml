@@ -1,0 +1,323 @@
+openapi: 3.0.0
+info:
+  title: location
+  description: location API
+  version: '1.0'
+  contact:
+    email: Anca.Uricariu@sage.com
+    name: Anca Uricariu
+tags:
+  - name: Locations
+    description: |-
+      Location is a dimension that is used to represent the geographic locations of offices or facilities, or to represent divisions in a company. Once you have defined some locations, you can set locations on transactions, and that information can be used to provide new insights in reports. 
+
+      You can create a hierarchy of locations to reflect how locations are organized within your company.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/location:
+    get:
+      summary: List locations
+      description: |-
+        Returns up to 100 locations from the collection with a key, ID, and link for each location. This operation is mostly for use in testing; use the query service to find locations that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Locations
+      tags:
+        - Locations
+      operationId: get-objects-location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of location objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List locations:
+                  value:
+                    'ia::result':
+                      - key: 1
+                        id: US-PNW
+                        href: /objects/location/1
+                      - key: 96
+                        id: US-EAST
+                        href: /objects/location/96
+                      - key: 21
+                        id: US-SOUTH
+                        href: /objects/location/21
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a location
+      description: |-
+        Creates a new location. You can think of this as adding a new value to the dimension that you can use to tag transactions for reporting.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Add Location
+      tags:
+        - Locations
+      operationId: post-objects-location
+      requestBody:
+        description: Create location object
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/location'
+                - $ref: '#/components/schemas/locationRequiredProperties'
+            examples:
+              Create a single location:
+                value:
+                  id: loc22
+                  name: 22-India
+                  description: All India offices
+                  status: active
+              Create a child location:
+                value:
+                  id: loc227
+                  name: Bangalore
+                  description: Bangalore sales office
+                  status: active
+                  parent:
+                    id: loc22
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New location
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New location created:
+                  value:
+                    'ia::result':
+                      key: 234
+                      id: 22-India
+                      href: /objects/location/234
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/location/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the location.
+        in: path
+        required: true
+        example: '92'
+        schema:
+          type: string
+    get:
+      summary: Get a location
+      description: |-
+        Returns detailed information for a specified location.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Locations
+      tags:
+        - Locations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the location
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/location'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a location:
+                  value:
+                    'ia::result':
+                      id: WEN
+                      key: '6'
+                      name: Wenatchee
+                      parent:
+                        id: PNW--Pacific Northwest
+                        key: '5'
+                        href: /objects/location/5
+                      manager:
+                        name: 'miller, dan'
+                        id: 'EE-0000123--miller, dan'
+                        key: '2'
+                        href: /objects/employee/2
+                      contacts:
+                        primary:
+                          mailingAddress:
+                            addressLine1: '900 Cherry Avenue, #300'
+                            addressLine2: null
+                            city: Seattle
+                            country: United States
+                            postCode: '98066'
+                            state: WA
+                          URL1: null
+                          URL2: null
+                          companyName: 'InsideOut Technologies, Inc'
+                          email1: null
+                          email2: null
+                          fax: null
+                          firstName: null
+                          id: 'Insideout Technologies, Inc'
+                          lastName: null
+                          middleName: null
+                          mobile: null
+                          pager: null
+                          phone1: null
+                          phone2: null
+                          prefix: null
+                          printAs: 'InsideOut Technologies, Inc'
+                          key: '984'
+                          href: /objects/contact/984
+                        shipTo:
+                          mailingAddress:
+                            addressLine1: null
+                            addressLine2: null
+                            city: null
+                            country: null
+                            postCode: null
+                            state: null
+                          URL1: null
+                          URL2: null
+                          companyName: null
+                          email1: null
+                          email2: null
+                          fax: null
+                          firstName: null
+                          id: null
+                          lastName: null
+                          middleName: null
+                          mobile: null
+                          pager: null
+                          phone1: null
+                          phone2: null
+                          prefix: null
+                          printAs: null
+                          key: null
+                      startDate: null
+                      endDate: null
+                      status: active
+                      audit:
+                        createdDateTime: '2022-02-11T09:07:07Z'
+                        modifiedDateTime: '2022-02-11T09:07:07Z'
+                        createdBy: '110'
+                        modifiedBy: '110'
+                      locationReportingTitle: Seattle Sales Office
+                      taxId: null
+                      href: /objects/location/102
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-location-key
+    patch:
+      summary: Update a location
+      description: |-
+        Updates an existing location by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Edit Locations
+      tags:
+        - Locations
+      operationId: patch-objects-location-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/location'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update location contacts:
+                value:
+                  manager:
+                    id: '12'
+                  contacts:
+                    primary:
+                      id: john.doe
+                    shipTo:
+                      id: jane.daw
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated location
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a location
+      description: |-
+        Deletes a location. You can delete a location if it is not being used or referenced. Deleted locations cannot be recovered.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Delete Locations
+      tags:
+        - Locations
+      operationId: delete-objects-location-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    location:
+      $ref: ../models/location.s1.schema.yaml
+    locationRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,22 @@
+type: object
+title: contract
+x-object: contract
+properties:
+  key:
+    type: string
+    description: System-assigned key for the contract.
+    x-mappedTo: CONTRACTKEY
+    readOnly: true
+    example: '2'
+  id:
+    type: string
+    description: Unique identifier of the contract.
+    x-mappedTo: CONTRACTID
+    readOnly: true
+    example: CON-2
+  href:
+    type: string
+    description: URL of the contract.
+    readOnly: true
+    example: /objects/contract/2
+examples: []

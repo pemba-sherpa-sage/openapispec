@@ -1,0 +1,38 @@
+# Just a placeholder for prrecord.ent , need reference in  account reconcliation source record
+title: subledger-record-line
+x-mappedTo: prentry
+x-ownedBy: subledger-record
+type: object
+description: Subledger record line entry
+properties:
+  key:
+    type: string
+    description: Subledger record line key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Subledger record line ID
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    readOnly: true
+  subledgerRecord:
+    type: object
+    description:
+    x-mappedTo: prrecord
+    x-object: subledger-record
+    properties:
+      id:
+        type: string
+        x-mappedTo: RECORDKEY
+        example:
+      key:
+        type: string
+        x-mappedTo: RECORDKEY
+        example:
+      href:
+        type: string
+        readOnly: true
+        example:

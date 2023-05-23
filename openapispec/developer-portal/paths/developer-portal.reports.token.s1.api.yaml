@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: developer-portal.reports
+  description: developer-portal reports API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: developer-portal reports
+    description: developer-portal reports description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/developer-portal/reports/token:
+    get:
+      summary: Get an embedded token to access reports
+      description: Returns a token that can be used to access reports.
+      tags:
+        - developer-portal reports
+      parameters:
+        - schema:
+            type: string
+            nullable: false
+          in: query
+          name: developerId
+          description: Developer identifier
+          required: true
+          example: 950bf10d-f119-41c9-a352-1b68b34498c3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the token
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/developer-portal-reports-token-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-developer-portal-reports-token
+components:
+  schemas:
+    developer-portal-reports-token-response:
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        token:
+          type: string
+          description: Reporting access token
+        expiration:
+          type: string
+          format: date-time
+          description: Token Expiration
+        embedUrl:
+          type: string
+          description: Embed URL
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/araccountlabel/view
+    POST:
+      - ar/lists/araccountlabel/create
+    PATCH:
+      - ar/lists/araccountlabel/edit
+    DELETE:
+      - ar/lists/araccountlabel/delete
+s1:
+  hash: '0'
+  type: rootObject

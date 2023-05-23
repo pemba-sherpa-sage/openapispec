@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ee/activities/myexpenses/view
+      - ee/lists/eexpenses/view
+    POST:
+      - ee/activities/myexpenses/create
+      - ee/lists/eexpenses/create
+    PATCH:
+      - ee/activities/myexpenses/edit
+      - ee/lists/eexpenses/edit
+    DELETE:
+      - ee/activities/myexpenses/delete
+      - ee/lists/eexpenses/delete
+s1:
+  hash: '0'
+  type: rootObject

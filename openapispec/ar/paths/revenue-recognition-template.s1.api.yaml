@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template
+  description: Revenue recognition template API
+  version: '1.0'
+  contact:
+    email: mahesh.yallure@sage.com
+    name: Mahesh Yallure
+tags:
+  - name: Revenue recognition templates
+    description: Revenue recognition templates define how to amortize deferred revenue. Each template is associated with an Accounts Receivable label or Order Entry Item GL group.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/revenue-recognition-template/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        example: '1'
+        description: System-assigned key for the revenue recognition template.
+    get:
+      summary: Get a revenue recognition template
+      description: Returns detailed information for a specified revenue recognition template.
+      tags:
+        - Revenue recognition templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue recognition template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/revenue-recognition-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a revenue recognition template:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: '1001'
+                      href: /objects/revenue-recognition-template/1
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod-key
+  /objects/revenue-recognition-template:
+    get:
+      summary: List revenue recognition templates
+      description: Returns a collection with a key, ID, and link for each revenue recognition template. This operation is mostly for use in testing. Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List revenue recognition templates:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1001'
+                        href: /objects/revenue-recognition-template/1
+                      - key: '2'
+                        id: '1001.01'
+                        href: /objects/revenue-recognition-template/2
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-revenue-recognition-template
+components:
+  schemas:
+    revenue-recognition-template:
+      $ref: ../models/revenue-recognition-template.s1.schema.yaml
+    revenue-recognition-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: ap-adjustment-summary
+  description: ap-adjustment-summary API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: AP adjustment summaries
+    description: Summaries are collections of the same type of transactions grouped together for processing. An AP adjustment summary is a collection of AP adjustments.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ap-adjustment-summary:
+    get:
+      summary: List AP adjustment summaries
+      description: Returns a collection with a key, ID, and link for each AP adjustment summary. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP adjustment summaries
+      operationId: get-objects-ap-adjustment-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: ap-adjustment-summary Collection
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/ap-adjustment-summary/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AP adjustment summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AP adjustment summary
+      description: Returns detailed information for a specified AP adjustment summary.
+      tags:
+        - AP adjustment summaries
+      operationId: get-objects-ap-adjustment-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-adjustment-summary
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-adjustment-summary'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-adjustment-summary:
+      $ref: ../models/ap-adjustment-summary.s1.schema.yaml
+    ap-adjustment-summaryRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

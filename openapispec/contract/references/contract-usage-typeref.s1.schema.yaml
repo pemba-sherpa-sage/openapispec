@@ -1,0 +1,22 @@
+type: object
+title: contract-usage
+x-object: contract-usage
+properties:
+  key:
+    type: string
+    description: Contract usage system-assigned key.
+    x-mappedTo: USAGEKEY
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Contract usage unique identifier.
+    x-mappedTo: USAGEKEY
+    x-mutable: false
+    example: '145'
+  href:
+    type: string
+    description: Contract usage URL.
+    readOnly: true
+    example: /objects/contract-usage/145
+examples: []

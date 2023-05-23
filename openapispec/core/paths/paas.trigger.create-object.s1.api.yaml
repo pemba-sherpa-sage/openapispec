@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: paas.trigger.create-object
+  description: Trigger create object service
+  version: '1.0-internal'
+  contact:
+    name: Jean-Francois Ngo
+    email: jean-francois.ngo@sage.com
+tags:
+  - name: paas.trigger.create-object
+    description: Trigger create object service
+paths:
+  /services/paas/trigger/create-object:
+    post:
+      summary: Create object
+      description: Trigger create object
+      tags:
+        - paas.trigger.create-object
+      operationId: post-services-paas-trigger-create-object
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paas.trigger.create-object-req'
+            examples:
+              example-1:
+                value:
+                  fieldData:
+                    - NAME: DEPARTMENT
+                  objectDefinitionKey: 5
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paas.trigger.create-object-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      result:
+
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    paas.trigger.create-object-req:
+      description: Read create object request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        data:
+          type: object
+          description: Map field - values
+          x-mappedTo: data
+        objectDefinitionKey:
+          type: integer
+          description: Object Destination Key
+          x-mappedTo: objDefKey
+    paas.trigger.create-object-resp:
+      description: Read create object response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        result:
+          type: string
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  
+
+

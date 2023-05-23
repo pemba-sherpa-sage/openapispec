@@ -1,0 +1,73 @@
+title: order-entry-tax-schedule
+type: object
+x-mappedTo: sotaxschedule
+properties:
+  key:
+    type: string
+    description: System-assigned key for the Order Entry tax schedule.
+    example: '7129'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the Order Entry tax schedule.
+    example: '7129'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  name:
+    type: string
+    description: Tax Schedule ID.
+    example: TaxSched-00004
+    x-mappedTo: SCHEDULEID
+  href:
+    type: string
+    description: URL of the Order Entry tax schedule.
+    example: /objects/order-entry-tax-schedule/7129
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+    description: Indicates whether this tax schedule is `active` or `inactive`.
+    default: active
+    example: inactive
+  description:
+    type: string
+    description: The description of the Order Entry tax schedule.
+    x-mappedTo: DESCRIPTION
+    example: Description of the Tax Schedule
+  isSystemGenerated:
+    type: boolean
+    description: If `true`, the tax schedule is a system-generated object.
+    x-mappedTo: SYSGENERATED
+    x-mappedToType: string
+    example: true
+    default: false
+    readOnly: true
+  lines:
+    type: array
+    description: Tax Schedule detail.
+    x-object: order-entry-tax-schedule-detail
+    x-mappedTo: DETAILS
+    items:
+      $ref: ./order-entry-tax-schedule-detail.s1.schema.yaml
+  taxSolution:
+    type: object
+    description: Different tax solutions are available for different countries. Examples include Australia GST, South  Africa VAT, and UK VAT.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier of the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+        readOnly: true
+        example: United Kingdom - VAT
+      href:
+        type: string
+        description: URL of the tax solution object.
+        readOnly: true
+        example: /objects/tax-solution/1

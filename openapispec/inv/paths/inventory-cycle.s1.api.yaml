@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: inventory-cycle
+  description: inventory-cycle API
+  version: '1.0'
+  contact:
+    name: Mahesh  Yallure
+    email: mahesh.yallure@sage.com
+tags:
+  - name: Inventory cycles
+    description: Inventory cycle description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/inventory-cycle/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the inventory cycle.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an inventory cycle
+      description: Returns detailed information for a particular inventory cycle.
+      tags:
+        - Inventory cycles
+      operationId: get-objects-inventory-cycle-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the inventory-cycle
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/inventory-cycle'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/inventory-cycle:
+    get:
+      summary: List inventory cycles
+      description: 'Returns a collection with a key, ID, and link for each inventory cycle.'
+      tags:
+        - Inventory cycles
+      operationId: get-objects-inventory-cycle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of inventory-cycle objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    inventory-cycle:
+      $ref: ../models/inventory-cycle.s1.schema.yaml
+    inventory-cycleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

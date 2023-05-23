@@ -1,0 +1,238 @@
+openapi: 3.0.0
+info:
+  title: contract-revenue-schedule
+  description: contract-revenue-schedule API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract revenue schedules
+    description: A contract revenue schedule is a header containing multiple schedule lines and is tied directly to a contract line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-revenue-schedule:
+    get:
+      summary: List contract revenue schedules
+      description: 'Returns a collection with a key, ID, and link for each contract-revenue-schedule.'
+      tags:
+        - Contract revenue schedules
+      operationId: get-objects-contract-revenue-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract revenue schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of contract revenue schedules:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-revenue-schedule/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-revenue-schedule/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-revenue-schedule/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-revenue-schedule/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-revenue-schedule/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                List of contract revenue schedule errors:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [contract-revenue-schedule] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  '/objects/contract-revenue-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract revenue schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1287'
+    get:
+      summary: Get a contract revenue schedule
+      description: Returns detailed information for a particular contract revenue schedule.
+      tags:
+        - Contract revenue schedules
+      operationId: get-objects-contract-revenue-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract revenue schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-revenue-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract revenue schedule error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-revenue-schedule/12
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Field [id] is a read-only field'
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    patch:
+      summary: Update a contract revenue schedule
+      description: Updates an existing contract revenue schedule by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract revenue schedules
+      operationId: patch-objects-contract-revenue-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-revenue-schedule'
+            examples:
+              Add a revenue schedule line:
+                value:
+                  key: '145'
+                  revenueScheduleLines:
+                    - scheduledRevenueDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+              Update a revenue schedule line:
+                value:
+                  key: '145'
+                  revenueScheduleLines:
+                    - key: '12'
+                      scheduledRevenueDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+              Update a multiple revenue schedule line:
+                value:
+                  key: '145'
+                  revenueScheduleLines:
+                    - key: '12'
+                      scheduledRevenueDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+                    - key: '13'
+                      scheduledRevenueDate: '2022-06-25'
+                      scheduledAmount: '245.18'
+              Delete a revenue schedule line:
+                value:
+                  key: '145'
+                  revenueScheduleLines:
+                    - 'ia::operation': delete
+                      key: '12'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract revenue schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a contract revenue schedule:
+                  value:
+                    'ia::result':
+                      key: '12'
+                      id: 2021-LV2
+                      href: /objects/contract-revenue-schedule/12
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract revenue schedule error:
+                  value:
+                    key: '145'
+                    href: /objects/contract-revenue-schedule/145
+                    'ia::result':
+                      'ia::error':
+                        code: notFound
+                        message: 'The requested resource [contract-revenue-schedule] with key(s) [145] could not be found but may be available in the future'
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    contract-revenue-schedule:
+      type: object
+      allOf:
+        - $ref: ../models/contract-revenue-schedule.s1.schema.yaml
+        - $ref: ../references/contract-schedule-typeref.s1.schema.yaml

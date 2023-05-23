@@ -1,0 +1,62 @@
+title: standard-task-standard-cost-type
+type: object
+x-mappedTo: standardtaskstandardcosttype
+x-ownedBy: standard-task
+properties:
+  key:
+    type: string
+    description: System-assigned key for the standard task standard cost type
+    example: '3543'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the standard task standard cost type
+    example: '3543'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  href:
+    type: string
+    description: URL of the standard task standard cost type
+    example: /objects/standard-task-standard-cost-type/3543
+    readOnly: true
+  standardTask:
+    type: object
+    description: Reference to a standard task
+    x-object: standard-task
+    x-mappedTo: standardtask
+    properties:
+      key:
+        type: string
+        example: 1
+        x-mappedTo: STANDARDTASKKEY
+        readOnly: true
+      id:
+        type: string
+        example: GENERAL CONDITIONS
+        x-mappedTo: STANDARDTASKID
+      href:
+        type: string
+        description: URL of the standard task
+        example: /objects/standard-task/1
+        readOnly: true
+  standardCostType:
+    type: object
+    description: Reference to a standard cost type
+    x-object: standard-cost-type
+    x-mappedTo: standardcosttype
+    properties:
+      key:
+        type: string
+        example: 7
+        x-mappedTo: STANDARDCOSTTYPEKEY
+        readOnly: true
+      id:
+        type: string
+        example: LABOR
+        x-mappedTo: STANDARDCOSTTYPEID
+      href:
+        type: string
+        description: URL of the standard cost type
+        example: /objects/standard-cost-type/7        
+        readOnly: true

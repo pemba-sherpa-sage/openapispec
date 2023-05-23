@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: <domain>.<service-name>
+  description: <domain> <service-name> API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: <domain> <service-name>s
+    description: <domain> <service-name> description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/<domain>/<service-name>/<function>:
+    post:
+      summary: <domain> <service-name> <function>
+      description: <domain> <service-name> <function> description - explain what it's for and how it's used.
+      tags:
+        - <domain> <service-name>s
+      operationId: post-<domain>-<service-name>-<function>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/<domain>-<service-name>-<function>-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/<domain>-<service-name>-<function>-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    <domain>-<service-name>-<function>-request:
+      description: <function> request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        requestField1:
+          type: string
+          description: field description
+          x-mappedTo: ENTFIELDNAME
+          example: example value
+        requestField2:
+          type: string
+          description: field description
+          x-mappedTo: ENTFIELDNAME
+          example: example value
+    <domain>-<service-name>-<function>-response:
+      description: <function> response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        responseField1:
+          type: string
+          description: field description
+          x-mappedTo: ENTFIELDNAME
+          example: example value
+        responseField2:
+          type: string
+          description: field description
+          x-mappedTo: ENTFIELDNAME
+          example: example value
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

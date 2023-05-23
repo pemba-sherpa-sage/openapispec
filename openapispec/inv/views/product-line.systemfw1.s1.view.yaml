@@ -1,0 +1,19 @@
+key: product-line::systemProductlineFW1
+id: systemProductlineFW1
+object: product-line
+name: All
+description: Specifies all active product lines
+query:
+  object: product-line
+  fields:
+    - id
+    - parent.id
+  orderBy:
+    - id: asc
+  filters:
+    - $eq:
+        status: active
+    - $eq:
+        isOneTimeUse: false
+contexts:
+  - __default

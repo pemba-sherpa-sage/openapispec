@@ -1,0 +1,90 @@
+title: standard-cost-type
+type: object
+x-mappedTo: standardcosttype
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the standard cost type. Used to identify the standard cost type in URLs or JSON bodies for all operations on the standard cost type.
+    example: '3'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the standard cost type. 12 characters or less.
+    example: EQ-Owned
+    x-mappedTo: STANDARDCOSTTYPEID
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the standard cost type.
+    example: /objects/standard-cost-type/3
+    readOnly: true
+  name:
+    type: string
+    description: Name of the standard cost type.
+    example: EQ Owned
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description of the standard cost type.
+    example: EQ Owned
+    x-mappedTo: DESCRIPTION    
+  costUnitDescription:
+    type: string
+    description: Describes the unit of measure used by this cost type. For example, for a labor cost type the cost unit represents an hour of labor. For a materials cost type, the cost unit could be tons or feet or similar.
+    example: each
+    x-mappedTo: COSTUNITDESCRIPTION
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  glAccount:
+    $ref: ../../common/references/gl-accountref.s1.schema.yaml    
+  accumulationType:
+    type: object
+    description: Accumulation type associated with this cost type.
+    x-object: accumulation-type
+    properties:
+      key:
+        type: string
+        description: System-assigned key of the accumulation type.
+        example: '1'
+        x-mappedTo: ACCUMULATIONTYPEKEY
+        readOnly: true
+      id:
+        type: string
+        description: ID of the accumulation type.
+        example: Equipment
+        x-mappedTo: ACCUMULATIONTYPENAME
+      href:
+        type: string
+        example: /objects/accumulation-type/1
+        description: URL of the accumulation type.
+        readOnly: true              
+  parent:
+    type: object
+    description: Reference to a parent standard cost type to group standard cost types in the catalog.
+    x-object: standard-cost-type
+    x-mappedTo: PARENT
+    properties:
+      key:
+        type: string
+        example: '2'
+        x-mappedTo: PARENTKEY
+        readOnly: true
+      id:
+        type: string
+        example: EQ
+        x-mappedTo: PARENTID
+      name:
+        type: string
+        example: Equipment
+        x-mappedTo: PARENTNAME
+        readOnly: true
+      href:
+        type: string
+        example: /objects/standard-cost-type/2
+        description: URL of the parent standard cost type
+        readOnly: true
+  item:
+    $ref: ../../common/references/itemref.s1.schema.yaml         
+  audit:
+    $ref:  ../../common/models/audit.s1.schema.yaml

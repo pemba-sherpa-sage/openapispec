@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/appymt/view
+    POST:
+      - ap/lists/appymt/create
+    PATCH:
+      - ap/lists/appymt/edit
+    DELETE:
+      - ap/lists/appymt/delete
+s1:
+  hash: '0'
+  type: rootObject

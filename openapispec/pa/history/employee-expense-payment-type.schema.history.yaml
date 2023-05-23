@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ee/lists/expensepaymenttype/view
+    POST:
+      - ee/lists/expensepaymenttype/create
+    PATCH:
+      - ee/lists/expensepaymenttype/edit
+    DELETE:
+      - ee/lists/expensepaymenttype/delete
+s1:
+  hash: '0'
+  type: rootObject

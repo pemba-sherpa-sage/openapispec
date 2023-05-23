@@ -1,0 +1,26 @@
+title: itemref
+type: object
+x-object: item
+properties:
+  key:
+    type: string
+    description: Item key
+    example: '319'
+    x-mappedTo: ITEMKEY
+    readOnly: true
+  id:
+    type: string
+    description: Item ID
+    example: Overhead
+    x-mappedTo: ITEMID
+  name:
+    type: string
+    description: Item name
+    example: Overhead
+    readOnly: true
+    x-mappedTo: ITEMNAME
+  href:
+    type: string
+    description: URL of the item
+    readOnly: true
+    example: /objects/item/319

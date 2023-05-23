@@ -1,0 +1,82 @@
+title: customer-email-template
+x-mappedTo: customeremailtemplate
+type: object
+x-ownedBy: customer
+description: Email templates can be associated with customers to tailor communications about transactions.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the customer email template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: ID for the customer email template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  href:
+    type: string
+    description: URL for the customer email template.
+    readOnly: true
+  customer:
+    type: object
+    description: Customer to associate with the email template.
+    x-object: customer
+    x-mappedTo: customer
+    title: customer
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the customer.
+        x-mappedTo: CUSTOMERKEY
+      id:
+        type: string
+        description: ID for the customer.
+        x-mappedTo: CUSTOMERID
+      href:
+        type: string
+        description: URL for the customer.
+        readOnly: true
+  txnDefinitionName:
+    type: string
+    description: Transaction definition, which is the template that contains accounting settings, workflow rules, and other configuration settings for a transaction.
+    x-mappedTo: DOCPARID
+  emailTemplateType:
+    type: string
+    description: Specify the type of transaction that will use the email template.
+    x-mappedTo: EMAILTEMPLATETYPE
+    enum:
+      - 'arInvoice'
+      - 'arStatement'
+      - 'contract'
+      - 'soDocument'
+      - 'poDocument'
+    x-mappedToValues:
+      - 'arinvoice'
+      - 'arstatement'
+      - 'contract'
+      - 'sodocument'
+      - 'podocument'
+  emailTemplate:
+    type: object
+    description: Email template to associate with the customer.
+    x-object: email-template
+    x-mappedTo: emailtemplate
+    title: emailTemplate
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the email template.
+        x-mappedTo: EMAILTEMPLATEKEY
+      id:
+        type: string
+        description: ID for the email template.
+        x-mappedTo: EMAILTEMPLATEKEY
+      name:
+        type: string
+        description: Name of the email template.
+        x-mappedTo: EMAILTEMPLATENAME
+      href:
+        type: string
+        description: URL for the email template.
+        readOnly: true

@@ -1,0 +1,55 @@
+title: vendor-account-number
+x-mappedTo: vendoracctnolochead
+type: object
+x-ownedBy: vendor
+description: Models an account number associated with a vendor.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor account number.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the vendor account number.
+    x-mutable: false
+    x-mappedTo: RECORDNO
+    example: '1'
+  locationId:
+    type: string
+    description: Location for the vendor account number. 
+    x-mappedTo: LOCATION
+    example: 'Los Gatos Office'
+  accountNumber:
+    type: string
+    description: Vendor account number.
+    x-mappedTo: ACCOUNTNO
+    example: 'VAN-5134986722'
+  href:
+    type: string
+    description: URL of the vendor account number.
+    readOnly: true
+    example: /objects/vendor-account-number/1
+  vendor:
+    title: vendorreference
+    type: object
+    description: Vendor the account number is associated with.
+    x-mappedTo: vendor
+    x-object: vendor
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the vendor.
+        x-mappedTo: VENDORKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the vendor.
+        x-mappedTo: VENDORID
+        example: '1'
+      href:
+        type: string
+        description: URL of the vendor.
+        readOnly: true
+        example: /objects/vendor/1

@@ -1,0 +1,29 @@
+title: aisle
+type: object
+description: An aisle is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+x-mappedTo: aisle
+properties:
+  key:
+    type: string
+    description: System-assigned key for the aisle.
+    x-mappedTo: RECORDNO
+    example: '13'
+    readOnly: true
+  id:
+    type: string
+    description: Name or other unique identifier for the aisle. The aisle ID cannot be modified.
+    x-mappedTo: AISLEID
+    example: 'A2'
+    x-mutable: false
+  description:
+    type: string
+    description:  Description for the aisle.
+    x-mappedTo: AISLEDESC
+    example: 'Aisle 2 Dishwashers'
+  href:
+    type: string
+    description: URL for the aisle.
+    readOnly: true
+    example: '/objects/aisle/13'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

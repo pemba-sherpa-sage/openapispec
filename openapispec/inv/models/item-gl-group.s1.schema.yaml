@@ -1,0 +1,76 @@
+title: item-gl-group
+x-mappedTo: itemglgroup
+type: object
+description: Item GL groups are used to organize transaction definitions for posting to the general ledger.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the item GL group.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '13'
+  id:
+    type: string
+    description: Name or other unique identifier for the item GL group.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: Stockable Kit
+  deferredRevenueGLAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: glaccount
+    description: GL account to which to defer revenue for items belonging to this GL group.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the deferred revenue GL account.
+        x-mappedTo: DEFERREDREVACCTDIMKEY
+        example: '411'
+      id:
+        type: string
+        x-mappedTo: DEFERREDREVACCTNO
+        description: Account number for the deferred revenue GL account.
+        example: '1501.04'
+        readOnly: true
+      name:
+        type: string
+        x-mappedTo: DEFERREDREVACCTTITLE
+        description: Name of the deferred revenue GL account.
+        example: Expense Account
+        readOnly: true
+      href:
+        type: string
+        description: URL for the deferred revenue GL account.
+        example: /objects/gl-account/411
+        readOnly: true
+  defaultRevenueRecognitionTemplate:
+    type: object
+    x-object: revenue-recognition-template
+    x-mappedTo: revrectemplate
+    description: Default revenue recognition template to use for deferred revenue for items belonging to this GL group.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the revenue recognition template.
+        x-mappedTo: DEFAULTREVRECTEMPLDIMKEY
+        example: '1'
+      id:
+        type: string
+        x-mappedTo: REVRECTEMPLID
+        description: Unique identifier for the revenue recognition template.
+        example: '100'
+        readOnly: true
+      href:
+        type: string
+        description: URL for the revenue recognition template.
+        example: /objects/revenue-recognition-template/1
+        readOnly: true
+  isSystemGenerated:
+    type: boolean
+    description: Indicates whether this is a system-generated GL group.  
+    x-mappedTo: ISSYSTEM
+    example: false
+    readOnly: true
+    default: false  
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

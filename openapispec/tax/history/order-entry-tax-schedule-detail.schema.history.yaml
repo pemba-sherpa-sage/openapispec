@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/sotaxschedule/view
+    POST:
+      - so/lists/sotaxschedule/create
+    PATCH:
+      - so/lists/sotaxschedule/edit
+    DELETE:
+      - so/lists/sotaxschedule/delete
+s1:
+  hash: '0'
+  type: ownedObject

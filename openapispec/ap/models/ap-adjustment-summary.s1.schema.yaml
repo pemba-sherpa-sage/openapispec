@@ -1,0 +1,39 @@
+title: ap-adjustment-summary
+x-mappedTo: apadjustmentbatch
+type: object
+description: Summaries are collections of the same type of transactions grouped together for processing. An AP adjustment summary is a collection of AP adjustments.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP adjustment summary.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Identifier for the AP adjustment summary.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  name:
+    type: string
+    description: Name of the AP adjustment summary.
+    x-mappedTo: TITLE
+  postingDate:
+    type: string
+    description: Date the AP adjustment summary was created.
+    x-mappedTo: CREATED
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  total:
+    type: string
+    description: Total amount of all AP adjustments in the summary.
+    x-mappedTo: TOTAL
+  state:
+    type: string
+    description: State of the AP adjustment summary, which can be `open` or `closed`.
+    x-mappedTo: OPEN
+    enum:
+      - 'open'
+      - 'closed'
+    x-mappedToValues:
+      - 'Open'
+      - 'Closed'

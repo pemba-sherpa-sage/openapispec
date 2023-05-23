@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: standard-task-standard-cost-type
+  description: standard-task-standard-cost-type API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: Standard task standard cost types
+    description: This is a linked object, containing the standard cost types for a standard task. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/standard-task-standard-cost-type:
+    get:
+      summary: List standard task standard cost types
+      description: Returns a collection with a key, ID, and link for each standard task standard cost type.
+      tags:
+        - Standard task standard cost types
+      operationId: get-objects-standard-task-standard-cost-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of standard-task-standard-cost-type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of standard task standard cost types: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/standard-task-standard-cost-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the standard task standard cost type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an standard task standard cost type
+      description: Returns detailed information for a particular standard task standard cost type.
+      tags:
+        - Standard task standard cost types
+      operationId: get-objects-standard-task-standard-cost-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the standard-task-standard-cost-type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/standard-task-standard-cost-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of standard task standard cost type: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    standard-task-standard-cost-type:
+      $ref: ../models/standard-task-standard-cost-type.s1.schema.yaml
+    standard-task-standard-cost-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

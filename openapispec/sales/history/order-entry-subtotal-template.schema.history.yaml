@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/sosubtotaltemplate/view
+    POST:
+      - so/lists/sosubtotaltemplate/create
+    PATCH:
+      - so/lists/sosubtotaltemplate/edit
+    DELETE:
+      - so/lists/sosubtotaltemplate/delete
+s1:
+  hash: '0'
+  type: rootObject

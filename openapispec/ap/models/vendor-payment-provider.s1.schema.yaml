@@ -1,0 +1,136 @@
+title: vendor-payment-provider
+x-mappedTo: providervendor
+type: object
+x-ownedBy: vendor
+description: Object that links a payment provider to a vendor.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor payment provider.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the vendor payment provider.
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example: '1'
+  href:
+    type: string
+    readOnly: true
+    example: '/objects/vendor-payment-provider/1'
+  paymentProvider:
+    type: object
+    x-object: payment-provider
+    x-mappedTo: paymentprovider
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the payment provider.
+        x-mappedTo: PROVIDERKEY
+        readOnly: true
+        example: '3'
+      id:
+        type: string
+        description: Unique identifier for the payment provider.
+        x-mappedTo: PROVIDERID
+        example: 'CSI'
+      name:
+        type: string
+        description: Name of the payment provider.
+        x-mappedTo: PROVIDERNAME
+        example: 'CSI'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/payment-provider/3'
+  vendor:
+    type: object
+    x-object: vendor
+    x-mappedTo: vendor
+    title: vendor
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the vendor.
+        x-mappedTo: VENDORKEY
+        readOnly: true
+        example: '351'
+      id:
+        type: string
+        description: Unique identifier for the vendor.
+        x-mappedTo: VENDORID
+        example: 'VEN016'
+      name:
+        type: string
+        description: Name of the vendor.
+        x-mappedTo: VENDORNAME
+        example: 'AAA Consulting'
+      href:
+        type: string
+        description: URL of the vendor
+        readOnly: true
+        example: '/objects/vendor/351'
+  state:
+    type: string
+    readOnly: true
+    enum:
+      - requestInitiated
+      - inProgress
+      - requestReceived
+      - requestFailed
+      - awaitingAuthorization
+      - subscribed
+      - canceled
+      - suspended
+    x-mappedToValues:
+      - Request initiated
+      - In progress
+      - Request received
+      - Request failed
+      - Awaiting authorization
+      - Subscribed
+      - Cancelled
+      - Suspended
+    description: Subscription status provided by the payment provider.
+    example: 'requestInitiated'
+    x-mappedTo: STATE
+  preferredPaymentMethod:
+    type: object
+    x-object: provider-payment-method
+    x-mappedTo: providerpaymentmethod
+    title: preferredPaymentMethod
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the preferred payment method.
+        x-mappedTo: PREFERREDPAYMENTMETHOD
+        example: '454'
+      id:
+        type: string
+        description: Unique ID for the preferred payment method.
+        x-mappedTo: PREFERREDPAYMENTMETHOD
+        example: '454'
+      name:
+        type: string
+        description: Name of the preferred payment method.
+        x-mappedTo: PREFERREDPAYMENTMETHODNAME
+        example: 'Check'
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/provider-payment-method/454'
+  status:
+    type: string
+    enum:
+      - active
+      - inactive
+    x-mappedToValues:
+      - active
+      - inactive
+    description: Subscription status of the vendor payment provider.
+    example: 'active'
+    x-mappedTo: STATUS
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,77 @@
+type: object
+title: contract-revenue-schedule-line
+x-mappedTo: contractrevenuescheduleentry
+x-ownedBy: contract-revenue-schedule
+description: Contract revenue schedule line.
+properties:
+  href:
+    type: string
+    description: Schedule line URL.
+    readOnly: true
+    example: /objects/contract-revenue-schedule-line/145
+  derivedPostingDate:
+    type: string
+    description: Schedule line derived posting date.
+    x-mappedTo: DERIVEDPOSTINGDATE
+    readOnly: true
+    format: date
+    example: '2022-04-30'
+  meaDetails:
+    type: string
+    description: Schedule line MEA details.
+    x-mappedTo: COMPUTATION_DETAIL
+    readOnly: true
+    example: '(1000 * 1 {line# 1})'
+  adjustedFor:
+    type: string
+    description: Schedule line adjusted for.
+    x-mappedTo: ADJUSTEDFOR
+    readOnly: true
+    example: MEA
+  percentageRecognized:
+    type: string
+    description: The pecentage of the line to be recognized.  Calculated based on sourceHours and approvedHours.
+    x-mappedTo: PERCENTRECOGNIZED
+    readOnly: true
+    example: 25.18
+  sourceHours:
+    type: string
+    description: Schedule line source hours from project or task.  Used with approvedHours to determine the percentage to be recognized.
+    x-mappedTo: SOURCEQTY
+    example: '118'
+  approvedHours:
+    type: string
+    description: Schedule line approved hours.  Used with sourceHours to determine the percentage to be recognized.
+    x-mappedTo: APPROVEDHOURS
+    example: '16'
+  computationMemo:
+    type: string
+    description: Schedule line computation memo.  This is a system generated memo to explain how the amount was calculated.
+    x-mappedTo: COMPUTATIONMEMO
+    readOnly: true
+    example: 'MEA amount 1000, adjustment amount 333.32. Prorated amount before effective date 03/01/2022 is 0.'
+  linkedBillingScheduleLine:
+    type: object
+    x-object: contract-billing-schedule-line
+    description: The system generated linked billing schedule line.  Used for splitting revenue across contract lines in case of MEA.
+    properties:
+      key:
+        type: string
+        description: Contract billing schedule line system-assigned key.
+        x-mappedTo: BILLSCHEDULEENTRYKEY
+        readOnly: true
+        example: '145'
+      id:
+        type: string
+        description: Contract billing schedule line unique identifier.
+        x-mappedTo: BILLSCHEDULEENTRYKEY
+        readOnly: true
+        example: '145'
+      href:
+        type: string
+        description: Contract billing schedule line URL.
+        readOnly: true
+        example: /objects/contract-billing-schedule-line/145
+  contractRevenueSchedule:
+    $ref: ../references/contract-revenue-schedule-typeref.s1.schema.yaml
+examples: []

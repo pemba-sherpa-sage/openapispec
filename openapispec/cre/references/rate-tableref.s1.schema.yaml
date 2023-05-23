@@ -1,0 +1,22 @@
+type: object
+title: rate-table
+x-mappedTo: ratetable
+x-object: rate-table
+properties:
+  key:
+    type: string
+    x-mappedTo: RATETABLEKEY
+    example: '145'
+  id:
+    type: string
+    x-mappedTo: RATETABLEID
+    example: 2021-LV2
+  name:
+    type: string
+    x-mappedTo: RATETABLENAME
+    example: 2021 Level 2
+  href:
+    type: string
+    example: /objects/rate-table/145
+    readOnly: true
+examples: []

@@ -1,0 +1,117 @@
+fields:
+    key:
+        uiType: integer
+        uiLabel: 'Record number'
+    id:
+        uiType: text
+        uiLabel: 'Contact name'
+    lastName:
+        uiType: text
+        uiLabel: 'Last name'
+    firstName:
+        uiType: text
+        uiLabel: 'First name'
+    middleName:
+        uiType: text
+        uiLabel: 'Middle name'
+    prefix:
+        uiType: text
+        uiLabel: Mr./Ms./Mrs.
+    email1:
+        uiType: text
+        uiLabel: 'Primary email address'
+    email2:
+        uiType: text
+        uiLabel: 'Secondary email addresses'
+    phone1:
+        uiType: text
+        uiLabel: 'Primary phone'
+    phone2:
+        uiType: text
+        uiLabel: 'Secondary phone'
+    mobile:
+        uiType: text
+        uiLabel: Mobile
+    pager:
+        uiType: text
+        uiLabel: Pager
+    fax:
+        uiType: text
+        uiLabel: Fax
+    URL1:
+        uiType: text
+        uiLabel: 'Primary URL'
+    URL2:
+        uiType: text
+        uiLabel: 'Secondary URL'
+    companyName:
+        uiType: text
+        uiLabel: 'Company name'
+    printAs:
+        uiType: text
+        uiLabel: 'Print as'
+    showInContactList:
+        uiType: enum
+        uiLabel: Visible
+        enumsLabels:
+            -
+                label: 'true'
+                value: 'ia::unknown'
+            -
+                label: 'false'
+                value: 'ia::unknown'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+groups:
+    mailingAddress:
+        fields:
+            city:
+                uiType: text
+                uiLabel: City
+            state:
+                uiType: text
+                uiLabel: State/province
+            postCode:
+                uiType: text
+                uiLabel: 'Zip code'
+            country:
+                uiType: text
+                uiLabel: Country
+            addressLine1:
+                uiType: textarea
+                uiLabel: 'Address line 1'
+            addressLine2:
+                uiType: textarea
+                uiLabel: 'Address line 2'
+    tax:
+        fields:
+            isTaxable:
+                uiType: enum
+                uiLabel: Taxable
+                enumsLabels:
+                    -
+                        label: 'true'
+                        value: true
+                    -
+                        label: 'false'
+                        value: false
+            taxId:
+                uiType: text
+                uiLabel: 'Tax ID'
+        refs:
+            group:
+                fields:
+                    key:
+                        uiType: sequence
+                        uiLabel: 'Tax group record number'
+                    id:
+                        uiType: ptr
+                        uiLabel: 'Contact tax group'

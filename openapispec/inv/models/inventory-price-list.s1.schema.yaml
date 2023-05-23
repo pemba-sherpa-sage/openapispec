@@ -1,0 +1,49 @@
+title: inventory-price-list
+type: object
+description: An inventory price list is a container for price list entries.
+x-mappedTo: invpricelist
+properties:
+  key:
+    type: string
+    description: System-assigned key for the inventory price list.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Name or other unique identifier for the inventory price list. 
+    x-mappedTo: NAME
+    x-mutable: false
+    nullable: false
+    example: Base Price List
+  href:
+    type: string
+    description: URL for the inventory price list.
+    readOnly: true
+    example: /objects/inventory-price-list/1
+  startDate:
+    type: string
+    format: date
+    description: Start date of the time period during which the price list will be effective.
+    x-mappedTo: DATEFROM
+    example: 2000-01-01
+  endDate:
+    type: string
+    format: date
+    description: End date of the time period during which the price list will be effective.
+    x-mappedTo: DATETO
+    example: 2100-12-31
+  appliesTo:
+    type: string
+    description: Indicates the application that this price list applies to, which can be Purchasing or Order Entry.
+    x-mappedTo: SALEPURCHASE
+    nullable: false
+    enum:
+      - purchasing
+      - orderEntry
+    x-mappedToValues:
+      - Purchasing
+      - Sales
+    example: orderEntry
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

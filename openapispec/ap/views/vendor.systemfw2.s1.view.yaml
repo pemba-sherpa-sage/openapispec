@@ -1,0 +1,24 @@
+key: vendor::systemVendorFW2
+id: systemVendorFW2
+object: vendor
+name: Recently modified
+description: Specifies Recently Modified
+query:
+  object: vendor
+  fields:
+    - id
+    - name
+    - contacts.default.mailingAddress.addressLine1
+    - contacts.default.mailingAddress.city
+    - contacts.default.mailingAddress.state
+    - contacts.default.mailingAddress.postCode
+    - contacts.default.mailingAddress.country
+    - totalDue
+    - status
+  filters:
+    - $eq:
+        status: active
+    - $eq:
+        isOneTimeUse: false
+contexts:
+  - __default

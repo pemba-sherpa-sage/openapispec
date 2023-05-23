@@ -1,0 +1,238 @@
+openapi: 3.0.0
+info:
+  title: customer
+  description: customer API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Customers
+    description: |
+     A customer is any company to which you sell goods and services. Sage Intacct applications use the customer information for record-keeping purposes, printing the names and addresses on forms, such as invoices, and for determining the ship-to contact so tax can be computed.
+servers:
+  - url: 'https://dev01.intacct.com/users/anjali.israni/projects.nextgenapi/api/v0'
+    description: development
+paths:
+  '/objects/customer/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '81'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer.
+    get:
+      summary: Get a customer
+      description: Returns detailed information for a specified customer.
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer
+                properties:
+                  'ia::result':
+                    $ref: ../models/customer.s1.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a customer:
+                  value:
+                    'ia::result':
+                      key: '81'
+                      id: CUST-001
+                      name: Verizon Wireless
+                      taxId: 12-3456789
+                      creditLimit: 10000
+                      defaultRevenueGLAccount:
+                        key: '1004'
+                        id: Wells Fargo Bank A/c.
+                        name: Wells Fargo Bank A/c.
+                        href: /objects/glaccount/1004
+                      shippingMethod:
+                        id: Fedex
+                        name: Fedex
+                        key: '3'
+                        href: /objects/shipmethod/3
+                      type:
+                        id: Whole Sale Dealer
+                        name: Whole Sale Dealer
+                        key: '1'
+                        href: /objects/custtype/1
+                      contacts:
+                        primary:
+                          id: 'Doe, John'
+                          name: 'Doe, John'
+                          key: '271'
+                          href: /objects/contact/271
+                        shipTo:
+                          id: 'Doe, Jane'
+                          name: 'Doe, Jane'
+                          key: '272'
+                          href: /objects/contact/272
+                        billTo:
+                          id: 'Doe, Jane'
+                          name: 'Doe, Jane'
+                          key: '272'
+                          href: /objects/contact/272
+                      status: active
+                      isOnHold: true
+                      audit:
+                        modifiedDateTime: '2021-03-24T17:38:40Z'
+                        createdDateTime: '2021-03-24T04:25:29Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/customer/81
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-key
+    delete:
+      summary: Delete a customer
+      description: Deletes a customer.
+      tags:
+        - Customers
+      operationId: delete-objects-customer-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a customer
+      description: Updates an existing customer by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customers
+      operationId: patch-objects-customer-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a customer:
+                value:
+                  creditLimit: 10000
+  /objects/customer:
+    get:
+      summary: List customers
+      description: Returns a collection with a key, ID, and link for each customer. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List customers:
+                  value:
+                    'ia::result':
+                      - key: '68'
+                        id: CUST-100
+                        href: /objects/customer/68
+                      - key: '69'
+                        id: CUST-200
+                        href: /objects/customer/69
+                      - key: '73'
+                        id: CUST-300
+                        href: /objects/customer/73
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer
+    post:
+      summary: Create a customer
+      description: Creates a new customer.
+      tags:
+        - Customers
+      operationId: post-objects-customer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples: {}
+              schema:
+                type: object
+                title: New customer
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer'
+                - $ref: '#/components/schemas/customerRequiredProperties'
+            examples:
+              Create a customer:
+                value:
+                  id: CUST-002
+                  name: Starluck
+                  taxId: 12-3456789
+                  creditLimit: 50000
+                  status: active
+components:
+  schemas:
+    customer:
+      $ref: ../models/customer.s1.schema.yaml
+    customerRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

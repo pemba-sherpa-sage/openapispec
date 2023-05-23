@@ -1,0 +1,81 @@
+title: required-dimensions
+type: object
+description: The dimensions that must be included on transactions that post to the account.  
+properties:
+  class:
+    type: boolean
+    description: Set to `true` to require a value for class.
+    x-mappedTo: REQUIRECLASS
+    x-mappedToType: string
+    default: false
+    example: false
+  contract:
+    type: boolean
+    description: Set to `true` to require a value for contract.
+    x-mappedTo: REQUIRECONTRACT
+    x-mappedToType: string
+    default: false
+    example: false
+  customer:
+    type: boolean
+    description: Set to `true` to require a value for customer.
+    x-mappedTo: REQUIRECUSTOMER
+    x-mappedToType: string
+    default: false
+    example: false
+  department:
+    type: boolean
+    description: Set to `true` to require a value for department.
+    x-mappedTo: REQUIREDEPT
+    x-mappedToType: string
+    default: false
+    example: true
+  employee:
+    type: boolean
+    description: Set to `true` to require a value for employee.
+    x-mappedTo: REQUIREEMPLOYEE
+    x-mappedToType: string
+    default: false
+    example: false
+  item:
+    type: boolean
+    description: Set to `true` to require a value for item.
+    x-mappedTo: REQUIREITEM
+    x-mappedToType: string
+    default: false
+    example: false
+  location:
+    type: boolean
+    description: Set to `true` to require a value for location.
+    x-mappedTo: REQUIRELOC
+    x-mappedToType: string
+    default: false
+    example: false
+  project:
+    type: boolean
+    description: Set to `true` to require a value for project.
+    x-mappedTo: REQUIREPROJECT
+    x-mappedToType: string
+    default: false
+    example: false
+  vendor:
+    type: boolean
+    description: Set to `true` to require a value for vendor.
+    x-mappedTo: REQUIREVENDOR
+    x-mappedToType: string
+    default: false
+    example: false
+  warehouse:
+    type: boolean
+    description: Set to `true` to require a value for warehouse.
+    x-mappedTo: REQUIREWAREHOUSE
+    x-mappedToType: string
+    default: false
+    example: false
+  asset:
+    type: boolean
+    description: Set to `true` to require a value for asset.
+    x-mappedTo: REQUIREASSET
+    x-mappedToType: string
+    default: false
+    example: false

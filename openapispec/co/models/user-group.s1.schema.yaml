@@ -1,0 +1,54 @@
+title: user-group
+x-mappedTo: usergroup
+type: object
+description: List of users assigned to user groups.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the user group. Used to identify the group in URLs or JSON bodies for all operations on the user group.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '21'
+  id:
+    type: string
+    description: Name of the user group. 
+    x-mappedTo: NAME
+    x-mutable: false
+    example: AP
+  href:
+    type: string
+    description: Endpoint for this user group.
+    readOnly: true
+    example: '/objects/user-group/21'
+  description:
+    type: string
+    description: Description of the user group.
+    x-mappedTo: DESCR
+    example: Accounts Payable
+  roles:
+    type: array
+    description: List of roles assigned to the user group. All users in the group inherit the permissions defined by the roles. Only applies to companies that use role-based permissions instead of user-based permissions.
+    x-mappedTo: USERGROUPROLES
+    x-schemaOverride: true
+    x-object: role
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Unique key of the role.
+          x-mappedTo: ROLEKEY
+          example: '7'
+        id:
+          type: string
+          description: Name of the role.
+          x-mappedTo: ROLENAME
+          readOnly: true
+          example: Warehouse users
+        href:
+          type: string
+          description: Endpoint of the role.
+          readOnly: true
+          example: '/objects/role/7'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

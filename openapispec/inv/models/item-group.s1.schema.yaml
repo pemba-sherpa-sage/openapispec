@@ -1,0 +1,68 @@
+title: item-group
+x-mappedTo: itemgroup
+type: object
+description: 
+properties:
+  key:
+    type: string
+    description: Item/group Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: 
+  id:
+    type: string
+    description: Item/group ID
+    x-mappedTo: ID
+    example: 
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+    example:
+  sortField:
+    type: string
+    description: Sort Field
+    x-mappedTo: SORTFIELD
+    example:
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example:
+  filters:
+    type: array
+    title: memberFilter
+    description: The memberFilter of the group
+    x-mappedTo: MEMBERFILTERS
+    items:
+      title: children
+      properties:
+        field:
+          type: string
+          description: the field
+          x-mappedTo: FIELD
+          example:
+        operator:
+          type: string
+          description: the field
+          x-mappedTo: OPERATOR
+          example:
+        value:
+          type: string
+          description: the field
+          x-mappedTo: VALUE
+          example:
+  groupType:
+    type: string
+    description: Group type
+    x-mappedTo: GROUPTYPE
+    example: 
+    enum:
+      - 'all'
+      - 'specific'
+    x-mappedToValues:
+      - 'ALL'
+      - 'SPECIFIC'
+    default: 'all'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

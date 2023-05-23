@@ -1,0 +1,14 @@
+#TODO This will have to be updated.
+title: validation response
+description: 'The object validation result'
+type: object
+x-mappedTo: __custom__
+properties:
+  errors:
+    type: array
+    items:
+      type: object
+  successes:
+    type: array
+    items:
+      type: object

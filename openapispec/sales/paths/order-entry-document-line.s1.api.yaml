@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: order-entry-document-line
+  description: order-entry-document-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Order entry document lines
+    description: Line items in an order entry document represent order entry transactions.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-document-line:
+    get:
+      summary: List order entry document lines
+      description: Returns a collection with a key, ID, and link for each order entry document line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry document lines
+      operationId: get-objects-order-entry-document-line-base
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-document-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-document-line/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the order entry document line.
+    get:
+      summary: Get an order entry document line
+      description: Returns detailed information for a specified order entry document line.
+      tags:
+        - Order entry document lines
+      operationId: get-objects-order-entry-document-line-base-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-document
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-document-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/order-entry-document-line::{documentName}:
+    get:
+      summary: List named order entry document lines
+      description: Returns a collection with a key, ID, and link for each named order entry document line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry document lines
+      operationId: get-objects-order-entry-document-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-document-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an order entry document line
+      description: Creates a new order entry document line.
+      tags:
+        - Order entry document lines
+      operationId: post-objects-order-entry-document-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-document-line'
+                - $ref: '#/components/schemas/order-entry-document-lineRequiredProperties'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-document-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    parameters:
+      - $ref: '#/components/parameters/documentName'
+  '/objects/order-entry-document-line::{documentName}/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry document line.
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/documentName'
+    get:
+      summary: Get a named order entry document line
+      description: Returns detailed information for a specified order entry document line.
+      tags:
+        - Order entry document lines
+      operationId: get-objects-order-entry-document-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-document-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-document-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an order entry document line
+      description: Updates an existing order entry document line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry document lines
+      operationId: patch-objects-order-entry-document-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-document-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-document-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an order entry document line
+      description: Deletes an order entry document line.
+      tags:
+        - Order entry document lines
+      operationId: delete-objects-order-entry-document-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-document-line:
+      $ref: ../models/order-entry-document-line.s1.schema.yaml
+    order-entry-document-lineRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  parameters:
+    documentName:
+      name: documentName
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Document Name

@@ -1,0 +1,736 @@
+title: vendor
+x-mappedTo: vendor
+type: object
+description: Vendors
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '518'
+  id:
+    type: string
+    description: |
+      Unique identifier of the vendor.
+      You must specify a unique vendor ID when creating a vendor unless document sequencing is configured, in which case the ID is auto-generated.
+    x-mappedTo: VENDORID
+    x-mutable: false
+    example: 'V-00014'
+  name:
+    type: string
+    description: Name of the vendor.
+    x-mappedTo: NAME
+    example: NCS, Inc.
+  isOneTimeUse:
+    type: boolean
+    description: Set to `true` if this is a one-time use vendor. 
+    x-mappedTo: ONETIME
+    x-mappedToType: string
+    default: false
+    example: true
+  href:
+    type: string
+    description: URL of the vendor.
+    readOnly: true
+    example: /objects/vendor/518
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+  vendorType:
+    type: object
+    description: |
+      Optional vendor type, which is a category of vendors used for reporting purposes.
+      **Valid values:** Any vendor type ID defined by the company.
+    x-object: vendor-type
+    x-mappedTo: vendtype
+    properties:
+      key:
+        type: string
+        x-mappedTo: VENDTYPEKEY
+        readOnly: true
+        example: '12'
+      id:
+        type: string
+        x-mappedTo: VENDTYPE
+        example: Wholesaler
+      href:
+        type: string
+        readOnly: true
+        example: /objects/vendor-type/12
+  parent:
+    type: object
+    description: If this vendor is a subsidiary of another vendor, parent vendor of the subsidiary vendor.
+    x-object: vendor
+    x-mappedTo: PARENT
+    title: parent
+    properties:
+      key:
+        type: string
+        x-mappedTo: PARENTKEY
+        readOnly: true
+        example: '500'
+      id:
+        type: string
+        x-mappedTo: PARENTID
+        example: 202--Pac Bell
+      name:
+        type: string
+        x-mappedTo: PARENTNAME
+        readOnly: true
+        example: Pac Bell
+      href:
+        type: string
+        readOnly: true
+        example: /objects/vendor/500
+  accountGroup:
+    type: object
+    description: General Ledger (GL) account group that this vendor is part of.
+    x-object: vendor-account-group
+    x-mappedTo: GLGROUP
+    title: Vendor GL Group
+    properties:
+      key:
+        type: string
+        x-mappedTo: GLGRPKEY
+        readOnly: true
+        example: '8'
+      id:
+        type: string
+        x-mappedTo: GLGROUP
+        example: 'OR151'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/vendor-account-group/8
+  accountlabel:
+    type: object
+    description: Account label.
+    x-object: ap-account-label
+    x-mappedTo: ACCOUNTLABEL
+    title: account label
+    properties:
+      key:
+        type: string
+        x-mappedTo: ACCOUNTLABELKEY
+        readOnly: true
+        example: '10'
+      id:
+        type: string
+        x-mappedTo: ACCOUNTLABEL
+        example: Equipment
+      href:
+        type: string
+        readOnly: true
+        example: /objects/ap-account-label/10
+  defaultLeadTime:
+    type: integer
+    description: Lead time default (days) for inventory replenishment.
+    x-mappedTo: DEFAULT_LEAD_TIME
+    example: 5
+  taxId:
+    type: string
+    description: Tax ID of the company.
+    x-mappedTo: TAXID
+    example: '192354308'
+  form1099:
+    type: object
+    title: Form1099
+    properties:
+      is1099Eligible:
+        type: boolean
+        description: |
+          Set to `true` if this vendor is 1099 eligible.
+        x-mappedTo: ELIGIBLE1099
+        x-mappedToType: string
+        default: false
+        example: true
+      nameOn1099:
+        type: string
+        description: Vendor name as it should appear on 1099 forms.
+        x-mappedTo: NAME1099
+        example: NCS
+      type:
+        type: string
+        description: |
+          Type of 1099 form for this vendor.
+        x-mappedTo: FORM1099TYPE
+        example: MISC
+      box:
+        type: string
+        description: |
+          Box number for form 1099.
+        x-mappedTo: FORM1099BOX
+        example: '3'
+  attachment:
+    type: object
+    description: Supporting document ID for this attachment.
+    x-object: attachment
+    x-mappedTo: SUPDOCID
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPDOCID
+        readOnly: true
+        example: '21'
+      id:
+        type: string
+        x-mappedTo: SUPDOCID
+        example: 'Sales01'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/attachment/21
+  isOnHold:
+    type: boolean
+    description: |
+      Set to `true` to prevent anyone from entering transactions against this vendor.
+    x-mappedTo: ONHOLD
+    x-mappedToType: string
+    default: false
+    example: true
+  doNotPay:
+    type: boolean
+    description: |
+      Set to `true` to prevent anyone from paying bills from this vendor.
+    x-mappedTo: DONOTCUTCHECK
+    x-mappedToType: string
+    default: false
+    example: true
+  creditLimit:
+    type: number
+    description: Amount of credit extended by the vendor.
+    x-mappedTo: CREDITLIMIT
+    example: 10000
+  retainagePercentage:
+    type: number
+    description: The percentage of retainage to withhold for this vendor.
+    x-mappedTo: RETAINAGEPERCENTAGE
+    example: 20
+  notes:
+    type: string
+    description: Notes or comments about this vendor.
+    x-mappedTo: COMMENTS
+    example: Make sure to include on form 1099.
+  priceList:
+    type: object
+    description: Price list for this vendor.
+    x-object: purchasing-price-list
+    x-mappedTo: PRICELIST
+    properties:
+      key:
+        type: string
+        x-mappedTo: OEPRCLSTKEY
+        readOnly: true
+        example: '13'
+      id:
+        type: string
+        x-mappedTo: PRICELIST
+        example: 'Acme Price List'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/purchasing-price-list/13
+  priceSchedule:
+    type: object
+    description: Price schedule for this vendor.
+    x-object: purchasing-price-schedule
+    x-mappedTo: PRICESCHEDULE
+    properties:
+      key:
+        type: string
+        x-mappedTo: oepriceschedkey
+        readOnly: true
+        example: '5'
+      id:
+        type: string
+        x-mappedTo: PRICESCHEDULE
+        example: 'PREF'
+      href:
+        type: string
+        readOnly: true
+        example: /objects/purchasing-price-schedule/5
+  overrideOffsetGLAccount:
+    type: object
+    description: Default AP override offset account for this vendor.
+    x-object: gl-account
+    x-mappedTo: OFFSETGLACCOUNTNO
+    properties:
+      key:
+        type: string
+        x-mappedTo: OFFSETGLACCOUNTNO
+        readOnly: true
+        example: '12'
+      id:
+        type: string
+        x-mappedTo: OFFSETGLACCOUNTNO
+        example: '1'
+      name:
+        type: string
+        x-mappedTo: OFFSETGLACCOUNTNOTITLE
+        readOnly: true
+        example: 1225--Rent
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account/12
+  defaultExpenseGLAccount:
+    type: object
+    description: Default General Ledger (GL) expense account for bills for this vendor.
+    x-object: gl-account
+    x-mappedTo: apaccount
+    properties:
+      key:
+        type: string
+        x-mappedTo: ACCOUNTKEY
+        readOnly: true
+        example: '6'
+      id:
+        type: string
+        x-mappedTo: APACCOUNT
+        example: 1210--Equipment
+      name:
+        type: string
+        x-mappedTo: APACCOUNTTITLE
+        readOnly: true
+        example: Equipment
+      href:
+        type: string
+        readOnly: true
+        example: /objects/gl-account/6
+  discountPercent:
+    type: number
+    description: Discount percentage for this vendor.
+    x-mappedTo: DISCOUNT
+    example: 20
+  contacts:
+    type: object
+    title: contacts
+    properties:
+      default:
+        type: object
+        description: |
+          Default contact for this vendor. Used as the default for other vendor contacts, such as `payTo`, that are  not defined.
+        allOf:
+          - $ref: ../../common/references/contactref.s1.schema.yaml
+          - type: object
+            x-object: contact
+            x-mappedTo: displaycontact
+            x-mappedToPrefix: DISPLAYCONTACT
+            x-mappedToKey: DISPLAYCONTACTKEY
+            properties:
+              hideContactList:
+                type: boolean
+                description: Exclude from the company contact list.
+                x-mappedTo: HIDEDISPLAYCONTACT
+                x-mappedToType: string
+                default: false
+                example: false
+              tax:
+                type: object
+                title: tax
+                properties:
+                  isTaxable:
+                    type: boolean
+                    description: Defines whether the contact is taxable.
+                    x-mappedTo: DISPLAYCONTACT.TAXABLE
+                    x-mappedToType: string
+                    default: false
+                    example: false
+                  group:
+                    type: object
+                    x-object: contact-tax-group
+                    x-mappedTo: displaycontact.taxgroup
+                    properties:
+                      key:
+                        type: string
+                        x-mappedTo: TAXGROUPKEY
+                        readOnly: true
+                        example: '6'
+                      id:
+                        type: string
+                        x-mappedTo: TAXGROUP
+                        example: 'New York'
+                      href:
+                        type: string
+                        readOnly: true
+                        example: /objects/contact-tax-group/6
+      primary:
+        type: object
+        description: |
+          Primary contact for this vendor.
+          The primary contact information is used as the default contact information for the vendor unless otherwise specified.
+          The primary contact is the default contact for all transactions if no other vendor contacts are defined.
+        x-object: contact
+        x-mappedTo: primarycontact
+        properties:
+          key:
+            type: string
+            x-mappedTo: PRIMARYCONTACTKEY
+            readOnly: true
+            example: '7'
+          id:
+            type: string
+            x-mappedTo: CONTACTINFO.CONTACTNAME
+            example: Jeff Pinkerton
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/7
+      payTo:
+        type: object
+        description: Default contact when paying by check or creating bills. This contact is required for calculating tax for purchasing.
+        x-object: contact
+        x-mappedTo: paytocontact
+        properties:
+          key:
+            type: string
+            x-mappedTo: PAYTOKEY
+            readOnly: true
+            example: '2'
+          id:
+            type: string
+            x-mappedTo: PAYTO.CONTACTNAME
+            example: Klay Vanderbilt
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/2
+      returnTo:
+        type: object
+        description: Default contact for purchasing transactions and for the return of purchases from purchasing transactions.
+        x-object: contact
+        x-mappedTo: returntocontact
+        properties:
+          key:
+            type: string
+            x-mappedTo: RETURNTOKEY
+            readOnly: true
+            example: '5'
+          id:
+            type: string
+            x-mappedTo: RETURNTO.CONTACTNAME
+            example: Yusuf Pringle
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/5
+      recipient1099:
+        type: object
+        description: Default contact for all 1099 tax transactions and documents.
+        x-object: contact
+        x-mappedTo: contact1099
+        properties:
+          key:
+            type: string
+            x-mappedTo: CONTACTKEY1099
+            readOnly: true
+            example: '9'
+          id:
+            type: string
+            x-mappedTo: CONTACTTO1099.CONTACTNAME
+            example: Herb Culver
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/9
+  contactList:
+    type: array
+    x-mappedTo: CONTACT_LIST_INFO
+    x-object: vendor-contact
+    items:
+      $ref: ./vendor-contact.s1.schema.yaml
+  vendorEmailTemplates:
+    type: array
+    x-mappedTo: VENDOREMAILTEMPLATE
+    x-object: vendor-email-template
+    items:
+      $ref: ./vendor-email-template.s1.schema.yaml
+  vendorPaymentProviders:
+    type: array
+    x-mappedTo: PROVIDERVENDOR
+    x-object: vendor-payment-provider
+    items:
+      $ref: ./vendor-payment-provider.s1.schema.yaml
+  #vendorBankFilePayments:
+  #  type: array
+  #  x-mappedTo: VENDORBANKFILEDETAIL
+  #  x-object: vendor-bank-file-payment
+  #  items:
+  #    $ref: ./vendor-bank-file-payment.s1.schema.yaml
+  vendorAccountNumberList:
+    type: array
+    x-mappedTo: VENDOR_ACCTNO_LOC_HEAD
+    x-object: vendor-account-number
+    items:
+      $ref: ./vendor-account-number.s1.schema.yaml
+  preferredPaymentMethod:
+    type: string
+    description: |
+      Preferred payment method when you select a bill to pay for this vendor.
+    enum:
+      - printedCheck
+      - chargeCard
+      - EFT
+      - cash
+      - ACH
+      - wellsFargoCheck
+      - wellsFargoUSDWire
+      - wellsFargoDomesticACH
+    x-mappedToValues:
+      - Printed Check
+      - Charge Card
+      - EFT
+      - Cash
+      - ACH
+      - WF Check
+      - WF USD Wire
+      - WF Domestic ACH
+    x-mappedTo: PAYMETHODKEY
+    example: EFT
+  mergePaymentRequests:
+    type: boolean
+    description: |
+      If `true`, merge multiple selected bills into one payment request for the vendor. If `false`, have one payment request created for each bill.
+    x-mappedTo: MERGEPAYMENTREQ
+    x-mappedToType: string
+    default: true
+    example: true
+  sendPaymentNotification:
+    type: boolean
+    description: |
+      If `true`, automatically send payment notifications to the email address for the `payTo` contact.
+    x-mappedTo: PAYMENTNOTIFY
+    x-mappedToType: string
+    default: false
+    example: true
+  billingType:
+    type: string
+    description: |
+      Billing type to use on vendor statements.
+
+      **Valid values:**
+      - `openItem` - Shows all bills, adjustments, and payments as line items on a statements.
+      - `balanceForward` - Consolidates previous months bills, adjustments, and payments to a single line item.
+    enum:
+      - openItem
+      - balanceForward
+    x-mappedToValues:
+      - openitem
+      - balanceforward
+    x-mappedTo: BILLINGTYPE
+    example: openItem
+  paymentPriority:
+    type: string
+    description: |
+      Optional default payment priority to assign new bills from this vendor.
+    enum:
+      - urgent
+      - high
+      - normal
+      - low
+    x-mappedToValues:
+      - Urgent
+      - High
+      - Normal
+      - Low
+    x-mappedTo: PAYMENTPRIORITY
+    example: low
+  displayTermDiscountOnCheckStub:
+    type: boolean
+    description: |
+      If `true`, include any associated term discount on check stubs.
+    x-mappedTo: DISPLAYTERMDISCOUNT
+    x-mappedToType: string
+    default: true
+    example: true
+  term:
+    type: object
+    description: AP term or rules this vendor has established for extending credit to you.
+    x-object: ap-term
+    x-mappedTo: TERMNAME
+    properties:
+      key:
+        type: string
+        x-mappedTo: TERMSKEY
+        readOnly: true
+        example: '7'
+      id:
+        type: string
+        x-mappedTo: TERMNAME
+        example: Net 30
+      href:
+        type: string
+        readOnly: true
+        example: /objects/ap-term/7
+  defaultBillPaymentDate:
+    type: string
+    description: |
+      The Default bill payment date defines how the Recommended to pay on date is calculated for vendor bills.
+
+      **Valid values:** 
+      - `none`- Leaves the default unset, which allows you to choose the value from a different date field.
+      - `dueDate` - Calculates the due date based on the selected Term, then adjusts based on the number of days specified as an offset.
+      - `billDate` - Uses the date entered for the bill, adjusted for the number of days specified as an offset. Does not require that a Term be defined.
+      - `discountDate` - Uses the discount details in the specified Term to calculate the discount date. No offset is used.
+    enum:
+      - none
+      - dueDate
+      - billDate
+      - discountDate
+    x-mappedToValues:
+      - None
+      - Due Date
+      - Bill Date
+      - Discount Date
+    x-mappedTo: PAYDATEVALUEOPTIONS
+    example: none
+  operatorPlusMinus:
+    type: string
+    description: The number of days to use as an offset from the default payment date. For example, to set the Recommended pay on date to 5 days before a bill is due, specify `-5`.
+    x-mappedTo: PLUSMINUS
+    example: '-5'
+  offsetDueDays:
+    type: string
+    format: date
+    description: Recommended payment date by Due Date.
+    x-mappedTo: DUEDATEDIFF
+    example: '2022-08-31'
+  offsetBillDays:
+    type: string
+    format: date
+    description: Recommended payment date by Bill Date.
+    x-mappedTo: INVOICEDATEDIFF
+    example: '2022-08-31'
+  vendorAccountNumber:
+    type: string
+    description: |
+      The account number that this vendor has assigned to you.
+    x-mappedTo: VENDORACCOUNTNO
+    x-mappedToType: string
+    example: '203'
+  displayVendorAccountOnCheckStub:
+    type: boolean
+    description: |
+      If `true`, displays the vendor-assigned account number, per entity, on check stubs.
+    x-mappedTo: DISPLOCACCTNOCHECK
+    x-mappedToType: string
+    default: false
+    example: false
+  totalDue:
+    type: string
+    description: Total amount due.
+    x-mappedTo: TOTALDUE
+    readOnly: true
+    example: '100.00'
+  lastBillCreatedDate:
+    type: string
+    format: date
+    description: Date the last bill was created.
+    x-mappedTo: WHENLASTBILLED
+    readOnly: true
+    example: '2022-07-31'
+  lastPaymentMadeDate:
+    type: string
+    format: date
+    description: Date the last payment was made.
+    x-mappedTo: WHENLASTPAID
+    readOnly: true
+    example: '2002-08-31'
+  ACH:
+    type: object
+    title: ACH details for this vendor.
+    properties:
+      enablePayments:
+        type: boolean
+        description: |
+          If `true`, enable ACH payments for this vendor.
+        x-mappedTo: ACHENABLED
+        x-mappedToType: string
+        default: false
+        example: false
+      routingNumber:
+        type: string
+        description: |
+          ACH routing number for this vendor.
+        x-mappedTo: ACHBANKROUTINGNUMBER
+        x-mappedToType: string
+        example: '061080227'
+      accountNumber:
+        type: string
+        description: |
+          ACH account number for this vendor.
+        x-mappedTo: ACHACCOUNTNUMBER
+        x-mappedToType: string
+        example: '7624832485'
+      accountType:
+        type: string
+        description: |
+          ACH account type for this vendor.
+        enum:
+          - checkingAccount
+          - savingsAccount
+        x-mappedToValues:
+          - Checking Account
+          - Savings Account
+        x-mappedTo: ACHACCOUNTTYPE
+        example: checkingAccount
+      remittanceType:
+        type: string
+        description: |
+          ACH account classification for this vendor. Select the classification code that your bank uses for ACH payments.
+
+          **Valid values:**
+          - `businessCTX` - Business account that is a Corporate Trade Exchange (CTX) account.
+          - `personalPPD` - An individual contractor's personal account.
+          - `businessCCD` - Business account that is a Cash Concentration or Disbursement (CCD) corporate account.
+        enum:
+          - businessCTX
+          - personalPPD
+          - businessCCD
+        x-mappedToValues:
+          - CTX
+          - PPD
+          - CCD
+        x-mappedTo: ACHREMITTANCETYPE
+        example: businessCTX
+  restrictions:
+    type: object
+    properties:
+      restrictionType:
+        type: string
+        description: |
+          Restrict vendors to only the top level company or for specific locations and departments.
+          These restriction options are valid only for multi-entity companies that are [configured for restrictions](https://www.intacct.com/ia/docs/en_US/help_action/Multi-entity/Setup/configure-multi-entity.htm).
+          Learn more about [restricting vendors](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Payable/Setup/Vendors/restrict-vendors-in-multi-entity-companies.htm).
+          The following values specify who can view and post transactions against this vendor.
+
+          **Valid values:**
+          - `unrestricted` - The top level and all entities within the multi-entity structure.
+          - `rootOnly` - Only the top level of the multi-entity structure.
+          - `restricted` - Only the chosen locations, location groups, departments, or department groups within the multi-entity structure.
+        enum:
+          - unrestricted
+          - rootOnly
+          - restricted
+        x-mappedToValues:
+          - Unrestricted
+          - RootOnly
+          - Restricted
+        x-mappedTo: OBJECTRESTRICTION
+        example: restricted
+      locations:
+        type: array
+        x-delimiter: '#~#'
+        x-mappedTo: RESTRICTEDLOCATIONS
+        example: ['Dallas', 'Santa Fe', 'Las Vegas']
+        items:
+          type: string
+      departments:
+        type: array
+        x-delimiter: '#~#'
+        x-mappedTo: RESTRICTEDDEPARTMENTS
+        example: ['Sales', 'RDA', 'BD']
+        items:
+          type: string
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

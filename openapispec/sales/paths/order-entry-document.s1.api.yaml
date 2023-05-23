@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: order-entry-document
+  description: order-entry-document API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Order entry documents
+    description: An order entry document contains information about sales transactions.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-document:
+    get:
+      summary: List order entry documents
+      description: Returns a collection with a key, ID, and link for each order entry document. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry documents
+      operationId: get-objects-order-entry-document-base
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-document objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-document/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the order entry document.
+    get:
+      summary: Get an order entry document
+      description: Returns detailed information for a specified order entry document.
+      tags:
+        - Order entry documents
+      operationId: get-objects-order-entry-document-base-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-document
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-document'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-document::{documentName}':
+    get:
+      summary: List named order entry documents
+      description: Returns a collection with a key, ID, and link for each order entry document with the specified name. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Order entry documents
+      operationId: get-objects-order-entry-document
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-document objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an order entry document
+      description: Creates a new order entry document.
+      tags:
+        - Order entry documents
+      operationId: post-objects-order-entry-document
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-document'
+                - $ref: '#/components/schemas/order-entry-documentRequiredProperties'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-document
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    parameters:
+      - $ref: '#/components/parameters/documentName'
+  '/objects/order-entry-document::{documentName}/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the order entry document.
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/documentName'
+    get:
+      summary: Get a named order entry document
+      description: Returns detailed information for a specified order entry document.
+      tags:
+        - Order entry documents
+      operationId: get-objects-order-entry-document-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-document
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-document'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an order entry document
+      description: Updates an existing order entry document by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Order entry documents
+      operationId: patch-objects-order-entry-document-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-document'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-document
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an order entry document
+      description: Deletes an order entry document.
+      tags:
+        - Order entry documents
+      operationId: delete-objects-order-entry-document-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-document:
+      $ref: ../models/order-entry-document.s1.schema.yaml
+    order-entry-documentRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  parameters:
+    documentName:
+      name: documentName
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Document name

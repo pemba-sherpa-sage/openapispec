@@ -1,0 +1,35 @@
+title: vendor-account-group
+x-mappedTo: vendglgroup
+type: object
+description: Organize accounts into groups for reporting purposes.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor account group.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Name or other unique identifier for the vendor account group.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 'Electronic VGL Group'
+  groupType:
+    type: string
+    description: Vendor account group type.
+    enum:
+      - vendor
+      - customer
+    x-mappedToValues:
+      - Vendor
+      - Customer
+    x-mappedTo: ENTITYTYPE
+    example: 'vendor'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  href:
+    type: string
+    description: URL for the vendor account group.
+    readOnly: true
+    example: /objects/vendor-account-group/1

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/apbill/view
+    POST:
+      - ap/lists/apbill/create
+    PATCH:
+      - ap/lists/apbill/edit
+    DELETE:
+      - ap/lists/apbill/delete
+s1:
+  hash: '0'
+  type: rootObject

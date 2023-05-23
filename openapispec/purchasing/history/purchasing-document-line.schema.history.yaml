@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - po/lists/podocument/view
+    POST:
+      - po/activities/podocument/create
+      - po/lists/podocument/create
+    PATCH:
+      - po/lists/podocument/edit
+    DELETE:
+      - po/lists/podocument/delete
+s1:
+  hash: '0'
+  type: ownedDocTypeObject

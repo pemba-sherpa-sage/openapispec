@@ -1,0 +1,199 @@
+type: object
+title: contract dimensions
+properties:
+  location:
+    title: location
+    type: object
+    x-object: location
+    properties:
+      key:
+        type: string
+        description: Location Key
+        x-mappedTo: LOCATIONKEY
+        example: '22'
+      id:
+        type: string
+        description: Location
+        x-mappedTo: LOCATIONID
+        example: LOC-22
+      name:
+        type: string
+        description: Location Name
+        readOnly: true
+        x-mappedTo: LOCATIONNAME
+        example: California
+      href:
+        type: string
+        readOnly: true
+        example: /objects/item/731
+  department:
+    title: department
+    type: object
+    x-object: department
+    properties:
+      key:
+        type: string
+        description: Department Key
+        x-mappedTo: DEPTKEY
+        example: '11'
+      id:
+        type: string
+        description: Department
+        x-mappedTo: DEPARTMENTID
+        example: DEP-11
+      href:
+        type: string
+        readOnly: true
+        example: /objects/department/731
+  class:
+    title: class
+    type: object
+    x-object: class
+    properties:
+      key:
+        type: string
+        description: Class Key
+        x-mappedTo: CLASSDIMKEY
+        example: '731'
+      id:
+        type: string
+        description: Class ID
+        x-mappedTo: CLASSID
+        example: REST_CLS_001
+      name:
+        type: string
+        description: Class Name
+        readOnly: true
+        x-mappedTo: CLASSNAME
+        example: Enterprises
+      href:
+        type: string
+        readOnly: true
+        example: /objects/class/731
+  task:
+    title: task
+    type: object
+    x-object: task
+    properties:
+      id:
+        type: string
+        description: Task ID
+        x-mappedTo: TASKID
+        example: '1'
+      key:
+        type: string
+        description: Task Key
+        x-mappedTo: TASKDIMKEY
+        example: '1'
+      name:
+        type: string
+        description: Task Name
+        readOnly: true
+        x-mappedTo: TASKNAME
+        example: Project Task
+      href:
+        type: string
+        readOnly: true
+        example: /objects/task/1
+  vendor:
+    title: vendor
+    type: object
+    x-object: vendor
+    properties:
+      key:
+        type: string
+        description: Vendor Key
+        x-mappedTo: VENDORDIMKEY
+        example: '357'
+      id:
+        type: string
+        description: Vendor ID
+        x-mappedTo: VENDORID
+        example: 1605212096809
+      name:
+        type: string
+        description: Vendor Name
+        readOnly: true
+        x-mappedTo: VENDORNAME
+        example: GenLab
+      href:
+        type: string
+        readOnly: true
+        example: /objects/vendor/357
+  customer:
+    title: customer
+    type: object
+    x-object: customer
+    properties:
+      key:
+        type: string
+        description: Customer Key
+        x-mappedTo: CUSTOMERDIMKEY
+        example: '13'
+      id:
+        type: string
+        description: Customer ID
+        x-mappedTo: CUSTOMERID
+        example: 'CUST-13'
+      name:
+        type: string
+        description: Customer Name
+        readOnly: true
+        x-mappedTo: CUSTOMERNAME
+        example: Jack In the Box
+      href:
+        type: string
+        readOnly: true
+        example: /objects/customer/13
+  project:
+    title: project
+    type: object
+    x-object: project
+    properties:
+      key:
+        type: string
+        description: Project Key
+        x-mappedTo: PROJECTDIMKEY
+        example: '2'
+      id:
+        type: string
+        description: Project ID
+        x-mappedTo: PROJECTID
+        example: NET-XML30-2
+      name:
+        type: string
+        description: Project Name
+        readOnly: true
+        x-mappedTo: PROJECTNAME
+        example: Talcomp training
+      href:
+        type: string
+        readOnly: true
+        example: /objects/project/2
+  employee:
+    title: employee
+    type: object
+    x-object: employee
+    properties:
+      key:
+        type: string
+        description: Employee Key
+        x-mappedTo: EMPLOYEEDIMKEY
+        example: '10'
+      id:
+        type: string
+        description: Employee ID
+        x-mappedTo: EMPLOYEEID
+        example: EMP-10
+      name:
+        type: string
+        description: Employee Name
+        readOnly: true
+        x-mappedTo: EMPLOYEENAME
+        example: Thomas, Glenn
+      href:
+        type: string
+        example: /objects/employee/10
+        readOnly: true
+x-tags:
+  - reference

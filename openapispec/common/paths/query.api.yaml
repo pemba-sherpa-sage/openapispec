@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: Query Service
+  description: Query Service
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/query:
+    post:
+      summary: Query an object
+      description: Queries an object for filtered data.
+      operationId: post-services-query
+      tags:
+        - Query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/query.schema.yaml
+            examples:
+              Query vendor:
+                value:
+                  object: vendor
+                  fields:
+                    - id
+                    - name
+                    - status
+                    - href
+                  filters:
+                    - $eq:
+                        status: active
+                    - $eq:
+                        billingType: openItem
+                  filterExpression: 1 and 2
+                  orderBy:
+                    - id: asc
+              Query user-view:
+                value:
+                  object: user-view
+                  fields:
+                    - name
+                    - object
+                    - query
+                  filters:
+                    - $eq:
+                        object: vendor
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the query
+                properties:
+                  'ia::result':
+                    type: array
+                    description: Fields requested in query
+                    items:
+                      type: object
+                      description: List of fields and their values
+                      additionalProperties:
+                        oneOf:
+                          - type: string
+                            nullable: true
+                          - type: integer
+                            nullable: true
+                          - type: number
+                            nullable: true
+                          - type: object
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Response - Query vendor:
+                  value:
+                    'ia::result':
+                      - id: Vend-00002
+                        name: Test vendor
+                        status: active
+                        href: /objects/vendor/85
+                      - id: VEND-00010
+                        name: Design Works
+                        status: active
+                        href: /objects/vendor/111
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                Response - Query user-view:
+                  value:
+                    'ia::result':
+                      - name: vendorTest1
+                        object: vendor
+                        query:
+                          object: vendor
+                          fields:
+                            - id
+                            - name
+                            - status
+                            - href
+                          filters:
+                            '1':
+                              $eq:
+                                status: active
+                            '2':
+                              $eq:
+                                billingType: openItem
+                          filterExpression: 1 and 2
+                          orderBy:
+                            id: asc
+                      - name: vendorTest2
+                        object: vendor
+                        query:
+                          object: vendor
+                          fields:
+                            - id
+                            - name
+                            - status
+                            - href
+                          filters:
+                            '1':
+                              $eq:
+                                status: active
+                            '2':
+                              $eq:
+                                billingType: balanceForward
+                          filterExpression: 1 and 2
+                          orderBy:
+                            id: asc
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+tags:
+  - name: Query
+    description: Query Service

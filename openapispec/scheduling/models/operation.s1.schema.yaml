@@ -1,0 +1,53 @@
+title: operation
+x-mappedTo: operation
+type: object
+description: 
+properties:
+  key:
+    type: string
+    description: Operation RECORD number
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description:  ID
+    x-mutable: false
+    x-mappedTo: NAME
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  userKey:
+    type: integer
+    description: User Record
+    x-mappedTo: USER#
+  entity:
+    type: string
+    description: Entity
+    x-mappedTo: ENTITY
+  action:
+    type: string
+    description: Action
+    x-mappedTo: ACTION
+  bodyData:
+    type: string
+    description: BodyData
+    x-mappedTo: BODYDATA
+  moduleKey:
+    type: string
+    description: Modulekey
+    x-mappedTo: MODULEKEY
+  locationKey:
+    type: string
+    description: Location Key
+    x-mappedTo: LOCATIONKEY
+  contactEmail:
+    type: string
+    description: Email Contact
+    x-mappedTo: CONTACTEMAIL
+  userInfo:
+    type: string
+    description: Created By
+    x-mappedTo: USERNO
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

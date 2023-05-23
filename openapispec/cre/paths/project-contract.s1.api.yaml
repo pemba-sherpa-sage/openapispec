@@ -1,0 +1,393 @@
+openapi: 3.0.0
+info:
+  title: project-contract
+  description: project-contract API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: Project contracts
+    description: Project contracts allow customers to create an SOV (schedule of values) for billing, with the ability to have more than one project on a contract, specific SOV ID codes that their downstream customers may require for billing, and ability to track stored materials at a specific SOV and bill that stored materials over time.  
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-contract:
+    get:
+      summary: List project contracts
+      description: Returns a collection with a key, ID, and link for each project contract.
+      tags:
+        - Project contracts
+      operationId: get-objects-project-contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-contract objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-result-collection-of-project-contracts:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: BTI-01
+                        href: /objects/project-contract/1
+                      - key: '2'
+                        id: BTI-02
+                        href: /objects/project-contract/2                        
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project contract
+      description: Creates a new project contract.
+      tags:
+        - Project contracts
+      operationId: post-objects-project-contract
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract'
+                - $ref: '#/components/schemas/project-contractRequiredProperties'
+            examples:
+              example-create-project-contract:
+                value:
+                  id: BTI-05
+                  name: Berkeley Technology Inc - Contract 05
+                  project:
+                    id: DIM - BTI
+                  customer:
+                    id: BTI
+                  contractDate: '2021-09-30'
+                  description: Project contract for Berkeley Technology Inc
+                  architect:
+                    id: Eberhardt
+                  projectContractType:
+                    id: COM
+                  attachment:
+                    id: pc-att-2
+                  isBillable: true
+                  scope: Project scope only
+                  inclusions: Per original contract
+                  exclusions: Plumbing
+                  terms: Per original contract
+                  schedule:
+                    scheduledStartDate: '2021-06-15'
+                    actualStartDate: '2021-06-30'
+                    scheduledCompletionDate: '2022-11-15'
+                    revisedCompletionDate: '2021-12-15'
+                    substantialCompletionDate: '2021-09-30'
+                    actualCompletionDate: '2021-12-15'
+                    noticeToProceedDate: '2021-05-30'
+                    responseDueDate: '2021-06-05'
+                    executedOnDate: '2021-06-01'
+                    scheduleImpact: NA
+                  internalReference:
+                    referenceNumber: INT-01
+                    initiatedBy:
+                      id: '2'
+                    verbalBy:
+                      id: '2'
+                    issuedBy:
+                      id: '123'
+                    issuedOnDate: '2021-05-30'
+                    approvedBy:
+                      id: '1'
+                    approvedOnDate: '2021-10-02'
+                    signedBy:
+                      id: Robert
+                    signedOnDate: '2021-05-31'
+                    source: NA
+                    sourceReferenceNumber: REF-01
+                  externalReference:
+                    referenceNumber: A23
+                    verbalBy:
+                      name: Johnson
+                    approvedBy:
+                      name: Jagadish
+                    approvedOnDate: '2021-11-03'
+                    signedBy:
+                      name: Modulus Industries
+                    signedOnDate: '2021-12-01'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-contract
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-create-project-contract:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: BTI-01
+                      href: /objects/project-contract/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-contract/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project contract.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project contract
+      description: Returns detailed information for a particular project contract.
+      tags:
+        - Project contracts
+      operationId: get-objects-project-contract-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-contract
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-contract'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-get-project-contract:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: BTI-01
+                      name: Berkeley Technology Inc - Contract 01
+                      project:
+                        id: DIM - BTI
+                        name: Dimensions - Berkeley Technology Inc
+                        key: '1'
+                        href: /objects/project/1
+                      location:
+                        id: '1'
+                        name: United States of America
+                        key: '1'
+                        href: /objects/location/1
+                      customer:
+                        id: BTI
+                        name: Berkeley Technology Inc
+                        key: '14'
+                        href: /objects/customer/14
+                      contractDate: '2021-05-15'
+                      description: BTI Project - Main lobby renoavation contract
+                      projectContractType:
+                        id: COM
+                        key: '2'
+                        href: /objects/project-contract-type/2
+                      architect:
+                        id: Eberhardt
+                        key: '12'
+                        href: /objects/contact/12
+                      isBillable: true
+                      attachment:
+                        id: pc-att-2
+                        key: '7'
+                        href: /objects/attachment/7
+                      status: active
+                      summary:
+                        totalPrice: '2810.65'
+                        originalPrice: '1100.00'
+                        revisionPrice: '210.65'
+                        approvedChangePrice: '1500.00'
+                        pendingChangePrice: '311.85'
+                        otherPrice: '900.00'
+                        forecastPrice: '750.00'
+                      billing:
+                        billedPrice: '0.00'
+                        totalBilledNetRetainage: '0.00'
+                        percentBilled: '0.00'
+                        percentBilledNetRetainage: '0.00'
+                        totalRetainageHeld: '0.00'
+                        totalRetainageReleased: '0.00'
+                        retainageBalance: '0.00'
+                        balanceToBill: '2810.65'
+                        balanceToBillNetRetainage: '2810.65'
+                        totalPaymentsReceived: '0.00'
+                        netTotalBilled: '2810.65'
+                        netTotalPaymentsReceived: '1000.00'
+                        subtotalBilledAsTax: '0.00'
+                        subtotalBilledAsDiscount: '0.00'
+                        subtotalBilledAsCharge: '0.00'
+                        lastApplicationNumber: A-122
+                      excludeFromWIPReporting: false
+                      scope: Project scope only
+                      inclusions: Per original contract
+                      exclusions: Plumbing
+                      terms: Per original contract
+                      schedule:
+                        scheduledStartDate: '2021-06-15'
+                        actualStartDate: '2021-06-30'
+                        scheduledCompletionDate: '2022-11-15'
+                        revisedCompletionDate: '2021-12-15'
+                        substantialCompletionDate: '2021-09-30'
+                        actualCompletionDate: '2021-12-15'
+                        noticeToProceedDate: '2021-05-30'
+                        responseDueDate: '2021-06-05'
+                        executedOnDate: '2021-06-01'
+                        scheduleImpact: NA
+                      internalReference:
+                        referenceNumber: INT-01
+                        initiatedBy:
+                          key: '2'
+                          id: '2'
+                          name: Hatcher
+                          href: /objects/employee/2
+                        verbalBy:
+                          key: '2'
+                          id: '2'
+                          name: Hatcher
+                          href: /objects/employee/2
+                        issuedBy:
+                          key: '25'
+                          id: '123'
+                          name: Marquess
+                          href: /objects/employee/25
+                        issuedOnDate: '2021-05-30'
+                        approvedBy:
+                          key: '1'
+                          id: '1'
+                          name: Reser
+                          href: /objects/employee/1
+                        approvedOnDate: '2021-10-02'
+                        signedBy:
+                          key: '32'
+                          id: Robert
+                          name: Robert
+                          href: /objects/employee/32
+                        signedOnDate: '2021-05-31'
+                        source: NA
+                        sourceReferenceNumber: REF-01
+                      externalReference:
+                        referenceNumber: A23
+                        verbalBy:
+                          key: '6'
+                          name: Johnson
+                          href: /objects/contact/6
+                        approvedBy:
+                          key: '69'
+                          name: Jagadish
+                          href: /objects/contact/69
+                        approvedOnDate: '2021-11-03'
+                        signedBy:
+                          key: '200'
+                          name: Modulus Industries
+                          href: /objects/contact/200
+                        signedOnDate: '2021-12-01'
+                      audit:
+                        modifiedDateTime: '2022-01-19T00:00:00Z'
+                        createdDateTime: '2021-12-01T00:00:00Z'
+                        modifiedBy: '1'
+                        createdBy: '1'
+                      href: /objects/project-contract/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project contract
+      description: Updates an existing project contract by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Project contracts
+      operationId: patch-objects-project-contract-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-contract:
+                value:
+                  name: Berkeley Technology Inc - Contract 05[Revised]
+                  contractDate: '2021-10-15'
+                  description: BTI Project - Main lobby renoavation contract
+                  scope: Project scope only [updated]
+                  inclusions: Per original contract [updated]
+                  exclusions: Plumbing [updated]
+                  terms: Per revised contract
+                  schedule:
+                    scheduledStartDate: '2021-11-15'
+                    scheduledCompletionDate: '2022-11-15'
+                  internalReference:
+                    signedBy:
+                      id: Robert
+                    signedOnDate: '2021-10-15'
+                  projectContractType:
+                    id: COM
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-contract
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project contract
+      description: Deletes a project contract.
+      tags:
+        - Project contracts
+      operationId: delete-objects-project-contract-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract:
+      $ref: ../models/project-contract.s1.schema.yaml
+    project-contractRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

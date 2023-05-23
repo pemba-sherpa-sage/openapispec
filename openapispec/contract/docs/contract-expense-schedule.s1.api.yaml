@@ -1,0 +1,663 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-schedule
+  description: contract-expense-schedule API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract expense schedules
+    description: A contract expense schedule is a header containing multiple schedule lines and is tied directly to a contract line.
+paths:
+  /objects/contract-expense-schedule:
+    get:
+      summary: List contract expense schedules
+      description: Returns a collection with a key, ID, and link for each contract-expense-schedule.
+      tags:
+        - Contract expense schedules
+      operationId: get-objects-contract-expense-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract expense schedule objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of contract expense schedules:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-expense-schedule/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-expense-schedule/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-expense-schedule/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-expense-schedule/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-expense-schedule/79
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                List of contract expense schedule errors:
+                  value:
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Object named [contract-expense-schedule] is not supported in version [0]
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  /objects/contract-expense-schedule/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract expense schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '762'
+    get:
+      summary: Get a contract expense schedule
+      description: Returns detailed information for a particular contract expense schedule.
+      tags:
+        - Contract expense schedules
+      operationId: get-objects-contract-expense-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract expense schedule
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-expense-schedule'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Update a contract expense schedule error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-expense-schedule/12
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Field [id] is a read-only field
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    patch:
+      summary: Update a contract expense schedule
+      description: Updates an existing contract expense schedule by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract expense schedules
+      operationId: patch-objects-contract-expense-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-expense-schedule'
+            examples:
+              Add a expense schedule line:
+                value:
+                  key: '145'
+                  expenseScheduleLines:
+                    - scheduledExpenseDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+              Update a expense schedule line:
+                value:
+                  key: '145'
+                  expenseScheduleLines:
+                    - key: '12'
+                      scheduledExpenseDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+              Update a multiple expense schedule line:
+                value:
+                  key: '145'
+                  expenseScheduleLines:
+                    - key: '12'
+                      scheduledExpenseDate: '2022-05-25'
+                      scheduledAmount: '125.34'
+                    - key: '13'
+                      scheduledExpenseDate: '2022-06-25'
+                      scheduledAmount: '245.18'
+              Delete a expense schedule line:
+                value:
+                  key: '145'
+                  expenseScheduleLines:
+                    - ia::operation: delete
+                      key: '12'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract expense schedule
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a contract expense schedule:
+                  value:
+                    ia::result:
+                      key: '12'
+                      id: 2021-LV2
+                      href: /objects/contract-expense-schedule/12
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Update a contract expense schedule error:
+                  value:
+                    key: '145'
+                    href: /objects/contract-expense-schedule/145
+                    ia::result:
+                      ia::error:
+                        code: notFound
+                        message: The requested resource [contract-expense-schedule] with key(s) [145] could not be found but may be available in the future
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    contract-expense-schedule:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/contract-expense-schedule.s1.schema'
+        - $ref: '#/components/schemas/contract-schedule-typeref.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    metadata-extended.schema:
+      title: metadata-extended
+      description: Meta data with partial success
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            totalSuccess:
+              type: integer
+              description: Total Success
+              x-mappedTo: null
+              readOnly: true
+              example: 2
+            totalError:
+              type: integer
+              description: Total Errors
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+    contract-expense-schedule-typeref.s1.schema:
+      type: object
+      title: contract-expense-schedule
+      x-object: contract-expense-schedule
+      properties:
+        key:
+          type: string
+          description: Contract expense schedule system-assigned key.
+          x-mappedTo: SCHEDULEKEY
+          readOnly: true
+          example: '145'
+        id:
+          type: string
+          description: Contract expense schedule unique identifier.
+          x-mappedTo: SCHEDULEKEY
+          readOnly: true
+          example: '145'
+        href:
+          type: string
+          description: Contract expense schedule URL.
+          readOnly: true
+          example: /objects/contract-expense-schedule/145
+      examples: []
+    contract-expense-schedule-line.s1.schema:
+      type: object
+      title: contract-expense-schedule-line
+      x-mappedTo: contractexpensescheduleentry
+      x-ownedBy: contract-expense-schedule
+      description: Contract expense schedule line.
+      required:
+        - scheduledExpenseDate
+      properties:
+        href:
+          type: string
+          description: Schedule line URL.
+          readOnly: true
+          example: /objects/contract-expense-schedule-line/145
+        contractExpenseSchedule:
+          $ref: '#/components/schemas/contract-expense-schedule-typeref.s1.schema'
+      examples: []
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-schedule-line-typeref.s1.schema:
+      type: object
+      title: contract-schedule-line
+      required:
+        - scheduledAmount
+      properties:
+        key:
+          type: string
+          description: Schedule line system-assigned key.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '145'
+        id:
+          type: string
+          description: Schedule line unique identifier.
+          x-mappedTo: RECORDNO
+          x-mutable: false
+          example: '145'
+        scheduledOperationKey:
+          type: string
+          x-mappedTo: SCHOPKEY
+          description: Scheduled operation key for the associated offline operation.
+          example: '57665'
+          read-only: true
+        status:
+          type: string
+          description: Schedule line status.
+          x-mappedTo: STATE
+          readOnly: true
+          example: posted
+          enum:
+            - open
+            - terminated
+            - posted
+            - onHold
+          x-mappedToValues:
+            - Open
+            - Terminated
+            - Posted
+            - On Hold
+        scheduledAmount:
+          type: string
+          description: Schedule line scheduled amount.
+          x-mappedTo: AMOUNT
+          format: decimal-precision-2
+          example: '125.27'
+          nullable: false
+        scheduledBaseAmount:
+          type: string
+          description: Schedule line scheduled base amount.
+          x-mappedTo: BASEAMOUNT
+          format: decimal-precision-2
+          example: '137.52'
+        scheduledExchangeRate:
+          type: string
+          description: Schedule line scheduled exchange rate.
+          x-mappedTo: EXCHANGE_RATE
+          format: decimal-precision-12
+          example: '1.345'
+        isHistorical:
+          type: boolean
+          description: Schedule line historical flag indicating the line was added during initial implementation for historical purposes.
+          x-mappedTo: HISTORICAL
+          readOnly: true
+          example: false
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+      examples: []
+    contract-schedule-line-postable-typeref.s1.schema:
+      type: object
+      title: contract-schedule-line-postable
+      required:
+        - scheduledPostingDate
+      properties:
+        scheduledPostingDate:
+          type: string
+          description: Schedule line scheduled posting date.
+          x-mappedTo: POSTINGDATE
+          format: date
+          example: '2022-04-30'
+          nullable: false
+        posted:
+          type: boolean
+          description: Schedule line posted flag.
+          x-mappedTo: POSTED
+          readOnly: true
+          example: false
+        actualPostingDate:
+          type: string
+          description: Schedule line actual posting date.
+          x-mappedTo: ACTUALPOSTINGDATE
+          readOnly: true
+          format: date
+          example: '2022-04-30'
+        journalEntry:
+          type: object
+          x-object: journal-entry
+          properties:
+            key:
+              type: string
+              description: Journal entry key.
+              x-mappedTo: GLBATCHKEY
+              readOnly: true
+              example: 8153
+            id:
+              type: string
+              description: Journal entry ID.
+              x-mappedTo: GLBATCHNO
+              readOnly: true
+              example: 4765
+            href:
+              type: string
+              description: Journal entry URL.
+              readOnly: true
+              example: /objects/journal-entry/1981
+      examples: []
+    contract-expense-schedule.s1.schema:
+      type: object
+      title: contract-expense-schedule
+      x-mappedTo: contractexpenseschedulenxg
+      description: Header information for contract expense schedule.
+      properties:
+        href:
+          type: string
+          description: Contract expense schedule URL.
+          readOnly: true
+          example: /objects/contract-expense-schedule/145
+        journal:
+          type: string
+          description: The journal association for this schedule (J1 or J2).
+          x-mappedTo: TYPE
+          readOnly: true
+          example: J1
+          enum:
+            - J1
+            - J2
+          x-mappedToValues:
+            - Expense
+            - Expense2
+        status:
+          type: string
+          description: Schedule status.
+          x-mappedTo: STATE
+          readOnly: true
+          example: inProgress
+          enum:
+            - draft
+            - inProgress
+            - onHold
+            - completed
+            - terminated
+            - estimateRevalued
+          x-mappedToValues:
+            - Draft
+            - In progress
+            - On hold
+            - Completed
+            - Terminated
+            - Estimate revalued
+        expenseScheduleLines:
+          type: array
+          description: Contract expense schedule lines.
+          x-object: contract-expense-schedule-line
+          x-mappedTo: SCHEDULEENTRY
+          items:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/contract-expense-schedule-line.s1.schema'
+              - $ref: '#/components/schemas/contract-schedule-line-typeref.s1.schema'
+              - $ref: '#/components/schemas/contract-schedule-line-postable-typeref.s1.schema'
+      examples: []
+    contract-typeref.s1.schema:
+      type: object
+      title: contract
+      x-object: contract
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the contract.
+          x-mappedTo: CONTRACTKEY
+          readOnly: true
+          example: '2'
+        id:
+          type: string
+          description: Unique identifier of the contract.
+          x-mappedTo: CONTRACTID
+          readOnly: true
+          example: CON-2
+        href:
+          type: string
+          description: URL of the contract.
+          readOnly: true
+          example: /objects/contract/2
+      examples: []
+    contract-schedule-contract-line-typeref.s1.schema:
+      type: object
+      title: contract-line
+      x-object: contract-line
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the contract line.
+          x-mappedTo: CONTRACTDETAILKEY
+          readOnly: true
+          example: '2'
+        id:
+          type: string
+          description: Unique identifier of the contract line.
+          x-mappedTo: CONTRACTDETAILKEY
+          readOnly: true
+          example: '2'
+        href:
+          type: string
+          description: URL of the contract line.
+          readOnly: true
+          example: /objects/contract-line/2
+      examples: []
+    contract-schedule-typeref.s1.schema:
+      type: object
+      title: contract-schedule
+      properties:
+        key:
+          type: string
+          description: Schedule system-assigned key.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '145'
+        id:
+          type: string
+          description: Schedule unique identifier.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '145'
+        cancellationDate:
+          type: string
+          description: Schedule cancellation date.
+          x-mappedTo: CANCELDATE
+          readOnly: true
+          format: date
+          example: '2022-08-13'
+        contract:
+          $ref: '#/components/schemas/contract-typeref.s1.schema'
+        contractLine:
+          $ref: '#/components/schemas/contract-schedule-contract-line-typeref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+      examples: []

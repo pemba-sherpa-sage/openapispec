@@ -1,0 +1,136 @@
+#  .core-rules.yml are the subset of .spectral.yml rules. Several of the rules from .spectral.yaml
+#  are suppressed in core-rules. The idea is to slowly migrate additional rules from .spectral.yaml
+#  into .core-rules.yml as we clean up the schema violations. Any schema violations against core-rules must be
+#  fixed as this will stop the MAKE step.
+
+extends:
+  - 'spectral:oas'
+documentationUrl: 'https://intacct.atlassian.net/wiki/spaces/~397816204/pages/1369407790/YAML+Schema+for+NextGen+API+Objects'
+functions:
+  - readOnlyTrue
+  - ensurePropertiesExample
+  - ensureBooleanSchemaLevel
+  - ensureBooleanDefault
+  - ensureDateFormat
+  - ensureTypeExistence
+  - ensureSupportedXProperties
+
+rules:
+  ia-paths-operation-summary:
+    description: Operation must have summary.
+    given: '$.paths[*][?( @property === ''get'' || @property === ''put'' || @property === ''post'' || @property === ''delete'' || @property === ''options'' || @property === ''patch'')]'
+    type: validation
+    recommended: true
+    then:
+      - field: summary
+        function: truthy
+    severity: error
+  ia-x-href-readOnly:
+    description: href should always be readOnly.
+    given: $.properties.href
+    recommended: true
+    message: '{{error}}'
+    then:
+      field: readOnly
+      function: readOnlyTrue
+    severity: error
+  ia-x-object:
+    description: 'Only ''object'' or ''array'' types property could have the following fields [x-object]'
+    given: '$..[?(@property === ''x-object'')]^'
+    then:
+      field: type
+      function: pattern
+      functionOptions:
+        match: object|array
+    recommended: true
+    severity: error
+  ia-x-mappedToValues:
+    description: Only property with enum could have x-mappedToValues field.
+    given: '$.properties[?(!@.enum)]'
+    recommended: true
+    then:
+      field: x-mappedToValues
+      function: falsy
+    severity: error
+  ia-type-schema-exists:
+    description: type is a required attribute at schema level.
+    given: '$..schema'
+    type: validation
+    recommended: true
+    then:
+      function: ensureTypeExistence
+    severity: error
+  ia-type-properties-exists:
+    description: type is a required attribute in properties.
+    given: '$..properties[*]'
+    type: validation
+    recommended: true
+    then:
+      function: ensureTypeExistence
+    severity: error
+  ia-paths-unsupported-operations:
+    description: Trace and Head are unsupported operations.
+    given: '$..paths[*].*~'
+    severity: error
+    recommended: true
+    resolved: true
+    message: '"{{value}}" operation is not supported.'
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "/^(trace|head)$/i"
+  ia-webURL:
+    description: 'webURL must be readOnly and should have x-mappedTo and x-mappedToLocationKey attributes'
+    given: $..properties..webURL
+    message: "{{error}}"
+    then:
+      - field: readOnly
+        function: truthy
+      - field: x-mappedToLocationKey
+        function: truthy
+      - field: x-mappedTo
+        function: truthy
+      - field: x-mappedToLocationKey
+        function: enumeration
+        functionOptions:
+          values:
+            - LOCATIONKEY
+            - MELOCATIONKEY
+            - MELOCKEY
+      - field: x-mappedTo
+        function: enumeration
+        functionOptions:
+          values:
+            - __recordURL__
+    severity: error
+  oas3-api-servers: 'off'
+  oas3-unused-component: 'off'
+  info-description: error
+  tag-description: error
+  operation-description: error
+  operation-tags: error
+  oas3-valid-media-example: off
+  oas3-valid-schema-example: off
+  oas3-schema: off
+  oas3-examples-value-or-externalValue: off
+except:
+  '#/properties/href':
+    - ia-x-mappedto
+  common/models/query.schema.yaml:
+    - ia-x-mappedto
+  common/models/view.schema.yaml:
+    - ia-x-mappedto
+  common/models/metadata.schema.yaml:
+    - ia-x-mappedto
+  common/models/object-model.schema.yaml:
+    - ia-x-mappedto
+  common/models/object-reference.schema.yaml:
+    - ia-x-mappedto
+  common/models/metadata-pages.v1.yaml:
+    - ia-x-mappedto
+  common/models/metadata-extended.v1.yaml:
+    - ia-x-mappedto
+  template.s1.api.yaml:
+    - operation-operationId-valid-in-url
+  co/paths/file.s1.api.yaml:
+    - oas3-unused-component

@@ -1,0 +1,294 @@
+title: item-warehouse-inventory
+x-mappedTo: itemwarehouseinfo
+x-ownedBy: item
+type: object
+description: Warehouse inventory information is used with Inventory and Stockable Kit items.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the item warehouse inventory information.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the item warehouse inventory information.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  item:
+    type: object 
+    x-object: item
+    x-mappedTo: item
+    description: Details for the good, service, or kit that is purchased or sold.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the item.
+        x-mappedTo: ITEMDIMKEY
+        example: '9'
+      id:
+        type: string
+        x-mappedTo: ITEMID
+        description: Unique identifier for the item.
+        example: Prnt_Paper
+        readOnly: true
+      href:
+        type: string
+        description: URL for the item.
+        readOnly: true
+        example: /objects/item/9
+  warehouse:
+    type: object
+    x-object: warehouse
+    x-mappedTo: warehouse
+    description: Details for the warehouse or stocking location for the item.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the warehouse.
+        x-mappedTo: WAREHOUSEDIMKEY
+        example: '1'
+      id:
+        type: string
+        x-mappedTo: WAREHOUSEID
+        description: Unique identifier for the warehouse.
+        example: WH10001
+        readOnly: true
+      href:
+        type: string
+        description: URL for the warehouse.
+        readOnly: true
+        example: /objects/warehouse/1
+  storageArea:
+    type: string
+    description: Location within the warehouse where the item is normally stored, such as Aisle 23, Row 12, Shelf 3, Bin 5.
+    x-mappedTo: DEFAULT_SUBSECTION
+    example: Bin 5
+  inventoryCycle:
+    type: object
+    x-object: inventory-cycle
+    x-mappedTo: inventorycycle
+    description: Inventory cycles are used to keep track of when to take physical inventory.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the inventory cycle.
+        x-mappedTo: CYCLEKEY
+        example: '2'
+      id:
+        type: string
+        x-mappedTo: CYCLE
+        description: Unique identifier for the inventory cycle.
+        example: Daily Cycle
+        readOnly: true
+      href:
+        type: string
+        description: URL for the inventory cycle.
+        readOnly: true
+        example: /objects/inventory-cycle/2
+  economicOrderQuantity:
+    type: integer
+    description: The quantity that makes the cost of reordering this item the most economical by minimizing total holding costs and total ordering costs.
+    x-mappedTo: ECONOMIC_ORDER_QTY
+    example: 10
+  standardCost:
+    type: string
+    description: The planned or expected costs. Used in situations where purchase costs remain relatively stable over time.
+    x-mappedTo: STANDARD_COST
+    example: '110'
+  lastCost:
+    type: string
+    description: The most recent cost information for the item.
+    x-mappedTo: LAST_COST
+    readOnly: true
+    example: '100'
+  averageCost:
+    type: string
+    description: The weighted average of all units.
+    x-mappedTo: AVERAGE_COST
+    readOnly: true
+    example: '100'
+  reorderMethod:
+    type: string
+    description: Available methods to reorder items when the inventory stock is low.
+    x-mappedTo: REORDER_METHOD
+    enum:
+      - economicQuantity
+      - maxStockLevel
+      - reorderPoint
+    x-mappedToValues:
+      - Economic Qty
+      - Max Stock Level
+      - Reorder Point
+    example: economicQuantity
+    readOnly: true
+  reorderPoint:
+    type: integer
+    description: Value used as the starting point to determine when the item needs to be replenished.
+    x-mappedTo: REORDER_POINT
+    example: 121
+  reorderQuantity:
+    type: integer
+    description: When current net inventory falls to the reorder point plus the safety stock, the item is triggered for reorder with reorder quantity.
+    x-mappedTo: REORDER_QTY
+    example: 10
+  minOrderQuantity:
+    type: integer
+    description: The minimum quantity to be reordered at one time.
+    x-mappedTo: MIN_ORDER_QTY
+    example: 10
+  maxOrderQuantity:
+    type: integer
+    description: The maximum quantity to be reordered at one time.
+    x-mappedTo: MAX_ORDER_QTY
+    example: 100
+  maximumStock:
+    type: integer
+    description: The quantity of the item you do not want to exceed in the inventory.
+    x-mappedTo: MAX_STOCK
+    example: 300
+  minimumStock:
+    type: integer
+    description: The quantity of the item you do not want to fall below in the inventory.
+    x-mappedTo: MIN_STOCK
+    example: 50
+  lastSoldDate:
+    type: string
+    format: date
+    example: '2022-04-08'
+    description: Last date the item was sold.
+    readOnly: true
+    x-mappedTo: DATE_LASTSOLD
+  lastReceivedDate:
+    type: string
+    format: date
+    example: '2022-04-10'
+    description: Last date the item was received.
+    readOnly: true
+    x-mappedTo: DATE_LASTRECEIVED
+  defaultBin:
+    type: object
+    description: Default bin details for the item.
+    x-object: bin
+    x-mappedTo: bin
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the default bin.
+        x-mappedTo: DEFAULT_BIN_KEY
+        example: '45'
+      id:
+        type: string
+        x-mappedTo: DEFAULT_BIN
+        description: Unique identifier for the default bin.
+        example: '45'
+        readOnly: true
+      href:
+        type: string
+        description: URL for the default bin.
+        readOnly: true
+        example: /objects/bin/45
+  warehouseLocation:
+    type: object
+    x-object: entity
+    x-mappedTo: locationent.currency
+    description: Warehouse location and currency details for the item.
+    readOnly: true
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the warehouse location.
+        x-mappedTo: WHSE_LOCATION_KEY
+        readOnly: true
+        example: '3'
+      id:
+        type: string
+        x-mappedTo: WHSE_LOCATION_ID
+        description: Unique identifier for the warehouse location.
+        readOnly: true
+        example: LOC-USA-0778
+      currency:
+        type: string
+        x-mappedTo: WHSE_CURRENCY
+        description: Currency for the warehouse location.
+        readOnly: true
+        example: USD
+      href:
+        type: string
+        description: URL for the warehouse location.
+        readOnly: true
+        example: /objects/entity/3
+  safetyStock:
+    type: integer
+    description: The extra quantity to have in inventory to avoid running out of stock.
+    x-mappedTo: SAFETY_STOCK
+    example: 20
+  replenishmentMethod:
+    type: string
+    description: Replenishment method to use to automatically identify and reorder items when inventory is low.
+    x-mappedTo: REPLENISHMENT_METHOD
+    enum:
+      - demandForecastBySingleValue
+      - reorderPoint
+      - demandForecastByFluctuatingValues
+    x-mappedToValues:
+      - Demand forecast by single value
+      - Reorder point
+      - Demand forecast by fluctuating values
+    example: reorderPoint
+  enableReplenishment:
+    type: boolean
+    description: Set replenishment to `true` to replenish the items.
+    x-mappedTo: ENABLE_REPLENISHMENT
+    example: true
+    default: true
+  onOrder:
+    type: integer
+    description: Quantities that are expected to arrive in the warehouse from purchase orders.
+    x-mappedTo: WONORDER
+    example: 100
+    readOnly: true
+  inTransit:
+    type: integer
+    description: Total number of warehouse transfer items that are in transit.
+    x-mappedTo: WINTRANSIT
+    example: 50
+    readOnly: true
+  onHand:
+    type: integer
+    description: The item total received into the warehouse less the total that have been shipped from the warehouse.
+    x-mappedTo: WONHAND
+    example: 200
+    readOnly: true
+  onHold:
+    type: integer
+    description: The quantity of the item that is on hold for the transaction.
+    x-mappedTo: WONHOLD
+    example: 10
+    readOnly: true
+  reserved:
+    type: integer
+    description: The reserved quantity for a warehouse is subtracted from available items to keep that amount from being sold.
+    x-mappedTo: WRESERVED
+    example: 50
+    readOnly: true
+  allocated:
+    type: integer
+    description: The allocated inventory quantity is the count of items present in the warehouse, which are reserved to open sale orders.
+    x-mappedTo: WALLOCATED
+    example: 20
+    readOnly: true
+  unCommitted:
+    type: integer
+    description: Uncommitted inventory is excess inventory, the difference between the forecast and the inventory.
+    x-mappedTo: WUNCOMMITTED
+    example: 500
+    readOnly: true
+  href:
+    type: string
+    description: URL for the item warehouse.
+    example: /objects/item-warehouse-inventory/1
+    readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

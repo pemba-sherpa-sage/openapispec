@@ -1,0 +1,22 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/potaxschedule/view
+      - po/lists/potaxschedule/view
+    POST:
+      - ap/lists/potaxschedule/create
+      - po/lists/potaxschedule/create
+    PATCH:
+      - ap/lists/potaxschedule/edit
+      - po/lists/potaxschedule/edit
+    DELETE:
+      - ap/lists/potaxschedule/delete
+      - po/lists/potaxschedule/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    active:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

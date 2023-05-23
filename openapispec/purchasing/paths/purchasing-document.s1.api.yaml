@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  title: purchasing-document
+  description: purchasing-document API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Purchasing documents
+    description: A purchasing document contains information about purchasing transactions.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-document:
+    get:
+      summary: List purchasing documents
+      description: Returns a collection with a key, ID, and link for each purchasing document. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Purchasing documents
+      operationId: get-objects-purchasing-document-base
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-document objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-document/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+    get:
+      summary: Get a purchasing document
+      description: Returns detailed information for a specified purchasing document.
+      tags:
+        - Purchasing documents
+      operationId: get-objects-purchasing-document-base-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-document
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-document'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-document::{documentName}':
+    get:
+      summary: List named purchasing documents
+      description: Returns a collection with a key, ID, and link for each purchasing document with the specified name. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Purchasing documents
+      operationId: get-objects-purchasing-document
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-document objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a purchasing document
+      description: Creates a new purchasing document.
+      tags:
+        - Purchasing documents
+      operationId: post-objects-purchasing-document
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-document'
+                - $ref: '#/components/schemas/purchasing-documentRequiredProperties'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New purchasing-document
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    parameters:
+      - $ref: '#/components/parameters/documentName'
+  '/objects/purchasing-document::{documentName}/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the purchasing document.
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/documentName'
+    get:
+      summary: Get a named purchasing document
+      description: Returns detailed information for a specified purchasing document.
+      tags:
+        - Purchasing documents
+      operationId: get-objects-purchasing-document-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-document
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-document'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/ purchasing document
+      description: Updates an existing purchasing document by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Purchasing documents
+      operationId: patch-objects-purchasing-document-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-document'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated purchasing-document
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a purchasing document
+      description: Deletes a purchasing document.
+      tags:
+        - Purchasing documents
+      operationId: delete-objects-purchasing-document-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-document:
+      $ref: ../models/purchasing-document.s1.schema.yaml
+    purchasing-documentRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  parameters:
+    documentName:
+      name: documentName
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Document Name

@@ -1,0 +1,369 @@
+openapi: 3.0.0
+info:
+  title: bill-line
+  description: bill-line API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Bill lines
+    description: Line items in a bill represent charges for purchased items or services.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/bill-line/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the line item.
+    get:
+      summary: Get a bill line
+      description: Returns detailed information for a specified line item in a bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View Bills
+      tags:
+        - Bill lines
+      operationId: get-objects-bill-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bill-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bill-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a line item:
+                  value:
+                    'ia::result':
+                      id: '181'
+                      key: '181'
+                      bill:
+                        id: '63'
+                        key: '63'
+                        href: /objects/bill/63
+                      glAccount:
+                        key: '245'
+                        id: '6000'
+                        name: G&A Salaries
+                        href: /objects/gl-account/245
+                      overriddenOffsetGLAccount:
+                        key: '384'
+                        id: '1234.34'
+                        name: AP ACCOUNT
+                        href: /objects/gl-account/384
+                      accountLabel:
+                        key: '14'
+                        id: Accounting Fees
+                      createdDate: '2022-02-21'
+                      baseAmount: -5
+                      txnAmount: -5
+                      dimensions:
+                        department:
+                          key: '9'
+                          id: '11'
+                          name: Accounting
+                        location:
+                          key: '4'
+                          id: 'AU'
+                          name: Australia
+                          href: /objects/location/4
+                        vendor:
+                          key: '43'
+                          id: 'VEND-00010'
+                          name: 'Design Works'
+                          href: /objects/vendor/43
+                      baselocation:
+                        name: Australia
+                        key: '4'
+                        href: /objects/location/4
+                      memo: This bill contains both tax and retainage.
+                      currency:
+                        exchangeRate:
+                          date: '2022-02-21'
+                          typeId: '-1'
+                          rate: 1.0789
+                        txnCurrency: GBP
+                        baseCurrency: USD
+                      allocation:
+                        name: Alloc1-WBS-US
+                        key: '1'
+                        id: 1
+                      hasForm1099: 'false'
+                      lineNumber: 1
+                      paymentInformation:
+                        totalBaseAmountPaid: -5
+                        totalTxnAmountPaid: -5
+                        totalBaseAmountSelectedForPayment: 0
+                        totalTxnAmountSelectedForPayment: 0
+                      project:
+                        isBillable: false
+                        isBilled: false
+                      releaseToPay: false
+                      tax:
+                        parentEntryKey: 288
+                        parentTaxEntryKey: 289
+                        isPartialExemption: false
+                      state: A
+                      form1099:
+                        type: NEC
+                        box: 15A
+                      purchasing:
+                        taxDetail:
+                          id: Stationary Tax
+                          key: '15'
+                        document:
+                          key: '2437'
+                          id: Sales Invoice-INV0110
+                        documentLine:
+                          key: '750'
+                          id: '3'
+                      retainage:
+                        percentage: 2
+                        txnAmountRetained: 10
+                        baseAmountRetained: 10
+                        hasRetainage: true
+                        txnAmountReleased: 5
+                        release: true
+                      isSubTotal: subtotal
+                      href: /objects/bill-line/181
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bill line
+      description: Deletes a line item in a bill.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Bills
+      tags:
+        - Bill lines
+      operationId: delete-objects-bill-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a bill line
+      description: Updates an existing line item in a bill by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Bills
+      tags:
+        - Bill lines
+      operationId: patch-objects-bill-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  memo: This bill line includes charges for repairs.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bill-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '23'
+                      id: '23'
+                      href: /objects/bill-line/23
+                    'ia::meta':
+                      totalCount: 1        
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/bill-line:
+    get:
+      summary: List bill lines
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each bill line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View Bills
+      tags:
+        - Bill lines
+      operationId: get-objects-bill-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bill-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bill lines:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/bill-line/1
+                      - key: '3'
+                        id: '3'
+                        href: /objects/bill-line/3
+                      - key: '5'
+                        id: '5'
+                        href: /objects/bill-line/5
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bill line
+      description: Creates a new bill line.
+      x-documentationFlags:
+        subscription: Accounts Payable
+        userPermissions:
+          - userType: Business user
+            permissions: List, View, Edit Bills
+      tags:
+        - Bill lines
+      operationId: post-objects-bill-line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bill-line'
+                - $ref: '#/components/schemas/bill-lineRequiredProperties'
+            examples:
+              Create a new bill line:
+                value:
+                  id: '240'
+                  key: '240'
+                  lineNumber: 8
+                  form1099:
+                    hasForm1099: true
+                    type: NEC
+                    box: 15A
+                  glAccount:
+                    key: '256'
+                    id: '6252'
+                  overriddenOffsetGLAccount:
+                    key: '384'
+                    id: '1234.36'
+                  accountLabel:
+                    key: '14'
+                    id: 'Accounting Fees'
+                  baseAmount: 100.00
+                  txnAmount: 100.00
+                  memo: 'Service charges'
+                  allocation:
+                    key: '1'
+                    id: 1
+                  currency:
+                    exchangeRate:
+                      date: '2021-01-23'
+                      rate: 1.0789
+                      typeId: '-1'
+                  paymentInformation:
+                    totalTxnAmountPaid: 100.00
+                  releaseToPay: true
+                  project:
+                    isBillable: true
+                  retainage:
+                    hasRetainage: true
+                    percentage: 2
+                    baseAmountRetained: 20.00
+                    txnAmountRetained: 20.00
+                    txnAmountReleased: 10.00
+                    release: true
+                  purchasing:
+                    taxDetail:
+                      key: '15'
+                      id: 'Stationary Tax'
+                    document:
+                      key: '2437'
+                      id: 'Sales Invoice-INV0110'
+                    documentLine:
+                      key: '750'
+                      id: '3'
+                  tax:
+                    isPartialExemption: true
+                  bill:
+                    id: '19876'
+                    key: '19876'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bill-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bill-line:
+      $ref: ../models/bill-line.s1.schema.yaml
+    bill-lineRequiredProperties:
+      type: object
+      properties:
+        bill:
+          required:
+            - key
+          example: '986'
+      required:
+        - id     
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

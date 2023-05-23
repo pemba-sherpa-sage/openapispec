@@ -1,0 +1,875 @@
+openapi: 3.0.0
+info:
+  title: Query Service
+  description: Query Service
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Query
+    description: Query Service
+paths:
+  /services/query:
+    post:
+      summary: Query an object
+      description: Queries an object for filtered data.
+      operationId: post-services-query
+      tags:
+        - Query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/query.schema'
+            examples:
+              Query vendor:
+                value:
+                  object: vendor
+                  fields:
+                    - id
+                    - name
+                    - status
+                    - href
+                  filters:
+                    - $eq:
+                        status: active
+                    - $eq:
+                        billingType: openItem
+                  filterExpression: 1 and 2
+                  orderBy:
+                    - id: asc
+              Query user-view:
+                value:
+                  object: user-view
+                  fields:
+                    - name
+                    - object
+                    - query
+                  filters:
+                    - $eq:
+                        object: vendor
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the query
+                properties:
+                  ia::result:
+                    type: array
+                    description: Fields requested in query
+                    items:
+                      type: object
+                      description: List of fields and their values
+                      additionalProperties:
+                        oneOf:
+                          - type: string
+                            nullable: true
+                          - type: integer
+                            nullable: true
+                          - type: number
+                            nullable: true
+                          - type: object
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Response - Query vendor:
+                  value:
+                    ia::result:
+                      - id: Vend-00002
+                        name: Test vendor
+                        status: active
+                        href: /objects/vendor/85
+                      - id: VEND-00010
+                        name: Design Works
+                        status: active
+                        href: /objects/vendor/111
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                Response - Query user-view:
+                  value:
+                    ia::result:
+                      - name: vendorTest1
+                        object: vendor
+                        query:
+                          object: vendor
+                          fields:
+                            - id
+                            - name
+                            - status
+                            - href
+                          filters:
+                            '1':
+                              $eq:
+                                status: active
+                            '2':
+                              $eq:
+                                billingType: openItem
+                          filterExpression: 1 and 2
+                          orderBy:
+                            id: asc
+                      - name: vendorTest2
+                        object: vendor
+                        query:
+                          object: vendor
+                          fields:
+                            - id
+                            - name
+                            - status
+                            - href
+                          filters:
+                            '1':
+                              $eq:
+                                status: active
+                            '2':
+                              $eq:
+                                billingType: balanceForward
+                          filterExpression: 1 and 2
+                          orderBy:
+                            id: asc
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'
+  schemas:
+    query.schema:
+      title: query
+      description: Query request
+      type: object
+      properties:
+        object:
+          type: string
+          example: vendor
+          description: Object type to query.
+        fields:
+          description: |-
+            List of fields to include in the response. Can be any combination of these:
+
+            * The name of a field in the object that you are querying, such as `id`.
+            * The name of a field in a related object, using the form `relatedObjectName.fieldName`, such as `vendor.id`.
+            * The result of an aggregate function run against the values in the returned objects. Use the form `function:fieldName`, such as `min:startDate` to return the earliest starting date. Valid function names are:
+
+                * `count`
+                * `avg`
+                * `sum`
+                * `min`
+                * `max`
+
+            * The result of an aggregate function run against the values in related objects, using the form `function:relatedObjectName.fieldName`, such as `max:vendor.creditLimit`. The same functions are supported as for object fields.
+          type: array
+          items:
+            type: string
+          example:
+            - key
+            - id
+            - max:vendor.creditLimit
+        filters:
+          description: Filter conditions to select the objects to return based on their field values. You use operators and conditions to build your filter, such as `{"$eq":{"status":"active"}}` to select objects in which `status` is equal to "active".
+          example:
+            - $eq:
+                status: active
+            - $gt:
+                totalDue: '1000'
+            - $contains:
+                name: Acme
+          type: array
+          items:
+            anyOf:
+              - title: equal
+                type: object
+                description: |-
+                  Field value must be equal to this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [filterParameters](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+
+                  For example, `{"eq":{"postingDate":"priorYear"}}`.
+                properties:
+                  $eq:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                          nullable: true
+                        - type: integer
+                          nullable: true
+                        - type: number
+                          nullable: true
+                        - type: boolean
+                example:
+                  $eq:
+                    status: active
+              - title: not equal
+                type: object
+                description: |-
+                  Field value must not be equal to this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [filterParameters](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $ne:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                          nullable: true
+                        - type: integer
+                          nullable: true
+                        - type: number
+                          nullable: true
+                        - type: boolean
+                example:
+                  $ne:
+                    status: inactive
+              - title: less than
+                type: object
+                description: |-
+                  Field value must be less than this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [filterParameters](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $lt:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $lt:
+                    totalDue: '100'
+              - title: less than or equal
+                type: object
+                description: |-
+                  Field value must be less than or equal to this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [filterParameters](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $lte:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                        - type: boolean
+                example:
+                  $lte:
+                    totalDue: '500'
+              - title: greater than
+                type: object
+                description: |-
+                  Field value must be greater than this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $gt:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $gt:
+                    totalDue: '1000'
+              - title: greater than or equal
+                type: object
+                description: |-
+                  Field value must be greater than or equal to this specified value.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $gte:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                        - type: boolean
+                example:
+                  $gte:
+                    totalDue: '999'
+              - title: in
+                type: object
+                description: |-
+                  Field value is one of the specified values.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $in:
+                    type: object
+                    description: The field name and list of values to be compared with object values.
+                    additionalProperties:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: string
+                          - type: integer
+                          - type: number
+                          - type: boolean
+                example:
+                  $in:
+                    firstName:
+                      - Tim
+                      - Anjali
+                      - Gabriel
+              - title: not in
+                type: object
+                description: |-
+                  Field value is not one of the specified values.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $notIn:
+                    type: object
+                    description: The field name and list of values to be compared with object values.
+                    additionalProperties:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: string
+                          - type: integer
+                          - type: number
+                          - type: boolean
+                example:
+                  $notIn:
+                    country:
+                      - United States
+                      - Canada
+              - title: between
+                type: object
+                description: |-
+                  Field value is within the given range, inclusive.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $between:
+                    type: object
+                    description: The field name and the beginning and ending values to be compared with object values.
+                    additionalProperties:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: string
+                          - type: integer
+                          - type: number
+                example:
+                  $between:
+                    totalDue:
+                      - '1'
+                      - '1000'
+              - title: not between
+                type: object
+                description: |-
+                  Field value is not within the given range.
+
+                  For date fields, you can use these macro values that are relative to the current date or the `asOfDate` in [`filterParameters`](#filterParameters), if set:
+
+                  <table style="border-collapse: collapse; border: none">
+                  <tr>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>today</code></liu>
+                  <li><code>currentWeek</code></liu>
+                  <li><code>currentMonth</code></liu>
+                  <li><code>currentQuarter</code></liu>
+                  <li><code>currentYear</code></liu>
+                  </ul>
+                  </td>
+                  <td style="border: none">
+                  <ul>
+                  <li><code>yesterday</code></liu>
+                  <li><code>lastWeek</code></liu>
+                  <li><code>priorMonth</code></liu>
+                  <li><code>priorQuarter</code></liu>
+                  <li><code>priorYear</code></liu>
+                  </ul>
+                  </td>
+                  </tr>
+                  </table>
+
+                  These are most useful for queries that you want to save and use repeatedly, such as for views or reports. Just change the `asOfDate` each time to retrieve the same data set for different time periods.
+                properties:
+                  $notBetween:
+                    type: object
+                    description: The field name and the beginning and ending values to be compared with object values.
+                    additionalProperties:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: string
+                          - type: integer
+                          - type: number
+                example:
+                  $notBetween:
+                    totalDue:
+                      - '100'
+                      - '1000'
+              - title: contains
+                type: object
+                description: Field value contains the given string or number. Cannot be used with date fields.
+                properties:
+                  $contains:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $contains:
+                    name: Acme
+              - title: does not contain
+                type: object
+                description: Field value does not contain the given string or number. Cannot be used with date fields.
+                properties:
+                  $notContains:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $notContains:
+                    name: llc
+              - title: starts with
+                type: object
+                description: Field value starts with this string or number. Cannot be used with date fields.
+                properties:
+                  $startsWith:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $startsWith:
+                    name: A
+              - title: does not start with
+                type: object
+                description: Field value does not start with this string or number. Cannot be used with date fields.
+                properties:
+                  $notStartsWith:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $notStartsWith:
+                    name: Q
+              - title: ends with
+                type: object
+                description: Field value ends with this string or number. Cannot be used with date fields.
+                properties:
+                  $endsWith:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $endsWith:
+                    name: inc
+              - title: does not end with
+                type: object
+                description: Field value does not end with this string or number. Cannot be used with date fields.
+                properties:
+                  $notEndsWith:
+                    type: object
+                    description: The field name and value to be compared with object values.
+                    additionalProperties:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                        - type: number
+                example:
+                  $notEndsWith:
+                    name: llc
+        filterExpression:
+          description: Logical operators to apply to the expressions in the `filters` array. The expressions are implicitly numbered starting at 1. Supports `and`, `or`, and grouping with parentheses.
+          type: string
+          example: (1 and 2) or 3
+        filterParameters:
+          description: |-
+            <a name="filterParameters"></a>
+            Pre-defined filter options.
+          type: object
+          properties:
+            asOfDate:
+              type: string
+              format: date
+              description: |-
+                The "as of" date to use with any relative date comparisons in `filters`. For example, if `asOfDate` is set to "2022-04-01" then `priorMonth` will be "03".
+
+                The current date is used if `asOfDate` is not set.
+              example: '2022-04-01'
+            includeHierarchyFields:
+              description: Set to `true` to include hierarchical structure information with each object in the response.
+              type: boolean
+              example: false
+              default: false
+            caseSensitiveComparison:
+              description: Queries ignore case by default. Set to `true` for a case-sensitive query.
+              type: boolean
+              example: true
+              default: false
+            includePrivate:
+              description: By default, in a multi-entity company, queries from the top-level entity do not access data in private entities. Set includePrivate to true if you want to query data in private entities.
+              type: boolean
+              default: false
+              example: false
+        orderBy:
+          description: Set the order of the results by specifying field names to sort by and whether they should be in ascending or descending order.
+          type: array
+          items:
+            type: object
+            title: field name and sort order
+            additionalProperties:
+              type: string
+              enum:
+                - asc
+                - desc
+          example:
+            - totalDue: asc
+            - lastPaymentMadeDate: desc
+        start:
+          description: First record of the result set to include in the response.
+          type: integer
+          example: 1
+        size:
+          description: Number of records to include in the response.
+          type: integer
+          example: 100
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO

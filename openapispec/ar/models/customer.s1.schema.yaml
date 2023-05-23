@@ -1,0 +1,573 @@
+title: customer
+x-mappedTo: customer
+type: object
+description: A customer is any company to which you sell goods and services.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the customer.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the customer.
+    x-mappedTo: CUSTOMERID
+    x-mutable: false
+  name:
+    description: Name of the customer, which is usually the company name.
+    type: string
+    x-mappedTo: NAME
+  href:
+    type: string
+    description: URL for the customer.
+    readOnly: true
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+  customerType:
+    type: object
+    description: The category assigned to the customer (for example, Consultants, Subcontractors, or Equipment).
+    x-object: customer-type
+    x-mappedTo: custtype
+    title: Customer Type
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the customer type.
+        x-mappedTo: CUSTTYPEKEY
+      id:
+        type: string
+        description: ID for the customer type.
+        x-mappedTo: CUSTTYPE
+      href:
+        type: string
+        description: URL for the customer type.
+        readOnly: true
+  parent:
+    type: object
+    description: Parent customer, which creates a customer hierarchy.
+    x-object: customer
+    x-mappedTo: PARENT
+    title: parent
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent customer.
+        x-mappedTo: PARENTKEY
+      id:
+        type: string
+        description: ID of the parent customer.
+        x-mappedTo: PARENTID
+      name:
+        type: string
+        description: Name of the parent customer.
+        x-mappedTo: PARENTNAME
+        readOnly: true
+      href:
+        type: string
+        description: URL for the parent customer.
+        readOnly: true
+  salesRepresentative:
+    type: object
+    description: Name of the employee responsible for this customer account.
+    x-object: employee
+    x-mappedTo: custrep
+    title: Sales Representative
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the employee.
+        x-mappedTo: CUSTREPKEY
+      id:
+        type: string
+        description: ID of the employee.
+        x-mappedTo: CUSTREPID
+      name:
+        type: string
+        description: Name of the employee.
+        x-mappedTo: CUSTREPNAME
+        readOnly: true
+      href:
+        type: string
+        description: URL for the employee.
+        readOnly: true
+  taxId:
+    type: string
+    description: Tax identification number for the customer.
+    x-mappedTo: TAXID
+  defaultRevenueGLAccount:
+    type: object
+    description: GL account for customer revenue.
+    x-object: gl-account
+    x-mappedTo: araccount
+    title: Default Revenue Account
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: ACCOUNTKEY
+        readOnly: true
+      id:
+        type: string
+        description: ID of the GL account.
+        x-mappedTo: ARACCOUNT
+      name:
+        type: string
+        description: Name of the GL account.
+        x-mappedTo: ARACCOUNTTITLE
+        readOnly: true
+      href:
+        type: string
+        description: URL of the GL account.
+        readOnly: true
+  shippingMethod:
+    type: object
+    description: How goods are shipped to the customer.
+    x-object: shipping-method
+    x-mappedTo: shipmethod
+    title: Shipping Method
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the shipping method.
+        x-mappedTo: SHIPVIAKEY
+      id:
+        type: string
+        description: ID of the shipping method.
+        x-mappedTo: SHIPPINGMETHOD
+      href:
+        type: string
+        description: URL of the shipping method.
+        readOnly: true
+  creditLimit:
+    type: number
+    description: Credit limit extended to the customer.
+    x-mappedTo: CREDITLIMIT
+  isOnHold:
+    type: boolean
+    description: Indicates whether customer is on credit hold.
+    x-mappedTo: ONHOLD
+    x-mappedToType: string
+    default: false
+  contacts:
+    type: object
+    description: Contacts for the customer.
+    title: contacts
+    properties:
+      default:
+        type: object
+        description: |
+          Display contact for this customer.
+          Used as the default for other customer contacts, such as `shipTo`, that are  not defined.
+        allOf:
+          - $ref: ../../common/references/contactref.s1.schema.yaml
+          - type: object
+            x-object: contact
+            x-mappedTo: displaycontact
+            x-mappedToPrefix: DISPLAYCONTACT
+            x-mappedToKey: DISPLAYCONTACTKEY
+            properties:
+              hideContactList:
+                type: boolean
+                description: Exclude from the company contact list
+                x-mappedTo: HIDEDISPLAYCONTACT
+                x-mappedToType: string
+                default: false
+              tax:
+                type: object
+                title: tax
+                properties:
+                  isTaxable:
+                    type: boolean
+                    description: Is Taxable
+                    x-mappedTo: DISPLAYCONTACT.TAXABLE
+                    x-mappedToType: string
+                    default: false
+                  group:
+                    type: object
+                    x-object: contact-tax-group
+                    x-mappedTo: DISPLAYCONTACT.TAXGROUP
+                    properties:
+                      key:
+                        type: string
+                        x-mappedTo: TAXGROUPKEY
+                      id:
+                        type: string
+                        x-mappedTo: TAXGROUP
+                      href:
+                        type: string
+                        readOnly: true
+      primary:
+        type: object
+        description: Primary contact for the customer.
+        title: primary
+        x-object: contact
+        x-mappedTo: primarycontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: CONTACTKEY
+          id:
+            type: string
+            description: ID of the contact.
+            x-mappedTo: CONTACTINFO.CONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+      billTo:
+        type: object
+        description: Customer contact for company activity such as sales transactions, invoice creation, and manual deposits.
+        title: billTo
+        x-object: contact
+        x-mappedTo: billtocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: BILLTOKEY
+          id:
+            type: string
+            description: ID of the contact.
+            x-mappedTo: BILLTO.CONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+      shipTo:
+        type: object
+        title: shipTo
+        description: Customer contact for company activity such as sales transactions, invoice creation, and tax calculations.
+        x-object: contact
+        x-mappedTo: shiptocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: SHIPTOKEY
+          id:
+            type: string
+            description: ID of the contact.
+            x-mappedTo: SHIPTO.CONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+  contactList:
+    type: array
+    x-mappedTo: CONTACT_LIST_INFO
+    x-object: customer-contact
+    items:
+      $ref: ./customer-contact.s1.schema.yaml
+  restrictions:
+    type: object
+    properties:
+      restrictionType:
+        type: string
+        description: |
+          Restrict customers to only the top-level company or for specific locations and departments.
+          These restriction options are valid only for multi-entity companies that are [configured for restrictions](https://www.intacct.com/ia/docs/en_US/help_action/Multi-entity/Setup/configure-multi-entity.htm).
+          Learn more about [restricting customers](https://www.intacct.com/ia/docs/en_US/help_action/Accounts_Receivable/Setup/Customers/setup-customers-in-ME.htm).
+          The following values specify who can view and post transactions against this customer.
+
+          **Valid values:**
+          - `unrestricted` - The top level and all entities within the multi-entity structure.
+          - `rootOnly` - Only the top level of the multi-entity structure.
+          - `restricted` - Only the chosen locations, location groups, departments, or department groups within the multi-entity structure.
+        enum:
+          - unrestricted
+          - rootOnly
+          - restricted
+        x-mappedToValues:
+          - Unrestricted
+          - RootOnly
+          - Restricted
+        x-mappedTo: OBJECTRESTRICTION
+        example: restricted
+      locations:
+        type: array
+        description: Locations to which the customer can be restricted.
+        x-delimiter: '#~#'
+        x-mappedTo: RESTRICTEDLOCATIONS
+        example: ['Dallas', 'Santa Fe', 'Las Vegas']
+        items:
+          type: string
+      departments:
+        type: array
+        description: Departments to which the customer can be restricted.
+        x-delimiter: '#~#'
+        x-mappedTo: RESTRICTEDDEPARTMENTS
+        example: ['Sales', 'RDA', 'BD']
+        items:
+          type: string
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  customerEmailTemplates:
+    type: array
+    description: email templates for this customer.
+    x-mappedTo: EMAILTEMPLATES
+    x-object: customer-email-template
+    items:
+      $ref: customer-email-template.s1.schema.yaml
+  discountPercent:
+    type: string
+    description: Discount (%).
+    x-mappedTo: DISCOUNT
+  entity:
+    type: string
+    description: Customer entity.
+    x-mappedTo: ENTITY
+  term:
+    type: object
+    description: AR Term.
+    x-object: ar-term
+    x-mappedTo: TERMNAME
+    properties:
+      key:
+        type: string
+        x-mappedTo: TERMSKEY
+      id:
+        type: string
+        x-mappedTo: TERMNAME
+      value:
+        type: string
+        x-mappedTo: TERMVALUE
+      href:
+        type: string
+        readOnly: true
+  advanceBillBy:
+    type: string
+    description: Bill in advance
+    x-mappedTo: ADVBILLBY
+  advanceBillByType:
+    type: string
+    description: Bill in advance type.
+    title: Before contract start date
+    enum:
+      - ''
+      - 'days'
+      - 'months'
+    x-mappedToValues:
+      - ''
+      - 'days'
+      - 'months'
+    x-mappedTo: ADVBILLBYTYPE
+  totalDue:
+    type: string
+    description: Total Amount due
+    x-mappedTo: TOTALDUE
+    readOnly: true
+  lastInvoiceCreatedDate:
+    type: string
+    format: date
+    description: Last invoice created on.
+    x-mappedTo: LAST_INVOICEDATE
+    readOnly: true
+  lastStatementGeneratedDate:
+    type: string
+    format: date
+    description: Last statement generated on.
+    x-mappedTo: LAST_STATEMENTDATE
+    readOnly: true
+  resaleNumber:
+    type: number
+    description: Resale number.
+    x-mappedTo: RESALENO
+  deliveryOptions:
+    type: string
+    description: Delivery options
+    enum:
+      - 'print'
+      - 'email'
+      - 'both'
+    x-mappedToValues:
+      - 'Print'
+      - 'E-Mail'
+      - 'Print#~#E-Mail'
+    x-mappedTo: DELIVERY_OPTIONS
+  overridePriceList:
+    type: string
+    description: Price List Override
+    enum:
+      - 'Customer'
+      - 'Billing contact'
+      - 'Shipping contact'
+    x-mappedToValues:
+      - 'C'
+      - 'B'
+      - 'S'
+    x-mappedTo: PRCLST_OVERRIDE
+    default: C
+  customerMessageId:
+    type: string
+    description: Default customer message.
+    x-mappedTo: CUSTMESSAGEID
+  currency:
+    type: string
+    description: Currency.
+    x-mappedTo: CURRENCY
+    readOnly: true
+    example: CAD
+  priceScheduleKey:
+    type: string
+    description: Price schedule record number.
+    x-mappedTo: PRICESCHEDULEKEY
+  emailOptIn:
+    type: boolean
+    description: Accepts emailed invoices
+    x-mappedTo: EMAILOPTIN
+    x-mappedToType: string
+    default: false
+  activationDate:
+    type: string
+    format: date
+    description: MRR activation date.
+    x-mappedTo: ACTIVATIONDATE
+    readOnly: true
+  subscriptionEndDate:
+    type: string
+    format: date
+    description: MRR subscription date.
+    x-mappedTo: SUBSCRIPTIONENDDATE
+    readOnly: true
+  territory:
+    type: object
+    properties:
+      key:
+        type: number
+        description: Territory key.
+        x-mappedTo: TERRITORYKEY
+      id:
+        type: number
+        description: Territory id.
+        x-mappedTo: TERRITORYID
+      name:
+        type: string
+        description: Territory name.
+        x-mappedTo: TERRITORYNAME
+  enableOnlineACHPayment:
+    type: boolean
+    description: Enable online ACH debit
+    x-mappedTo: ENABLEONLINEACHPAYMENT
+    default: true
+  enableOnlineCardPayment:
+    type: boolean
+    description: Enable online charge card
+    x-mappedTo: ENABLEONLINECARDPAYMENT
+    default: true
+  customerItemCrossRefs:
+    type: array
+    x-mappedTo: ITEMCROSSREFERENCES
+    x-object: customer-item-cross-reference
+    items:
+      $ref: customer-item-cross-reference.s1.schema.yaml
+  isOneTimeUse:
+    type: boolean
+    description: One-time use
+    x-mappedTo: ONETIME
+    x-mappedToType: string
+    default: false
+  accountGroup:
+    type: object
+    description: Customer GL Group.
+    x-object: customer-account-group
+    x-mappedTo: GLGROUP
+    title: Customer GL Group
+    properties:
+      key:
+        type: string
+        x-mappedTo: GLGRPKEY
+      id:
+        type: string
+        x-mappedTo: GLGROUP
+      href:
+        type: string
+        readOnly: true
+  accountLabel:
+    type: object
+    description: Account Label.
+    x-object: ar-account-label
+    x-mappedTo: ACCOUNTLABEL
+    title: account label
+    properties:
+      key:
+        type: string
+        x-mappedTo: ACCOUNTLABELKEY
+      id:
+        type: string
+        x-mappedTo: ACCOUNTLABEL
+      href:
+        type: string
+        readOnly: true
+  attachment:
+    type: object
+    description: Supporting document ID.
+    x-object: attachment
+    x-mappedTo: SUPDOCID
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPDOCID
+      id:
+        type: string
+        x-mappedTo: SUPDOCID
+      href:
+        type: string
+        readOnly: true
+  retainagePercentage:
+    type: number
+    description: Default retainage percentage.
+    x-mappedTo: RETAINAGEPERCENTAGE
+  notes:
+    type: string
+    description: Notes.
+    x-mappedTo: COMMENTS
+  priceList:
+    type: object
+    description: Customer Price List.
+    x-object: order-entry-price-list
+    x-mappedTo: PRICELIST
+    properties:
+      key:
+        type: string
+        x-mappedTo: OEPRCLSTKEY
+      id:
+        type: string
+        x-mappedTo: PRICELIST
+      href:
+        type: string
+        readOnly: true
+  priceSchedule:
+    type: object
+    description: Price Schedule.
+    x-object: purchasing-price-schedule
+    x-mappedTo: PRICESCHEDULE
+    properties:
+      key:
+        type: string
+        x-mappedTo: OEPRICESCHEDKEY
+      id:
+        type: string
+        x-mappedTo: PRICESCHEDULE
+      href:
+        type: string
+        readOnly: true
+  overrideOffsetGLAccount:
+    type: object
+    description: Default AR Override Offset Account.
+    x-object: gl-account
+    x-mappedTo: OFFSETGLACCOUNTNO
+    properties:
+      key:
+        type: string
+        x-mappedTo: OFFSETACCOUNTKEY
+      id:
+        type: string
+        x-mappedTo: OFFSETGLACCOUNTNO
+      name:
+        type: string
+        x-mappedTo: OFFSETGLACCOUNTNOTITLE
+        readOnly: true
+      href:
+        type: string
+        readOnly: true

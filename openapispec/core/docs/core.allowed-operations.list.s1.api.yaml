@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: core.allowed-operations.list
+  description: core.allowed-operations.list API
+  version: '1.0'
+  contact:
+    name: James Wang
+    email: james.wang@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Allowed Operations Service
+    description: Allowed Operations Service description -- explain what it's for and how it's used.
+paths:
+  /services/core/allowed-operations/list:
+    post:
+      description: Get allowed operations by object keys.
+      summary: Returns allowed operations by object keys.
+      tags:
+        - Allowed Operations Service
+      operationId: get-allowed-operations-service
+      requestBody:
+        description: allowed operations request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/core.allowed-operations-request.s1.schema'
+            examples:
+              Vendor Allowed Operations Request:
+                value:
+                  object: vendor
+                  keys:
+                    - '1'
+                    - '6'
+                    - '65'
+                  operations:
+                    - canView
+                    - canEdit
+                    - canDelete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Allowed operations
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/core.allowed-operations-response.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Vendor Allowed Operations Response:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        operations:
+                          - canView
+                      - key: '65'
+                        operations:
+                          - canView
+                    ia::meta:
+                      totalCount: 2
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    allowed-operations-request:
+      $ref: '#/components/schemas/core.allowed-operations-request.s1.schema'
+    core.allowed-operations-request.s1.schema:
+      title: allowed-operations
+      description: allowed-operations
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        object:
+          type: string
+          example: vendor
+          description: Object name to query
+          x-mappedTo: object
+        keys:
+          type: array
+          description: array of object keys, valide size is [1, 1000]
+          x-mappedTo: keys
+          items:
+            type: string
+        operations:
+          type: array
+          description: |
+            List of operations that are relevant for the component.
+            'canCreate' and 'canList' are object level operations, they are not included in this service.
+            By default, it includes the following operations:
+                'canView', 'canEdit', 'canDelete'.
+            This list can be extended by the compoments if needed.
+          x-mappedTo: operations
+          items:
+            type: string
+        options:
+          type: object
+          description: Options for the API call
+          properties:
+            includePrivate:
+              type: boolean
+              x-mappedTo: options.includePrivate
+            moduleKey:
+              type: string
+              x-mappedTo: options.moduleKey
+      examples:
+        - object: vendor
+          keys:
+            - 1
+            - 6
+            - 65
+          operations:
+            - canView
+            - canEdit
+            - canDelete
+          options:
+            includePrivate: true
+    core.allowed-operations-response.s1.schema:
+      title: allowed-operations-response
+      description: allowed-operations-response
+      x-mappedTo: __custom__
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          operations:
+            type: array
+            description: list of operations that are relevant for the caller
+            items:
+              type: string
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

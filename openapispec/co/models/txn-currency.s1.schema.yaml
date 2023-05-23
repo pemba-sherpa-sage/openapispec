@@ -1,0 +1,127 @@
+title: txn-currency
+x-mappedTo: trxcurrencies
+type: object
+description: Transaction currency definition.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the transaction currency. Used to identify the currency in URLs or JSON bodies for all operations involving this currency.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Unique currency code.
+    x-mutable: false
+    x-mappedTo: CODE
+  name:
+    type: string
+    description: The common name of the currency.
+    x-mappedTo: FULLNAME
+  ISOCode:
+    type: string
+    description: ISO-4127 numeric code
+    x-mappedTo: ISO_CODE
+    example: '826'
+  format:
+    type: object
+    description: Properties of the currency, including the currency symbol, the decimal separator, and whether the currency symbol displays to the left or the right of the number.
+    properties:
+      currencyFormat:
+        type: string
+        description: Currency format
+        enum:
+          - australian
+          - brazilian
+          - british
+          - canadian
+          - danish
+          - dutch
+          - european
+          - finnish
+          - flemish
+          - french
+          - frenchCanadian
+          - german
+          - greek
+          - indian
+          - italian
+          - mexican
+          - norwegian
+          - southAfrica
+          - spanish
+          - swedish
+          - swissFrench
+          - swissGerman
+          - swissItalian
+          - swissFranc
+          - unitedStates
+          - unitedArabEmirates
+          - custom
+        x-mappedToValues:
+          - 'Australian'
+          - 'Brazilian'
+          - 'British'
+          - 'Canadian'
+          - 'Danish'
+          - 'Dutch'
+          - 'European'
+          - 'Finnish'
+          - 'Flemish'
+          - 'French'
+          - 'French Canadian'
+          - 'German'
+          - 'Greek'
+          - 'Indian'
+          - 'Italian'
+          - 'Mexican'
+          - 'Norwegian'
+          - 'South Africa'
+          - 'Spanish'
+          - 'Swedish'
+          - 'Swiss French'
+          - 'Swiss German'
+          - 'Swiss Italian'
+          - 'Swiss Franc'
+          - 'United States'
+          - 'United Arab Emirates'
+          - 'Custom'
+        x-mappedTo: FORMAT
+        example: british
+      currencyUnit:
+        type: string
+        description: The major unit of currency, such as dollars, pounds, or yen.
+        x-mappedTo: NAME
+        example: pounds
+      currencySubUnit:
+        type: string
+        description: The sub-unit of currency, such as cents, pence, or centavos.
+        x-mappedTo: SUBNAME
+        example: pence
+      currencySymbol:
+        type: string
+        description: The standard currency symbol, such as $, £,€, or ¥.
+        x-mappedTo: SYMBOL
+        example: £
+      thousandSeparator:
+        type: string
+        description: The symbol that separates numbers into thousands - usually the comma.
+        x-mappedTo: THOUSAND_SEP
+        example: ','
+      decimalSeparator:
+        type: string
+        description: The symbol that separates decimals - usually the "."
+        x-mappedTo: DECIMAL_SEP
+        example: '.'
+      alignment:
+        type: string
+        description: Controls whether the currency symbol displays to the left or the right of the number.
+        enum:
+          - left
+          - right
+        x-mappedToValues:
+          - '1'
+          - '2'
+        x-mappedTo: ALIGNMENT
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+

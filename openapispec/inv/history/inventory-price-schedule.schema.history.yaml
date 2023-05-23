@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/priceschedule/view
+      - po/lists/priceschedule/view
+    POST:
+      - so/lists/priceschedule/create
+      - po/lists/priceschedule/create
+    PATCH:
+      - so/lists/priceschedule/edit
+      - po/lists/priceschedule/edit
+    DELETE:
+      - so/lists/priceschedule/delete
+      - po/lists/priceschedule/delete
+s1:
+  hash: '0'
+  type: rootObject

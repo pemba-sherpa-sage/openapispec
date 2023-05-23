@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: labor-class
+  description: labor-class API
+  version: '1.0'
+  contact:
+    name: Anna Gawlas
+    email: anna.gawlas@sage.com
+tags:
+  - name: Labor classes
+    description: User-defined labor class that can be used on timesheet lines when creating a timesheet.  Only available with Construction subscription to enhance billing capabilities for Timesheets.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/labor-class:
+    get:
+      summary: List labor classes
+      description: 'Returns a collection with a key, ID, and link for each labor class.'
+      tags:
+        - Labor classes
+      operationId: get-objects-labor-class
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of labor-class objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: '6'
+                        id: LC001
+                        href: /objects/labor-class/6
+                      - key: '7'
+                        id: LC002
+                        href: /objects/labor-class/7
+                      - key: '8'
+                        id: LC003
+                        href: /objects/labor-class/8
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a labor class
+      description: Creates a new labor class.
+      tags:
+        - Labor classes
+      operationId: post-objects-labor-class
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-class'
+                - $ref: '#/components/schemas/labor-classRequiredProperties'
+            examples:
+              example-1:
+                value:
+                  id: LC001
+                  name: LC Skilled
+                  description: Skilled laborer
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New labor-class
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: LC001
+                      href: /objects/labor-class/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/labor-class/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the labor class.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a labor class
+      description: Returns detailed information for a particular labor class.
+      tags:
+        - Labor classes
+      operationId: get-objects-labor-class-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the labor-class
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/labor-class'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: LC001
+                      name: LC Skilled
+                      description: Skilled laborer
+                      status: active
+                      audit:
+                        createdDateTime: '2021-11-21T22:42:02Z'
+                        modifiedDateTime: '2021-11-21T22:42:02Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/labor-class/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a labor class
+      description: Updates an existing labor class by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Labor classes
+      operationId: patch-objects-labor-class-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/labor-class'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-1:
+                value:
+                  description: Professional laborer (salaried)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated labor-class
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: '8'
+                      id: LC003
+                      href: /objects/labor-class/8
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a labor class
+      description: Deletes a labor class.
+      tags:
+        - Labor classes
+      operationId: delete-objects-labor-class-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    labor-class:
+      $ref: ../models/labor-class.s1.schema.yaml
+    labor-classRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

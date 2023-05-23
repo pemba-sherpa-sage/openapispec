@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: admin.provision.features-flag
+  description: Get ia-feature.cfg from PHP
+  version: '1.0-internal'
+  contact:
+    name: Jean-Francois Ngo
+    email: jean-francois.ngo@sage.com
+tags:
+  - name: admin.provision.features-flag
+    description: provision features flag for domain services
+paths:
+  /services/admin/provision/features-flag:
+    get:
+      summary: Get features flag from PHP for domain services
+      description: Get features flag from PHP for domain services
+      tags:
+        - admin.provision.features-flag
+      operationId: post-services-admin-provision-features-flag
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin.provision.features-flag-req'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/admin.provision.features-flag-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      features:
+                        name: PT_ENABLE_REST_API_TRIGGER
+                        value: T
+
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    admin.provision.features-flag-req:
+      description: features-flag request
+      type: object
+      x-mappedTo: __custom__
+    admin.provision.features-flag-resp:
+      description: features-flag response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: string
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

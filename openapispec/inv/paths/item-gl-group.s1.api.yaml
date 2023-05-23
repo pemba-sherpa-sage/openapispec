@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  title: item-gl-group
+  description: item-gl-group  API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Item GL groups
+    description: Item GL groups are used to organize transaction definitions for posting to the general ledger.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/item-gl-group/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        example: '13'
+        description: System-assigned key for the item GL group.
+    get:
+      summary: Get an item GL group
+      description: Returns detailed information for a specified item GL group.
+      tags:
+        - Item GL groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item-gl-group'
+              examples:
+                Get an item GL group:
+                  value:
+                    key: '13'
+                    id: Stockable Kit
+                    deferredRevenueGLAccount:
+                      key: '411'
+                      id: '1501.04'
+                      name: Expense Account
+                      href: /objects/gl-account/411
+                    defaultRevenueRecognitionTemplate:
+                      key: '1'
+                      id: '100'
+                      href: /objects/revenue-recognition-template/1
+                    isSystemGenerated: false
+                    href: /objects/item-gl-group/13
+                    audit:
+                      createdDateTime: '2022-04-20T16:20:00Z'
+                      modifiedDateTime: '2022-04-20T16:20:00Z'
+                      createdBy: '1'
+                      modifiedBy: '95'
+        '400':
+          description: Bad Request
+      operationId: get-objects-item-gl-group-key
+    delete:
+      summary: Delete an item GL group
+      description: Deletes a item GL group. An item GL group can be deleted if it has not been used by any transactions or assigned to any items.
+      tags:
+        - Item GL groups
+      operationId: delete-objects-item-gl-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an item GL group
+      description: Updates an existing item GL group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Item GL groups
+      operationId: patch-objects-item-gl-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated item-gl-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update an item GL group:
+                  value:
+                    'ia::result':
+                      key: '13'
+                      id: Stockable Kit
+                      href: /objects/item-gl-group/13
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-gl-group'
+                - $ref: '#/components/schemas/item-gl-groupRequiredProperties'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: Stockable Kit
+            examples:
+              Update an item GL group:
+                value:
+                  id: '13'
+                  deferredRevenueGLAccount:
+                    key: '411'
+                    id: '1501.04'
+                    name: Expense Account
+  /objects/item-gl-group:
+    get:
+      summary: List item GL groups
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each item GL group. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Item GL groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of item-gl-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List item GL groups:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: OS GL Group
+                        href: /objects/item-gl-group/2
+                      - key: '3'
+                        id: Auto GL Group
+                        href: /objects/item-gl-group/3
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-item-gl-group
+    post:
+      summary: Create an item GL group
+      description: Creates a new item GL group.
+      tags:
+        - Item GL groups
+      operationId: post-objects-item-gl-group
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New item-gl-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an item GL group:
+                  value:
+                    'ia::result':
+                      key: '13'
+                      id: Stockable Kit
+                      href: /objects/item-gl-group/13
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-gl-group'
+                - $ref: '#/components/schemas/item-gl-groupRequiredProperties'
+            examples:
+              Create an item GL group:
+                value:
+                  id: Stockable Kit
+                  deferredRevenueGLAccount:
+                    key: '411'
+                    id: '1501.04'
+                    name: Expense Account
+                  defaultRevenueRecognitionTemplate:
+                    key: '1'
+                    id: '100'
+components:
+  schemas:
+    item-gl-group:
+      $ref: ../models/item-gl-group.s1.schema.yaml
+    item-gl-groupRequiredProperties:
+      type: object
+      required:
+        - id
+      example:
+        id: Stockable Kit
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

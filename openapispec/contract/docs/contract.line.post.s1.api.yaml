@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: contract.line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: contract-line
+    description: You can post a contract line that is in Draft state so that it is fully validated and posted to the GL.
+paths:
+  /services/contract/line/post:
+    post:
+      summary: contract-line post
+      description: You can post a contract line that is in Draft state so that it is fully validated and posted to the GL.
+      tags:
+        - contract-lines
+      operationId: post-contract-line-post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-line-post-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-line-post-response'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line-post-request:
+      description: post request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          description: Contract line key
+          x-mappedTo: CONTRACTDETAILKEY
+          nullable: false
+          example: '1'
+        postingDate:
+          type: string
+          format: date
+          description: post date
+          x-mappedTo: GLPOSTINGDATE
+          example: '2022-01-01'
+        memo:
+          type: string
+          description: post memo
+          x-mappedTo: POSTMEMO
+          example: Check
+    contract-line-post-response:
+      description: post response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

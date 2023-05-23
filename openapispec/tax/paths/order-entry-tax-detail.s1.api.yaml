@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  title: order-entry-tax-detail
+  description: order-entry-tax-detail API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Order Entry tax details
+    description: |
+      Order Entry tax details describe a specific type of tax that applies to lines in Accounts Receivable and Order Entry transactions. When Sage Intacct calculates taxes, the tax schedule map applies the tax details to the taxable lines. See [Tax details&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-details.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-tax-detail:
+    get:
+      summary: List Order Entry tax details
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each Order Entry tax detail. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Detail
+      tags:
+        - Order Entry tax details
+      operationId: get-objects-order-entry-tax-detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-tax-detail objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List Order Entry tax details:
+                  value:
+                    'ia::result':
+                      - key: '82'
+                        id: UK Sale Goods Exempt Rate
+                        href: /objects/order-entry-tax-detail/82
+                      - key: '83'
+                        id: UK Sale Goods Reduced Rate
+                        href: /objects/order-entry-tax-detail/83
+                      - key: '84'
+                        id: UK Sale Goods Standard Rate
+                        href: /objects/order-entry-tax-detail/84
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an Order Entry tax detail
+      description: Creates a new Order Entry tax detail.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Tax Detail
+      tags:
+        - Order Entry tax details
+      operationId: post-objects-order-entry-tax-detail
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-tax-detail'
+                - $ref: '#/components/schemas/order-entry-tax-detailRequiredProperties'
+            examples:
+              Create a new Order Entry tax detail:
+                value:
+                  id: UK General Export Reduced Rate
+                  taxUniqueId: GB.ECOutput_GB.ExemptGB.VAT
+                  description: Reduced Rate for UK General Export
+                  taxPercent: 10.02
+                  taxLimit:
+                    minTax: 10
+                    maxTax: 150
+                    minTaxable: 10
+                    maxTaxable: 2000
+                  amountToTax: fullAmount
+                  salesGLAccount:
+                    id: '1200.01'
+                  taxAuthority:
+                    id: 'California'
+                  taxSolution:
+                    id: United Kingdom - VAT
+                  status: active
+                  taxRate: standard
+                  useExpenseAccount: false
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-tax-detail
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a new Order Entry tax detail:
+                  value:
+                    'ia::result':
+                      key: '308'
+                      id: UK General Export Reduced Rate
+                      href: /objects/order-entry-tax-detail/308
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-tax-detail/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Order Entry tax detail.
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 308
+    get:
+      summary: Get an Order Entry tax detail
+      description: Returns detailed information for a specified Order Entry tax detail.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Detail
+      tags:
+        - Order Entry tax details
+      operationId: get-objects-order-entry-tax-detail-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-tax-detail
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-tax-detail'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an Order Entry tax detail:
+                  value:
+                    'ia::result':
+                      key: '308'
+                      id: UK General Export Reduced Rate
+                      taxUniqueId: GB.ECOutput_GB.ExemptGB.VAT
+                      description: Reduced Rate for UK General Export
+                      taxPercent: 10.02
+                      taxLimit:
+                        minTax: 10
+                        maxTax: 150
+                        minTaxable: 10
+                        maxTaxable: 2000
+                      amountToTax: fullAmount
+                      salesGLAccount:
+                        id: 1200.01--Accounts Receivable - a/c label offset
+                      accountLabel:
+                        id: 'Accounting Fees'
+                        key: '14'
+                      taxAuthority:
+                        id: California
+                        key: '24'
+                        href: /objects/tax-authority/24
+                      status: active
+                      isSystemGenerated: false
+                      reverseCharge: false
+                      taxRate: standard
+                      taxSolution:
+                        id: United Kingdom - VAT
+                        key: '1'
+                        href: /objects/tax-solution/1
+                      useExpenseAccount: false
+                      href: /objects/order-entry-tax-detail/308
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an Order Entry tax detail
+      description: Updates an existing Order Entry tax detail by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Tax Detail
+      tags:
+        - Order Entry tax details
+      operationId: patch-objects-order-entry-tax-detail-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-tax-detail'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-tax-detail
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '308'
+                      id: UK General Export Reduced Rate
+                      href: /objects/order-entry-tax-detail/308
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an Order Entry tax detail
+      description: Deletes an Order Entry tax detail. Delete user-created tax details that are no longer needed. Deleted tax details are removed from the system and can't be recovered.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Tax Detail
+      tags:
+        - Order Entry tax details
+      operationId: delete-objects-order-entry-tax-detail-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-tax-detail:
+      $ref: ../models/order-entry-tax-detail.s1.schema.yaml
+    order-entry-tax-detailRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

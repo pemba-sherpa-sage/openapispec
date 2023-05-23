@@ -1,0 +1,356 @@
+openapi: 3.0.0
+info:
+  title: user-group
+  description: user-group API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: User groups
+    description: User groups help you manage the permissions and access of users that have the same roles or responsibilities. After you add a user to a user group, they automatically inherit all permissions and access assigned to that user group.
+paths:
+  /objects/user-group:
+    get:
+      summary: List user groups
+      description: Returns up to 100 user groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find user groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - User groups
+      operationId: get-objects-user-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of user-group objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of user groups:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: Warehouse users
+                        href: /objects/user-group/1
+                      - key: '96'
+                        id: AP users
+                        href: /objects/user-group/96
+                      - key: '21'
+                        id: Administrators
+                        href: /objects/user-group/21
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a user group
+      description: Creates a new user group.
+      tags:
+        - User groups
+      operationId: post-objects-user-group
+      requestBody:
+        description: User group to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user-group.s1.schema'
+                - $ref: '#/components/schemas/user-groupRequiredProperties'
+            examples:
+              Creates a user group: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New user group
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/user-group/{key}:
+    parameters:
+      - name: key
+        description: system-assigned unique key for the user group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a user group
+      description: Returns detailed information for a specified user group.
+      tags:
+        - User groups
+      operationId: get-objects-user-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the user group
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/user-group.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a user group
+      description: Updates an existing user group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - User groups
+      operationId: patch-objects-user-group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user-group.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a user group: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated user group
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a user group
+      description: Deletes a user group.
+      tags:
+        - User groups
+      operationId: delete-objects-user-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    user-group:
+      $ref: '#/components/schemas/user-group.s1.schema'
+    user-groupRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    user-group.s1.schema:
+      title: user-group
+      x-mappedTo: usergroup
+      type: object
+      description: List of users assigned to user groups.
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the user group. Used to identify the group in URLs or JSON bodies for all operations on the user group.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '21'
+        id:
+          type: string
+          description: Name of the user group.
+          x-mappedTo: NAME
+          x-mutable: false
+          example: AP
+        href:
+          type: string
+          description: Endpoint for this user group.
+          readOnly: true
+          example: /objects/user-group/21
+        description:
+          type: string
+          description: Description of the user group.
+          x-mappedTo: DESCR
+          example: Accounts Payable
+        roles:
+          type: array
+          description: List of roles assigned to the user group. All users in the group inherit the permissions defined by the roles. Only applies to companies that use role-based permissions instead of user-based permissions.
+          x-mappedTo: USERGROUPROLES
+          x-schemaOverride: true
+          x-object: role
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Unique key of the role.
+                x-mappedTo: ROLEKEY
+                example: '7'
+              id:
+                type: string
+                description: Name of the role.
+                x-mappedTo: ROLENAME
+                readOnly: true
+                example: Warehouse users
+              href:
+                type: string
+                description: Endpoint of the role.
+                readOnly: true
+                example: /objects/role/7
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

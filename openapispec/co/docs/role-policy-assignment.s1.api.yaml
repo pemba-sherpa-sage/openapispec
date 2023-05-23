@@ -1,0 +1,278 @@
+openapi: 3.0.0
+info:
+  title: role-policy-assignment
+  description: role-policy-assignment API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Role policy assignments
+    description: Role policy assignment description -- explain what it's for and how it's used.
+paths:
+  /objects/role-policy-assignment:
+    get:
+      summary: List role policy assignments
+      description: Returns a collection with a key, ID, and link for each role policy assignment.
+      tags:
+        - Role policy assignments
+      operationId: get-objects-role-policy-assignment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of role-policy-assignment objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of role policy assignments: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/role-policy-assignment/{key}:
+    parameters:
+      - name: key
+        description: system-assigned unique key for the role policy assignment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an role policy assignment
+      description: Returns detailed information for a particular role policy assignment.
+      tags:
+        - Role policy assignments
+      operationId: get-objects-role-policy-assignment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the role-policy-assignment
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/role-policy-assignment.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the role policy assignment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    role-policy-assignment:
+      $ref: '#/components/schemas/role-policy-assignment.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    role-policy-assignment.s1.schema:
+      title: role-policy-assignment
+      x-mappedTo: rolepolicyassignment
+      type: object
+      description: List of permissions assigned to the roles for standard objects.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the role-policy-assignment.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Role policy assignment ID.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the role-policy-assignment.
+          readOnly: true
+          example: /objects/role-policy-assignment/23
+        role:
+          type: object
+          x-mappedTo: roles
+          x-object: role
+          properties:
+            key:
+              type: string
+              description: Role key.
+              x-mappedTo: ROLEKEY
+              example: '10'
+            id:
+              type: string
+              description: Role id.
+              x-mappedTo: ROLEID
+              example: '10'
+            href:
+              type: string
+              description: URL for the roles.
+              readOnly: true
+              example: /objects/roles/10
+        module:
+          type: string
+          description: Module.
+          x-mappedTo: MODULE
+          example: ap
+        accessRights:
+          type: string
+          description: Policy value.
+          x-mappedTo: RIGHTS
+          example: readonly|edit
+        policy:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Policy key.
+              x-mappedTo: POLICYKEY
+              example: '24'
+            id:
+              type: string
+              description: Policy id.
+              x-mappedTo: POLICYID
+              example: '24'
+            name:
+              type: string
+              description: Policy name.
+              x-mappedTo: POLICYNAME
+              example: Account Groups
+            href:
+              type: string
+              description: URL for the policy.
+              readOnly: true
+              example: /objects/policy/24
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

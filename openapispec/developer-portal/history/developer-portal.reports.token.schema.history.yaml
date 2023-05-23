@@ -1,0 +1,8 @@
+ia::definition:
+  scopes:
+    GET:
+      - developer-reports-read
+s1:
+  hash: "0"
+  type: "functionService"
+  runtimeOwner: ia-ds-developer-portal

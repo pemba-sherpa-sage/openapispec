@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: purchasing-tax-schedule-detail
+  description: Purchasing Tax Schedule Detail is used to associate a tax detail to the date at which the tax detail becomes effective.
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Purchasing tax schedule details
+    description: Purchasing tax schedule detail description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-tax-schedule-detail:
+    get:
+      summary: List Purchasing tax schedule details
+      description: 'Returns a collection with a key, ID, and link for each Purchasing tax schedule detail.'
+      tags:
+        - Purchasing tax schedule details
+      operationId: get-objects-purchasing-tax-schedule-detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-tax-schedule-detail objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Purchasing tax schedule details:
+                  value:
+                    'ia::result':
+                      - key: '8'
+                        id: '8'
+                        href: /objects/purchasing-tax-schedule-detail/8
+                      - key: '9'
+                        id: '9'
+                        href: /objects/purchasing-tax-schedule-detail/9
+                      - key: '10'
+                        id: '10'
+                        href: /objects/purchasing-tax-schedule-detail/10
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-tax-schedule-detail/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Purchasing tax schedule detail.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '162'
+          default: '162'
+    get:
+      summary: Get a/an Purchasing tax schedule detail
+      description: Returns detailed information for a particular Purchasing tax schedule detail.
+      tags:
+        - Purchasing tax schedule details
+      operationId: get-objects-purchasing-tax-schedule-detail-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-tax-schedule-detail
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-tax-schedule-detail'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Purchasing tax schedule detail:
+                  value:
+                    'ia::result':
+                      taxSchedule:
+                        key: '162'
+                        id: '162'
+                        name: Tax Florida
+                        href: /objects/purchasing-tax-schedule/162
+                      key: '44'
+                      id: '44'
+                      taxDetail:
+                        id: Sales Tax California
+                        key: '22'
+                        href: /objects/purchasing-tax-detail/22
+                      effectiveDate: '2022-02-03'
+                      href: /objects/purchasing-tax-schedule-detail/44
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-tax-schedule-detail:
+      $ref: ../models/purchasing-tax-schedule-detail.s1.schema.yaml
+    purchasing-tax-schedule-detailRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

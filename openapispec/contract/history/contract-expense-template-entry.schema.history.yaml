@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - cn/lists/contractexpensetemplate/view
+s1:
+  hash: '0'
+  type: ownedObject

@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: inventory-price-schedule
+  description: inventory-price-schedule API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Inventory price schedules
+    description: |
+     Inventory price schedules are pricing groups that can be assigned to one or more customers. For example, to give discounts to a customer, assign the customer to a price schedule associated with a special price list that contains discounts on certain items.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/inventory-price-schedule/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the inventory price schedule.
+    get:
+      summary: Get an inventory price schedule
+      description: Returns detailed information for a specified inventory price schedule.
+      tags:
+        - Inventory price schedules
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the inventory-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/inventory-price-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-inventory-price-schedule-key
+    delete:
+      summary: Delete an inventory price schedule
+      description: Deletes an inventory price schedule.
+      tags:
+        - Inventory price schedules
+      operationId: delete-objects-inventory-price-schedule-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an inventory price schedule
+      description: Updates an existing inventory price schedule by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Inventory price schedules
+      operationId: patch-objects-inventory-price-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated inventory-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/inventory-price-schedule'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/inventory-price-schedule:
+    get:
+      summary: List inventory price schedules
+      description: Returns a collection with a key, ID, and link for each inventory price schedule. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Inventory price schedules
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of inventory-price-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-inventory-price-schedule
+    post:
+      summary: Create an inventory price schedule
+      description: Creates a new inventory price schedule.
+      tags:
+        - Inventory price schedules
+      operationId: post-objects-inventory-price-schedule
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New inventory-price-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an inventory price schedule:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: S1
+                      href: /objects/inventory-price-schedule/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/inventory-price-schedule'
+                - $ref: '#/components/schemas/inventory-price-scheduleRequiredProperties'
+            examples:
+              Create an inventory price schedule:
+                value:
+                  id: S1
+                  description: Inventory Price Schedule 1
+                  priceList:
+                    id: '1'
+                  discountPercent: ''
+                  status: active
+components:
+  schemas:
+    inventory-price-schedule:
+      $ref: ../models/inventory-price-schedule.s1.schema.yaml
+    inventory-price-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

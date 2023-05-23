@@ -1,0 +1,186 @@
+title: ar-adjustment-line
+x-mappedTo: aradjustmentitem
+x-ownedBy: ar-adjustment
+type: object
+description: Line items in an AR adjustment represent debits or credits to modify the amount owed by a customer.
+properties:
+  id:
+    type: string
+    description: ID for the AR adjustment line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '125'
+  key:
+    type: string
+    description: System-assigned key for the AR adjustment line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '125'
+  baseAmount:
+    type: string
+    description: Base amount
+    x-mappedTo: AMOUNT
+    readOnly: true
+    example: '120.20'
+  txnAmount:
+    type: string
+    description: Transaction amount
+    x-mappedTo: TRX_AMOUNT
+    example: '145'
+  description:
+    type: string
+    description: Memo to describe the line item.
+    x-mappedTo: ENTRYDESCRIPTION
+    example: '50 USD line item 1'
+  lineNumber:
+    type: string
+    description: Number of the line item.
+    x-mappedTo: LINE_NO
+    readOnly: true
+    example: '125'
+  currency:
+    type: object
+    description: Currency information for the line item.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency
+        x-mappedTo: BASECURR
+        readOnly: true
+        example: 'USD'
+      txnCurrency:
+        type: string
+        description: Transaction currency
+        x-mappedTo: CURRENCY
+        example: 'INR'
+      exchangeRateDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Date used to calculate the exchange rate.
+        x-mappedTo: EXCH_RATE_DATE
+      exchangeRate:
+        type: number
+        description: Exchange rate used.
+        x-mappedTo: EXCHANGE_RATE
+        readOnly: true
+        example: '1.4'
+      exchangeRateTypeId:
+        type: integer
+        description: Exchange rate type.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        example: 'GBP-Rate'
+  adjustmentType:
+    type: string
+    description: Record type
+    x-mappedTo: RECORDTYPE
+    example: 'ra'
+  isTax:
+    type: boolean
+    description: Is tax
+    x-mappedTo: ISTAX
+    x-mappedToType: string
+    default: 'false'
+    readOnly: true
+    example: false
+  accountLabel:
+    type: object
+    description: Label for the AR account.
+    x-mappedTo: ACCOUNTLABEL
+    x-object: ar-account-label
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the account label.
+        x-mappedTo: ACCOUNTLABELKEY
+        example: '1'
+      id:
+        type: string
+        description: ID for the account label.
+        x-mappedTo: ACCOUNTLABEL
+        example: '1'
+      href:
+        type: string
+        description: URL for the account label.
+        readOnly: true
+        example: /objects/ar-account-label/9
+  arAdjustment:
+    type: object
+    description: Header level details for the AR adjustment's line entries.
+    x-mappedTo: aradjustment
+    x-object: ar-adjustment
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the AR adjustment.
+        x-mappedTo: RECORDKEY
+        example: '10'
+      id:
+        type: string
+        description: ID of the AR adjustment.
+        x-mappedTo: RECORDKEY
+        example: '10'
+      href:
+        type: string
+        description: URL for the AR adjustment.
+        readOnly: true
+        example: /objects/ar-adjustment/1
+  department:
+    type: object
+    description: Department to assign the expense to.
+    x-mappedTo: department
+    x-object: department
+    properties:
+      key:
+        type: integer
+        description: System-assigned key for the department.
+        x-mappedTo: DEPT#
+        example: '1'
+      id:
+        type: string
+        description: ID of the department.
+        x-mappedTo: DEPARTMENTID
+        example: '1'
+      name:
+        type: string
+        description: Name of the department.
+        x-mappedTo: DEPARTMENTNAME
+        example: 'Accounting'
+      href:
+        type: string
+        description: URL of the department.
+        readOnly: true
+        example: /objects/department/1
+  location:
+    type: object
+    description: Location to assign the expense to.
+    x-mappedTo: location
+    x-object: location
+    properties:
+      key:
+        type: integer
+        description: System-assigned key for the location.
+        x-mappedTo: LOCATION#
+        example: '1'
+      id:
+        type: string
+        description: ID of the location.
+        x-mappedTo: LOCATIONID
+        example: '1'
+      name:
+        type: string
+        description: Name of the location.
+        x-mappedTo: LOCATIONNAME
+        example: 'India'
+      href:
+        type: string
+        description: URL of the location.
+        readOnly: true
+        example: /objects/location/1
+  state:
+    $ref: ../../common/models/line-item-state.s1.schema.yaml
+  glAccount:
+    $ref: ../../common/references/gl-accountref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

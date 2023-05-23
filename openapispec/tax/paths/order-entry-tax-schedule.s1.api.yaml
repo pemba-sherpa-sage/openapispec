@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: order-entry-tax-schedule
+  description: order-entry-tax-schedule API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Order Entry tax schedules
+    description: |
+      A tax schedule identifies the tax details that are applied when the schedule is referenced by a tax schedule map. 
+      For example, a tax schedule named "Purchase Goods Standard Rate" could include one tax detail named "Purchase Goods Standard Rate". When this schedule is referenced, the tax detail is applied. See [Tax schedules&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-schedules.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/order-entry-tax-schedule:
+    get:
+      summary: List Order Entry tax schedules
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each Accounts Receivable tax schedule. This operation is mostly for use in testing; use query to find objects that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Schedules
+      tags:
+        - Order Entry tax schedules
+      operationId: get-objects-order-entry-tax-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of order-entry-tax-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Order Entry tax schedules:
+                  value:
+                    'ia::result':
+                      - key: '8'
+                        id: '8'
+                        href: /objects/order-entry-tax-schedule/8
+                      - key: '9'
+                        id: '9'
+                        href: /objects/order-entry-tax-schedule/9
+                      - key: '10'
+                        id: '10'
+                        href: /objects/order-entry-tax-schedule/10
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a Order Entry tax schedule
+      description: Creates a new Order Entry tax schedule.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Tax Schedules
+      tags:
+        - Order Entry tax schedules
+      operationId: post-objects-order-entry-tax-schedule
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-tax-schedule'
+                - $ref: '#/components/schemas/order-entry-tax-scheduleRequiredProperties'
+            examples:
+              Create an Order Entry tax schedule:
+                value:
+                  name: TaxSched-00004
+                  description: Sales Tax for New York
+                  taxSolution:
+                    key: 10
+                  status: active
+                  lines:
+                    - taxDetail:
+                        id: New York Sales Tax
+                      effectiveDate: '2022-02-26'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New order-entry-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an Order Entry tax schedule:
+                  value:
+                    'ia::result':
+                      key: '308'
+                      id: '308'
+                      href: /objects/order-entry-tax-schedule/308
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/order-entry-tax-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Order Entry tax schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '162'
+    get:
+      summary: Get an Order Entry tax schedule
+      description: Returns detailed information for a specified Order Entry tax schedule.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Schedules
+      tags:
+        - Order Entry tax schedules
+      operationId: get-objects-order-entry-tax-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the order-entry-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/order-entry-tax-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an Order Entry tax schedule:
+                  value:
+                    'ia::result':
+                      id: '162'
+                      name: Sales Tax New York
+                      key: '162'
+                      description: Sales Tax for New York
+                      status: active
+                      isSystemGenerated: false
+                      taxSolution:
+                        id: Avalara Tax
+                        key: '1'
+                        href: /objects/tax-solution/1
+                      lines:
+                        - taxSchedule:
+                            key: '162'
+                            id: '162'
+                            name: Sales Tax New York
+                            href: /objects/order-entry-tax-schedule/162
+                          key: '44'
+                          id: '44'
+                          taxDetail:
+                            id: New York State Sales Tax
+                            key: '22'
+                            href: /objects/order-entry-tax-detail/22
+                          effectiveDate: '2022-02-03'
+                          href: /objects/order-entry-tax-schedule-detail/44
+                      href: /objects/order-entry-tax-schedule/162
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an Order Entry tax schedule
+      description: Updates an existing Order Entry tax schedule by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Tax Schedules
+      tags:
+        - Order Entry tax schedules
+      operationId: patch-objects-order-entry-tax-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/order-entry-tax-schedule'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: '162'
+            examples:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated order-entry-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '162'
+                      href: /objects/order-entry-tax-schedule/162
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an Order Entry tax schedule
+      description: Deletes an Order Entry tax schedule. Delete a tax schedule if it is no longer needed. Deleting a tax schedule removes it from the system so that it can't be recovered.
+      x-documentationFlags:
+        subscription: Order Entry
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Tax Schedules
+      tags:
+        - Order Entry tax schedules
+      operationId: delete-objects-order-entry-tax-schedule-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    order-entry-tax-schedule:
+      $ref: ../models/order-entry-tax-schedule.s1.schema.yaml
+    order-entry-tax-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

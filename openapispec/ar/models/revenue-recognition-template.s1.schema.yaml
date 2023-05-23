@@ -1,0 +1,260 @@
+title: revenue-recognition-template
+x-mappedTo: revrectemplate
+type: object
+description: Revenue recognition templates define how to amortize deferred revenue. Each template is associated with an Accounts Receivable label or Order Entry Item GL group.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the revenue recognition template.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the revenue recognition template.
+    x-mappedTo: TEMPLATEID
+    x-mutable: false
+    example: '1001'
+  href:
+    type: string
+    description: URL for the revenue recognition template.
+    example: /objects/revenue-recognition-template/1
+    readOnly: true
+  description:
+    type: string
+    description: Description of the revenue recognition template.
+    x-mappedTo: DESCRIPTION
+    example:
+  useStandard:
+    type: boolean
+    description: Indicates whether to use standard calendar amortization.
+    x-mappedTo: USESTANDARD
+    example:
+    x-mappedToType: string
+    default: false
+  schedulePeriod:
+    type: string
+    description: The intervals at which Sage Intacct should schedule the journal entries to post.
+    x-mappedTo: SCHEDULEPERIOD
+    example:
+    enum:
+      - 'daily'
+      - 'monthly'
+      - 'quarterly'
+      - 'semiAnnually'
+      - 'annually'
+    x-mappedToValues:
+      - 'Daily'
+      - 'Monthly'
+      - 'Quarterly'
+      - 'Semi-annually'
+      - 'Annually'
+  postingDay:
+    type: string
+    description: The day of the month the revenue should post.
+    x-mappedTo: POSTINGDAY
+    example:
+    enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '18'
+      - '19'
+      - '20'
+      - '21'
+      - '22'
+      - '23'
+      - '24'
+      - '25'
+      - '26'
+      - '27'
+      - '28'
+      - '29'
+      - '30'
+      - '31'
+      - 'endOfPeriod'
+      - 'daily'
+    x-mappedToValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '18'
+      - '19'
+      - '20'
+      - '21'
+      - '22'
+      - '23'
+      - '24'
+      - '25'
+      - '26'
+      - '27'
+      - '28'
+      - '29'
+      - '30'
+      - '31'
+      - 'End Of Period'
+      - 'Daily'
+  recognitionTerm:
+    type: string
+    description: Recognition term. 
+    x-mappedTo: RECOGNITIONTERM
+    example:
+    enum:
+      - 'fixedPeriod'
+      - 'contractTerm'
+      - 'project'
+    x-mappedToValues:
+      - 'Fixed Period'
+      - 'Contract Term'
+      - 'Project'
+    default: 'fixedPeriod'
+  resumeOption:
+    type: string
+    description: System resume option.
+    x-mappedTo: RESUMEOPTION
+    example:
+    enum:
+      - 'catchUp'
+      - 'walkforward'
+    x-mappedToValues:
+      - 'Catch Up'
+      - 'Walkforward'
+    default: 'walkforward'
+  totalPeriods:
+    type: string
+    description: Number of periods. If `fixedPeriod` is set for `recognitionTerm` Sage Intacct uses this value to generate the schedule.
+    x-mappedTo: TOTALPERIODS
+    example:
+  recognitionMethod:
+    type: string
+    description: Recognition method.
+    x-mappedTo: RECMETHOD
+    example:
+    enum:
+      - 'straightLine'
+      - 'straightLine,prorateExactDays'
+      - 'straightLine,percentAllocation'
+      - 'straightLine,percentAllocation,endOfPeriod'
+      - 'exactDaysPerPeriod,prorateDays'
+      - 'exactDaysPerPeriod,prorateDays,endOfPeriod'
+      - 'percentCompleted'
+      - 'milestone'
+      - 'custom'
+    x-mappedToValues:
+      - 'Straight-line'
+      - 'Straight-line, prorate exact days'
+      - 'Straight-line, percent allocation'
+      - 'Straight-line, percent allocation, end of period'
+      - 'Exact days per period, prorate days'
+      - 'Exact days per period, prorate days, end of period'
+      - 'Percent Completed'
+      - 'Milestone'
+      - 'Custom'
+  recognitionStartDate:
+    type: string
+    description: Recognition start date.
+    x-mappedTo: RECSTARTDATE
+    example:
+    enum:
+      - 'transactionDate'
+      - 'userSpecified'
+    x-mappedToValues:
+      - 'Transaction Date'
+      - 'User Specified'
+  postingMethod:
+    type: string
+    description: Posting method.
+    x-mappedTo: POSTINGMETHOD
+    example:
+    enum:
+      - 'automatic'
+      - 'manual'
+    x-mappedToValues:
+      - 'Automatic'
+      - 'Manual'
+    default: 'manual'
+  latestVersion:
+    type: string
+    description: Latest version key.
+    x-mappedTo: LATESTVERSIONKEY
+    example:
+  milestoneSource:
+    type: string
+    description: Percent or milestone source.
+    x-mappedTo: MILESTONESOURCE
+    example:
+    enum:
+      - 'manual'
+      - 'project'
+    x-mappedToValues:
+      - 'Manual'
+      - 'Project'
+    default: 'manual'
+  calculation:
+    type: object
+    properties:
+      source:
+        type: string
+        description: For a Percent completed template, select whether to calculate at the project or task level.
+        x-mappedTo: PACALCSOURCE
+        example:
+        enum:
+          - 'project'
+          - 'task'
+        x-mappedToValues:
+          - 'Project'
+          - 'Task'
+        default: 'project'
+      basedOn:
+        type: string
+        description: Method to use to calculate the completion percentage.
+        x-mappedTo: PACALCHOURS
+        example:
+        enum:
+          - 'estimatedHours'
+          - 'plannedHours'
+          - 'budgetedHours'
+          - 'budgetedCostFromGL'
+          - 'budgetedCostFromSummary'
+          - 'observed%Completed'
+        x-mappedToValues:
+          - 'Estimated Hours'
+          - 'Planned Hours'
+          - 'Budgeted Hours'
+          - 'Budgeted Cost from GL'
+          - 'Budgeted Cost from Summary'
+          - 'Observed % Completed'
+        default: 'estimatedHours'
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+

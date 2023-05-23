@@ -1,0 +1,388 @@
+openapi: 3.0.0
+info:
+  title: project-contract-type
+  description: project-contract-type API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: project-contract-type
+    description: Project Contract Type is a user defined list, for categorizing Project Contracts.
+paths:
+  /objects/project-contract-type:
+    get:
+      summary: Get collection of project-contract-types
+      description: Returns a collection of project contract type keys and reference links to get project contract type details
+      tags:
+        - project-contract-type
+      operationId: get-objects-project-contract-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: project-contract-type Collection
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-result-collection-of-project-contract-types:
+                  value:
+                    ia::result:
+                      - key: '21'
+                        id: COM
+                        href: /objects/project-contract-type/21
+                      - key: '22'
+                        id: RES
+                        href: /objects/project-contract-type/22
+                      - key: '23'
+                        id: REST-CUST
+                        href: /objects/project-contract-type/23
+                      - key: '24'
+                        id: REST-INS
+                        href: /objects/project-contract-type/24
+                      - key: '25'
+                        id: Fab
+                        href: /objects/project-contract-type/25
+                      - key: '26'
+                        id: SUB
+                        href: /objects/project-contract-type/26
+                      - key: '27'
+                        id: CUST-BLD
+                        href: /objects/project-contract-type/27
+                      - key: '28'
+                        id: LUMPSUM
+                        href: /objects/project-contract-type/28
+                    ia::meta:
+                      totalCount: 8
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create project-contract-type
+      description: Create a new project contract type
+      tags:
+        - project-contract-type
+      operationId: post-objects-project-contract-type
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-type.s1.schema'
+                - $ref: '#/components/schemas/project-contract-typeRequiredProperties'
+            examples:
+              example-create-project-contract-type:
+                value:
+                  id: RES
+                  name: Residential
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-contract-type
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-create-project-contract-type:
+                  value:
+                    ia::result:
+                      key: '22'
+                      id: RES
+                      href: /objects/project-contract-type/22
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/project-contract-type/{key}:
+    parameters:
+      - name: key
+        description: project-contract-type Key
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get project-contract-type
+      description: Get complete details for a particular project contract type
+      tags:
+        - project-contract-type
+      operationId: get-objects-project-contract-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: project-contract-type details
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/project-contract-type.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-get-project-contract-type:
+                  value:
+                    ia::result:
+                      key: '22'
+                      id: RES
+                      name: Residential
+                      status: active
+                      audit:
+                        createdDateTime: '2021-08-19T00:00:00Z'
+                        modifiedDateTime: '2021-08-19T00:00:00Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/project-contract-type/22
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update project-contract-type
+      description: Update details of existing project contract type
+      tags:
+        - project-contract-type
+      operationId: patch-objects-project-contract-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-type.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-contract-type:
+                value:
+                  name: Temp contract
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-result-update-project-contract-type:
+                  value:
+                    ia::result:
+                      key: '29'
+                      id: TEMP
+                      href: /objects/project-contract-type/29
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete project-contract-type
+      description: Delete a project contract type
+      tags:
+        - project-contract-type
+      operationId: delete-objects-project-contract-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract-type:
+      $ref: '#/components/schemas/project-contract-type.s1.schema'
+    project-contract-typeRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    project-contract-type.s1.schema:
+      title: project-contract-type
+      type: object
+      x-mappedTo: projectcontracttype
+      properties:
+        key:
+          type: string
+          description: System-assigned key of the project contract type
+          example: 2
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the project contract type
+          example: COM
+          x-mappedTo: PROJECTCONTRACTTYPEID
+          x-mutable: false
+        name:
+          type: string
+          description: Project contract type name
+          example: Commercial
+          x-mappedTo: PROJECTCONTRACTTYPENAME
+        href:
+          type: string
+          description: URL of the project contract type
+          example: /objects/project-contract-type/2
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

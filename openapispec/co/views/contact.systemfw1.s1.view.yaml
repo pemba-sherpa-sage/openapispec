@@ -1,0 +1,21 @@
+key: contact::systemContactFW1
+id: systemContactFW1
+object: contact
+name: All
+description: Specifies all active contacts
+query:
+  object: contact
+  fields:
+    - key
+    - id
+    - lastName
+    - firstName
+    - email1
+    - phone1
+    - companyName
+    - status
+  orderBy:
+    - id: asc
+contexts:
+  - __default
+

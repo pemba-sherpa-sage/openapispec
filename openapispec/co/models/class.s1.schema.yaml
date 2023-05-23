@@ -1,0 +1,67 @@
+title: class
+x-mappedTo: class
+type: object
+description: Class is a customizable dimension that can be defined in a company and set on transactions to expand report functionality and insight.
+properties:
+  key:
+    description: System-assigned unique key for the class. Used to identify the class in URLs or JSON bodies for all operations on the class.
+    type: string
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '42'
+  id:
+    description: Unique ID for the class.
+    type: string
+    x-mutable: false
+    x-mappedTo: CLASSID
+    example: 1-Goods
+  href:
+    description: Endpoint for this class.
+    type: string
+    readOnly: true
+    example: '/objects/class/21'
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+    example: active
+  description:
+    description: Description of the class.
+    type: string
+    x-mappedTo: DESCRIPTION
+    example: Goods available for donations
+  name:
+    description: Name of this class.
+    type: string
+    x-mappedTo: NAME
+    example: Goods
+  parent:
+    type: object
+    description: Parent class, for class hierarchies.
+    title: parent
+    x-object: class
+    x-mappedTo: PARENT
+    properties:
+      id:
+        description: Parent class ID.
+        type: string
+        readOnly: true
+        x-mappedTo: PARENTID
+        example: 23-Donations
+      key:
+        description: Parent class key.
+        type: string
+        readOnly: false
+        x-mappedTo: PARENTKEY
+        example: '4'
+      href:
+        description: URL for parent class.
+        type: string
+        readOnly: true
+        example: '/objects/class/3'
+      name:
+        description: Name of parent class.
+        type: string
+        readOnly: true
+        x-mappedTo: PARENTNAME
+        example: Donations
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

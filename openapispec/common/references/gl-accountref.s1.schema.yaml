@@ -1,0 +1,23 @@
+title: accountref
+type: object
+x-object: gl-account
+properties:
+  key:
+    type: string
+    description: GL Account Key
+    x-mappedTo: ACCOUNTKEY
+    example: '144'
+  id:
+    type: string
+    description: GL Account ID
+    x-mappedTo: ACCOUNTNO
+    example: '1112'
+  name:
+    type: string
+    description: GL Account Title
+    x-mappedTo: ACCOUNTTITLE
+    example: Employee Advances
+  href:
+    type: string
+    readOnly: true
+    example: /objects/gl-account/144

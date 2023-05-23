@@ -1,0 +1,31 @@
+title: inventory-cycle
+type: object
+description: Inventory cycle information.
+x-mappedTo: inventorycycle
+properties:
+  key:
+    type: string
+    description: System generated Key
+    x-mappedTo: CYCLEID
+    example: 1
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the inventory cycle. The face ID cannot be modified.
+    x-mappedTo: CYCLEID
+    example: Monthly Cycle
+    x-mutable: false
+  description:
+    type: string
+    description: Description for the inventory cycle
+    example: 'Monthwise inventory cycle' 
+    x-mappedTo: DESCRIPTION
+  href:
+    type: string
+    description: inventory-cycle url
+    example: '/objects/inventory-cycle/3'
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/projectchangeorder/view
+    POST:
+      - pa/lists/projectchangeorder/create
+    PATCH:
+      - pa/lists/projectchangeorder/edit
+    DELETE:
+      - pa/lists/projectchangeorder/delete
+s1:
+  hash: '0'
+  type: rootObject

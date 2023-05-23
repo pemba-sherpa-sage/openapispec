@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/sopriceschedule/view
+    POST:
+      - so/lists/sopriceschedule/create
+    PATCH:
+      - so/lists/sopriceschedule/edit
+    DELETE:
+      - so/lists/sopriceschedule/delete
+s1:
+  hash: '0'
+  type: rootObject

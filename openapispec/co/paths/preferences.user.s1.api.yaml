@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: preferences.user
+  description: preferences.user API
+  version: '1.0'
+  contact:
+    email: tudor.vint@sage.com
+    name: tudor.vint
+tags:
+  - name: User preferences
+    description: |-
+      Configure preferences for individual users to suit how they each work in Intacct, and to more finely hone or change some company preferences.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/services/preferences/user/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the user.
+        schema:
+          type: string
+        in: path
+        required: true
+        example: '68'
+    get:
+      summary: Get user preferences
+      description: |-
+        Returns detailed information for a particular user's preferences.
+      tags:
+        - User preferences
+      operationId: get-services-preferences.user-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the preferences.user
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/preferences.user'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                User preference:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      contact:
+                        mailingAddress:
+                          addressLine1: 300 Park Avenue
+                          addressLine2: Suite 1400
+                          city: San Jose
+                          country: United States
+                          postCode: '95110'
+                          state: California
+                        email1: alice@example.com
+                        firstName: Alice
+                        lastName: Cooper
+                        phone1: 415-123-4567
+                        signature: Thank you, Alice Cooper
+                      securityPreferences:
+                        sessionTimeoutInSeconds: 3600
+                        inactivityTimeoutInSeconds: 21600
+                      emailNotifications:
+                        paymentRequestsForApproval:
+                          enableNotification: true
+                          frequency: individual
+                          minimumAmount: 0
+                        approvedPayments:
+                          frequency: individual
+                          enableNotification: true
+                        purchasingRequestsForApproval:
+                          enableNotification: false
+                          minimumAmount: 1
+                        journalEntryRequestsForApproval:
+                          enableNotification: true
+                        billRequestsForApproval:
+                          enableNotification: false
+                          minimumAmount: 1
+                        offlineReports:
+                          enableNotification: false
+                        checklists:
+                          enableNotification: true
+                        recurringTxnFailures:
+                          enableNotifications: false
+                      onScreenAlerts:
+                        enableWarnOnUnsavedChanges: true
+                        enableWarnOnDelete: true
+                        enableFormValidationMessagesOnSeparatePage: true
+                      personalizeAppearance:
+                        startPage: Dashboard
+                        startDashboard: '1'
+                        entityColorLevel: company
+                      personalizeMenu:
+                        menuNavigation: click
+                        menuOrder: company
+                      pagePreferences:
+                        recordsPerPage: 20
+                        itemsPerPopUpPage: 15
+                        itemsPerDropDownList: '5000'
+                        recordsPerTransactionPage: '30'
+                        enableTypeAheadSuggestions: false
+                        newTransactionRowCount: 9
+                      personalizePlatform:
+                        actionUILayout:
+                          useForCustomPages: false
+                          useForDeveloperPages: true
+                        scriptComponent:
+                          theme: lightMode
+                          debug: 'off'
+                      generalPreferences:
+                        language: 'en_US.UTF-8'
+                        timeZone: 'GMT+02:00 Eastern Europe Time'
+                        timeFormat: 'HH12:MI:SSAM'
+                        dateFormat: 'MM/DD/YYYY'
+                        decimalsSeparator: '.'
+                        thousandsSeparator: ','
+                        autoInsertDecimalPoint: false
+                        defaultAttachmentFolder: Test
+                      approvalDelegation:
+                        enableForPurchasing: true
+                        purchasingDelegate: intacct
+                        enableForJournalEntryTransactions: false
+                        journalEntryDelegate: intacct
+                        delegateApprovals: Delegate Purchasing approvals
+                        delegateName: intacct
+                        enableDelegateForUnknown: false
+                      inheritDateFromSourceTxn:
+                        inheritForOrderEntryTxns: false
+                        inheritForPurchaseOrderTxns: false
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update user preferences
+      description: |-
+        Updates an existing set of user preferences by setting field values.
+      tags:
+        - User preferences
+      operationId: patch-services-preferences.user-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/preferences.user'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Change security timeouts:
+                value:
+                  securityPreferences:
+                    sessionTimeoutInSeconds: 3600
+                    inactivityTimeoutInSeconds: 3600
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated preferences.user
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                User preferences updated:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      href: /services/preferences/user/68
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    preferences.user:
+      $ref: ../models/preferences.user.s1.schema.yaml
+  parameters:
+    key:
+      name: key
+      in: path
+      required: true
+      description: User key
+      schema:
+        type: string
+        pattern: (\/-?\d+)?
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

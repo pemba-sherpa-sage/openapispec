@@ -1,0 +1,352 @@
+title: project-contract
+type: object
+x-mappedTo: projectcontract
+properties:
+  key:
+    type: string
+    description: System-assigned key of the project contract
+    example: 12
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the project contract 
+    example: CONTRACT-01
+    x-mappedTo: PROJECTCONTRACTID
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the project contract
+    example: /objects/project-contract/12
+    readOnly: true
+  name:
+    type: string
+    description: Project contract name
+    example: CONTRACT-01 - NW Food Warehouse
+    x-mappedTo: NAME
+  project:
+    type: object
+    description: Reference to a project
+    x-object: project
+    x-mappedTo: project
+    properties:
+      key:
+        type: string
+        description: Project key
+        example: 1
+        x-mappedTo: PROJECTKEY
+        readOnly: true
+      id:
+        type: string
+        description: Project id
+        example: DIM - BTI
+        x-mappedTo: PROJECTID
+      name:
+        type: string
+        description: Project name
+        example: Dimensions - Berkeley Technology Inc
+        x-mappedTo: PROJECTNAME
+        readOnly: true
+      href:
+        type: string
+        description: URL of the project
+        example: /objects/project/1
+        readOnly: true    
+  location:
+      $ref: ../references/project-locationref.s1.schema.yaml
+  customer:
+    type: object
+    description: Reference to a customer
+    x-object: customer
+    x-mappedTo: customer
+    properties:
+      key:
+        type: string
+        description: Customer Key
+        example: 14
+        x-mappedTo: CUSTOMERKEY
+        readOnly: true
+      id:
+        type: string
+        description: Customer ID
+        example: BTI
+        x-mappedTo: CUSTOMERID
+      name:
+        type: string
+        description: Customer Name
+        example: Berkeley Technology Inc
+        x-mappedTo: CUSTOMERNAME
+        readOnly: true
+      href:
+        type: string
+        description: URL of the customer
+        example: /objects/customer/14
+        readOnly: true        
+  contractDate:
+    type: string
+    format: date
+    description: Contract date
+    example: 2021-10-15
+    x-mappedTo: CONTRACTDATE
+  description:
+    type: string
+    description: Description
+    example: NW Food Warehouse - Entry lobby renovation
+    x-mappedTo: DESCRIPTION
+  projectContractType:
+    type: object
+    description: Reference to a projectContractType
+    x-object: project-contract-type
+    x-mappedTo: projectcontracttype
+    properties:
+      key:
+        type: string
+        description: Project contract type key
+        example: 2
+        x-mappedTo: PROJECTCONTRACTTYPEKEY
+        readOnly: true
+      id:
+        type: string
+        description: Project contract type id
+        example: COM
+        x-mappedTo: PROJECTCONTRACTTYPEID
+      href:
+        type: string
+        description: URL of the projectContractType
+        readOnly: true    
+  architect:
+    type: object
+    description: Reference to an architect contact
+    x-object: contact
+    x-mappedTo: ARCHITECT
+    properties:
+      key:
+        type: string
+        description: Contact key
+        example: 12
+        x-mappedTo: ARCHITECTKEY
+        readOnly: true
+      id:
+        type: string
+        description: Contact id
+        example: Eberhardt
+        x-mappedTo: ARCHITECT.CONTACTNAME
+      href:
+        type: string
+        description: URL of the architect contact
+        example: /objects/contact/12
+        readOnly: true
+  isBillable:
+    type: boolean
+    description: Project contract is billable
+    x-mappedTo: BILLABLE
+    x-mappedToType: string
+    example: true
+    default: false
+  attachment:
+    $ref: ../references/attachmentref.s1.schema.yaml    
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml                    
+  summary:
+    type: object
+    description: Summary
+    properties:
+      totalPrice:
+        type: string
+        format: decimal-precision-2
+        description: Total price
+        example: "1050.85"
+        x-mappedTo: TOTALREVISEDPRICE
+        readOnly: true     
+      originalPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Original price
+        example: "850.00"        
+        x-mappedTo: ORIGINALPRICE
+        readOnly: true
+      revisionPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Revision price
+        example: "1050.85"
+        x-mappedTo: REVISIONPRICE
+        readOnly: true
+      approvedChangePrice:
+        type: string
+        format: decimal-precision-2        
+        description: Approved change price
+        example: "900.00"               
+        x-mappedTo: APPROVEDCHANGEPRICE
+        readOnly: true
+      pendingChangePrice:
+        type: string
+        format: decimal-precision-2        
+        description: Pending change price
+        example: "150.85"                
+        x-mappedTo: PENDINGCHANGEPRICE
+        readOnly: true
+      otherPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Other price
+        example: "0.00"
+        x-mappedTo: OTHERPRICE
+        readOnly: true
+      forecastPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Forecast price
+        example: "0.00"
+        x-mappedTo: FORECASTPRICE
+        readOnly: true
+  billing:
+    type: object
+    description: Billing
+    properties:                
+      billedPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Billed price
+        example: "1500.00"
+        x-mappedTo: BILLEDPRICE
+        readOnly: true
+      totalBilledNetRetainage:
+        type: string
+        format: decimal-precision-2        
+        description: Total billed net retainage
+        example: "1000.00"
+        x-mappedTo: TOTALBILLEDNETRETAINAGE
+        readOnly: true
+      percentBilled:
+        type: string
+        format: decimal-precision-2        
+        description: Percentage billed
+        example: "100.00"
+        x-mappedTo: PERCENTAGEBILLED
+        readOnly: true
+      percentBilledNetRetainage:
+        type: string
+        format: decimal-precision-2        
+        description: Percentage billed net retainage
+        example: "67.00"
+        x-mappedTo: PERCENTAGEBILLEDNETRETAINAGE
+        readOnly: true
+      totalRetainageHeld:
+        type: string
+        format: decimal-precision-2        
+        description: Total retainage held
+        example: "500.00"
+        x-mappedTo: TOTALRETAINAGEHELD
+        readOnly: true
+      totalRetainageReleased:
+        type: string
+        format: decimal-precision-2        
+        description: Total retainage released
+        example: "250.00"
+        x-mappedTo: TOTALRETAINAGERELEASED
+        readOnly: true
+      retainageBalance:
+        type: string
+        format: decimal-precision-2        
+        description: Retainage balance
+        example: "250.00"
+        x-mappedTo: RETAINAGEBALANCE
+        readOnly: true
+      balanceToBill:
+        type: string
+        format: decimal-precision-2        
+        description: Balance to bill
+        example: "500.00"
+        x-mappedTo: BALANCETOBILL
+        readOnly: true
+      balanceToBillNetRetainage:
+        type: string
+        format: decimal-precision-2        
+        description: Balance to bill net retainage
+        example: "250.00"
+        x-mappedTo: BALANCETOBILLNETRETAINAGE
+        readOnly: true
+      totalPaymentsReceived:
+        type: string
+        format: decimal-precision-2        
+        description: Total payments received
+        example: "1000.00"
+        x-mappedTo: TOTALPAYMENTSRECEIVED
+        readOnly: true
+      netTotalBilled:
+        type: string
+        format: decimal-precision-2        
+        description: Net total billed
+        example: "1000.00"
+        x-mappedTo: NETTOTALBILLED
+        readOnly: true
+      netTotalPaymentsReceived:
+        type: string
+        format: decimal-precision-2        
+        description: Net total payments received
+        example: "1000.00"
+        x-mappedTo: NETTOTALPAYMENTSRECEIVED
+        readOnly: true                        
+      subtotalBilledAsTax:
+        type: string
+        format: decimal-precision-2        
+        description: Subtotal billed as tax
+        example: "150.00"
+        x-mappedTo: BILLEDTAXSUBTOTAL
+        readOnly: true
+      subtotalBilledAsDiscount:
+        type: string
+        format: decimal-precision-2        
+        description: Subtotal billed as discount
+        example: "100.00"
+        x-mappedTo: BILLEDDISCOUNTSUBTOTAL
+        readOnly: true
+      subtotalBilledAsCharge:
+        type: string
+        format: decimal-precision-2        
+        description: Subtotal billed as charge
+        example: "0.00"
+        x-mappedTo: BILLEDCHARGESUBTOTAL
+        readOnly: true
+      lastApplicationNumber:
+        type: string
+        description: Last application number
+        example: A-123
+        x-mappedTo: LASTAPPLICATIONNO
+  excludeFromWIPReporting:
+    type: boolean
+    description: Exclude from work in progress
+    x-mappedTo: WIPEXCLUDE
+    x-mappedToType: string
+    example: true
+    default: false
+  scope:
+    type: string
+    description: Scope
+    example: Design
+    x-mappedTo: SCOPE
+  inclusions:
+    type: string
+    description: Inclusions
+    example: Original plan
+    x-mappedTo: INCLUSIONS
+  exclusions:
+    type: string
+    description: Exclusions
+    example: Hardware accessories
+    x-mappedTo: EXCLUSIONS
+  terms:
+    type: string
+    description: Terms
+    example: Standard terms and conditions
+    x-mappedTo: TERMS
+  schedule:
+    $ref: ../../common/models/schedule-calendar.s1.schema.yaml
+  internalReference:
+    $ref: ../../common/models/internal-document.s1.schema.yaml
+  externalReference:
+    $ref: ../../common/models/external-document.s1.schema.yaml                                                                                                                                                                             
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml      
+  

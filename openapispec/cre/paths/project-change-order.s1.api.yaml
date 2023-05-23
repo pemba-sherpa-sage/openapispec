@@ -1,0 +1,369 @@
+openapi: 3.0.0
+info:
+  title: project-change-order
+  description: project-change-order API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+tags:
+  - name: Project change orders
+    description: Project change orders provide project managers or contract administrators at construction companies a mechanism to group several change requests together, for the purpose of presenting them to the customer for approval, and ultimately, for billing
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-change-order:
+    get:
+      summary: List project change orders
+      description: Returns a collection with a key, ID, and link for each project change order
+      tags:
+        - Project change orders
+      operationId: get-objects-project-change-order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-change-order objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-list-project-change-orders:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: PCO-BTI-1
+                        href: /objects/project-change-order/1
+                      - key: '2'
+                        id: PCO-BTI-2
+                        href: /objects/project-change-order/2
+                      - key: '3'
+                        id: PCO-BTI-3
+                        href: /objects/project-change-order/3
+                      - key: '4'
+                        id: PCO-BTI-4
+                        href: /objects/project-change-order/4
+                      - key: '5'
+                        id: PCO-BTI-5
+                        href: /objects/project-change-order/5
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project change order
+      description: Creates a new project change order.
+      tags:
+        - Project change orders
+      operationId: post-objects-project-change-order
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-change-order'
+                - $ref: '#/components/schemas/project-change-orderRequiredProperties'
+            examples:
+              example-create-project-change-order:
+                value:
+                  id: PCO-BTI-9
+                  project:
+                    id: DIM - BTI
+                  projectChangeOrderDate: '2021-12-09'
+                  priceEffectiveDate: '2021-12-01'
+                  changeRequestStatus:
+                    id: Pending
+                  state: draft
+                  description: Change Oder 9 for BTI Project
+                  sendToContact:
+                    id: Aaron
+                  item:
+                    id: Development
+                  scope: Planning only
+                  inclusions: Design scope
+                  exclusions: Maintenance
+                  terms: Standard
+                  schedule:
+                    scheduledStartDate: '2022-01-01'
+                    scheduleImpact: NA
+                  attachment:
+                    id: pco-bti-1-att1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-change-order
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-create-project-change-order:
+                  value:
+                    ia::result:
+                      key: '6'
+                      id: PCO-BTI-6
+                      href: /objects/project-change-order/6
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-change-order/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project change order.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project change order
+      description: Returns detailed information for a particular project change order.
+      tags:
+        - Project change orders
+      operationId: get-objects-project-change-order-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-change-order
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-change-order'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-get-project-change-order:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: PCO-BTI-1
+                      project:
+                        key: '1'
+                        id: DIM - BTI
+                        name: Dimensions - Berkeley Technology Inc
+                        href: /objects/project/1
+                      location:
+                        key: 1
+                        id: 1
+                        name: United States of America
+                        href: /objects/location/1
+                      customer:
+                        key: '14'
+                        id: BTI
+                        name: Berkeley Technology Inc
+                        href: /objects/customer/14
+                      projectChangeOrderDate: '2021-12-15'
+                      state: posted
+                      changeRequestStatus:
+                        key: '2'
+                        id: Approved
+                      description: Change Oder 1 for BTI Project
+                      priceEffectiveDate: '2021-12-15'
+                      projectContract:
+                        key: '3'
+                        id: BTI-02
+                        name: BTI - 02
+                        href: /objects/project-contract/3
+                      projectContractLine:
+                        key: '28'
+                        id: bti-02.1
+                        name: bti-02.1
+                        href: /objects/project-contract-line/28                      
+                      totalCost: '1000.00'
+                      totalPrice: '1500.00'
+                      sendToContact:
+                        key: '4'
+                        id: Chandler
+                        href: /objects/contact/4
+                      item:
+                        key: '21'
+                        id: Maintenance
+                        name: Maintenance
+                        href: /objects/item/21
+                      scope: scope
+                      inclusions: incl
+                      exclusions: excl
+                      terms: terms
+                      schedule:
+                        scheduledStartDate: '2022-01-12'
+                        actualStartDate: null
+                        scheduledCompletionDate: '2022-04-30'
+                        revisedCompletionDate: null
+                        substantialCompletionDate: null
+                        actualCompletionDate: null
+                        noticeToProceedDate: null
+                        responseDueDate: null
+                        executedOnDate: null
+                        scheduleImpact: None
+                      internalReference:
+                        referenceNumber: BTI-01-REF-034-M
+                        initiatedBy:
+                          key: '28'
+                          id: '22'
+                          name: Chandler
+                          href: /objects/employee/28
+                        verbalBy:
+                          key: '28'
+                          id: '22'
+                          name: Chandler
+                          href: /objects/employee/28
+                        issuedBy:
+                          key: '31'
+                          id: '23'
+                          name: Jurasek
+                          href: /objects/employee/31
+                        issuedOnDate: '2021-12-08'
+                        approvedBy:
+                          key: '30'
+                          id: '2345'
+                          name: Johnson
+                          href: /objects/employee/30
+                        approvedOnDate: '2021-12-09'
+                        signedBy:
+                          key: '30'
+                          id: '2345'
+                          name: Johnson
+                          href: /objects/employee/30
+                        signedOnDate: '2021-12-09'
+                        source: null
+                        sourceReferenceNumber: null
+                      externalReference:
+                        referenceNumber: NA
+                        verbalBy:
+                          key: '11'
+                          name: Baechtel
+                          href: /objects/contact/11
+                        approvedBy:
+                          key: '11'
+                          name: Baechtel
+                          href: /objects/contact/11
+                        approvedOnDate: '2021-12-10'
+                        signedBy:
+                          key: '224'
+                          name: Able and Sons, Accountants
+                          href: /objects/contact/224
+                        signedOnDate: '2021-12-10'
+                      attachment:
+                        id: pco-bti-1-att1
+                        key: '6'
+                        href: /objects/attachment/6
+                      audit:
+                        modifiedDateTime: '2021-12-30T22:28:51Z'
+                        createdDateTime: '2021-12-08T23:30:01Z'
+                        modifiedBy: '1'
+                        createdBy: '1'
+                      href: /objects/project-change-order/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project change order
+      description: Updates an existing project change order by setting field values. Any fields not provided remain unchanged
+      tags:
+        - Project change orders
+      operationId: patch-objects-project-change-order-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-change-order'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-change-order:
+                value:
+                  project:
+                    id: DIM - BTI
+                  projectChangeOrderDate: '2021-12-15'
+                  priceEffectiveDate: '2021-12-15'
+                  state: posted
+                  description: Change Oder 1 for BTI Project
+                  changeRequestStatus:
+                    id: Approved
+                  sendToContact:
+                    id: Chandler
+                  item:
+                    id: Maintenance
+                  scope: scope
+                  inclusions: incl
+                  exclusions: excl
+                  terms: terms
+                  schedule:
+                    scheduledStartDate: '2022-01-12'
+                  attachment:
+                    id: pco-bti-1-att2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-change-order
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-project-change-order:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: PCO-BTI-1
+                      href: /objects/project-change-order/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project change order
+      description: Deletes a project change order.
+      tags:
+        - Project change orders
+      operationId: delete-objects-project-change-order-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-change-order:
+      $ref: ../models/project-change-order.s1.schema.yaml
+    project-change-orderRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

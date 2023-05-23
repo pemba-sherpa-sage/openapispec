@@ -1,0 +1,77 @@
+title: vendor-email-template
+x-mappedTo: vendoremailtemplate
+type: object
+x-ownedBy: vendor
+description: Vendor email templates can be used to automate standard messages sent to multiple vendors.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the vendor email template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Name or other unique identifier for the vendor email template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  href:
+    type: string
+    description: URL for the vendor email template.
+    readOnly: true
+    example: /objects/vendor-email-template/1
+  vendor:
+    type: object
+    description: Vendor associated with the email template.
+    x-object: vendor
+    x-mappedTo: vendor
+    title: vendor
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the vendor.
+        x-mappedTo: VENDORKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the vendor.
+        x-mappedTo: VENDORID
+        example: 'V-65279'
+      href:
+        type: string
+        description: URL for the vendor.
+        readOnly: true
+        example: /objects/vendor/1
+  txnDefinitionName:
+    type: string
+    description: Type of transaction that will use the email template.
+    x-mappedTo: DOCPARID
+    example: 'Vendor Invoice'
+  emailTemplate:
+    type: object
+    description: Associated email template. 
+    x-object: email-template
+    x-mappedTo: emailtemplate
+    title: emailTemplate
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the email template.
+        x-mappedTo: EMAILTEMPLATEKEY
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the email template.
+        x-mappedTo: EMAILTEMPLATEKEY
+        example: '1'
+      name:
+        type: string
+        description: Name of the email template.
+        x-mappedTo: EMAILTEMPLATENAME
+        example: 'Vendor Trial'
+      href:
+        type: string
+        description: URL of the email template.
+        readOnly: true
+        example: /objects/email-template/1

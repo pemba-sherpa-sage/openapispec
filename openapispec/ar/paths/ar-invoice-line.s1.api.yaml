@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  title: ar-invoice-line
+  description: ar-invoice-line API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+tags:
+  - name: AR invoice lines
+    description: Line items in an invoice represent transactions captured in that invoice.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-invoice-line:
+    get:
+      summary: List AR invoice lines
+      description: Returns a collection with a key, ID, and link for each AR invoice line item. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR invoice lines
+      operationId: get-objects-ar-invoice-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-invoice-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR invoice lines:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/ar-invoice-line/1
+                      - key: '3'
+                        id: '3'
+                        href: /objects/ar-invoice-line/3
+                      - key: '19'
+                        id: '19'
+                        href: /objects/ar-invoice-line/19
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-invoice-line/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the AR invoice line item.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR invoice line
+      description: Returns detailed information for a specified AR invoice line item.
+      tags:
+        - AR invoice lines
+      operationId: get-objects-ar-invoice-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-invoice-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-invoice-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR invoice line:
+                  value:
+                    'ia::result':
+                      id: "1"
+                      key: "1"
+                      invoice":
+                        id: "1"
+                        key: "1"
+                        href: "/objects/ar-invoice/1"
+                      glAccount:
+                        key: "194"
+                        id: "4000"
+                        name: "Sales"
+                        href: "/objects/gl-account/194"
+                      overriddenOffsetGLAccount:
+                        key: "36"
+                        id: "1200"
+                        name: "Accounts Receivable"
+                        href: "/objects/gl-account/36"
+                      accountLabel:
+                        name: "Sales"
+                        key: "35"
+                        id: "Sales"
+                        href: "/objects/ar-account-label/35"
+                      createdDate: "2022-04-20"
+                      baseAmount: "111"
+                      txnAmount: "111.00"
+                      dimensions:
+                        department:
+                          key: null
+                          id: null
+                          name: null
+                        location:
+                          key: "1"
+                          id: "1"
+                          name: "United States of America"
+                          href: "/objects/location/1"
+                        nsp::rgldim43491134_10018:
+                          key: null
+                          id: null
+                        project:
+                          key: null
+                          id: null
+                          name": null
+                        customer:
+                          key: "1"
+                          id: "1"
+                          name: "Power Aerospace Materials"
+                          href: "/objects/customer/1"
+                        vendor:
+                          key: null
+                          id: null
+                          name: null
+                        employee:
+                          key: null
+                          id: null
+                          name: null
+                        item:
+                          key: null
+                          id: null
+                          name: null
+                        class:
+                          key: null
+                          id: null
+                          name: null
+                      baseLocation:
+                        name: "United States of America"
+                        key: "1"
+                        href: "/objects/location/1"
+                      memo: null
+                      currency:
+                        exchangeRate:
+                          date: null
+                          typeId: null
+                          rate: "1"
+                        txnCurrency: "USD"
+                        baseCurrency: "USD"
+                      allocation:
+                        id: null
+                        key: null
+                        name: null
+                      lineNumber: 1
+                      paymentInformation:
+                        totalBaseAmountPaid: "35"
+                        totalTxnAmountPaid: "35"
+                        totalBaseAmountSelectedForPayment: "0"
+                        totalTxnAmountSelectedForPayment: "0"
+                      isSubtotal: ""
+                      audit:
+                        createdDateTime: "2022-04-21T09:37:41Z"
+                        modifiedDateTime: "2022-11-22T05:11:50Z"
+                        createdBy: "1"
+                        modifiedBy: "1"
+                      href: "/objects/ar-invoice-line/1"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError": 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an ar invoice line
+      description: Updates an existing ar invoice line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR invoice lines
+      operationId: patch-objects-ar-invoice-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-invoice-line'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    glAccount:
+                      properties:
+                        id:
+                           readOnly: true
+                    overriddenOffsetGLAccount:
+                      properties:
+                        id:
+                           readOnly: true
+                    allocation:
+                      properties:
+                        id:
+                           readOnly: true
+                    accountLabel:
+                      properties:
+                        id:
+                           readOnly: true
+                    txnAmount:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  memo: This invoice line includes updated value.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-invoice-line
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated ar invoice line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-invoice-line:
+      $ref: ../models/ar-invoice-line.s1.schema.yaml
+    ar-invoice-lineRequiredProperties:
+      type: object
+      required:
+        - txnAmount
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

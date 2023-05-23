@@ -1,0 +1,84 @@
+title: territory
+x-mappedTo: territory
+type: object
+description: Territories are optionally included in Customer records and are used with Accounts Receivable reports.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the territory.
+    x-mappedTo: TERRITORYID
+    readOnly: true
+    example: '1'
+  id:
+    type: string
+    description: Unique identifier for the territory. This unique identifier cannot be modified.
+    x-mappedTo: TERRITORYID
+    x-mutable: false
+    example: 1-South
+  href:
+    type: string
+    readOnly: true
+    description: URL for the territory.
+    example: '/objects/territory/1'
+  name:
+    type: string
+    description: Name of the territory.
+    x-mappedTo: NAME
+    example: South
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  parent:
+    type: object
+    x-object: territory
+    x-mappedTo: PARENT
+    title: parent
+    properties:
+      key:
+        type: string
+        x-mappedTo: PARENT.TERRITORYID
+        description: System-assigned key for the parent territory.
+        readOnly: false
+        example: '2'
+      id:
+        type: string
+        x-mappedTo: PARENT.NAME
+        description: ID of the parent territory.
+        readOnly: true
+        example: 1-North
+      href:
+        type: string
+        readOnly: true
+        description: URL for the parent territory.
+        example: '/objects/territory/21'
+  manager:
+    type: object
+    x-object: employee
+    x-mappedTo: MANAGER
+    title: manager
+    description: Employee who manages the territory. Used for informational purposes only.
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the territory.
+        x-mappedTo: TERRITORYID
+        example: '81'
+        readOnly: false
+      name:
+        type: string
+        description: Name of the territory manager.
+        x-mappedTo: SUPERVISORNAME
+        example: Donations
+        readOnly: true
+      id:
+        type: string
+        description: Unique identifier for the territory manager.
+        x-mappedTo: SUPERVISORNAME
+        example: anne.jason
+        readOnly: true
+      href:
+        type: string
+        description: URL for the territory manager.
+        example: /objects/employee/81
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

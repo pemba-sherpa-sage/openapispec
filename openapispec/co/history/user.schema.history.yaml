@@ -1,0 +1,23 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/userinfo/view
+      - co/lists/userinfo/view/permissions
+      - co/lists/userinfo/view/userapps
+      - co/lists/userinfo/view/userperm
+      - mp/lists/userinfo/view
+      - mp/lists/userinfo/view/permissions
+      - mp/lists/userinfo/view/userapps
+    POST:
+      - co/lists/userinfo/create
+      - mp/lists/userinfo/create
+    PATCH:
+      - co/lists/userinfo/edit
+      - mp/lists/userinfo/edit
+    DELETE:
+      - co/lists/userinfo/delete
+      - mp/lists/userinfo/delete
+s1:
+  hash: '0'
+  type: rootObject
+  adapter: UserInfoAdapter

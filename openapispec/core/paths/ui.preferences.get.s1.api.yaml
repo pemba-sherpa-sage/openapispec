@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: ui.preferences.get
+  description: ui preferences service
+  version: '1.0-internal'
+  contact:
+    name: Teodor Anton
+    email: teodor.anton@sage.com
+tags:
+  - name: ui.preferences.get
+    description: get ui settings
+paths:
+  /services/ui/preferences/get:
+    post:
+      summary: Retrieve xg ui preferences
+      description: Retrieve xg ui preferences to be used in iodl compilation
+      tags:
+        - ui.preferences.get
+      operationId: post-ui-preferences-get
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ui.preferences.get-request'
+            examples:
+              example-1:
+                value:
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                title: UI Preferences
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ui.preferences.get-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ui.preferences.get-request:
+      description: Retrieve ui pref
+      type: object
+      x-mappedTo: __custom__
+    ui.preferences.get-response:
+      description: ui preferences response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        uiSettings:
+          x-mappedTo: uiSettings
+          type: object
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,29 @@
+title: bin-face
+type: object
+description: A bin face is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find the bin within the warehouse.
+x-mappedTo: binface
+properties:
+  key:
+    type: string
+    description: System-assigned key for the bin face.
+    x-mappedTo: RECORDNO
+    example: '3'
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier or name for the bin face. The bin face ID cannot be modified.
+    x-mappedTo: FACEID
+    example: 'BF232'
+    x-mutable: false
+  description:
+    type: string
+    description: Description for the bin face.
+    example: 'Bin Face 232'
+    x-mappedTo: FACEDESC
+  href:
+    type: string
+    description: URL for the bin face.
+    example: '/objects/bin-face/3'
+    readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

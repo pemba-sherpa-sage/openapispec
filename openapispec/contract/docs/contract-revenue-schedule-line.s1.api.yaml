@@ -1,0 +1,502 @@
+openapi: 3.0.0
+info:
+  title: contract-revenue-schedule-line
+  description: contract-revenue-schedule-line API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract revenue schedule lines
+    description: A contract revenue schedule line represents a single revenue for a contract line.
+paths:
+  /objects/contract-revenue-schedule-line:
+    get:
+      summary: List contract revenue schedules
+      description: Returns a collection with a key, ID, and link for each contract-revenue-schedule-line.
+      tags:
+        - Contract revenue schedule lines
+      operationId: get-objects-contract-revenue-schedule-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract revenue schedule line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of contract revenue schedules:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-revenue-schedule-line/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-revenue-schedule-line/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-revenue-schedule-line/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-revenue-schedule-line/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-revenue-schedule-line/79
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                List of contract revenue schedule line errors:
+                  value:
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Object named [contract-revenue-schedule-line] is not supported in version [0]
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  /objects/contract-revenue-schedule-line/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract revenue schedule line.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '897'
+    get:
+      summary: Get a contract revenue schedule line
+      description: Returns detailed information for a particular contract revenue schedule line.
+      tags:
+        - Contract revenue schedule lines
+      operationId: get-objects-contract-revenue-schedule-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract revenue schedule line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-revenue-schedule-line'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Update a contract revenue schedule line error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-revenue-schedule-line/12
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Field [id] is a read-only field
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    contract-revenue-schedule-line:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/contract-revenue-schedule-line.s1.schema'
+        - $ref: '#/components/schemas/contract-schedule-line-typeref.s1.schema'
+        - $ref: '#/components/schemas/contract-schedule-line-postable-typeref.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    metadata-extended.schema:
+      title: metadata-extended
+      description: Meta data with partial success
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            totalSuccess:
+              type: integer
+              description: Total Success
+              x-mappedTo: null
+              readOnly: true
+              example: 2
+            totalError:
+              type: integer
+              description: Total Errors
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+    contract-revenue-schedule-typeref.s1.schema:
+      type: object
+      title: contract-revenue-schedule
+      x-object: contract-revenue-schedule
+      properties:
+        key:
+          type: string
+          description: Contract revenue schedule system-assigned key.
+          x-mappedTo: SCHEDULEKEY
+          readOnly: true
+          example: '145'
+        id:
+          type: string
+          description: Contract revenue schedule unique identifier.
+          x-mappedTo: SCHEDULEKEY
+          readOnly: true
+          example: '145'
+        href:
+          type: string
+          description: Contract revenue schedule URL.
+          readOnly: true
+          example: /objects/contract-revenue-schedule/145
+      examples: []
+    contract-revenue-schedule-line.s1.schema:
+      type: object
+      title: contract-revenue-schedule-line
+      x-mappedTo: contractrevenuescheduleentry
+      x-ownedBy: contract-revenue-schedule
+      description: Contract revenue schedule line.
+      properties:
+        href:
+          type: string
+          description: Schedule line URL.
+          readOnly: true
+          example: /objects/contract-revenue-schedule-line/145
+        derivedPostingDate:
+          type: string
+          description: Schedule line derived posting date.
+          x-mappedTo: DERIVEDPOSTINGDATE
+          readOnly: true
+          format: date
+          example: '2022-04-30'
+        meaDetails:
+          type: string
+          description: Schedule line MEA details.
+          x-mappedTo: COMPUTATION_DETAIL
+          readOnly: true
+          example: (1000 * 1 {line# 1})
+        adjustedFor:
+          type: string
+          description: Schedule line adjusted for.
+          x-mappedTo: ADJUSTEDFOR
+          readOnly: true
+          example: MEA
+        percentageRecognized:
+          type: string
+          description: The pecentage of the line to be recognized.  Calculated based on sourceHours and approvedHours.
+          x-mappedTo: PERCENTRECOGNIZED
+          readOnly: true
+          example: 25.18
+        sourceHours:
+          type: string
+          description: Schedule line source hours from project or task.  Used with approvedHours to determine the percentage to be recognized.
+          x-mappedTo: SOURCEQTY
+          example: '118'
+        approvedHours:
+          type: string
+          description: Schedule line approved hours.  Used with sourceHours to determine the percentage to be recognized.
+          x-mappedTo: APPROVEDHOURS
+          example: '16'
+        computationMemo:
+          type: string
+          description: Schedule line computation memo.  This is a system generated memo to explain how the amount was calculated.
+          x-mappedTo: COMPUTATIONMEMO
+          readOnly: true
+          example: MEA amount 1000, adjustment amount 333.32. Prorated amount before effective date 03/01/2022 is 0.
+        linkedBillingScheduleLine:
+          type: object
+          x-object: contract-billing-schedule-line
+          description: The system generated linked billing schedule line.  Used for splitting revenue across contract lines in case of MEA.
+          properties:
+            key:
+              type: string
+              description: Contract billing schedule line system-assigned key.
+              x-mappedTo: BILLSCHEDULEENTRYKEY
+              readOnly: true
+              example: '145'
+            id:
+              type: string
+              description: Contract billing schedule line unique identifier.
+              x-mappedTo: BILLSCHEDULEENTRYKEY
+              readOnly: true
+              example: '145'
+            href:
+              type: string
+              description: Contract billing schedule line URL.
+              readOnly: true
+              example: /objects/contract-billing-schedule-line/145
+        contractRevenueSchedule:
+          $ref: '#/components/schemas/contract-revenue-schedule-typeref.s1.schema'
+      examples: []
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-schedule-line-typeref.s1.schema:
+      type: object
+      title: contract-schedule-line
+      required:
+        - scheduledAmount
+      properties:
+        key:
+          type: string
+          description: Schedule line system-assigned key.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '145'
+        id:
+          type: string
+          description: Schedule line unique identifier.
+          x-mappedTo: RECORDNO
+          x-mutable: false
+          example: '145'
+        scheduledOperationKey:
+          type: string
+          x-mappedTo: SCHOPKEY
+          description: Scheduled operation key for the associated offline operation.
+          example: '57665'
+          read-only: true
+        status:
+          type: string
+          description: Schedule line status.
+          x-mappedTo: STATE
+          readOnly: true
+          example: posted
+          enum:
+            - open
+            - terminated
+            - posted
+            - onHold
+          x-mappedToValues:
+            - Open
+            - Terminated
+            - Posted
+            - On Hold
+        scheduledAmount:
+          type: string
+          description: Schedule line scheduled amount.
+          x-mappedTo: AMOUNT
+          format: decimal-precision-2
+          example: '125.27'
+          nullable: false
+        scheduledBaseAmount:
+          type: string
+          description: Schedule line scheduled base amount.
+          x-mappedTo: BASEAMOUNT
+          format: decimal-precision-2
+          example: '137.52'
+        scheduledExchangeRate:
+          type: string
+          description: Schedule line scheduled exchange rate.
+          x-mappedTo: EXCHANGE_RATE
+          format: decimal-precision-12
+          example: '1.345'
+        isHistorical:
+          type: boolean
+          description: Schedule line historical flag indicating the line was added during initial implementation for historical purposes.
+          x-mappedTo: HISTORICAL
+          readOnly: true
+          example: false
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+      examples: []
+    contract-schedule-line-postable-typeref.s1.schema:
+      type: object
+      title: contract-schedule-line-postable
+      required:
+        - scheduledPostingDate
+      properties:
+        scheduledPostingDate:
+          type: string
+          description: Schedule line scheduled posting date.
+          x-mappedTo: POSTINGDATE
+          format: date
+          example: '2022-04-30'
+          nullable: false
+        posted:
+          type: boolean
+          description: Schedule line posted flag.
+          x-mappedTo: POSTED
+          readOnly: true
+          example: false
+        actualPostingDate:
+          type: string
+          description: Schedule line actual posting date.
+          x-mappedTo: ACTUALPOSTINGDATE
+          readOnly: true
+          format: date
+          example: '2022-04-30'
+        journalEntry:
+          type: object
+          x-object: journal-entry
+          properties:
+            key:
+              type: string
+              description: Journal entry key.
+              x-mappedTo: GLBATCHKEY
+              readOnly: true
+              example: 8153
+            id:
+              type: string
+              description: Journal entry ID.
+              x-mappedTo: GLBATCHNO
+              readOnly: true
+              example: 4765
+            href:
+              type: string
+              description: Journal entry URL.
+              readOnly: true
+              example: /objects/journal-entry/1981
+      examples: []

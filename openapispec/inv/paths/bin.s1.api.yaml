@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  title: bin
+  description: bin API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Bins
+    description: A bin identifies a specific location within a warehouse where items are or can be stored. Bins make it easier to find items during transaction processing.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/bin:
+    get:
+      summary: List bins
+      description: |
+        Returns up to 100 objects from the collection with a key, ID, and link for each bin. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bins
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bins
+      operationId: get-objects-bin
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bin objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List bins:
+                  value:
+                    'ia::result':
+                      - key: '12'
+                        id: Z4-A2-R3a-BF2-B10
+                        href: /objects/bin/122
+                      - key: '32'
+                        id: Z4-A2-R3a-BF2-B11
+                        href: /objects/bin/132
+                      - key: '44'
+                        id: Z4-A2-R3a-BF2-B12
+                        href: /objects/bin/44
+                      - key: '13'
+                        id: Z4-A2-R3a-BF2-B13
+                        href: /objects/bin/13
+                    'ia::meta':
+                      totalCount: 4
+                      start: 1
+                      pageSize: 100
+                      next: 2
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a bin
+      description: Creates a new bin.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Bins
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bins
+      operationId: post-objects-bin
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin'
+                - $ref: '#/components/schemas/binRequiredProperties'
+            examples:
+              Create a bin:
+                value:
+                  id: Z4-A2-R3a-BF2-B10
+                  description: Bin Adapters 2
+                  sequenceNumber: '4432'
+                  isPortable: true
+                  warehouse:
+                    id: 'WA2'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New bin
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a bin:
+                  value:
+                    'ia::result':
+                      key: '111'
+                      id: Z4-A2-R3a-BF2-B10
+                      href: /objects/bin/111
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/bin/{key}':
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: System-assigned key for the bin.
+        schema:
+          type: string
+          example: '111'
+    get:
+      summary: Get a bin
+      description: Returns detailed information for a specified bin.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Bins
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bins
+      operationId: get-objects-bin-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bin
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/bin'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a bin:
+                  value:
+                    'ia::result':
+                      key: '111'
+                      id: 'Z4-A2-R3a-BF2-B10'
+                      description: 'Bin of adapters 2'
+                      warehouse:
+                        key: '2'
+                        id: 'WA2'
+                        href: /objects/warehouse/2
+                      aisle:
+                        key: '13'
+                        id: 'A2'
+                        href: /objects/aisle/13
+                      row:
+                        key: '23'
+                        id: 'R3a'
+                        href: /objects/row/23
+                      zone:
+                        key: '12'
+                        id: 'Z4'
+                        href: /objects/zone/12
+                      binFace:
+                        key: '3'
+                        id: 'BF2'
+                        href: /objects/bin-face/3
+                      binSize:
+                        key: '5'
+                        id: 'B10'
+                        href: /objects/bin-size/5
+                      href: /objects/bin/111
+                      sequenceNumber: '1221'
+                      status: active
+                      isPortable: false
+                      audit:
+                        createdDateTime: '2021-05-07T21:30:03Z'
+                        modifiedDateTime: '2021-05-07T21:30:03Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error' 
+    patch:
+      summary: Update a bin
+      description: Updates an existing bin by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Bins
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bins
+      operationId: patch-objects-bin-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/bin'
+            examples:
+              Update a single value:
+                value:
+                  description: Bin 2 updated
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated bin
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: Z4-A2-R3a-BF2-B10
+                      href: /objects/bin/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a bin
+      description: Deletes a bin. You can delete a bin if it is not being used and you no longer need it.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Bins
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Bins
+      operationId: delete-objects-bin-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+components:
+  schemas:
+    bin:
+      $ref: ../models/bin.s1.schema.yaml
+    binRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

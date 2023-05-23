@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: core.paas.get-standard-objects
+  description: Standard object read service
+  version: 1.0-internal
+  contact:
+    name: Radu Barbu
+    email: radu.barbu@sage.com
+tags:
+  - name: core.paas.get-standard-objects
+    description: Standard objects for domain services
+paths:
+  /services/core/paas/get-standard-objects:
+    post:
+      summary: Read standard objects
+      description: Read standard objects
+      tags:
+        - core.paas.get-standard-objects
+      operationId: post-services-core-paas-get-standard-objects
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/core.paas.get-standard-objects-req'
+            examples:
+              example-1:
+                value: null
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/core.paas.get-standard-objects-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      mongoDB: null
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    core.paas.get-standard-objects-req:
+      description: Read standard objects request
+      type: object
+      x-mappedTo: __custom__
+    core.paas.get-standard-objects-resp:
+      description: Read standard objects response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        objects:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              object:
+                type: string
+              isAPI:
+                type: boolean
+              isTransactionObject:
+                type: boolean
+              domain:
+                type: string
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

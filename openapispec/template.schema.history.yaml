@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - <view> permission
+    POST:
+      - <create> permission
+    PATCH:
+      - <update> permission
+    DELETE:
+      - <delete> permission
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,19 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/roles/view
+      - co/lists/roles/view/permissions
+      - mp/lists/roles/view
+      - mp/lists/roles/view/permissions
+    POST:
+      - co/lists/roles/create
+      - mp/lists/roles/create
+    PATCH:
+      - co/lists/roles/edit
+      - mp/lists/roles/edit
+    DELETE:
+      - co/lists/roles/delete
+      - mp/lists/roles/delete
+s1:
+  hash: '0'
+  type: rootObject

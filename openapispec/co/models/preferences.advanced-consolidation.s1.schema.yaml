@@ -1,0 +1,110 @@
+title: preferences.advanced-consolidation
+x-mappedTo: cssetup
+type: object
+description: Service to get and update Advanced consolidation preferences
+properties:
+  notificationEmail:
+    type: string
+    description: |-
+      Email address for the consolidation notifications. 
+      An email will be sent to this address upon completion of a successful or failed consolidation.
+    x-mappedTo: CONTACTEMAIL
+    nullable: false
+    example: 'arpit.jain@company.com'
+  minorityInterestGLAccounts:
+    type: object
+    description: |-
+      Minority interest GL accounts. Accounts to which you want minority interest amounts to be assigned.
+    properties:
+      incomeOrExpenseGLAccount:
+        type: object
+        description: The income or expense account for the minority interest GL.
+        x-object: gl-account
+        properties:
+          key:
+            type: string
+            description: System-assigned unique key for the Income or expense account
+            nullable: false
+            x-mappedTo: EQUITYACCTKEY
+            example: '123'
+          id:
+            type: string
+            description: Unique ID for Income or expense account
+            x-mappedTo: EQUITYACCTNO
+            readOnly: true
+            nullable: false
+            example: '1000'
+          name:
+            type: string
+            description: Name or title of Income or expense account title
+            x-mappedTo: EQUITYACCTTITLE
+            readOnly: true
+            nullable: false
+            example: 'Bank of India'
+          href:
+            type: string
+            description: URL of Income or expense account
+            readOnly: true
+            example: '/objects/gl-account/9'
+      interestLiabilityGLAccount:
+        type: object
+        description: The Interest liability account for the minority interest GL.
+        x-object: gl-account
+        properties:
+          key:
+            type: string
+            description: System-assigned unique key for the Liability account
+            nullable: false
+            x-mappedTo: LIABACCTKEY
+            example: '123'
+          id:
+            type: string
+            description: Unique ID for Interest liability account
+            x-mappedTo: LIABACCTNO
+            readOnly: true
+            nullable: false
+            example: '1100'
+          name:
+            type: string
+            description: Name or title of Interest liability account
+            x-mappedTo: LIABACCTTITLE
+            readOnly: true
+            nullable: false
+            example: 'State Bank Of India'
+          href:
+            type: string
+            description: URL of Interest liability account
+            readOnly: true
+            example: '/objects/gl-account/12'
+  consolidatingLocation:
+    type: object
+    description: The location to which the consolidated financial data is assigned.
+    x-object: location
+    properties:
+      key:
+        type: string
+        description: System-assigned unique key for the location
+        nullable: false
+        x-mappedTo: LOCATIONKEY
+        example: '123'
+      id:
+        type: string
+        description: Unique identifier for the location
+        x-mappedTo: LOCATIONID
+        readOnly: true
+        nullable: false
+        example: '999'
+      name:
+        type: string
+        description: Name of the location
+        x-mappedTo: LOCATIONNAME
+        readOnly: true
+        nullable: false
+        example: 'India'
+      href:
+        description: URL of consolidating location
+        type: string
+        readOnly: true
+        example: '/objects/location/65'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - po/lists/popricelist/view
+    POST:
+      - po/lists/popricelist/create
+    PATCH:
+      - po/lists/popricelist/edit
+    DELETE:
+      - po/lists/popricelist/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

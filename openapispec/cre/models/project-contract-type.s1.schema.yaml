@@ -1,0 +1,30 @@
+title: project-contract-type
+type: object
+x-mappedTo: projectcontracttype
+properties:
+  key:
+    type: string
+    description: System-assigned key of the project contract type
+    example: 2
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the project contract type
+    example: COM
+    x-mappedTo: PROJECTCONTRACTTYPEID
+    x-mutable: false
+  name:
+    type: string
+    description: Project contract type name
+    example: Commercial
+    x-mappedTo: PROJECTCONTRACTTYPENAME
+  href:
+    type: string
+    description: URL of the project contract type
+    example: /objects/project-contract-type/2
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

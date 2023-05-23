@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: ap-tax-schedule-map
+  description: An Accounts Payable tax schedule map is used to associate tax schedules with one or more combinations of contact tax groups and item tax groups. These maps drive the taxes that are applied to a line item.
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Accounts Payable tax schedule maps
+    description: Tax schedule maps are used to associate tax schedules with one or more combinations of contact tax groups, account label tax groups, and item tax groups. These maps drive the taxes that are applied to a line item.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ap-tax-schedule-map:
+    get:
+      summary: List Accounts Payable tax schedule maps
+      description: 'Returns a collection with a key, ID, and link for each Accounts Payable tax schedule map.'
+      tags:
+        - Accounts Payable tax schedule maps
+      operationId: get-objects-ap-tax-schedule-map
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-tax-schedule-map objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of Accounts Payable tax schedule maps:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: '2'
+                        href: /objects/ap-tax-schedule-map/2
+                      - key: '15'
+                        id: '15'
+                        href: /objects/ap-tax-schedule-map/15
+                      - key: '12'
+                        id: '12'
+                        href: /objects/ap-tax-schedule-map/12
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Accounts Payable tax schedule map
+      description: Creates a new Accounts Payable tax schedule map.
+      tags:
+        - Accounts Payable tax schedule maps
+      operationId: post-objects-ap-tax-schedule-map
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-tax-schedule-map'
+                - $ref: '#/components/schemas/ap-tax-schedule-mapRequiredProperties'
+            examples:
+              Creates a/an Accounts Payable tax schedule map:
+                value:
+                  taxSchedule:
+                    name: Alaska Tax Schedule
+                  itemTaxGroup:
+                    id: Auto Tax Group
+                  contactTaxGroup:
+                    id: Auto Contact Tax
+                  taxSolution:
+                    id: United Kingdom - VAT
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New Accounts Payable tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: '2'
+                      href: /objects/ap-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ap-tax-schedule-map/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Accounts Payable tax schedule map.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '2'
+    get:
+      summary: Get a/an Accounts Payable tax schedule map
+      description: Returns detailed information for a particular Accounts Payable tax schedule map.
+      tags:
+        - Accounts Payable tax schedule maps
+      operationId: get-objects-ap-tax-schedule-map-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-tax-schedule-map'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the Accounts Payable tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: '2'
+                      itemTaxGroup:
+                        id: Auto Tax Group
+                        key: '9'
+                        href: /objects/item-tax-group/9
+                      contactTaxGroup:
+                        id: Auto Contact Tax
+                        key: '1'
+                        href: /objects/contact-tax-group/1
+                      taxSchedule:
+                        name: Tax Alaska
+                        key: '2'
+                        id: '2'
+                        href: /objects/purchasing-tax-schedule/2
+                      isSystemGenerated: false
+                      taxSolution:
+                        id: UK Tax Solution
+                        key: '2'
+                        href: /objects/tax-solution/2
+                      href: /objects/ap-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Accounts Payable tax schedule map
+      description: Updates an existing Accounts Payable tax schedule map by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Accounts Payable tax schedule maps
+      operationId: patch-objects-ap-tax-schedule-map-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-tax-schedule-map'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: '2'
+            examples:
+              Updates a/an Accounts Payable tax schedule map:
+                value:
+                  contactTaxGroup:
+                    id: Contact Tax Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-tax-schedule-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated Accounts Payable tax schedule map:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      href: /objects/ap-tax-schedule-map/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Accounts Payable tax schedule map
+      description: Deletes a/an Accounts Payable tax schedule map.
+      tags:
+        - Accounts Payable tax schedule maps
+      operationId: delete-objects-ap-tax-schedule-map-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ap-tax-schedule-map:
+      $ref: ../models/ap-tax-schedule-map.s1.schema.yaml
+    ap-tax-schedule-mapRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

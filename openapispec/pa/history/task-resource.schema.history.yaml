@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/taskresources/view
+    POST:
+      - pa/lists/taskresources/create
+    PATCH:
+      - pa/lists/taskresources/edit
+    DELETE:
+      - pa/lists/taskresources/delete
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: customer-contact
+  description: customer-contact API
+  version: '1.0'
+  contact:
+    email: samay.jain@sage.com
+    name: Samay Jain
+tags:
+  - name: Customer contacts
+    description: Contact information for a customer.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/customer-contact:
+    get:
+      summary: List Customer contacts
+      description: Returns a collection with a key, ID, and link for each customer contact. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Customer contacts
+      operationId: get-objects-customer-contact
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-contact objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List customer contacts: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/customer-contact/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer contact.
+    get:
+      summary: Get a customer contact
+      description: Returns detailed information for a specified customer contact.
+      tags:
+        - Customer contacts
+      operationId: get-objects-customer-contact-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the customer-contact
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/customer-contact'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a customer contact: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    customer-contact:
+      $ref: ../models/customer-contact.s1.schema.yaml
+    customer-contactRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - id
+        customer:
+          required:
+            - entity
+      required:
+        - name #categoryName
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

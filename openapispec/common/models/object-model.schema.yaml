@@ -1,0 +1,17 @@
+title: object-model
+type: object
+description: Generic response for object model definition
+properties:
+  fields:
+    type: object
+  groups:
+    type: object
+  refs:
+    type: object
+  idempotenceSupported:
+    type: boolean
+    example: true
+    default: true
+  httpMethods:
+    type: string
+    example: OPTIONS,GET,DELETE,PATCH,POST

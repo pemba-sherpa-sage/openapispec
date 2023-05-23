@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: location-group
+  description: location-group API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Location groups
+    description: A location group is a specified set of locations, or a set of locations that meet certain criteria. You can use groups to filter or display information in multiple ways, for instance by showing data from only certain locations.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/location-group:
+    get:
+      summary: List location groups
+      description: |
+        Returns up to 100 location groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find location groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - Location groups
+      operationId: get-objects-location-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of location groups
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of location groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/location-group/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the location group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a location group
+      description: Returns detailed information for a specified location group.
+      tags:
+        - Location groups
+      operationId: get-objects-location-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the location group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/location-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the location group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    location-group:
+      $ref: ../models/location-group.s1.schema.yaml
+    location-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

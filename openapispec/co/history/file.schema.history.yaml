@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/supportingdocumentdata/view
+      - mp/lists/supportingdocumentdata/view
+    POST:
+    PATCH:
+    DELETE:
+      - co/lists/supportingdocumentdata/delete
+      - mp/lists/supportingdocumentdata/delete
+s1:
+  hash: '0'
+  type: ownedObject

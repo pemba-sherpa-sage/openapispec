@@ -1,0 +1,228 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template-milestone
+  description: revenue-recognition-template-milestone API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Revenue recognition template milestones
+    description: Milestone information for revenue recognition templates that have a recognition method of percent complete, milestone, or custom.
+paths:
+  /objects/revenue-recognition-template-milestone:
+    get:
+      summary: List revenue recognition template milestones
+      description: Returns a collection with a key, ID, and link for each revenue recognition template milestone. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition template milestones
+      operationId: get-objects-revenue-recognition-template-milestone
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template-milestone objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List revenue recognition template milestones: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/revenue-recognition-template-milestone/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the revenue recognition template milestone.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a revenue recognition template milestone
+      description: Returns detailed information for a specified revenue recognition template milestone.
+      tags:
+        - Revenue recognition template milestones
+      operationId: get-objects-revenue-recognition-template-milestone-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue-recognition-template-milestone
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/revenue-recognition-template-milestone.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a revenue recognition template milestone: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    revenue-recognition-template-milestone:
+      $ref: '#/components/schemas/revenue-recognition-template-milestone.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    revenue-recognition-template-milestone.s1.schema:
+      title: revenue-recognition-template-milestone
+      x-mappedTo: REVRECTEMPLMILESTONE
+      x-ownedBy: revenue-recognition-template
+      type: object
+      description: Milestone information for revenue recognition templates that have a recognition method of percent complete, milestone, or custom.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the revenue recognition template milestone.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        id:
+          type: string
+          description: Revenue recognition template milestone ID. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '23'
+        href:
+          type: string
+          description: URL for the revenue recognition template milestone.
+          readOnly: true
+          example: /objects/revenue-recognition-template-milestone/23
+        template:
+          type: object
+          description: Header level details for the revenue recognition template's milestone entries.
+          x-mappedTo: REVRECTEMPLATE
+          x-object: revenue-recognition-template
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the revenue recognition template.
+              x-mappedTo: TEMPLATEKEY
+              example: null
+            id:
+              type: string
+              description: Unique identifier for the revenue recognition template.
+              x-mappedTo: TEMPLATEKEY
+              example: null
+            href:
+              type: string
+              description: URL for the revenue recognition template.
+              readOnly: true
+        periodOffset:
+          type: integer
+          description: Determines how many periods in the future to create the potential revenue recognition journal entries in the schedule.
+          x-mappedTo: MPERIODOFFSET
+          example: null
+        percentAmount:
+          type: number
+          description: Indicates the percentage of the revenue recognition that should be applied to the corresponding account for the corresponding offset period.
+          x-mappedTo: PERCAMOUNT
+          example: null
+        description:
+          type: string
+          description: Description of the milestone.
+          x-mappedTo: DESCRIPTION
+          example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,29 @@
+title: row
+type: object
+description: A row is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+x-mappedTo: icrow
+properties:
+  key:
+    type: string
+    description: System-assigned key for the row.
+    x-mappedTo: RECORDNO
+    example: '2'
+    readOnly: true
+  id:
+    type: string
+    description: Name or other unique identifier for the row. The row ID cannot be modified.
+    x-mappedTo: ROWKEY
+    x-mutable: false
+    example: 'R3ADW'
+  description:
+    type: string
+    description: Description for the row.
+    x-mappedTo: ROWDESC
+    example: 'Row 3A Dishwashers'
+  href:
+    type: string
+    description: URL for the row.
+    readOnly: true
+    example: '/objects/row/2'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

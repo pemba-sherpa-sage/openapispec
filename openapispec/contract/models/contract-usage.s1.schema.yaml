@@ -1,0 +1,305 @@
+title: contract-usage
+x-mappedTo: CONTRACTUSAGE
+type: object
+description: Contract usage data including contract line and contract header information.
+properties:
+  key:
+    type: string
+    description: Contract usage data Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '145'
+  id:
+    type: string
+    description: Contract usage data Id
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '145'
+  contract:
+    type: object
+    x-mappedTo: CONTRACT
+    x-object: contract
+    properties:
+      key:
+        type: string
+        x-mappedTo: CONTRACTKEY
+      id:
+        type: string
+        description: Contract
+        x-mappedTo: CONTRACTID
+      name:
+        type: string
+        description: Contract name
+        x-mappedTo: CONTRACTNAME
+      baseCurrency:
+        type: string
+        x-mappedTo: BASECURR
+      txnCurrency:
+        type: string
+        x-mappedTo: CURRENCY
+      beginDate:
+        type: string
+        x-mappedTo: CONTRACTBEGINDATE
+  customer:
+    type: object
+    x-mappedTo: CUSTOMER
+    x-object: customer
+    properties:
+      id:
+        type: string
+        description: Customer id
+        x-mappedTo: CUSTOMERID
+      key:
+        type: string
+        description: Customer key
+        x-mappedTo: CUSTOMERKEY
+      name:
+        type: string
+        description: Customer name
+        x-mappedTo: CUSTOMERNAME
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/customer/413'
+  multiEntityLocation:
+    type: object
+#   x-mappedTo:
+#   x-object: location
+    properties:
+      key:
+        type: string
+        description: Location key
+        x-mappedTo: CONTRACT.MELOCATIONKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/location/413'
+
+  priceList:
+    type: object
+#   x-mappedTo:
+#   x-object: price-list
+    properties:
+      key:
+        type: string
+        description: Price list key
+        x-mappedTo: CONTRACT.PRCLSTKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/price-list/413'
+  contractLine:
+    type: object
+    x-mappedTo: CONTRACTDETAIL
+    x-object: contract-line
+    properties:
+      key:
+        type: string
+        x-mappedTo: CONTRACTDETAILKEY
+      id:
+        type: string
+        description: Contract detail key
+        x-mappedTo: CONTRACTDETAILKEY
+      lineNumber:
+        type: string
+        description: Contract line number
+        x-mappedTo: CONTRACTLINENO
+  employee:
+    type: object
+#   x-mappedTo: EMPLOYEE
+#   x-object: employee
+    properties:
+      key:
+        type: string
+        description: Employee key
+        x-mappedTo: CONTRACTDETAIL.EMPLOYEEDIMKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/employee/1'
+  project:
+    type: object
+#   x-mappedTo: PROJECT
+#   x-object: project
+    properties:
+      key:
+        type: string
+        description: Project key
+        x-mappedTo: CONTRACTDETAIL.PROJECTDIMKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/project/1'
+  asset:
+    type: object
+#   x-mappedTo: ASSET
+#   x-object: asset
+    properties:
+      key:
+        type: string
+        description: Asset key
+        x-mappedTo: CONTRACTDETAIL.ASSETDIMKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/asset/1'
+  class:
+    type: object
+#   x-mappedTo: CLASS
+#   x-object: class
+    properties:
+      key:
+        type: string
+        description: Class key
+        x-mappedTo: CONTRACTDETAIL.CLASSDIMKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/class/1'
+  department:
+    type: object
+#   x-mappedTo: DEPARTMENT
+#   x-object: department
+    properties:
+      key:
+        type: string
+        description: Department Key
+        readOnly: true
+        x-mappedTo: DEPARTMENTID
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/department/1'
+  location:
+    type: object
+#   x-mappedTo: LOCATION
+#   x-object: location
+    properties:
+      key:
+        type: string
+        description: Location Key
+        x-mappedTo: CONTRACTDETAIL.LOCATIONKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/location/413'
+  usageDate:
+    type: string
+    description: Usage date
+    x-mappedTo: USAGEDATE
+    format: date
+    example: '2022-02-01'
+  quantity:
+    type: string
+    description: Usage quantity
+    x-mappedTo: QUANTITY
+    example: '1'
+  item:
+    type: object
+    x-mappedTo: ITEM
+    x-object: item
+    properties:
+      id:
+        type: string
+        description: Item ID
+        x-mappedTo: ITEMID
+      key:
+        type: string
+        description: Item Key
+        x-mappedTo: ITEMKEY
+      name:
+        type: string
+        description: Item name
+        x-mappedTo: ITEMNAME
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/item/413'
+  manager:
+    type: object
+#   x-mappedTo:
+#   x-object:
+    properties:
+      key:
+        type: string
+        description: Manager key
+        x-mappedTo: PROJECT.MANAGERKEY
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/contact/413'
+  documentId:
+    type: string
+    description: Document ID
+    readOnly: true
+    x-mappedTo: DOCID
+# Unable to see usageType in GET call
+#  usageType:
+#    type: string
+#    description: Usage type
+#    readOnly: true
+#    x-mappedTo: TYPE
+#    example: 'revenue'
+#    enum:
+#      - 'billingVariable'
+#      - 'revenue'
+#      - 'cancelled'
+#      - 'trackedRevenue'
+#      - 'billingCommitted'
+#      - 'trackedVariable'
+#      - 'billingOverage'
+#    x-mappedToValues:
+#      - 'Billing Variable'
+#      - 'Revenue'
+#      - 'Cancelled'
+#      - 'Tracked Revenue'
+#      - 'Billing Committed'
+#      - 'Tracked Variable'
+#      - 'Billing Overage'
+#    default: 'billingVariable'
+  revenueScheduleLine:
+    type: object
+    x-mappedTo: CONTRACTREVENUESCHEDULEENTRY
+    x-object: contract-revenue-schedule-line
+    properties:
+      key:
+        type: string
+        description: Revenue schedule entry key
+        x-mappedTo: REVENUESCHEDULEENTRYKEY
+      revenueScheduleKey:
+        type: string
+        x-mappedTo: REVENUESCHEDULEKEY
+      revenuePostingDate:
+        type: string
+        x-mappedTo: REVENUEPOSTINGDATE
+      revenueAmount:
+        type: string
+        x-mappedTo: REVENUEAMOUNT
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/contract-revenue-schedule-line/1'
+  revenueToScheduleLine:
+    type: object
+#   x-mappedTo:
+#   x-object:
+    properties:
+      key:
+        type: string
+        description: Revenue to schedule entry key
+        x-mappedTo: REVENUE2SCHEDULEENTRYKEY
+      revenueToScheduleKey:
+        type: string
+        x-mappedTo: REVENUE2SCHEDULEKEY
+      revenueToPostingDate:
+        type: string
+        x-mappedTo: REVENUE2POSTINGDATE
+      revenueToAmount:
+        type: string
+        x-mappedTo: REVENUE2AMOUNT
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/contract-revenue-schedule-line/1'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

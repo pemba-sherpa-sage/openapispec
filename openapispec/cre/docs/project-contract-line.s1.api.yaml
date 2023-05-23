@@ -1,0 +1,2157 @@
+openapi: 3.0.0
+info:
+  title: project-contract-line
+  description: project-contract-line API
+  version: '1.0'
+  contact:
+    name: Smarajit Ghosh
+    email: smarajit.ghosh@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Project contract lines
+    description: A project contract line can be added to a project contract. Multiple lines on a contract  allow for different types of billing (lump sum, progress, cost plus, T&M) for each line.
+paths:
+  /objects/project-contract-line:
+    get:
+      summary: List project contract lines
+      description: Returns a collection with a key, ID, and link for each project contract line.
+      tags:
+        - Project contract lines
+      operationId: get-objects-project-contract-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-contract-line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-result-collection-of-project-contract-lines:
+                  value:
+                    ia::result:
+                      - key: '7'
+                        id: '7'
+                        href: /objects/project-contract-line/7
+                      - key: '4'
+                        id: '4'
+                        href: /objects/project-contract-line/4
+                      - key: '6'
+                        id: '6'
+                        href: /objects/project-contract-line/6
+                      - key: '2'
+                        id: '2'
+                        href: /objects/project-contract-line/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/project-contract-line/3
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project contract line
+      description: Creates a new project contract line.
+      tags:
+        - Project contract lines
+      operationId: post-objects-project-contract-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-line.s1.schema'
+                - $ref: '#/components/schemas/project-contract-lineRequiredProperties'
+            examples:
+              example-create-project-contract-line:
+                value:
+                  projectContract:
+                    id: BTI-05
+                  id: '002'
+                  name: line 2
+                  description: Contract:BTI-05 - Line 2
+                  contractLineDate: '2021-10-05'
+                  account:
+                    id: '5001'
+                  billing:
+                    billingType: progressBill
+                    maximumBilling: totalPrice
+                    summarizeBill: false
+                  status: active
+                  dimensions:
+                    project:
+                      id: DIM - BTI
+                    item:
+                      id: '12345'
+                  scope: Initial survey
+                  internalReference:
+                    referenceNumber: Ref-BTI-05-004
+                    signedBy:
+                      id: '1'
+                  isBillable: true
+              example-create-project-contract-line-with-lineentry:
+                value:
+                  projectContract:
+                    id: BTI-05
+                  id: '001'
+                  name: line 1
+                  description: Contract:BTI-05 - Line 1
+                  contractLineDate: '2021-10-05'
+                  account:
+                    id: '5001'
+                  billing:
+                    billingType: progressBill
+                    maximumBilling: totalPrice
+                    summarizeBill: false
+                  status: active
+                  dimensions:
+                    project:
+                      id: DIM - BTI
+                    item:
+                      id: '12345'
+                  scope: Initial survey
+                  internalReference:
+                    referenceNumber: Ref-BTI-03-003
+                    signedBy:
+                      id: '1'
+                  isBillable: true
+                  projectContractLineEntries:
+                    - workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '1'
+                      externalUOM: each
+                      unitPrice: '97'
+                      priceMarkupPercent: '5'
+                      memo: null
+                      priceEffectiveDate: '2021-10-14'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-contract-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-create-project-contract-line:
+                  value:
+                    ia::result:
+                      key: '7'
+                      href: /objects/project-contract-line/7
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/project-contract-line/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the project contract line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project contract line
+      description: Returns detailed information for a particular project contract line.
+      tags:
+        - Project contract lines
+      operationId: get-objects-project-contract-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-contract-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/project-contract-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-get-project-contract-line:
+                  value:
+                    ia::result:
+                      key: '4'
+                      id: '003'
+                      projectContract:
+                        key: '1'
+                        id: BTI-01
+                        name: Berkeley Technology Inc - Contract 01[Revised]
+                        href: /objects/project-contract/1
+                      name: 'BTI-01: line 3'
+                      parent:
+                        key: '2'
+                        id: '002'
+                        name: line 2
+                        href: /objects/project-contract-line/2
+                      description: additional services
+                      contractLineDate: '2021-10-05'
+                      account:
+                        key: '207'
+                        id: '5001'
+                        name: Construction
+                        href: /objects/account/207
+                      retainagePercentage: '0.00'
+                      isBillable: true
+                      billingSetup:
+                        billingType: progressBill
+                        maximumBilling: totalPrice
+                        maximumBillingAmount: '0.00'
+                        summarizeBill: false
+                      billing:
+                        billedPrice: '2810.65'
+                        billedNetRetainage: '2810.65'
+                        percentBilled: '50.00'
+                        percentBilledNetRetainage: '50.00'
+                        retainageHeld: '0.00'
+                        retainageReleased: '0.00'
+                        retainageBalance: '0.00'
+                        paymentsReceived: '1000.00'
+                        previouslyAppliedPrice: '0.00'
+                      summary:
+                        originalPrice: '0.00'
+                        revisionPrice: '0.00'
+                        forecastPrice: '0.00'
+                        approvedChangePrice: '0.00'
+                        pendingChangePrice: '210.65'
+                        otherPrice: '0.00'
+                        totalPrice: '0.00'
+                      dimensions:
+                        location:
+                          key: '1'
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        customer:
+                          key: 14
+                          id: BTI
+                          name: Berkeley Technology Inc
+                          href: /objects/customer/14
+                        department:
+                          key: 3
+                          id: '3'
+                          name: Engineering
+                          href: /objects/department/3
+                        project:
+                          key: '1'
+                          id: DIM - BTI
+                          name: Dimensions - Berkeley Technology Inc
+                          href: /objects/project/1
+                        vendor:
+                          key: '43'
+                          id: 1099 Int
+                          name: 1099 Int
+                          href: /objects/vendor/43
+                        employee:
+                          key: '1'
+                          id: '1'
+                          name: Reser
+                          href: /objects/employee/1
+                        item:
+                          key: '18'
+                          id: Implementation
+                          name: Implimentation
+                          href: /objects/item/18
+                        class:
+                          key: '6'
+                          id: '4'
+                          name: Professional Services
+                          href: /objects/class/6
+                        excludeFromGLBudget: false
+                        scope: Initial survey
+                        inclusions: NA
+                        exclusions: NA
+                        terms: Standard
+                        schedule:
+                          scheduledStartDate: '2021-06-12'
+                          actualStartDate: '2021-06-15'
+                          scheduledCompletionDate: '2021-06-21'
+                          revisedCompletionDate: '2021-06-28'
+                          substantialCompletionDate: '2021-06-20'
+                          actualCompletionDate: '2021-06-28'
+                          noticeToProceedDate: '2021-06-01'
+                          responseDueDate: '2021-06-05'
+                          executedOnDate: '2021-06-08'
+                          scheduleImpact: 2 days
+                        internalReference:
+                          referenceNumber: Ref-BTI-03-003
+                          initiatedBy:
+                            key: '2'
+                            id: '2'
+                            name: Hatcher
+                            href: /objects/employee/2
+                          verbalBy:
+                            key: '2'
+                            id: '2'
+                            name: Hatcher
+                            href: /objects/employee/2
+                          issuedBy:
+                            key: '28'
+                            id: '22'
+                            name: Chandler
+                            href: /objects/employee/28
+                          issuedOnDate: '2021-06-10'
+                          approvedBy:
+                            key: '31'
+                            id: '23'
+                            name: Jurasek
+                            href: /objects/employee/31
+                          approvedOnDate: '2021-06-11'
+                          signedBy:
+                            key: '1'
+                            id: '1'
+                            name: Reser
+                            href: /objects/employee/1
+                          signedOnDate: '2021-06-11'
+                          source: None
+                          sourceReferenceNumber: NA
+                        externalReference:
+                          referenceNumber: E-REF-003
+                          verbalBy:
+                            key: '94'
+                            name: Aaron
+                            href: /objects/contact/94
+                          approvedBy:
+                            key: '115'
+                            name: Ashish
+                            href: /objects/contact/115
+                          approvedOnDate: '2021-06-12'
+                          signedBy:
+                            key: '224'
+                            name: Able and Sons, Accountants
+                            href: /objects/contact/224
+                          signedOnDate: '2021-06-15'
+                      attachment:
+                        id: pc-att-1
+                        key: '6'
+                        href: /objects/attachment/6
+                      status: active
+                      audit:
+                        createdDateTime: '2021-12-07T21:26:38Z'
+                        modifiedDateTime: '2021-12-18T00:08:31Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      rateTables:
+                        default:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        timesheet:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        purchasing:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        ap:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        gl:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        creditCard:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                        employeeExpense:
+                          key: '1'
+                          id: rt_main
+                          href: /objects/rate-table/1
+                      projectContractLineEntries:
+                        - key: '5'
+                          id: '5'
+                          projectContractLine:
+                            key: '4'
+                            id: '003'
+                            href: /objects/project-contract-line/4
+                          workflowType: pendingChange
+                          dimensions:
+                            location:
+                              key: 1
+                              id: '1'
+                              name: United States of America
+                              href: /objects/location/1
+                            department:
+                              key: 3
+                              id: '3'
+                              name: Engineering
+                              href: /objects/department/3
+                            project:
+                              key: '1'
+                              id: DIM - BTI
+                              name: Dimensions - Berkeley Technology Inc
+                              href: /objects/project/1
+                            customer:
+                              key: '14'
+                              id: BTI
+                              name: Berkeley Technology Inc
+                              href: /objects/customer/14
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                            employee:
+                              key: '27'
+                              id: '12'
+                              name: Eberhardt
+                              href: /objects/employee/27
+                            item:
+                              key: '240'
+                              id: '3'
+                              name: 'Rebar #10'
+                              href: /objects/item/240
+                            class:
+                              key: '6'
+                              id: '4'
+                              name: Professional Services
+                              href: /objects/class/6
+                          quantity: '2.50'
+                          externalUOM: box
+                          unitPrice: '95.75'
+                          price: '191.50'
+                          priceMarkupPercent: '10.00'
+                          priceMarkupAmount: '19.15'
+                          linePrice: '210.65'
+                          memo: '[updated]'
+                          priceEffectiveDate: '2021-10-21'
+                          href: /objects/project-contract-line-entry/5
+                      changeRequestEntries:
+                        - key: '6'
+                          id: '6'
+                          projectContractLine:
+                            key: '4'
+                            id: '003'
+                            href: /objects/project-contract-line/4
+                          workflowType: pendingChange
+                          dimensions:
+                            location:
+                              key: 1
+                              id: '1'
+                              name: United States of America
+                              href: /objects/location/1
+                            department:
+                              key: 3
+                              id: '3'
+                              name: Engineering
+                              href: /objects/department/3
+                            project:
+                              key: '1'
+                              id: DIM - BTI
+                              name: Dimensions - Berkeley Technology Inc
+                              href: /objects/project/1
+                            customer:
+                              key: '14'
+                              id: BTI
+                              name: Berkeley Technology Inc
+                              href: /objects/customer/14
+                            vendor:
+                              key: '43'
+                              id: 1099 Int
+                              name: 1099 Int
+                              href: /objects/vendor/43
+                            employee:
+                              key: '27'
+                              id: '12'
+                              name: Eberhardt
+                              href: /objects/employee/27
+                            item:
+                              key: '240'
+                              id: '3'
+                              name: 'Rebar #10'
+                              href: /objects/item/240
+                            class:
+                              key: '6'
+                              id: '4'
+                              name: Professional Services
+                              href: /objects/class/6
+                          quantity: '2.50'
+                          externalUOM: box
+                          unitPrice: '100.00'
+                          price: '1000.00'
+                          priceMarkupPercent: '10.00'
+                          priceMarkupAmount: '100.00'
+                          linePrice: '1100.00'
+                          memo: change request
+                          priceEffectiveDate: '2021-10-30'
+                          href: /objects/project-contract-line-entry/6
+                      href: /objects/project-contract-line/4
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project contract line
+      description: Updates an existing project contract line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Project contract lines
+      operationId: patch-objects-project-contract-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-contract-line.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-project-contract-line:
+                value:
+                  name: 'BTI-01: line 1'
+                  description: additional services
+                  dimensions:
+                    vendor:
+                      id: 1099 Int
+                    department:
+                      id: '3'
+                    employee:
+                      id: '1'
+                    class:
+                      id: '4'
+                    item:
+                      id: Implementation
+                  projectContractLineEntries:
+                    - key: '1'
+                      workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '2.5'
+                      externalUOM: box
+                      unitPrice: '95.75'
+                      priceMarkupPercent: '10'
+                      price: '191.50'
+                      priceMarkupAmount: '19.15'
+                      linePrice: '210.65'
+                      memo: updated markup
+                      priceEffectiveDate: '2021-10-21'
+              example-update-project-contract-line-add-line-entry:
+                value:
+                  projectContractLineEntries:
+                    - workflowType: pendingChange
+                      dimensions:
+                        project:
+                          id: DIM - BTI
+                        item:
+                          id: '3'
+                      quantity: '2'
+                      externalUOM: each
+                      unitPrice: '46'
+                      priceMarkupPercent: '10'
+                      memo: added new charge
+                      priceEffectiveDate: '2021-10-10'
+              example-update-project-contract-line-delete-line-entry:
+                value:
+                  projectContractLineEntries:
+                    - ia::operation: delete
+                      key: '2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-contract-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-result-update-project-contract-line:
+                  value:
+                    ia::result:
+                      key: '1'
+                      href: /objects/project-contract-line/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project contract line
+      description: Deletes a project contract line.
+      tags:
+        - Project contract lines
+      operationId: delete-objects-project-contract-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-contract-line:
+      $ref: '#/components/schemas/project-contract-line.s1.schema'
+    project-contract-lineRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    gl-accountref.s1.schema:
+      title: accountref
+      type: object
+      x-object: gl-account
+      properties:
+        key:
+          type: string
+          description: GL Account Key
+          x-mappedTo: ACCOUNTKEY
+          example: '144'
+        id:
+          type: string
+          description: GL Account ID
+          x-mappedTo: ACCOUNTNO
+          example: '1112'
+        name:
+          type: string
+          description: GL Account Title
+          x-mappedTo: ACCOUNTTITLE
+          example: Employee Advances
+        href:
+          type: string
+          readOnly: true
+          example: /objects/gl-account/144
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    project-locationref.s1.schema:
+      title: project-locationref
+      type: object
+      x-object: location
+      properties:
+        key:
+          type: string
+          description: Location key
+          example: 1
+          x-mappedTo: PROJECTLOCATIONKEY
+          readOnly: true
+        id:
+          type: string
+          description: Project location id
+          example: 1
+          x-mappedTo: PROJECTLOCATIONID
+          readOnly: true
+        name:
+          type: string
+          description: Project location name
+          example: United States of America
+          x-mappedTo: PROJECTLOCATIONNAME
+          readOnly: true
+        href:
+          type: string
+          description: URL of the location
+          example: /objects/location/1
+          readOnly: true
+    schedule-calendar.s1.schema:
+      title: schedule-calendar
+      type: object
+      properties:
+        scheduledStartDate:
+          type: string
+          description: Scheduled start date
+          format: date
+          example: '2021-06-15'
+          x-mappedTo: SCHEDULEDSTARTDATE
+        actualStartDate:
+          type: string
+          description: Actual start date
+          format: date
+          example: '2021-06-30'
+          x-mappedTo: ACTUALSTARTDATE
+        scheduledCompletionDate:
+          type: string
+          description: Scheduled completion date
+          format: date
+          example: '2022-11-15'
+          x-mappedTo: SCHEDULEDCOMPLETIONDATE
+        revisedCompletionDate:
+          type: string
+          description: Revised completion date
+          format: date
+          example: '2021-12-15'
+          x-mappedTo: REVISEDCOMPLETIONDATE
+        substantialCompletionDate:
+          type: string
+          description: Substantial completion date
+          format: date
+          example: '2021-09-30'
+          x-mappedTo: SUBSTANTIALCOMPLETIONDATE
+        actualCompletionDate:
+          type: string
+          description: Actual completion date
+          format: date
+          example: '2021-12-15'
+          x-mappedTo: ACTUALCOMPLETIONDATE
+        noticeToProceedDate:
+          type: string
+          description: Notice to proceed date
+          format: date
+          example: '2021-05-30'
+          x-mappedTo: NOTICETOPROCEED
+        responseDueDate:
+          type: string
+          description: Response due date
+          format: date
+          example: '2021-06-05'
+          x-mappedTo: RESPONSEDUE
+        executedOnDate:
+          type: string
+          description: Executed on date
+          format: date
+          example: '2021-06-01'
+          x-mappedTo: EXECUTEDON
+        scheduleImpact:
+          type: string
+          description: Schedule Impact
+          example: None
+          x-mappedTo: SCHEDULEIMPACT
+    internal-document.s1.schema:
+      title: internal-document
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+          description: Reference number
+          example: INT-01
+          x-mappedTo: INTERNALREFNO
+        initiatedBy:
+          type: object
+          description: Initiated by
+          x-object: employee
+          x-mappedTo: internalinitiated
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '2'
+              x-mappedTo: INTERNALINITIATEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 2
+              x-mappedTo: INTERNALINITIATEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Hatcher
+              x-mappedTo: INTERNALINITIATEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/2
+              readOnly: true
+        verbalApprovalBy:
+          type: object
+          description: Verbal approval by
+          x-object: employee
+          x-mappedTo: internalverbal
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '2'
+              x-mappedTo: INTERNALVERBALBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 2
+              x-mappedTo: INTERNALVERBALBY
+            name:
+              type: string
+              description: Employee name
+              example: Hatcher
+              x-mappedTo: INTERNALVERBALBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/2
+              readOnly: true
+        issuedBy:
+          type: object
+          description: Issued by
+          x-object: employee
+          x-mappedTo: internalissued
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '25'
+              x-mappedTo: INTERNALISSUEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 123
+              x-mappedTo: INTERNALISSUEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Marquess
+              x-mappedTo: INTERNALISSUEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/25
+              readOnly: true
+        issuedOnDate:
+          type: string
+          description: Issued on date
+          format: date
+          example: '2021-05-30'
+          x-mappedTo: INTERNALISSUEDON
+        approvedBy:
+          type: object
+          description: Approved by
+          x-object: employee
+          x-mappedTo: internalapproved
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: '1'
+              x-mappedTo: INTERNALAPPROVEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: 1
+              x-mappedTo: INTERNALAPPROVEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Reser
+              x-mappedTo: INTERNALAPPROVEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/1
+              readOnly: true
+        approvedOnDate:
+          type: string
+          description: Approved on date
+          format: date
+          example: '2021-10-02'
+          x-mappedTo: INTERNALAPPROVEDON
+        signedBy:
+          type: object
+          description: Signed by
+          x-object: employee
+          x-mappedTo: internalsigned
+          properties:
+            key:
+              type: string
+              description: Employee key
+              example: 32
+              x-mappedTo: INTERNALSIGNEDBYKEY
+              readOnly: true
+            id:
+              type: string
+              description: Employee id
+              example: Robert
+              x-mappedTo: INTERNALSIGNEDBY
+            name:
+              type: string
+              description: Employee name
+              example: Robert
+              x-mappedTo: INTERNALSIGNEDBYNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the employee
+              example: /objects/employee/32
+              readOnly: true
+        signedOnDate:
+          type: string
+          description: Signed on date
+          format: date
+          example: '2021-05-31'
+          x-mappedTo: INTERNALSIGNEDON
+        source:
+          type: string
+          description: Internal source
+          example: Internal
+          x-mappedTo: INTERNALSOURCE
+        sourceReferenceNumber:
+          type: string
+          description: Internal source reference number
+          example: REF-INT-01
+          x-mappedTo: INTERNALSOURCEREFNO
+    external-document.s1.schema:
+      title: external-document
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+          description: External reference number
+          example: A23
+          x-mappedTo: EXTERNALREFNO
+        verbalApprovalBy:
+          type: object
+          description: Verbal approval by
+          x-object: contact
+          x-mappedTo: externalverbal
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: '6'
+              x-mappedTo: EXTERNALVERBALBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Johnson
+              x-mappedTo: EXTERNALVERBALBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/6
+              readOnly: true
+        approvedBy:
+          type: object
+          description: Approved by
+          x-object: contact
+          x-mappedTo: externalapproved
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: 51
+              x-mappedTo: EXTERNALAPPROVEDBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Jagadish
+              x-mappedTo: EXTERNALAPPROVEDBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/51
+              readOnly: true
+        approvedOnDate:
+          type: string
+          description: Approved on date
+          format: date
+          example: '2021-11-03'
+          x-mappedTo: EXTERNALAPPROVEDON
+        signedBy:
+          type: object
+          description: Signed by
+          x-object: contact
+          x-mappedTo: externalsigned
+          properties:
+            key:
+              type: string
+              description: Contact key
+              example: '200'
+              x-mappedTo: EXTERNALSIGNEDBYKEY
+              readOnly: true
+            name:
+              type: string
+              description: Contact name
+              example: Modulus Industries
+              x-mappedTo: EXTERNALSIGNEDBY
+            href:
+              type: string
+              description: URL of the contact
+              example: /objects/contact/200
+              readOnly: true
+        signedOnDate:
+          type: string
+          description: Signed on date
+          format: date
+          example: '2021-12-01'
+          x-mappedTo: EXTERNALSIGNEDON
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    project-contract-line-entry.s1.schema:
+      title: project-contract-line-entry
+      type: object
+      x-mappedTo: projectcontractlineentry
+      x-ownedBy: project-contract-line
+      properties:
+        key:
+          type: string
+          description: System-assigned key of the project contract line entry
+          example: 1
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier of the project contract line entry
+          x-mappedTo: RECORDNO
+          example: 1
+          readOnly: true
+        href:
+          type: string
+          description: URL of the project contract line entry
+          example: /objects/project-contract-line-entry/1
+          readOnly: true
+        projectContractLine:
+          type: object
+          description: Reference to a project contract line
+          x-object: project-contract-line
+          x-mappedTo: projectcontractline
+          properties:
+            key:
+              type: string
+              description: Project contract line key
+              example: 4
+              x-mappedTo: PROJECTCONTRACTLINEKEY
+              readOnly: true
+            id:
+              type: string
+              description: Project contract line id
+              example: 3
+              x-mappedTo: PROJECTCONTRACTLINEID
+            href:
+              type: string
+              description: URL of the projectContractLine
+              example: /objects/project-contract-line/4
+              readOnly: true
+        workflowType:
+          type: string
+          x-mappedTo: WFTYPE
+          description: Workflow type to use
+          example: revision
+          enum:
+            - original
+            - revision
+            - forecast
+            - other
+          x-mappedToValues:
+            - original
+            - revision
+            - forecast
+            - other
+          default: original
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                location:
+                  type: object
+                  x-object: location
+                  properties:
+                    key:
+                      type: integer
+                      description: Location key
+                      example: 1
+                      x-mappedTo: LOCATIONKEY
+                      readOnly: true
+                    id:
+                      type: string
+                      description: Location id
+                      example: 1
+                      x-mappedTo: LOCATIONID
+                    name:
+                      type: string
+                      description: Location name
+                      example: United States of America
+                      x-mappedTo: LOCATIONNAME
+                      readOnly: true
+                    href:
+                      type: string
+                      description: URL of the location
+                      example: /objects/location/1
+                      readOnly: true
+                department:
+                  type: object
+                  x-object: department
+                  properties:
+                    key:
+                      type: integer
+                      description: Department key
+                      example: 3
+                      x-mappedTo: DEPARTMENTKEY
+                      readOnly: true
+                    id:
+                      type: string
+                      description: Department id
+                      example: 3
+                      x-mappedTo: DEPARTMENTID
+                    name:
+                      type: string
+                      description: Department name
+                      example: Engineering
+                      x-mappedTo: DEPARTMENTNAME
+                      readOnly: true
+                    href:
+                      type: string
+                      description: URL of the department
+                      example: /objects/department/3
+                      readOnly: true
+        quantity:
+          type: string
+          format: decimal-precision-2
+          description: Quantity
+          example: 10
+          x-mappedTo: QTY
+        externalUOM:
+          type: string
+          description: External UOM
+          example: each
+          x-mappedTo: EUOM
+        unitPrice:
+          type: string
+          format: decimal-precision-2
+          description: Unit price
+          example: 50
+          x-mappedTo: UNITPRICE
+        price:
+          type: string
+          format: decimal-precision-2
+          description: Price
+          example: 250
+          x-mappedTo: PRICE
+        priceMarkupPercent:
+          type: string
+          format: decimal-precision-2
+          description: Price markup percent
+          example: 5
+          x-mappedTo: PRICEMARKUPPERCENT
+        priceMarkupAmount:
+          type: string
+          format: decimal-precision-2
+          description: Price markup amount
+          example: 300
+          x-mappedTo: PRICEMARKUPAMOUNT
+        linePrice:
+          type: string
+          format: decimal-precision-2
+          description: Line price
+          example: 750
+          x-mappedTo: LINEPRICE
+        memo:
+          type: string
+          description: Memo
+          example: Awaiting approval
+          x-mappedTo: MEMO
+        priceEffectiveDate:
+          type: string
+          format: date
+          description: Price effective date
+          example: '2021-10-21'
+          x-mappedTo: PRICEEFFECTIVEDATE
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    attachmentref.s1.schema:
+      title: attachmentref
+      type: object
+      description: Supporting document ID.
+      x-object: attachment
+      x-mappedTo: SUPDOC
+      properties:
+        key:
+          type: string
+          description: Attachment key
+          example: 6
+          x-mappedTo: SUPDOCKEY
+          readOnly: true
+        id:
+          type: string
+          description: Attachment id
+          example: att-1
+          x-mappedTo: SUPDOCID
+        href:
+          type: string
+          description: URL of the attachment
+          example: /objects/attachment/6
+          readOnly: true
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    project-contract-line.s1.schema:
+      title: project-contract-line
+      type: object
+      x-mappedTo: projectcontractline
+      properties:
+        key:
+          type: string
+          description: System-assigned key of the project contract line
+          example: 2
+          x-mappedTo: RECORDNO
+          readOnly: true
+        id:
+          type: string
+          description: Project contract line id - unique identifier of the project contract line
+          example: 2
+          x-mappedTo: PROJECTCONTRACTLINEID
+          x-mutable: false
+        href:
+          type: string
+          description: URL of the project contract line
+          example: /objects/project-contract-line/2
+          readOnly: true
+        projectContract:
+          type: object
+          description: Reference to a projectContract
+          x-object: project-contract
+          x-mappedTo: projectcontract
+          properties:
+            key:
+              type: string
+              description: Project contract key
+              example: 1
+              x-mappedTo: PROJECTCONTRACTKEY
+              readOnly: true
+            id:
+              type: string
+              description: Project contract id
+              example: BTI-01
+              x-mappedTo: PROJECTCONTRACTID
+            name:
+              type: string
+              description: Project contract name
+              example: Berkeley Technology Inc - Contract 01
+              readOnly: true
+              x-mappedTo: PROJECTCONTRACTNAME
+            href:
+              type: string
+              description: URL of the projectContract
+              example: /objects/project-contract/1
+              readOnly: true
+        name:
+          type: string
+          description: Project contract line name
+          example: 'BTI-01: line 2'
+          x-mappedTo: NAME
+        parent:
+          type: object
+          description: Parent project contract line of this project contract line
+          x-object: project-contract-line
+          x-mappedTo: PARENT
+          properties:
+            key:
+              type: string
+              description: Parent project contract line key
+              example: 1
+              x-mappedTo: PARENTKEY
+              readOnly: true
+            id:
+              type: string
+              description: Parent project contract line id
+              example: 1
+              x-mappedTo: PARENTID
+            name:
+              type: string
+              description: Parent project contract line name
+              example: 'BTI-01: line 1'
+              x-mappedTo: PARENTNAME
+              readOnly: true
+            href:
+              type: string
+              description: URL of the parent project contract line
+              example: /objects/project-contract-line/1
+              readOnly: true
+        description:
+          type: string
+          description: Describes the project contract line
+          example: Additional services
+          x-mappedTo: DESCRIPTION
+        contractLineDate:
+          type: string
+          format: date
+          description: Project contract line date
+          example: '2021-10-06'
+          x-mappedTo: CONTRACTLINEDATE
+        glAccount:
+          $ref: '#/components/schemas/gl-accountref.s1.schema'
+        retainagePercentage:
+          type: string
+          format: decimal-precision-2
+          description: Retainage percentage
+          example: 10
+          x-mappedTo: RETAINAGEPERCENTAGE
+        isBillable:
+          type: boolean
+          description: Contract is billable
+          example: true
+          x-mappedTo: BILLABLE
+          x-mappedToType: string
+          default: false
+        billing:
+          type: object
+          properties:
+            billedPrice:
+              type: string
+              format: decimal-precision-2
+              description: Billed price
+              example: '1500.00'
+              x-mappedTo: BILLEDPRICE
+              readOnly: true
+            previouslyAppliedPrice:
+              type: string
+              format: decimal-precision-2
+              description: Previously applied price, to date
+              example: '500.00'
+              x-mappedTo: APPLIEDTODATE
+              readOnly: true
+            externalReferenceNumber:
+              type: string
+              description: External reference number
+              example: REF-01
+              x-mappedTo: EXTERNALREFNO
+            billedNetRetainage:
+              type: string
+              format: decimal-precision-2
+              description: Billed net retainage
+              example: '500.00'
+              x-mappedTo: BILLEDNETRETAINAGE
+              readOnly: true
+            percentBilled:
+              type: string
+              format: decimal-precision-2
+              description: Percentage billed
+              example: '50.00'
+              x-mappedTo: PERCENTAGEBILLED
+              readOnly: true
+            percentBilledNetRetainage:
+              type: string
+              format: decimal-precision-2
+              description: Percentage billed net retainage
+              example: '5.00'
+              x-mappedTo: PERCENTAGEBILLEDNETRETAINAGE
+              readOnly: true
+            retainageHeld:
+              type: string
+              format: decimal-precision-2
+              description: Retainage held
+              example: '250.00'
+              x-mappedTo: RETAINAGEHELD
+              readOnly: true
+            retainageReleased:
+              type: string
+              format: decimal-precision-2
+              description: Retainage released
+              example: '250.00'
+              x-mappedTo: RETAINAGERELEASED
+              readOnly: true
+            retainageBalance:
+              type: string
+              format: decimal-precision-2
+              description: Retainage balance
+              example: '250.00'
+              x-mappedTo: RETAINAGEBALANCE
+              readOnly: true
+            paymentsReceived:
+              type: string
+              format: decimal-precision-2
+              description: Payments received
+              example: '1250.00'
+              x-mappedTo: PAYMENTSRECEIVED
+              readOnly: true
+        billingSetup:
+          type: object
+          properties:
+            billingType:
+              type: string
+              x-mappedTo: BILLINGTYPE
+              description: Billing type to use in Project contract line.
+              example: timeAndMaterial
+              enum:
+                - progressBill
+                - timeAndMaterial
+              x-mappedToValues:
+                - Progress
+                - TM
+              default: progressBill
+            maximumBilling:
+              type: string
+              x-mappedTo: MAXIMUMBILLING
+              description: Maximum billing to use in Project contract line.
+              example: specifiedAmount
+              enum:
+                - totalPrice
+                - specifiedAmount
+                - noMaximum
+              x-mappedToValues:
+                - Total revised price
+                - Specified amount
+                - No maximum
+              default: totalPrice
+            maximumBillingAmount:
+              type: string
+              format: decimal-precision-2
+              description: Maximum billing amount
+              example: 10000
+              x-mappedTo: MAXIMUMBILLINGAMOUNT
+            summarizeBill:
+              type: boolean
+              description: Summarize to a single entry
+              example: true
+              x-mappedTo: SUMMARIZEBILL
+              x-mappedToType: string
+              default: false
+        summary:
+          type: object
+          properties:
+            originalPrice:
+              type: string
+              description: Original price
+              format: decimal-precision-2
+              example: 500
+              x-mappedTo: ORIGINALPRICE
+            revisionPrice:
+              type: string
+              description: Revision price
+              format: decimal-precision-2
+              example: 650
+              x-mappedTo: REVISIONPRICE
+            forecastPrice:
+              type: string
+              description: Forecast price
+              format: decimal-precision-2
+              example: 750
+              x-mappedTo: FORECASTPRICE
+            approvedChangePrice:
+              type: string
+              description: Approved change price
+              format: decimal-precision-2
+              example: 650
+              x-mappedTo: APPROVEDCHANGEPRICE
+            pendingChangePrice:
+              type: string
+              description: Pending change price
+              format: decimal-precision-2
+              example: 0
+              x-mappedTo: PENDINGCHANGEPRICE
+            otherPrice:
+              type: string
+              description: Other price
+              format: decimal-precision-2
+              example: 90.5
+              x-mappedTo: OTHERPRICE
+            totalPrice:
+              type: string
+              description: Total price
+              format: decimal-precision-2
+              example: 1048.5
+              x-mappedTo: TOTALREVISEDPRICE
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                location:
+                  $ref: '#/components/schemas/project-locationref.s1.schema'
+                customer:
+                  type: object
+                  x-object: customer
+                  properties:
+                    key:
+                      type: integer
+                      description: Customer key
+                      example: 14
+                      x-mappedTo: PCCUSTOMERKEY
+                      readOnly: true
+                    id:
+                      type: string
+                      description: Customer id
+                      example: BTI
+                      x-mappedTo: PCCUSTOMERID
+                    name:
+                      type: string
+                      description: Customer name
+                      example: Berkeley Technology Inc
+                      x-mappedTo: PCCUSTOMERNAME
+                      readOnly: true
+                    href:
+                      type: string
+                      description: URL of the customer
+                      example: /objects/customer/14
+                      readOnly: true
+                department:
+                  type: object
+                  x-object: department
+                  properties:
+                    key:
+                      type: integer
+                      description: Department key
+                      example: 3
+                      x-mappedTo: DEPARTMENTKEY
+                      readOnly: true
+                    id:
+                      type: string
+                      description: Department id
+                      example: 3
+                      x-mappedTo: DEPARTMENTID
+                    name:
+                      type: string
+                      description: Department name
+                      example: Engineering
+                      x-mappedTo: DEPARTMENTNAME
+                      readOnly: true
+                    href:
+                      type: string
+                      description: URL of the department
+                      example: /objects/department/3
+                      readOnly: true
+        excludeFromGLBudget:
+          type: boolean
+          description: Exclude from GL budget
+          x-mappedTo: GLEXCLUDE
+          x-mappedToType: string
+          example: true
+          default: false
+        scope:
+          type: string
+          description: Scope
+          example: Design
+          x-mappedTo: SCOPE
+        inclusions:
+          type: string
+          description: Inclusions
+          example: Original plan
+          x-mappedTo: INCLUSIONS
+        exclusions:
+          type: string
+          description: Exclusions
+          example: Hardware accessories
+          x-mappedTo: EXCLUSIONS
+        terms:
+          type: string
+          description: Terms
+          example: Standard terms and conditions
+          x-mappedTo: TERMS
+        schedule:
+          $ref: '#/components/schemas/schedule-calendar.s1.schema'
+        internalReference:
+          $ref: '#/components/schemas/internal-document.s1.schema'
+        externalReference:
+          $ref: '#/components/schemas/external-document.s1.schema'
+        rateTables:
+          type: object
+          properties:
+            default:
+              type: object
+              description: Reference to  a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 1
+                  x-mappedTo: DEFAULTRATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-DEFAULT
+                  x-mappedTo: DEFAULTRATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/1
+                  readOnly: true
+            timesheet:
+              type: object
+              description: Reference to  a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 2
+                  x-mappedTo: TSRATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-TIMESHEET
+                  x-mappedTo: TSRATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/2
+                  readOnly: true
+            purchasing:
+              type: object
+              description: Reference to a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 3
+                  x-mappedTo: PORATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-PURCHASING
+                  x-mappedTo: PORATETABLEID
+                href:
+                  type: string
+                  description: URL of the Rate table
+                  example: /objects/rate-table/3
+                  readOnly: true
+            ap:
+              type: object
+              description: Reference to rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Accounts Payable rate table key
+                  example: 4
+                  x-mappedTo: APRATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-AP
+                  x-mappedTo: APRATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/4
+                  readOnly: true
+            gl:
+              type: object
+              description: Reference to a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 5
+                  x-mappedTo: GLRATETABLEKEY
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-GL
+                  x-mappedTo: GLRATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/5
+                  readOnly: true
+            creditCard:
+              type: object
+              description: Reference to a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 6
+                  x-mappedTo: CCRATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Credit Card rate table id
+                  example: RT-CREDITCARD
+                  x-mappedTo: CCRATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/6
+                  readOnly: true
+            employeeExpense:
+              type: object
+              description: Reference to a rate table
+              x-object: rate-table
+              properties:
+                key:
+                  type: string
+                  description: Rate table key
+                  example: 7
+                  x-mappedTo: EERATETABLEKEY
+                  readOnly: true
+                id:
+                  type: string
+                  description: Rate table id
+                  example: RT-EMPEXPENSE
+                  x-mappedTo: EERATETABLEID
+                href:
+                  type: string
+                  description: URL of the rate table
+                  example: /objects/rate-table/7
+                  readOnly: true
+        projectContractLineEntries:
+          type: array
+          x-mappedTo: ITEMS
+          x-object: project-contract-line-entry
+          items:
+            $ref: '#/components/schemas/project-contract-line-entry.s1.schema'
+        changeRequestEntries:
+          type: array
+          x-mappedTo: CRENTRIES
+          x-object: project-contract-line-entry
+          items:
+            $ref: '#/components/schemas/project-contract-line-entry.s1.schema'
+        attachment:
+          $ref: '#/components/schemas/attachmentref.s1.schema'
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

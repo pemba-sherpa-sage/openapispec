@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  title: billing price list
+  description: Billing price list API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Billing price lists
+    description: |-
+      Use billing price lists to create pricing strategies for items with prices that are determined based on a fixed fee, the quantity used, or the contracted quantity. Billing price lists support several pricing models, including prices per thousands, discount tiers, minimum flat fees, and more. A company can have multiple billing price lists. 
+
+      The `billing-price-list` object is a header for billing price list entries. You create the list and then create the billing price list entries associated with the list.
+paths:
+  /objects/billing-price-list:
+    get:
+      summary: List billing price lists
+      description: |
+        Returns up to 100 billing price lists from the collection with a key, ID, and link for each list. This operation is mostly for use in testing; use the query service to find billing price lists that meet specific criteria and to specify the properties that you want in the response.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: get-objects-billing-price-list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing price lists.
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List billing price lists:
+                  value:
+                    ia::result:
+                      - key: '24'
+                        id: SoftwarePackagePL
+                        href: /objects/billing-price-list/24
+                      - key: '37'
+                        id: API
+                        href: /objects/billing-price-list/37
+                      - key: '1'
+                        id: SoftwareFinance
+                        href: /objects/billing-price-list/1
+                    ia::meta:
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a billing price list
+      description: Creates a new billing price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Add Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: post-objects-billing-price-list
+      requestBody:
+        description: Billing price list to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/billing-price-list.s1.schema'
+                - $ref: '#/components/schemas/billingPriceListRequiredProperties'
+            examples:
+              Create a billing price list:
+                value:
+                  status: active
+                  name: SoftwarePackagePL
+                  description: Billing price list for software packages
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billing price list
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New billing price list created:
+                  value:
+                    ia::result:
+                      key: '40'
+                      id: SoftwarePackagePL_1
+                      href: /objects/billing-price-list/40
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/billing-price-list/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the billing price list.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a billing price list
+      description: Returns detailed information for a specified billing price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: get-objects-billing-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: billing price list
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/billing-price-list.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Billing price list details:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: SoftwarePackagePL
+                      status: active
+                      name: SoftwarePackagePL
+                      description: Software billing price list
+                      audit:
+                        createdDateTime: null
+                        modifiedDateTime: null
+                        createdBy: null
+                        modifiedBy: null
+                      href: /objects/billing-price-list/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a billing price list
+      description: Updates an existing billing price list by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Edit Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: patch-objects-billing-price-list-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/billing-price-list.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            example:
+              Change billing price list status:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Billing price list updated
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              example:
+                Update successful:
+                  value:
+                    ia::result:
+                      key: '40'
+                      id: SoftwarePackagePL
+                      href: /objects/billing-price-list/40
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a billing price list
+      description: Deletes a billing price list. You can delete a billing price list if it has not been used by any contracts. Deleted price lists cannot be recovered. Alternatively, you can change the status to Inactive, which prevents it from being used but retains the price list for historical purposes.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Delete Contract Price Lists
+      tags:
+        - Billing price lists
+      operationId: delete-objects-billing-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billingPriceList:
+      $ref: '#/components/schemas/billing-price-list.s1.schema'
+    billingPriceListRequiredProperties:
+      type: object
+      required:
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    billing-price-list.s1.schema:
+      title: billing-price-list
+      type: object
+      x-mappedTo: contractpricelist
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the billing price list. Used to identify the price list in URLs or JSON bodies for all operations on the price list.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '12'
+        id:
+          type: string
+          description: Unique name or ID for the billing price list.
+          x-mappedTo: NAME
+          example: Lumber billing price list
+        description:
+          type: string
+          description: Description of the billing price list.
+          x-mappedTo: DESCRIPTION
+          example: Subscription price list
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: Project type
+  description: Project type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Project types
+    description: Use project types to group projects into categories for reporting (such as, consulting, internal, or training).
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-type:
+    get:
+      summary: List project types
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each project type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Project Types
+      tags:
+         - Project types
+      operationId: get-objects-project-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project types
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List project types:
+                  value:
+                    'ia::result':
+                      - key: '100'
+                        id: Internal
+                        href: /objects/project-type/100
+                      - key: '101'
+                        id: External
+                        href: /objects/project-type/101
+                      - key: '102'
+                        id: Contract
+                        href: /objects/project-type/102
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project type
+      description: Creates a new project type.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Project Type
+      tags:
+         - Project types
+      operationId: post-objects-project-type
+      requestBody:
+        description: project type
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-type'
+                - $ref: '#/components/schemas/project-typeRequiredProperties'
+            examples:
+              Creates a project type:
+                value:
+                  id: Internal
+                  name: Internal
+                  parent:
+                    name: Billable
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New project type:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Internal
+                      href: /objects/project-type/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project type
+      description: Returns detailed information for a specified project type.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Project Type
+      tags:
+         - Project types
+      operationId: get-objects-project-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Project type details:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Internal
+                      name: Internal
+                      parent:
+                        key: '100'
+                        name: Billable
+                        href: /objects/project-type/100
+                      status: active
+
+                      audit:
+                        createdDateTime: '2022-04-01T16:20:00Z'
+                        modifiedDateTime: '2022-04-01T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      href: /objects/project-type/1
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project type
+      description: Updates an existing project type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Project Type
+      tags:
+         - Project types
+      operationId: patch-objects-project-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a project type:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Project type updated
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated project type:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Internal
+                      href: /objects/project-type/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project type
+      description: Deletes a project type.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Project Type
+      tags:
+         - Project types
+      operationId: delete-objects-project-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-type:
+      $ref: ../models/project-type.s1.schema.yaml
+    project-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

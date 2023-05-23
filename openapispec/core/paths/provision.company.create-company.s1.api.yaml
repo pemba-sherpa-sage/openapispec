@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: provision.company.create-company
+  description: Create company API
+  version: '1.0-internal'
+  contact:
+    name: Vlad Nicolae
+    email: vlad.nicolae@sage.com
+tags:
+  - name: provision.company.create-company
+    description: Create company
+paths:
+  /services/provision/company/create-company:
+    post:
+      summary: Create company
+      description: Create company
+      tags:
+        - provision.company.create-company
+      operationId: post-services-provision-company-create-company
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/provision.company.create-company-req'
+            examples:
+              example-1:
+                value:
+                  id: 'Company-title'
+                  name: 'Company-name'
+                  type: 'production'
+                  country: 'United States'
+                  state: 'Alabama'
+                  address1: 'address-1'
+                  address2: 'address-2'
+                  address3: 'address-3'
+                  sourceCompanyId: 'Source-company-title'
+              example-2:
+                value:
+                  id: 'Company-title-exists'
+                  name: 'Company-name'
+                  type: 'production'
+                  country: 'United States'
+                  state: 'Alabama'
+                  address1: 'address-1'
+                  address2: 'address-2'
+                  address3: 'address-3'
+                  sourceCompanyId: 'Source-company-title'
+              example-3:
+                value:
+                  id: 'Company-title-exists'
+                  name: 'Company-name'
+                  type: 'production'
+                  country: 'United States'
+                  state: 'Alabama'
+                  address1: 'address-1'
+                  address2: 'address-2'
+                  address3: 'address-3'
+                  sourceCompanyId: 'Source-company-title-not-exists'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/provision.company.create-company-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      status: true
+                      data:
+                        id: "Company-title"
+                        message: "Company 'Company-title' was created successfully."
+                    ia:meta:
+                      totalCount: 1
+                example-2:
+                  value:
+                    ia:result:
+                      status: false
+                      errors:
+                        - code: "2"
+                          message: "Company already exists. Please choose another 'id'."
+                          supportId: "SupportId-Hash1234"
+                    ia:meta:
+                      totalCount: 1
+                example-3:
+                  value:
+                    ia:result:
+                      status: false
+                      errors:
+                        - code: "2"
+                          message: "Company already exists. Please choose another 'id'."
+                          supportId: "SupportId-Hash1234"
+                        - code: "2"
+                          message: "'sourceCompanyId': 'Source-company-title' does not exist."
+                          supportId: "SupportId-Hash1234"
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    provision.company.create-company-req:
+      description: Create company request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        id:
+          type: string
+          description: Company title
+          x-mappedTo: id
+        name:
+          type: string
+          description: Company name
+          x-mappedTo: name
+        companyType:
+          type: string
+          description: Company type
+          x-mappedTo: companyType
+        country:
+          type: string
+          description: Company country
+          x-mappedTo: country
+        state:
+          type: string
+          description: Company state
+          x-mappedTo: state
+        city:
+          type: string
+          description: Company city
+          x-mappedTo: city
+        addressLine1:
+          type: string
+          description: Company address1
+          x-mappedTo: addressLine1
+        addressLine2:
+          type: string
+          description: Company address2
+          x-mappedTo: addressLine2
+        addressLine3:
+          type: string
+          description: Company address3
+          x-mappedTo: addressLine3
+        postCode:
+          type: string
+          description: Company zip
+          x-mappedTo: postCode
+        federalId:
+          type: string
+          description: Company federal id
+          x-mappedTo: federalId
+        sourceCompanyId:
+          type: string
+          description: Source company title
+          x-mappedTo: sourceCompanyId
+    provision.company.create-company-resp:
+      description: Create company response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: boolean
+          description: The status of the request
+          x-mappedTo: status
+        errors:
+          type: array
+          description: List of errors
+          x-mappedTo: errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error code
+                x-mappedTo: code
+              message:
+                type: string
+                description: Error message
+                x-mappedTo: message
+              supportId:
+                type: string
+                description: Error support id
+                x-mappedTo: supportId
+        data:
+          type: object
+          description: List of company information (company title)
+          x-mappedTo: data
+          properties:
+            id:
+              type: string
+              description: Company title
+              x-mappedTo: data.id
+            message:
+              type: string
+              description: Success message
+              x-mappedTo: data.message
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: billback-template-record
+  description: billback-template-record API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Billback template records
+    description: Billback template record description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/billback-template-record:
+    get:
+      summary: List billback template records
+      description: 'Returns a collection with a key, ID, and link for each billback template record.'
+      tags:
+        - Billback template records
+      operationId: get-objects-billback-template-record
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billback-template-record objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of billback template records: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billback-template-record:
+      $ref: ../models/billback-template-record.s1.schema.yaml
+    billback-template-recordRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

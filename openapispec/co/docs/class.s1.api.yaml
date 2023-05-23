@@ -1,0 +1,460 @@
+openapi: 3.0.0
+info:
+  title: class
+  description: class API
+  version: '1.0'
+  contact:
+    name: Anca Uricariu
+    email: anca.uricariu@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Classes
+    description: |-
+      [Class](https://www.intacct.com/ia/docs/en_US/help_action/Reporting/Setup/Dimensions/Managing_classes/class-information.htm) is a flexible [dimension](https://www.intacct.com/ia/docs/en_US/help_action/Reporting/Setup/Dimensions/dimensions-overview.htm) that can be defined in a company and used to track just about anything. You can rename the class dimension and add custom fields if needed (both only through the UI), and then select a class and provide values for the fields in applicable transactions. You can use the data to create custom reports that provide important business insights.
+
+      Note that renaming the class dimension in the UI does not change the name of this object in the API. You still use `class` in API requests.
+paths:
+  /objects/class:
+    get:
+      summary: List classes
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each object. This operation is mostly for use in testing; use the query service to find objects that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Classes
+      tags:
+        - Classes
+      operationId: get-objects-class
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of class objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                list classes:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: Class_1
+                        href: /objects/class/1
+                      - key: '2'
+                        id: Class_2
+                        href: /objects/class/2
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a class
+      description: Creates a new class. You can think of this as adding a new value to the dimension that you can use to tag transactions for reporting.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Add Classes
+      tags:
+        - Classes
+      operationId: post-objects-class
+      requestBody:
+        description: Class object to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/class.s1.schema'
+                - $ref: '#/components/schemas/classRequiredProperties'
+            examples:
+              Create a single class:
+                value:
+                  id: SW
+                  name: Software
+                  description: All software titles
+                  status: active
+              Create a child class:
+                value:
+                  id: SW-Office
+                  name: Office Software
+                  description: Office productivity software
+                  status: active
+                  parent:
+                    key: '1'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New class
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New class created:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: SW
+                      href: /objects/class/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/class/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the class.
+        in: path
+        required: true
+        example: '43'
+        schema:
+          type: string
+    get:
+      summary: Get a class
+      description: Returns detailed information for a specified class.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business, Employee, Payment Approver
+            permissions: List, View Classes
+      tags:
+        - Classes
+      operationId: get-objects-class-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the class
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/class.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a class:
+                  value:
+                    ia::result:
+                      key: '9'
+                      id: SW-Office
+                      name: Office Software
+                      description: Office productivity software
+                      status: active
+                      parent:
+                        key: '8'
+                        id: SW
+                        name: Software
+                      audit:
+                        createdDateTime: '2022-06-28T23:41:44Z'
+                        modifiedDateTime: '2022-06-29T15:52:18Z'
+                        createdBy: '68'
+                        modifiedBy: '68'
+                      href: /objects/class/9
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a class
+      description: Updates an existing class by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Edit Classes
+      tags:
+        - Classes
+      operationId: patch-objects-class-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/class.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  name: Root one
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated class
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a single value:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: Class1
+                      href: /objects/class/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a class
+      description: |
+        Deletes a class. You can delete a class if it is not being used or referenced. Deleted classes cannot be recovered.
+      x-documentationFlags:
+        subscription: Company
+        userPermissions:
+          - userType: Business user with admin privileges
+            permissions: Delete Classes
+      tags:
+        - Classes
+      operationId: delete-objects-class-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    class:
+      $ref: '#/components/schemas/class.s1.schema'
+    classRequiredProperties:
+      type: object
+      required:
+        - id
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    dimension-status.s1.schema:
+      title: dimension-status
+      type: string
+      enum:
+        - active
+        - activeNonPosting
+        - inactive
+      x-mappedToValues:
+        - active
+        - active non-posting
+        - inactive
+      description: Status of object, Active/Active-Non-Posting/Inactive
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    class.s1.schema:
+      title: class
+      x-mappedTo: class
+      type: object
+      description: Class is a customizable dimension that can be defined in a company and set on transactions to expand report functionality and insight.
+      properties:
+        key:
+          description: System-assigned unique key for the class. Used to identify the class in URLs or JSON bodies for all operations on the class.
+          type: string
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '42'
+        id:
+          description: Unique ID for the class.
+          type: string
+          x-mutable: false
+          x-mappedTo: CLASSID
+          example: 1-Goods
+        href:
+          description: Endpoint for this class.
+          type: string
+          readOnly: true
+          example: /objects/class/21
+        status:
+          $ref: '#/components/schemas/dimension-status.s1.schema'
+          example: active
+        description:
+          description: Description of the class.
+          type: string
+          x-mappedTo: DESCRIPTION
+          example: Goods available for donations
+        name:
+          description: Name of this class.
+          type: string
+          x-mappedTo: NAME
+          example: Goods
+        parent:
+          type: object
+          description: Parent class, for class hierarchies.
+          title: parent
+          x-object: class
+          x-mappedTo: PARENT
+          properties:
+            id:
+              description: Parent class ID.
+              type: string
+              readOnly: true
+              x-mappedTo: PARENTID
+              example: 23-Donations
+            key:
+              description: Parent class key.
+              type: string
+              readOnly: false
+              x-mappedTo: PARENTKEY
+              example: '4'
+            href:
+              description: URL for parent class.
+              type: string
+              readOnly: true
+              example: /objects/class/3
+            name:
+              description: Name of parent class.
+              type: string
+              readOnly: true
+              x-mappedTo: PARENTNAME
+              example: Donations
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

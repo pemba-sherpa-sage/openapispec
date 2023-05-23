@@ -1,0 +1,241 @@
+openapi: 3.0.0
+info:
+  title: purchasing-price-list
+  description: purchasing-price-list API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Purchasing price lists
+    description: |
+      A purchasing price list is a container for price list entries. First create the price list and then the price list entries associated with the list. Purchasing price lists contain the prices for products or services purchased from vendors. Typically there is one price list per vendor, but multiple lists can be created as needed. See [Price lists &mdash; Purchasing](https://www.intacct.com/ia/docs/en_US/help_action/Purchasing/Setting_up_Purchasing/Price_lists/price-lists-PO.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-price-list:
+    get:
+      summary: List purchasing price lists
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each purchasing price list. This operation is mostly for use in testing; use query to find objects that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Project Manager, Employee, Warehouse
+            permissions: List, View Price Lists
+      tags:
+        - Purchasing price lists
+      operationId: get-objects-purchasing-price-list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-price-list objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List purchasing price lists:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: Purchase Price List
+                        href: /objects/purchasing-price-list/2
+                      - key: '6'
+                        id: Base Price List Purchase
+                        href: /objects/purchasing-price-list/6
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a purchasing price list
+      description: Creates a new purchasing price list.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Warehouse
+            permissions: List, View, Add Price Lists
+      tags:
+        - Purchasing price lists
+      operationId: post-objects-purchasing-price-list
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-price-list'
+                - $ref: '#/components/schemas/purchasing-price-listRequiredProperties'
+            examples:
+              Create a purchasing price list:
+                value:
+                  id: Base Price List Purchase
+                  startDate: '2000-01-01'
+                  endDate: '2030-12-31'
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New purchasing-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a purchasing price list:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: Base Price List Purchase
+                      href: /objects/purchasing-price-list/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-price-list/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the purchasing price list.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a purchasing price list
+      description: Returns detailed information for a specified purchasing price list.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Project Manager, Employee, Warehouse
+            permissions: List, View Price Lists
+      tags:
+        - Purchasing price lists
+      operationId: get-objects-purchasing-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-price-list
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-price-list'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a purchasing price list:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: Base Price List Purchase
+                      startDate: '2000-01-01'
+                      endDate: '2030-12-31'
+                      status: active
+                      href: /objects/purchasing-price-list/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a purchasing price list
+      description: Updates an existing purchasing price list by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Warehouse
+            permissions: List, View, Edit Price Lists
+      tags:
+        - Purchasing price lists
+      operationId: patch-objects-purchasing-price-list-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-price-list'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: 'Base Price List Purchase'
+            examples:
+              Update a purchasing price list:
+                value:
+                  startDate: '2021-01-01'
+                  endDate: '2100-01-01'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Update a purchasing-price-list
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a purchasing price list:
+                  value:
+                    'ia::result':
+                      key: '6'
+                      id: Base Price List Purchase
+                      href: /objects/purchasing-price-list/6
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a purchasing price list
+      description: |
+        Deletes a purchasing price list. A price list can be deleted if it has not been assigned to any objects. This removes the price list and all of its associated price list entries from the system. 
+      x-documentationFlags:
+        subscription: Purchasing
+        userPermissions:
+          - userType: Business, Warehouse
+            permissions: List, View, Delete Price Lists
+      tags:
+        - Purchasing price lists
+      operationId: delete-objects-purchasing-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-price-list:
+      $ref: ../models/purchasing-price-list.s1.schema.yaml
+    purchasing-price-listRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

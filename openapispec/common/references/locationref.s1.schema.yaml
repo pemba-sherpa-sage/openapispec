@@ -1,0 +1,24 @@
+title: locationref
+type: object
+x-object: location
+properties:
+  key:
+    type: string
+    description: Location Key
+    x-mappedTo: LOCATIONKEY
+    example: '1'
+  id:
+    type: string
+    description: Location
+    x-mappedTo: LOCATION
+    example: US
+  name:
+    type: string
+    description: Location Name
+    readOnly: true
+    x-mappedTo: LOCATIONNAME
+    example: United States of America
+  href:
+    type: string
+    example: /objects/location/1
+    readOnly: true

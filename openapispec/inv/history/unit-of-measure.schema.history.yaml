@@ -1,0 +1,21 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/uom/view
+      - po/lists/uom/view
+      - so/lists/uom/view
+    POST:
+      - inv/lists/uom/create
+      - po/lists/uom/create
+      - so/lists/uom/create
+    PATCH:
+      - inv/lists/uom/edit
+      - po/lists/uom/edit
+      - so/lists/uom/edit
+    DELETE:
+      - inv/lists/uom/delete
+      - po/lists/uom/delete
+      - so/lists/uom/delete
+s1:
+  hash: '0'
+  type: rootObject

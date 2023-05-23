@@ -1,0 +1,20 @@
+title: earning-type
+x-mappedTo: earningtype
+type: object
+description: List of the Earning types
+properties:
+  key:
+    type: string
+    description: Earning Type Key
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Earning Type Name
+    x-mappedTo: NAME
+    x-mutable: false
+  name:
+    type: string
+    description: Earning Type Name
+    x-mappedTo: NAME
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

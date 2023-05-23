@@ -1,0 +1,53 @@
+type: object
+title: contract-schedule-reallocate-request
+description: reallocate request
+x-mappedTo: __custom__
+required:
+  - journal
+  - startDate
+  - endDate
+properties:
+  journal:
+    type: string
+    description: Which journal to post this schedule for (J1 or J2).
+    x-mappedTo: JOURNAL
+    example: 'J1'
+    nullable: false
+    enum:
+      - J1
+      - J2
+  schedule:
+    type: object
+    required:
+      - key
+    properties:
+      key:
+        type: string
+        description: Contract schedule key.
+        x-mappedTo: SCHEDULEKEY
+        nullable: false
+        example: '546'
+  startDate:
+    type: string
+    description: Start date for the reallocation.
+    x-mappedTo: STARTDATE
+    format: date
+    nullable: false
+    example: '2022-02-24'
+  endDate:
+    type: string
+    description: End date for the reallocation.
+    x-mappedTo: ENDDATE
+    format: date
+    nullable: false
+    example: '2022-02-24'
+  postPastOpenPeriods:
+    type: boolean
+    description: |
+      Post past dated open periods. If you use a start date that is earlier than today's
+      date and there are open periods with past scheduled posting dates, this parameter
+      indicates whether to post these. Use true to post the open periods, false otherwise.
+    x-mappedTo: POSTPASTDATED
+    example: true
+    default: false
+examples: []

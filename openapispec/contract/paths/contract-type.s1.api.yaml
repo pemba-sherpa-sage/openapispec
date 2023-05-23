@@ -1,0 +1,259 @@
+openapi: 3.0.0
+info:
+  title: contract type
+  description: contract type API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+tags:
+  - name: Contract types
+    description: |-
+      Contract types let you group contracts in meaningful ways to provide additional insight into your business.
+
+      After creating a contract type, you can apply it to a contract by setting the `contractType` when creating or updating the contract. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-type:
+    get:
+      summary: List contract types
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each contract type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contract Types
+      tags:
+        - Contract types
+      operationId: get-objects-contract-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract types
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List contract types:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: 'Service_1'
+                        href: /objects/contract-type/2
+                      - key: '1'
+                        id: 'API'
+                        href: /objects/contract-type/1
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create contract type
+      description: Creates a new contract type.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: Add Contract Types
+      tags:
+        - Contract types
+      operationId: post-objects-contract-type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/contractType'
+                - $ref: '#/components/schemas/contractTypeRequiredProperties'
+            examples:
+              Create a contract type:
+                value:
+                  id: Auto-renewal
+                  description: Parent type for automatic renewal contracts
+                  status: active
+              Create a child contract type:
+                value:
+                  id: Annual
+                  description: Annual automatic renewals
+                  status: active
+                  parent:
+                    key: 11
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New contract type:
+                  value:
+                    'ia::result':
+                      key: '11'
+                      id: Auto-renewal
+                      href: /objects/contract-type/11
+                    'ia::meta':
+                      totalCount: 1
+                Child contract type:
+                  value:
+                    'ia::result':
+                      key: '12'
+                      id: Annual
+                      href: /objects/contract-type/12
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+
+  '/objects/contract-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a contract type
+      description: Returns detailed information for a specified contract type.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contract Types
+      tags:
+        - Contract types
+      operationId: get-objects-contract-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: contract type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contractType'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a contract type:
+                  value:
+                    'ia::result':
+                      key: '2'
+                      id: Annual
+                      status: active
+                      description: Annual automatic renewals
+                      audit:
+                        createdBy: '1'
+                        modifiedBy: '1'
+                        createdDateTime: '2021-12-14T00:00:00Z'
+                        modifiedDateTime: '2021-12-14T00:00:00Z'
+                      href: /objects/contract-type/2
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a contract type
+      description: Updates an existing contract type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: Edit Contract Types
+      tags:
+        - Contract types
+      operationId: patch-objects-contract-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: ../models/contract-type.s1.schema.yaml
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            example:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              example:
+                Contract type updated:
+                  value:
+                    'ia::result':
+                      key: '3'
+                      id: 'Service_1'
+                      href: /objects/contract-type/3
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete contract type
+      description: Deletes a contract type. You cannot delete a contract type that is currently assigned to any contracts. 
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: Delete Contract Types
+      tags:
+        - Contract types
+      operationId: delete-objects-contract-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contractType:
+      $ref: ../models/contract-type.s1.schema.yaml
+    contractTypeRequiredProperties:
+      type: object
+      required:
+          - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,227 @@
+title: contact
+x-mappedTo: contact
+type: object
+description: |
+  You can think of contacts as a common, shared address book that's used across a company by many people for a variety of purposes. Contacts hold all the information needed to contact an individual or business, including name, email address, phone number, mailing address, and more. 
+  
+  Contacts are almost always used with other Sage Intacct objects, such as vendors, customers, or locations. For example, you specify a contact in Order Entry and Purchasing transactions to set a ship-to, bill-to, pay-to, or return-to addresses, and to determine tax on transactions.
+
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the contact. Used to identify the contact in URLs or JSON bodies for all operations on the contact.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: 21
+  id:
+    type: string
+    description: Unique identifier for the contact.
+    x-mappedTo: CONTACTNAME
+    x-mutable: false
+    example: 3-Reuben
+  href:
+    type: string
+    readOnly: true
+    description: URL for this contact.
+    example: '/objects/contact/21'
+  lastName:
+    type: string
+    description: Last Name
+    x-mappedTo: LASTNAME
+    example: Kincaid
+  firstName:
+    type: string
+    description: First Name
+    x-mappedTo: FIRSTNAME
+    example: Reuben
+  middleName:
+    type: string
+    description: Middle Name
+    x-mappedTo: INITIAL
+    example: Mary
+  prefix:
+    type: string
+    description: Prefix, such as Mr., Mrs., or Ms.
+    x-mappedTo: PREFIX
+    example: Miss
+  email1:
+    type: string
+    description: Primary email address
+    x-mappedTo: EMAIL1
+    example: reuben@mycompany.com
+  email2:
+    type: string
+    description: Secondary email address
+    x-mappedTo: EMAIL2
+    example: robert@mycompany.com
+  phone1:
+    type: string
+    description: Primary phone number
+    x-mappedTo: PHONE1
+    example: 4151231234
+  phone2:
+    type: string
+    description: Secondary phone number
+    x-mappedTo: PHONE2
+    example: 4158661823
+  mobile:
+    type: string
+    description: Mobile phone number
+    x-mappedTo: CELLPHONE
+    example: 4159879876
+  pager:
+    type: string
+    description: Pager number
+    x-mappedTo: PAGER
+    example: 4151112222
+  fax:
+    type: string
+    description: Fax number
+    x-mappedTo: FAX
+    example: 4152221111
+  URL1:
+    type: string
+    description: Web page address for this contact.
+    x-mappedTo: URL1
+    example: https://mycompany.com
+  URL2:
+    type: string
+    description: Secondary web page address.
+    x-mappedTo: URL2
+    example: https://whitehouse.gov
+  companyName:
+    type: string
+    description: Name of the company associated with this contact.
+    x-mappedTo: COMPANYNAME
+    example: AlcoSoft Inc
+  printAs:
+    type: string
+    description: The contact name as you want it to appear on bills, invoices, AR statements, advances, adjustments, checks, expense reports, expense reimbursements, and 1099s.
+    x-mappedTo: PRINTAS
+    example: Reuben Kincaid
+  showInContactList:
+    type: boolean
+    description: Display the contact in the contact list.
+    x-mappedTo: VISIBLE
+    x-mappedToType: string
+    default: true
+    example: true
+  discount:
+    type: string
+    description: Default discount percentage to be applied to order entry transactions involving this contact.
+    x-mappedTo: DISCOUNT
+    example: 33
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+    example: active
+  mailingAddress:
+    type: object
+    title: mailingAddress
+    description: The mailing address of the contact.
+    properties:
+      addressLine1:
+        type: string
+        description: The first address line for shipping, billing, etc.
+        x-mappedTo: MAILADDRESS.ADDRESS1
+        example: 300 Park Avenue
+      addressLine2:
+        type: string
+        description: The second address line for shipping, billing, etc.
+        x-mappedTo: MAILADDRESS.ADDRESS2
+        example: Suite 1400
+      city:
+        type: string
+        description: City
+        x-mappedTo: MAILADDRESS.CITY
+        example: San Jose
+      state:
+        type: string
+        description: State
+        x-mappedTo: MAILADDRESS.STATE
+        example: California
+      postCode:
+        type: string
+        description: Zip or Postal Code
+        x-mappedTo: MAILADDRESS.ZIP
+        example: 95110
+      country:
+        type: string
+        description: Country
+        x-mappedTo: MAILADDRESS.COUNTRY
+        example: United States of America
+      isoCountryCode: 
+        type: string
+        description: ISO country code. When ISO country codes are enabled in a company, both COUNTRY and ISOCOUNTRYCODE must be provided.
+        x-mappedTo: MAILADDRESS.COUNTRYCODE
+        example: US
+  priceList:
+    type: object
+    title: price list
+    description: Default price list used in order entry when this contact places orders. Read [the notes in the Help Center](https://www.intacct.com/ia/docs/en_US/help_action/Order_Entry/Setting_up_Order_Entry/Price_lists/assign-OE-price-list-to-objects.htm#Assignapricelisttoacontact) for requirements and additional information.
+
+    properties:
+      key:
+        type: string
+        description: Price list key
+        x-mappedTo: PRICELISTKEY
+        readOnly: true
+        example: 7
+      id:
+        type: string
+        description: Price list ID
+        x-mappedTo: PRICELIST
+        example: Custom-Pricelist
+  priceSchedule:
+    type: object
+    title: price schedule
+    description: Price schedule used in order entry when this contact places orders.
+    properties:
+      key:
+        type: string
+        description: Price schedule key
+        x-mappedTo: PRICESCHEDULEKEY
+        readOnly: true
+        example: 7
+      id:
+        type: string
+        description: Price schedule ID
+        x-mappedTo: PRICESCHEDULE
+        example: Discount-Premium
+  tax:
+    type: object
+    title: tax
+    description: Tax settings needed for Intacct to calculate taxes on transactions for this contact.
+    properties:
+      isTaxable:
+        type: boolean
+        description: Enable tax calculation
+        x-mappedTo: TAXABLE
+        x-mappedToType: string
+        example: true
+      taxId:
+        type: string
+        description: State tax ID or VAT registration number for this contact.
+        x-mappedTo: TAXID
+        example: US2333
+      group:
+        type: object
+        x-object: contact-tax-group
+        x-mappedTo: taxgroup
+        description: The contact tax group to be used with this contact.
+        properties:
+          key:
+            type: string
+            description: Contact tax group key
+            x-mappedTo: TAXGROUPKEY
+            readOnly: true
+            example: 7
+          id:
+            type: string
+            description: Contact tax group ID
+            x-mappedTo: TAXGROUP
+            example: Taxes-for-residents
+          href:
+            type: string
+            description: URL of the contact tax group.
+            readOnly: true 
+            example: /objects/contact-tax-group/7

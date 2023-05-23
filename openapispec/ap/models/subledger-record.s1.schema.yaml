@@ -1,0 +1,26 @@
+# Just a placeholder for prrecord.ent , need reference in  account reconcliation source record
+title: subledger-record
+x-mappedTo: prrecord
+type: object
+description: Subledger record
+properties:
+  key:
+    type: string
+    description: Subledger record key
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Subledger record ID
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    readOnly: true
+  lines:
+    description:
+    type: array
+    x-mappedTo: ENTRIES
+    x-object: subledger-record-line
+    items:
+      $ref: subledger-record-line.s1.schema.yaml

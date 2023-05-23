@@ -1,0 +1,220 @@
+openapi: 3.0.0
+info:
+  title: customer-account-group
+  description: customer-account-group API
+  version: 1.0.0
+  contact:
+    email: Samay.Jain@sage.com
+    name: Samay Jain
+tags:
+  - name: Customer account groups
+    description: Customer account group description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/customer-account-group/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the customer account group.
+    get:
+      summary: Get a customer account group
+      tags:
+        - Customer account groups
+      responses:
+        '200':
+          description: customer-account-group Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer-account-group'
+              examples:
+                example-result-get-customer-account-group:
+                  value:
+                    'ia::result':
+                      id: HW VGL Group
+                      key: '1'
+                      groupType: customer
+                      status: inactive
+                      href: /objects/customer-account-group/1
+                    'ia::meta':
+                      totalCount: 1
+        '404':
+          description: customer-account-group Not Found
+      operationId: get-customer-account-group-id
+      description: Returns detailed information for a particular customer account group.
+    delete:
+      summary: Delete a customer account group
+      description: Deletes a customer account group.
+      tags:
+        - Customer account groups
+      operationId: delete-v1-objects-customer-account-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a customer account group
+      operationId: patch-objects-customer-account-group-key
+      description: Updates an existing customer account group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Customer account groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated customer-account-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-update-customer-account-group:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: 1099 Customer Group
+                      href: /objects/customer-account-group/18
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-account-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              example-update-customer-account-group:
+                value:
+                  status: inactive
+        description: ''
+  /objects/customer-account-group:
+    get:
+      summary: List customer account groups
+      tags:
+        - Customer account groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of customer-account-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-get-collection-customer-account-group:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: HW VGL Group
+                        href: /objects/customer-account-group/1
+                      - key: '2'
+                        id: OS VGL Group
+                        href: /objects/customer-account-group/2
+                      - key: '3'
+                        id: Stationary VGL Group
+                        href: /objects/customer-account-group/3
+                      - key: '4'
+                        id: Electronic VGL Group
+                        href: /objects/customer-account-group/4
+                      - key: '5'
+                        id: Gardening VGL Group
+                        href: /objects/customer-account-group/5
+                      - key: '6'
+                        id: Auto VGL Group
+                        href: /objects/customer-account-group/6
+                      - key: '7'
+                        id: Inactive VGL Group
+                        href: /objects/customer-account-group/7
+                    'ia::meta':
+                      totalCount: 7
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-account-group
+      description: Returns a collection with a key, ID, and link for each customer account group.
+    post:
+      summary: Create a customer account group
+      tags:
+        - Customer account groups
+      operationId: post-objects-customer-account-group
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New customer-account-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-result-create-customer-account-group:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: 1099 Customer Group
+                      href: /objects/customer-account-group/18
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+      description: Creates a new customer account group.
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/customer-account-group'
+                - $ref: '#/components/schemas/customerAccountGroupRequiredProperties'
+            examples:
+              example-create-customer-account-group:
+                value:
+                  id: 1099 Customer Group
+                  groupType: customer
+                  status: active
+components:
+  schemas:
+    customer-account-group:
+      $ref: ../models/customer-account-group.s1.schema.yaml
+    customerAccountGroupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

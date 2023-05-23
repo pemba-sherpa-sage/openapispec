@@ -1,0 +1,29 @@
+title: bin-size
+type: object
+description: A bin size in an attribute you can assign to a bin to help determine whether the bin is suitable for storing certain items.
+x-mappedTo: binsize
+properties:
+  key:
+    type: string
+    description: System-assigned key for the bin size.
+    x-mappedTo: RECORDNO
+    example: '5'
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier or name for the bin size. This ID should make it easy to understand the bin size. This ID cannot be modified.
+    x-mappedTo: SIZEID
+    example: '2x2'
+    x-mutable: false
+  description:
+    type: string
+    description: Description for the bin size.
+    x-mappedTo: SIZEDESC
+    example: 'Bin Size 10 Wrenches'
+  href:
+    type: string
+    description: URL for the bin size.
+    example: '/objects/bin-size/5'
+    readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

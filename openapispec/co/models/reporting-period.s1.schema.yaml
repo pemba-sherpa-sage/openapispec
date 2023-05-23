@@ -1,0 +1,59 @@
+title: reporting-period
+x-mappedTo: reportingperiod
+type: object
+description: Reporting period definition
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the reporting period.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '421'
+  id:
+    type: string
+    description: This value is the same as the `key` value for this object.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '421'
+  name:
+    type: string
+    description: Name for the reporting period.
+    x-mappedTo: NAME
+    example: Month ended January 2023
+  header1:
+    type: string
+    description: The first line to be shown on the report, such as "Quarter Ended".
+    x-mappedTo: HEADER1
+    example: Quarter Ended
+  header2:
+    type: string
+    description: The second line to be shown on the report, such as "April 2023".
+    x-mappedTo: HEADER2
+    example: April 2023
+  startDate:
+    type: string
+    format: date
+    description: The starting date of the reporting period.
+    x-mappedTo: START_DATE
+    example: '2023-04-01'
+  endDate:
+    type: string
+    format: date
+    description: The ending date of the reporting period.
+    x-mappedTo: END_DATE
+    example: '2023-06-30'
+  isBudgetable:
+    type: boolean
+    description: Set to `true` to make this reporting period available for inclusion in budgets.
+    x-mappedTo: BUDGETING
+    x-mappedToType: string
+    example: true
+  href:
+    type: string
+    description: Endpoint for the reporting period.
+    readOnly: true
+    example: /objects/reporting-period/1
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

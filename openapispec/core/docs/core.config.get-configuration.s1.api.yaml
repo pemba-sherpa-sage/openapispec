@@ -1,0 +1,282 @@
+openapi: 3.0.0
+info:
+  title: core.config.get-configuration
+  description: Configuration read service
+  version: 1.0-internal
+  contact:
+    name: Valer Crisan
+    email: valer.crisan@sage.com
+tags:
+  - name: core.config.get-configuration
+    description: Configuration access routines for domain services
+paths:
+  /services/core/config/get-configuration:
+    post:
+      summary: Read configuration
+      description: Read configuration
+      tags:
+        - admin.access-control.authenticate-bearer
+      operationId: post-services-core-config-get-configuration
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/core.config.get-configuration-req'
+            examples:
+              example-1:
+                value: null
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/core.config.get-configuration-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      mongoDB: null
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    core.config.get-configuration-req:
+      description: Read configuration request
+      type: object
+      x-mappedTo: __custom__
+    core.config.get-configuration-resp:
+      description: Read configuration response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        isLive:
+          type: boolean
+          x-mappedTo: isLive
+        db:
+          type: object
+          description: databases information
+          properties:
+            global:
+              type: object
+              properties:
+                host:
+                  type: string
+                  x-mappedTo: db.global.host
+                user:
+                  type: string
+                  x-mappedTo: db.global.user
+                pwd:
+                  type: string
+                  description: IA_INIT encrypted password
+                  x-mappedTo: db.global.pwd
+            schemas:
+              type: array
+              x-mappedTo: db.schemas
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Database ID
+                    x-mappedTo: id
+                  host:
+                    type: string
+                    x-mappedTo: server
+                  hostIMS:
+                    type: string
+                    x-mappedTo: serverIMS
+                  user:
+                    type: string
+                    x-mappedTo: userid
+                  pwd:
+                    type: string
+                    description: IA_INIT encrypted password
+                    x-mappedTo: passwd
+                  reportUser:
+                    type: string
+                    x-mappedTo: rpt_userid
+                  obieeUser:
+                    type: string
+                    x-mappedTo: obiee_userid
+                  ownerId:
+                    type: string
+                    x-mappedTo: ownerid
+                  meglId:
+                    type: string
+                    x-mappedTo: meglid
+                  schemaIndex:
+                    type: string
+                    x-mappedTo: schemacnt
+                  charset:
+                    type: string
+                    x-mappedTo: charset
+                  isCompanyDB:
+                    type: boolean
+                    x-mappedTo: companyDB
+                  isTemplateDB:
+                    type: boolean
+                    x-mappedTo: templateDB
+                  session:
+                    type: array
+                    x-mappedTo: session
+                    items:
+                      type: string
+        pods:
+          type: array
+          description: pods information
+          x-mappedTo: pods
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                x-mappedTo: id
+              version:
+                type: string
+                x-mappedTo: version
+              host:
+                type: string
+                x-mappedTo: host
+              externalHost:
+                type: string
+                x-mappedTo: externalHost
+              description:
+                type: string
+                x-mappedTo: description
+              apiendpoint:
+                type: string
+                x-mappedTo: apiendpoint
+              jppendpoint:
+                type: string
+                x-mappedTo: jppendpoint
+              apiGWEndpoint:
+                type: string
+                x-mappedTo: apiGWEndpoint
+              apiAppEndpoint:
+                type: string
+                x-mappedTo: apiAppEndpoint
+              apiDSEndpoint:
+                type: string
+                x-mappedTo: apiDSEndpoint
+              excludeCountries:
+                type: string
+                x-mappedTo: excludeCountries
+              acceptCountries:
+                type: string
+                x-mappedTo: acceptCountries
+        podGroups:
+          type: array
+          description: podgroups information
+          x-mappedTo: podGroups
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                x-mappedTo: id
+              version:
+                type: string
+                x-mappedTo: version
+              host:
+                type: string
+                x-mappedTo: host
+              externalHost:
+                type: string
+                x-mappedTo: externalHost
+              description:
+                type: string
+                x-mappedTo: description
+              region:
+                type: string
+                x-mappedTo: region
+              pods:
+                type: array
+                x-mappedTo: pods
+                items:
+                  type: string
+        mongoDB:
+          type: object
+          description: MongoDB configuration
+          properties:
+            hosts:
+              type: object
+              x-mappedTo: mongoDB.hosts
+            shard:
+              type: object
+              properties:
+                defaultHost:
+                  type: string
+                  x-mappedTo: mongoDB.shard.defaultHost
+                globalHost:
+                  type: string
+                  x-mappedTo: mongoDB.shard.globalHost
+                baseDB:
+                  type: string
+                  x-mappedTo: mongoDB.shard.baseDB
+            opt:
+              type: object
+              properties:
+                connectTimeoutMS:
+                  type: integer
+                  x-mappedTo: mongoDB.opt.connectTimeoutMS
+                socketTimeoutMS:
+                  type: integer
+                  x-mappedTo: mongoDB.opt.socketTimeoutMS
+                username:
+                  type: string
+                  x-mappedTo: mongoDB.opt.username
+                password:
+                  type: string
+                  x-mappedTo: mongoDB.opt.password
+                password-crypt:
+                  type: string
+                  x-mappedTo: mongoDB.opt.password-crypt
+                db:
+                  type: string
+                  x-mappedTo: mongoDB.opt.db
+            acceptHosts:
+              type: object
+              x-mappedTo: mongoDB.acceptHosts
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,46 @@
+title: purchasing-price-list
+type: object
+description: A purchasing price list is a container for price list entries.
+x-mappedTo: popricelist
+properties:
+  key:
+    type: string
+    description: System-assigned key for the purchasing price list.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '6'
+  id:
+    type: string
+    description: Name or other unique identifier for the purchasing price list.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: Base Price List Purchase
+  href:
+    type: string
+    description: URL for the purchasing price list.
+    readOnly: true
+    example: /objects/purchasing-price-list/6
+  startDate:
+    type: string
+    format: date
+    description: Start date for the time frame in which the price list is effective.
+    x-mappedTo: DATEFROM
+    example: '2021-01-01'
+  endDate:
+    type: string
+    format: date
+    description: End date for the time frame in which the price list is effective.
+    x-mappedTo: DATETO
+    example: '2100-12-31'
+  #  appliesTo:
+  #    type: string
+  #    description: Application
+  #    x-mappedTo: SALEPURCHASE
+  #    enum:
+  #      - purchasing
+  #      - orderEntry
+  #    x-mappedToValues:
+  #      - Purchasing
+  #      - Sales
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

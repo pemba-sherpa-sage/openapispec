@@ -1,0 +1,526 @@
+title: project-contract-line
+type: object
+x-mappedTo: projectcontractline
+properties:
+  key:
+    type: string
+    description: System-assigned key of the project contract line
+    example: 2
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Project contract line id - unique identifier of the project contract line 
+    example: 2
+    x-mappedTo: PROJECTCONTRACTLINEID
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the project contract line
+    example: /objects/project-contract-line/2
+    readOnly: true
+  projectContract:
+    type: object
+    description: Reference to a projectContract
+    x-object: project-contract
+    x-mappedTo: projectcontract
+    properties:
+      key:
+        type: string
+        description: Project contract key
+        example: 1
+        x-mappedTo: PROJECTCONTRACTKEY
+        readOnly: true
+      id:
+        type: string
+        description: Project contract id
+        example: BTI-01
+        x-mappedTo: PROJECTCONTRACTID
+      name:
+        type: string
+        description: Project contract name
+        example: Berkeley Technology Inc - Contract 01
+        readOnly: true
+        x-mappedTo: PROJECTCONTRACTNAME
+      href:
+        type: string
+        description: URL of the projectContract
+        example: /objects/project-contract/1
+        readOnly: true  
+  name:
+    type: string
+    description: Project contract line name
+    example: "BTI-01: line 2"
+    x-mappedTo: NAME
+  parent:
+    type: object
+    description: Parent project contract line of this project contract line
+    x-object: project-contract-line
+    x-mappedTo: PARENT
+    properties:
+      key:
+        type: string
+        description: Parent project contract line key
+        example: 1
+        x-mappedTo: PARENTKEY
+        readOnly: true
+      id:
+        type: string
+        description: Parent project contract line id
+        example: 1
+        x-mappedTo: PARENTID
+      name:
+        type: string
+        description: Parent project contract line name
+        example: "BTI-01: line 1"
+        x-mappedTo: PARENTNAME
+        readOnly: true
+      href:
+        type: string
+        description: URL of the parent project contract line
+        example: /objects/project-contract-line/1
+        readOnly: true
+  description:
+    type: string
+    description: Describes the project contract line
+    example: "Additional services"
+    x-mappedTo: DESCRIPTION
+  contractLineDate:
+    type: string
+    format: date
+    description: Project contract line date
+    example: 2021-10-06
+    x-mappedTo: CONTRACTLINEDATE
+  glAccount:
+    $ref: ../../common/references/gl-accountref.s1.schema.yaml    
+  retainagePercentage:
+    type: string
+    format: decimal-precision-2    
+    description: Retainage percentage
+    example: 10.00
+    x-mappedTo: RETAINAGEPERCENTAGE
+  isBillable:
+    type: boolean
+    description: Contract is billable
+    example: true
+    x-mappedTo: BILLABLE
+    x-mappedToType: string
+    default: false
+  billing:
+    type: object
+    properties:    
+      billedPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Billed price
+        example: "1500.00"
+        x-mappedTo: BILLEDPRICE
+        readOnly: true
+      previouslyAppliedPrice:
+        type: string
+        format: decimal-precision-2        
+        description: Previously applied price, to date
+        example: "500.00"
+        x-mappedTo: APPLIEDTODATE
+        readOnly: true
+      externalReferenceNumber:
+        type: string
+        description: External reference number
+        example: "REF-01"
+        x-mappedTo: EXTERNALREFNO
+      billedNetRetainage:
+        type: string
+        format: decimal-precision-2        
+        description: Billed net retainage
+        example: "500.00"
+        x-mappedTo: BILLEDNETRETAINAGE
+        readOnly: true
+      percentBilled:
+        type: string
+        format: decimal-precision-2        
+        description: Percentage billed
+        example: "50.00"
+        x-mappedTo: PERCENTAGEBILLED
+        readOnly: true
+      percentBilledNetRetainage:
+        type: string
+        format: decimal-precision-2        
+        description: Percentage billed net retainage
+        example: "5.00"
+        x-mappedTo: PERCENTAGEBILLEDNETRETAINAGE
+        readOnly: true
+      retainageHeld:
+        type: string
+        format: decimal-precision-2        
+        description: Retainage held
+        example: "250.00"
+        x-mappedTo: RETAINAGEHELD
+        readOnly: true
+      retainageReleased:
+        type: string
+        format: decimal-precision-2        
+        description: Retainage released
+        example: "250.00"
+        x-mappedTo: RETAINAGERELEASED
+        readOnly: true
+      retainageBalance:
+        type: string
+        format: decimal-precision-2        
+        description: Retainage balance
+        example: "250.00"
+        x-mappedTo: RETAINAGEBALANCE
+        readOnly: true            
+      paymentsReceived:
+        type: string
+        format: decimal-precision-2        
+        description: Payments received
+        example: "1250.00"
+        x-mappedTo: PAYMENTSRECEIVED
+        readOnly: true    
+  billingSetup:
+    type: object
+    properties:
+      billingType:
+        type: string
+        x-mappedTo: BILLINGTYPE
+        description: Billing type to use in Project contract line.
+        example: 'timeAndMaterial'            
+        enum: 
+          - 'progressBill' 
+          - 'timeAndMaterial'
+        x-mappedToValues: 
+          - 'Progress' 
+          - 'TM'
+        default: 'progressBill'      
+      maximumBilling:
+        type: string
+        x-mappedTo: MAXIMUMBILLING
+        description: Maximum billing to use in Project contract line.
+        example: 'specifiedAmount'            
+        enum: 
+          - 'totalPrice' 
+          - 'specifiedAmount'
+          - 'noMaximum'
+        x-mappedToValues: 
+          - 'Total revised price' 
+          - 'Specified amount'
+          - 'No maximum'
+        default: 'totalPrice'
+      maximumBillingAmount:
+        type: string
+        format: decimal-precision-2        
+        description: Maximum billing amount
+        example: 10000.00
+        x-mappedTo: MAXIMUMBILLINGAMOUNT
+      summarizeBill:
+        type: boolean
+        description: Summarize to a single entry
+        example: true
+        x-mappedTo: SUMMARIZEBILL
+        x-mappedToType: string
+        default: false
+  summary:
+    type: object
+    properties:      
+      originalPrice:
+        type: string
+        description: Original price
+        format: decimal-precision-2
+        example: 500.00
+        x-mappedTo: ORIGINALPRICE
+      revisionPrice:
+        type: string
+        description: Revision price
+        format: decimal-precision-2
+        example: 650.00
+        x-mappedTo: REVISIONPRICE
+      forecastPrice:
+        type: string
+        description: Forecast price
+        format: decimal-precision-2
+        example: 750.00
+        x-mappedTo: FORECASTPRICE
+      approvedChangePrice:
+        type: string
+        description: Approved change price
+        format: decimal-precision-2
+        example: 650.00
+        x-mappedTo: APPROVEDCHANGEPRICE
+      pendingChangePrice:
+        type: string
+        description: Pending change price
+        format: decimal-precision-2
+        example: 0.00
+        x-mappedTo: PENDINGCHANGEPRICE
+      otherPrice:
+        type: string
+        description: Other price
+        format: decimal-precision-2
+        example: 90.50
+        x-mappedTo: OTHERPRICE
+      totalPrice:
+        type: string
+        description: Total price
+        format: decimal-precision-2
+        example: 1048.50
+        x-mappedTo: TOTALREVISEDPRICE
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:    
+          location:
+            $ref: ../references/project-locationref.s1.schema.yaml
+          customer:
+            type: object
+            x-object: customer
+            properties:
+              key:
+                type: integer
+                description: Customer key
+                example: 14
+                x-mappedTo: PCCUSTOMERKEY
+                readOnly: true
+              id:
+                type: string
+                description: Customer id
+                example: BTI
+                x-mappedTo: PCCUSTOMERID
+              name:
+                type: string
+                description: Customer name
+                example: Berkeley Technology Inc
+                x-mappedTo: PCCUSTOMERNAME
+                readOnly: true
+              href:
+                type: string
+                description: URL of the customer
+                example: /objects/customer/14
+                readOnly: true
+          department:
+            type: object
+            x-object: department
+            properties:
+              key:
+                type: integer
+                description: Department key
+                example: 3
+                x-mappedTo: DEPARTMENTKEY
+                readOnly: true
+              id:
+                type: string
+                description: Department id
+                example: 3
+                x-mappedTo: DEPARTMENTID
+              name:
+                type: string
+                description: Department name
+                example: Engineering
+                x-mappedTo: DEPARTMENTNAME
+                readOnly: true
+              href:
+                type: string
+                description: URL of the department
+                example: /objects/department/3
+                readOnly: true
+  excludeFromGLBudget:
+    type: boolean
+    description: Exclude from GL budget
+    x-mappedTo: GLEXCLUDE
+    x-mappedToType: string
+    example: true
+    default: false
+  scope:
+    type: string
+    description: Scope
+    example: Design
+    x-mappedTo: SCOPE
+  inclusions:
+    type: string
+    description: Inclusions
+    example: Original plan
+    x-mappedTo: INCLUSIONS
+  exclusions:
+    type: string
+    description: Exclusions
+    example: Hardware accessories
+    x-mappedTo: EXCLUSIONS
+  terms:
+    type: string
+    description: Terms
+    example: Standard terms and conditions
+    x-mappedTo: TERMS
+  schedule:
+    $ref: ../../common/models/schedule-calendar.s1.schema.yaml
+  internalReference:
+    $ref: ../../common/models/internal-document.s1.schema.yaml
+  externalReference:
+    $ref: ../../common/models/external-document.s1.schema.yaml
+  rateTables:
+    type: object
+    properties:
+      default:
+        type: object
+        description: Reference to  a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 1
+            x-mappedTo: DEFAULTRATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Rate table id
+            example: RT-DEFAULT
+            x-mappedTo: DEFAULTRATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/1
+            readOnly: true
+      timesheet:
+        type: object
+        description: Reference to  a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 2
+            x-mappedTo: TSRATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Rate table id
+            example: RT-TIMESHEET
+            x-mappedTo: TSRATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/2
+            readOnly: true                        
+      purchasing:
+        type: object
+        description: Reference to a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 3
+            x-mappedTo: PORATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Rate table id
+            example: RT-PURCHASING
+            x-mappedTo: PORATETABLEID
+          href:
+            type: string
+            description: URL of the Rate table
+            example: /objects/rate-table/3
+            readOnly: true            
+      ap:
+        type: object
+        description: Reference to rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Accounts Payable rate table key
+            example: 4
+            x-mappedTo: APRATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Rate table id
+            example: RT-AP
+            x-mappedTo: APRATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/4
+            readOnly: true                  
+      gl:
+        type: object
+        description: Reference to a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 5
+            x-mappedTo: GLRATETABLEKEY
+          id:
+            type: string
+            description: Rate table id
+            example: RT-GL
+            x-mappedTo: GLRATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/5
+            readOnly: true            
+      creditCard:
+        type: object
+        description: Reference to a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 6
+            x-mappedTo: CCRATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Credit Card rate table id
+            example: RT-CREDITCARD
+            x-mappedTo: CCRATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/6
+            readOnly: true                    
+      employeeExpense:
+        type: object
+        description: Reference to a rate table
+        x-object: rate-table
+        properties:
+          key:
+            type: string
+            description: Rate table key
+            example: 7
+            x-mappedTo: EERATETABLEKEY
+            readOnly: true
+          id:
+            type: string
+            description: Rate table id
+            example: RT-EMPEXPENSE
+            x-mappedTo: EERATETABLEID
+          href:
+            type: string
+            description: URL of the rate table
+            example: /objects/rate-table/7
+            readOnly: true
+  projectContractLineEntries:
+      type: array
+      x-mappedTo: ITEMS
+      x-object: project-contract-line-entry
+      items:
+        $ref: ./project-contract-line-entry.s1.schema.yaml
+  changeRequestEntries:
+      type: array
+      x-mappedTo: CRENTRIES
+      x-object: project-contract-line-entry
+      items:
+        $ref: ./project-contract-line-entry.s1.schema.yaml        
+  attachment:
+    $ref: ../references/attachmentref.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml                                                               
+  audit:
+    $ref:  ../../common/models/audit.s1.schema.yaml

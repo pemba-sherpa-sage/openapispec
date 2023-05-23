@@ -1,0 +1,42 @@
+title: customer-type
+x-mappedTo: custtype
+type: object
+description: Customer types provide a way to group customers into categories, such as reseller and end user.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the customer type.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Name of the customer type.
+    x-mappedTo: NAME
+    x-mutable: false
+  href:
+    type: string
+    description: URL for the customer type.
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  parent:
+    type: object
+    description: Parent of a subordinate customer type.
+    x-object: customer-type
+    x-mappedTo: PARENT
+    title: parent
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent customer type.
+        x-mappedTo: PARENT.RECORDNO
+      id:
+        type: string
+        description: Identifier for the parent customer type.
+        x-mappedTo: PARENT.NAME
+      href:
+        type: string
+        description: URL for the parent customer type.
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

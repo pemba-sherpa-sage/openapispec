@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: contract.line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+tags:
+  - name: contract-line
+    description: If you incorrectly or inadvertently canceled a contract line, you can use this function to undo that action and uncancel the line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/line/uncancel:
+    post:
+      summary: contract-line uncancel
+      description: If you incorrectly or inadvertently canceled a contract line, you can use this function to undo that action and uncancel the line.
+      tags:
+        - contract-lines
+      operationId: post-contract-line-uncancel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-line-uncancel-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-line-uncancel-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line-uncancel-request:
+      description: uncancel request
+      type: object
+      x-mappedTo: __custom__
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          description: Contract line key
+          x-mappedTo: CONTRACTDETAILKEY
+          nullable: false
+          example: '2'
+    contract-line-uncancel-response:
+      description: uncancel response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        status:
+          type: string
+          description: status of the result
+          x-mappedTo: STATUS
+          example: completed
+          enum:
+            - completed
+
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

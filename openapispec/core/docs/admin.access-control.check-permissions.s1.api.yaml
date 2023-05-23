@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: admin.access-control.check-permissions
+  description: access-control API
+  version: 1.0-internal
+  contact:
+    name: Roy Liu
+    email: roy.liu@sage.com
+tags:
+  - name: admin.access-control.check-permissions
+    description: access-control routines for domain services
+paths:
+  /services/admin/access-control/check-permissions:
+    post:
+      summary: check one or more arraies of permission
+      description: check one or more arries of permssion, result is "and" between arries and "or" within each array
+      tags:
+        - admin.access-control.check-permissions
+      operationId: post-services-admin-access-control-check-permissions
+      requestBody:
+        description: a payload contains array of arrays of operation policy which are required for services that deal with multiple resources, e.g. query and composite
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin.access-control.check-permissions-req'
+            examples:
+              example-1:
+                value:
+                  permissions:
+                    - - co/lists/supportingdocuments/view1
+                      - co/lists/supportingdocuments/view2
+                    - - co/lists/supportingdocuments/view3
+                      - co/lists/supportingdocuments/view4
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/admin.access-control.check-permissions-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      authz: true
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    admin.access-control.check-permissions-req:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    admin.access-control.check-permissions-resp:
+      description: Permission batch check response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        authz:
+          type: boolean
+          description: Authorization success or failure
+          x-mappedTo: authz
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

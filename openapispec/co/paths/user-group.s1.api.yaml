@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: user-group
+  description: user-group API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: User groups
+    description: User groups help you manage the permissions and access of users that have the same roles or responsibilities. After you add a user to a user group, they automatically inherit all permissions and access assigned to that user group.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/user-group:
+    get:
+      summary: List user groups
+      description: |-
+        Returns up to 100 user groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find user groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - User groups
+      operationId: get-objects-user-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of user-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of user groups:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: Warehouse users
+                        href: /objects/user-group/1
+                      - key: '96'
+                        id: AP users
+                        href: /objects/user-group/96
+                      - key: '21'
+                        id: Administrators
+                        href: /objects/user-group/21
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a user group
+      description: Creates a new user group.
+      tags:
+        - User groups
+      operationId: post-objects-user-group
+      requestBody:
+        description: User group to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user-group'
+                - $ref: '#/components/schemas/user-groupRequiredProperties'
+            examples:
+              Creates a user group: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New user group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/user-group/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the user group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a user group
+      description: Returns detailed information for a specified user group.
+      tags:
+        - User groups
+      operationId: get-objects-user-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the user group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/user-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a user group
+      description: Updates an existing user group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - User groups
+      operationId: patch-objects-user-group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a user group: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated user group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated user group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a user group
+      description: Deletes a user group.
+      tags:
+        - User groups
+      operationId: delete-objects-user-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    user-group:
+      $ref: ../models/user-group.s1.schema.yaml
+    user-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

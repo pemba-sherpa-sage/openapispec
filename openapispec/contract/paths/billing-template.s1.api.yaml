@@ -1,0 +1,196 @@
+openapi: 3.0.0
+info:
+  title: billing-template
+  description: billing-template API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+tags:
+  - name: Billing templates
+    description: A billing template defines the rules to use to invoice the flat or fixed amount of a contract line item.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/billing-template:
+    get:
+      summary: List billing templates
+      description: Returns a collection with a key, ID, and link for each billing template. This operation is mostly for use in testing. Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Billing templates
+      operationId: get-objects-billing-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billing-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List billing templates: 
+                  value:
+                    'ia::result':
+                      - key: '7'
+                        id: BILLINGBEGPERCUST2
+                        href: /objects/billing-template/7
+                      - key: '19'
+                        id: 18M_Straitline_Beg
+                        href: /objects/billing-template/19
+                      - key: '14'
+                        id: 4P_25PER_MBEGIN
+                        href: /objects/billing-template/14
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a billing template
+      description: Creates a new billing template.
+      tags:
+        - Billing templates
+      operationId: post-objects-billing-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billing-template'
+                - $ref: '#/components/schemas/billing-templateRequiredProperties'
+            examples:
+              Create a billing template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New billing-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/billing-template/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the billing template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a billing template
+      description: Returns detailed information for a specified billing template.
+      tags:
+        - Billing templates
+      operationId: get-objects-billing-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the billing-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/billing-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a billing template: 
+                  value:
+                    'ia::result':
+                      key: '7'
+                      id: BILLINGBEGPERCUST2
+                      description: 'Custom percent billing beginning of 3,6,9,12 periods'
+                      status: active
+                      method: predefinedPercentages
+                      source: ''
+                      steptemplate: false
+                      href: /objects/billing-template/7
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a billing template
+      description: Updates an existing billing template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Billing templates
+      operationId: patch-objects-billing-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/billing-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a billing template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated billing-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a billing template
+      description: Deletes a billing template.
+      tags:
+        - Billing templates
+      operationId: delete-objects-billing-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billing-template:
+      $ref: ../models/billing-template.s1.schema.yaml
+    billing-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

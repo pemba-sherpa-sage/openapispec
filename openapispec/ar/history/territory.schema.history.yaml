@@ -1,0 +1,14 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/territory/view
+    POST:
+      - co/lists/territory/create
+      - co/quickadds/territory/create
+    PATCH:
+      - co/lists/territory/edit
+    DELETE:
+      - co/lists/territory/delete
+s1:
+  hash: '0'
+  type: rootObject

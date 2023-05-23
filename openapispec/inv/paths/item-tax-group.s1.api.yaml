@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: item-tax-group
+  description: Item Tax Group API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: Item tax groups
+    description: Item tax groups apply different tax schedules to various items. Item tax groups are only available with Advanced Tax.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/item-tax-group/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the item tax group.
+    get:
+      summary: Get an item tax group
+      description: Returns detailed information for a specified item tax group.
+      tags:
+        - Item tax groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item-tax-group'
+        '400':
+          description: Bad Request
+      operationId: get-objects-item-tax-group-key
+components:
+  schemas:
+    item-tax-group:
+      $ref: ../models/item-tax-group.s1.schema.yaml

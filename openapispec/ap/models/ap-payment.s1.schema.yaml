@@ -1,0 +1,444 @@
+title: ap-payment
+x-mappedTo: appymt
+type: object
+description: An AP payment is a transaction that records a payment against an AP bill or AP adjustment.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP payment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Identifier for the AP payment. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the AP payment.
+    readOnly: true
+    example: /objects/ap-payment/23
+  recordType:
+    type: string
+    description: Record type.
+    readOnly: true
+    x-mappedTo: RECORDTYPE
+    example: pp
+  financialAccount:
+    type: object
+    description: Financial entity from which the payment will be paid.
+    nullable: false
+    properties:
+      entityId:
+        type: string
+        description: ID of the financial entity.
+        x-mappedTo: FINANCIALENTITY
+        example: Visdb
+      entityType:
+        type: string
+        description: Type of the financial entity.
+        readOnly: true
+        x-mappedTo: FINANCIALENTITYTYPE
+        example: cc
+      name:
+        type: string
+        description: Name of the financial entity.
+        readOnly: true
+        x-mappedTo: FINANCIALACCOUNTNAME
+        example: VISA
+      currency:
+        type: string
+        description: Currency of the financial entity.
+        readOnly: true
+        x-mappedTo: FINANCIALACCOUNTCURRENCY
+        example: USD
+  action:
+    type: string
+    description: The action state of the AP payment. The default action state is `submit`.
+    x-mappedTo: ACTION
+    enum:
+      - draft
+      - submit
+    x-mappedToValues:
+      - Draft
+      - Submit
+  state:
+    type: string
+    description: State of the AP payment.
+    readOnly: true
+    x-mappedTo: STATE
+    enum:
+      - Partially approved
+      - Submitted
+      - Voided
+      - Confirmed
+      - Approved
+      - Draft
+      - Declined
+      - Delivered
+      - Print voided
+      - Deleted
+      - Quick delivery
+    x-mappedToValues:
+      - PA
+      - S
+      - V
+      - C
+      - A
+      - D
+      - U
+      - P
+      - VP
+      - X
+      - Q
+    example: Approved
+  documentNumber:
+    type: string
+    description: Reference number for the AP payment.
+    x-mappedTo: DOCNUMBER
+    example: '123123'
+  description:
+    type: string
+    description: Description of the AP payment.
+    x-mappedTo: DESCRIPTION
+    example: This is a test Description
+  documentId:
+    type: string
+    description: Document ID for the AP payment.
+    x-mappedTo: DESCRIPTION2
+    example: 'Prim-Vendor-Invoice-VI#0008#doc'
+  txnDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the AP payment was created.
+    readOnly: true
+    x-mappedTo: WHENCREATED
+  txnPaidDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the AP payment transaction was paid.
+    readOnly: true
+    x-mappedTo: WHENPAID
+  paymentDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the AP payment was fully paid.
+    x-mappedTo: PAYMENTDATE
+    nullable: false
+  baseCurrency:
+    type: object
+    description: Grouping all the base currency fields.
+    properties:
+      currency:
+        type: string
+        description: The company's base currency.
+        x-mappedTo: BASECURR
+        example: USD
+      totalAmount:
+        type: string
+        description: Total amount.
+        readOnly: true
+        x-mappedTo: TOTALENTERED
+        example: '10'
+      totalSelected:
+        type: string
+        description: Total selected.
+        readOnly: true
+        x-mappedTo: TOTALSELECTED
+        example: '0'
+      totalPaid:
+        type: string
+        description: Total paid.
+        readOnly: true
+        x-mappedTo: TOTALPAID
+        example: '10'
+      totalDue:
+        type: string
+        description: Amount due.
+        readOnly: true
+        x-mappedTo: TOTALDUE
+        example: '0'
+  txnCurrency:
+    type: object
+    description: Grouping all the transaction currency fields.
+    properties:
+      currency:
+        type: string
+        description: The currency in which the payment was made.
+        x-mappedTo: CURRENCY
+        example: USD
+      totalAmount:
+        type: string
+        description: Total transaction amount.
+        readOnly: true
+        x-mappedTo: TRX_TOTALENTERED
+        example: '10'
+      totalSelected:
+        type: string
+        description: Total transaction amount selected.
+        readOnly: true
+        x-mappedTo: TRX_TOTALSELECTED
+        example: '0'
+      totalPaid:
+        type: string
+        description: Total transaction amount paid.
+        readOnly: true
+        x-mappedTo: TRX_TOTALPAID
+        example: '10'
+      totalDue:
+        type: string
+        description: Transaction amount due.
+        readOnly: true
+        x-mappedTo: TRX_TOTALDUE
+        example: '0'
+  cleared:
+    type: string
+    description: Reconciliation status.
+    readOnly: true
+    x-mappedTo: CLEARED
+    example: F
+  clearedDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Reconciliation date.
+    readOnly: true
+    x-mappedTo: CLRDATE
+  isInclusiveTax:
+    type: boolean
+    description: Indicates whether the transaction is tax inclusive.
+    readOnly: true
+    x-mappedTo: INCLUSIVETAX
+    example: 'false'
+    x-mappedToType: string
+    default: 'false'
+  paymentSummary:
+    type: object
+    description: AP summary the payment is part of. Summaries are collections of transactions grouped together for processing.
+    x-mappedTo: APPAYMENTBATCH
+    x-object: ap-summary
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the summary.
+        x-mappedTo: PRBATCHKEY
+        readOnly: true
+        example: '399'
+      id:
+        type: string
+        description: Identifier for the summary.
+        readOnly: true
+        x-mappedTo: PRBATCHKEY
+        example: '399'
+      name:
+        type: string
+        description: Name of the summary.
+        readOnly: true
+        x-mappedTo: PRBATCH
+        example: Hidden AP Batch
+      postingDate:
+        type: string
+        format: date
+        description: GL posting date.
+        readOnly: true
+        x-mappedTo: WHENPOSTED
+        example: '2022-07-21'
+      href:
+        type: string
+        description: URL for the summary.
+        readOnly: true
+        example: '/objects/ap-summary/399'
+  exchangeRate:
+    type: object
+    description: Exchange rate details used to calculate the base amount.
+    title: exchangeRate
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: 'Exchange rate date for this transaction. Can be the current date, the date the transaction was issued, or the date the transaction will be paid.'
+        x-mappedTo: EXCH_RATE_DATE
+      rate:
+        type: string
+        description: Exchange rate used to calculate the base amount from the transaction amount.
+        readOnly: true
+        x-mappedTo: EXCHANGE_RATE
+        example: '1.0789'
+      typeId:
+        type: string
+        description: Exchange rate type used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        example: '1'
+  paymentProvider:
+    type: object
+    description: Payment provider who processed the payment.
+    x-mappedTo: paymentprovider
+    x-object: payment-provider
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the payment provider.
+        x-mappedTo: PROVIDERKEY
+        readOnly: true
+        example: '1'
+      id:
+        type: string
+        description: Unique identifier for the payment provider.
+        readOnly: true
+        x-mappedTo: PROVIDERID
+        example: CSI
+      href:
+        type: string
+        description: URL for the payment provider.
+        readOnly: true
+        example: /objects/payment-provider/1
+  paymentMethod:
+    type: string
+    description: Payment method for the payment.
+    x-mappedTo: PAYMENTMETHOD
+    nullable: false
+    example: null
+    enum:
+      - printedCheck
+      - creditCard
+      - eft
+      - cash
+      - onlineChargeCard
+      - onlineACHDebit
+      - manualCheck
+      - ach
+    x-mappedToValues:
+      - Printed Check
+      - Credit Card
+      - EFT
+      - Cash
+      - Online Charge Card
+      - Online ACH Debit
+      - Manual Check
+      - ACH
+  payToContact:
+    type: object
+    title: CONTACT
+    properties:
+      payTo:
+        type: object
+        title: payTo
+        x-object: contact
+        x-mappedTo: contact
+        properties:
+          href:
+            type: string
+            description: URL for the pay-to contact.
+            readOnly: true
+            example: /objects/contact/23
+          key:
+            type: string
+            description: Pay-to contact key.
+            readOnly: true
+            x-mappedTo: BILLTOPAYTOKEY
+            example: '6886'
+          id:
+            type: string
+            description: Pay-to contact ID.
+            readOnly: true
+            x-mappedTo: BILLTOPAYTOID
+            example: '6886'
+          name:
+            type: string
+            description: Pay-to contact name.
+            readOnly: true
+            x-mappedTo: BILLTOPAYTOCONTACTNAME
+            example: PG & E(V201)
+  taxSolution:
+    type: object
+    description: Tax solution used to calculate and capture taxes on the payment.
+    x-object: tax-solution
+    x-mappedTo: taxsolution
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        readOnly: true
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: ID for the tax solution.
+        readOnly: true
+        x-mappedTo: TAXSOLUTIONID
+      taxCalculationMethod:
+        type: string
+        description: Tax method used for the payment.
+        readOnly: true
+        x-mappedTo: TAXMETHOD
+      href:
+        type: string
+        description: URL for the tax solution.
+        readOnly: true
+  vendor:
+    type: object
+    description: Vendor to receive the payment.
+    x-mappedTo: vendor
+    x-object: vendor
+    nullable: false
+    properties:
+      href:
+        type: string
+        description: URL for the vendor.
+        readOnly: true
+        example: /objects/vendor/201
+      entity:
+        type: string
+        description: Vendor entity.
+        readOnly: true
+        x-mappedTo: ENTITY
+        example: V201
+      key:
+        type: string
+        description: System-assigned key for the vendor.
+        readOnly: true
+        x-mappedTo: VENDORKEY
+        example: '201'
+      id:
+        type: string
+        description: ID for the vendor.
+        x-mappedTo: VENDORID
+        example: '201'
+      name:
+        type: string
+        description: Name of the vendor.
+        readOnly: true
+        x-mappedTo: VENDORNAME
+        example: PG & E
+  details:
+    type: array
+    x-mappedTo: PYMTDETAILS
+    x-object: ap-payment-detail
+    nullable: false
+    items:
+      $ref: ap-payment-detail.s1.schema.yaml
+  lines:
+    type: array
+    x-mappedTo: ITEMS
+    x-object: ap-payment-line
+    items:
+      readOnly: true
+      $ref: ap-payment-line.s1.schema.yaml
+  audit:
+    type: object
+    allOf:
+      - $ref: ../../common/models/audit.s1.schema.yaml
+      - type: object
+        properties:
+          createdDateTime:
+            type: string
+            x-mappedTo: AUWHENCREATED
+            description: Time of the submission.
+            format: date-time
+            example: '2014-01-08T11:28:12Z'
+            readOnly: true

@@ -1,0 +1,28 @@
+title: mea-price-list
+type: object
+x-mappedTo: contractmeapricelist
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the MEA price list. Used to identify the price list in URLs or JSON bodies for all operations on the price list.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '12'
+  id:
+    type: string
+    description: Unique name or ID for the MEA price list. 
+    x-mappedTo: NAME
+    example: Subscription MEA price list
+  href:
+    type: string
+    readOnly: true
+    example: /objects/contract/12
+  description:
+    type: string
+    description: Description of the MEA price list.
+    x-mappedTo: DESCRIPTION
+    example: Fair value for high-volume customers
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

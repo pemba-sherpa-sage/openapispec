@@ -1,0 +1,208 @@
+openapi: 3.0.0
+info:
+  title: vendor-account-group
+  description: vendor-account-group API
+  version: 1.0.0
+  contact:
+    email: nithin.chemmayamgottu@sage.com
+    name: Nithin C
+tags:
+  - name: Vendor account groups
+    description: |
+     Account groups are the basis of financial reports. Every account must be part of an account group so that its data is included in balance sheets, income statements, and other financial reports.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/vendor-account-group/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor account group.
+        example: 1
+    get:
+      summary: Get a vendor account group
+      description: Returns detailed information for a specified vendor account group.
+      tags:
+        - Vendor account groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendor-account-group'
+              examples:
+                Get a vendor account group:
+                  value:
+                    'ia::result':
+                      id: HW VGL Group
+                      key: '1'
+                      groupType: vendor
+                      status: inactive
+                      href: /objects/vendor-account-group/1
+                    'ia::meta':
+                      totalCount: 1
+        '404':
+          description: vendor-account-group Not Found
+      operationId: get-vendor-account-group-id
+    delete:
+      summary: Delete a vendor account group
+      description: Deletes a vendor account group.
+      tags:
+        - Vendor account groups
+      operationId: delete-objects-vendor-account-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a vendor account group
+      operationId: patch-objects-vendor-account-group-key
+      description: Updates an existing vendor account group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Vendor account groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated vendor-account-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a vendor account group:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: 1099 Vendor Group
+                      href: /objects/vendor-account-group/18
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-account-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a vendor account group:
+                value:
+                  status: inactive
+  /objects/vendor-account-group:
+    get:
+      summary: List vendor account groups
+      tags:
+        - Vendor account groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-account-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List vendor account groups:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: HW VGL Group
+                        href: /objects/vendor-account-group/1
+                      - key: '2'
+                        id: OS VGL Group
+                        href: /objects/vendor-account-group/2
+                      - key: '3'
+                        id: Stationary VGL Group
+                        href: /objects/vendor-account-group/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor-account-group
+      description: Returns a collection with a key, ID, and link for each vendor account group.  This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+    post:
+      summary: Create a vendor account group
+      tags:
+        - Vendor account groups
+      operationId: post-objects-vendor-account-group
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New vendor-account-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a vendor account group:
+                  value:
+                    'ia::result':
+                      key: '18'
+                      id: 1099 Vendor Group
+                      href: /objects/vendor-account-group/18
+                    'ia::meta':
+                      totalCount: 1
+
+        '400':
+          $ref: '#/components/responses/400error'
+      description: Creates a new vendor account group.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-account-group'
+                - $ref: '#/components/schemas/vendorAccountGroupRequiredProperties'
+            examples:
+              example-create-vendor-account-group:
+                value:
+                  id: 1099 Vendor Group
+                  groupType: vendor
+                  status: active
+components:
+  schemas:
+    vendor-account-group:
+      $ref: ../models/vendor-account-group.s1.schema.yaml
+    vendorAccountGroupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

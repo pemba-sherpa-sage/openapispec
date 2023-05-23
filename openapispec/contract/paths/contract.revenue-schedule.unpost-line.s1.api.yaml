@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: contract-revenue-schedule unpost-line
+  description: API to unpost contract-revenue-schedule-lines
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract revenue schedules
+    description: contract revenue schedules
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/contract/revenue-schedule/unpost-line:
+    post:
+      summary: Un-post contract revenue schedule line
+      description: Un-posts a single contract revenue schedule line.
+      tags:
+        - Contract revenue schedules
+      operationId: contract-revenue-schedule-unpost-line
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-revenue-schedule-unpost-line-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-revenue-schedule-unpost-line-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-revenue-schedule-unpost-line-request:
+      $ref: ../references/contract-schedule-unpost-line-request.typeref.yaml
+    contract-revenue-schedule-unpost-line-response:
+      $ref: ../references/contract-schedule-unpost-line-response.typeref.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

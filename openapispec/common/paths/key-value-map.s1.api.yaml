@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: key-value-map
+  description: key-value-map API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Key value maps
+    description: Key value map description -- what it's for and where it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/key-value-map:
+    get:
+      summary: List key value maps
+      description: Returns a collection with a key, ID, and link for each key value map.
+      tags:
+        - Key value maps
+      operationId: get-services-key-value-map
+      parameters:
+        - $ref: '#/components/parameters/type'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of key-value-map objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      - key: key1
+                        type: user
+                        value:
+                          text-color: red
+                          background-color: black
+                          font: Ariel
+                        href: /services/key-value-map/key1
+                      - key: key2
+                        type: user
+                        value:
+                          text-color: red
+                          background-color: black
+                          font: Ariel
+                        href: /services/key-value-map/key2
+                      - key: key3
+                        type: user
+                        value:
+                          text-color: red
+                          background-color: black
+                          font: Ariel
+                        href: /services/key-value-map/key3
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a key value map
+      description: Creates a new key value map.
+      tags:
+        - Key value maps
+      operationId: post-services-key-value-map
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/key-value-map'
+            examples:
+              example-1:
+                value:
+                  key: key1
+                  type: user
+                  value:
+                    text-color: blue
+                    background-color: black
+                    font: Ariel
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New key-value-map
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: key1
+                      type: user
+                      href: /services/key-value-map/key1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/services/key-value-map/{key}':
+    parameters:
+      - $ref: '#/components/parameters/key'
+      - $ref: '#/components/parameters/type'
+    get:
+      summary: Get a key value map
+      description: Returns the data for a particular key.
+      tags:
+        - Key value maps
+      operationId: get-services-key-value-map-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the key-value-map
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/key-value-map'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    'ia::result':
+                      key: key1
+                      type: user
+                      value:
+                        text-color: red
+                        background-color: black
+                        font: Ariel
+                      href: /services/key-value-map/key1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a key value map
+      description: Deletes a key value map.
+      tags:
+        - Key value maps
+      operationId: delete-services-key-value-map-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  parameters:
+    key:
+      name: key
+      description: Key
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '(\/?[^\/\?#]*)?'
+    type:
+      name: type
+      in: query
+      schema:
+        type: string
+        enum:
+          - user
+          - company
+        default: user
+      required: false
+      description: Key type
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+
+  schemas:
+    key-value-map:
+      $ref: ../models/key-value-map.s1.schema.yaml

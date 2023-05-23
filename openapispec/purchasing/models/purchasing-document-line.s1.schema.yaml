@@ -1,0 +1,519 @@
+title: purchasing-document-line
+x-mappedTo: podocumententry
+x-ownedBy: purchasing-document
+type: object
+description: Line items in a purchasing document represent purchasing transactions.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the purchasing document line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: ID for the purchasing document line item.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  href:
+    type: string
+    description: URL for the purchasing document line item.
+    readOnly: true
+  documentType:
+    type: string
+    description: Type of transaction.
+    x-mappedTo: DOCPARID
+    x-useForDocType: true
+    readOnly: true
+  bundleNumber:
+    type: string
+    description: Bundle number
+    x-mappedTo: BUNDLENUMBER
+  lineNumber:
+    type: integer
+    description: Line number
+    x-mappedTo: LINE_NO
+  item:
+    type: object
+    description: Item associated with the document line.
+    x-object: item
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the item.
+        x-mappedTo: ITEMID
+        readOnly: true
+      id:
+        type: string
+        description: ID for the item.
+        x-mappedTo: ITEMID
+      name:
+        type: string
+        description: Item name
+        x-mappedTo: ITEMNAME
+        readOnly: true
+      description:
+        type: string
+        description: Item description
+        x-mappedTo: ITEMDESC
+        readOnly: true
+      href:
+        type: string
+        description: URL for the item.
+        readOnly: true
+  warehouse:
+    type: object
+    description: Warehouse associated with the document line item.
+    x-object: warehouse
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the warehouse.
+        x-mappedTo: WAREHOUSEKEY
+        readOnly: true
+      id:
+        type: string
+        description: ID for the warehouse.
+        x-mappedTo: WAREHOUSE.LOCATION_NO
+      name:
+        type: string
+        description: Warehouse name
+        x-mappedTo: WAREHOUSE.NAME
+        readOnly: true
+      href:
+        type: string
+        description: URL for the warehouse.
+        readOnly: true
+  memo:
+    type: string
+    description: Memo about the document line item.
+    x-mappedTo: MEMO
+  priceCalculationMemo:
+    type: string
+    description: Memo about price calculation for the document line item.
+    x-mappedTo: PRICECALCMEMO
+  unit:
+    type: string
+    description: Unit associated with this document line item.
+    x-mappedTo: UNIT
+  quantity:
+    type: number
+    description: Quantity associated with this document line item.
+    x-mappedTo: QUANTITY
+  unitQuantity:
+    type: number
+    description: Unit quantity associated with this document line item.
+    x-mappedTo: UIQTY
+  unitPrice:
+    type: number
+    description: Unit price
+    x-mappedTo: UIPRICE
+  price:
+    type: number
+    description: Price
+    x-mappedTo: PRICE
+  totalPrice:
+    type: number
+    description: Extended price
+    x-mappedTo: TOTAL
+  convertedQuantity:
+    type: number
+    description: Quantity converted
+    x-mappedTo: QTY_CONVERTED
+  retailPrice:
+    type: number
+    description: Suggested price
+    x-mappedTo: RETAILPRICE
+  state:
+    type: boolean
+    description: State of the document line item.
+    x-mappedTo: STATE
+    x-mappedToType: string
+    default: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  cost:
+    type: number
+    description: Cost associated with the document line item.
+    x-mappedTo: COST
+  costMethod:
+    type: string
+    description: Cost method associated with the document line item.
+    x-mappedTo: COST_METHOD
+  discountPercent:
+    type: number
+    description: Discount percentage for the document line item.
+    x-mappedTo: DISCOUNTPERCENT
+  multiplier:
+    type: number
+    description: Multiplier
+    x-mappedTo: MULTIPLIER
+  sourceDocument:
+    type: object
+    description: The source from which the purchasing document line was created.
+    x-object: purchasing-document-line
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the source.
+        x-mappedTo: SOURCE_DOCLINEKEY
+      id:
+        type: string
+        description: ID for the source.
+        x-mappedTo: SOURCE_DOCLINEKEY
+      href:
+        type: string
+        description: URL for the source.
+        readOnly: true
+  adjustmentDocument:
+    type: object
+    description: Adjustment document associated with the purchasing document line item. 
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the adjustment document.
+        x-mappedTo: ADJDOCHDRKEY
+      lineKey:
+        type: integer
+        description: System-assigned key for the adjustment document entry.
+        x-mappedTo: ADJDOCENTRYKEY
+      href:
+        type: string
+        description: URL for the adjustment document.
+        readOnly: true
+  isPriceProrated:
+    type: boolean
+    description: Indicates whether the price is prorated.
+    x-mappedTo: PRORATEPRICE
+    x-mappedToType: string
+  deferRevenue:
+    type: string
+    description: Defer revenue
+    x-mappedTo: DEFERREVENUE
+  discountMemo:
+    type: string
+    description: Discount memo
+    x-mappedTo: DISCOUNT_MEMO
+  baseCurrency:
+    type: string
+    description: Base currency for the transaction.
+    x-mappedTo: BASECURR
+  txnCurrency:
+    type: string
+    description: Currency used for the transaction.
+    x-mappedTo: CURRENCY
+  priceInTxnCurrency:
+    type: string
+    readOnly: true
+    description: Transaction price
+    x-mappedTo: TRX_PRICE
+  exchangeRate:
+    type: object
+    properties:
+      date:
+        type: string
+        description: Date the exchange rate is calculated.
+        x-mappedTo: EXCHRATEDATE
+      id:
+        type: string
+        description: Identifier for the exchange rate type.
+        x-mappedTo: EXCHRATETYPE
+      name:
+        type: string
+        description: Name of the exchange rate type.
+        x-mappedTo: EXCHRATETYPES.NAME
+      rate:
+        type: number
+        description: Exchange rate used for the transaction.
+        x-mappedTo: EXCHRATE
+  isBillable:
+    type: boolean
+    description: Indicates whether the transaction is billable.
+    x-mappedTo: BILLABLE
+    x-mappedToType: string
+  isBilled:
+    type: boolean
+    description: Indicates whether the transaction has been billed.
+    x-mappedTo: BILLED
+    x-mappedToType: string
+  form1099:
+    type: object
+    properties:
+      nameOn1099:
+        type: string
+        description: Name as it should appear on 1099 forms.
+        x-mappedTo: FORM1099
+      type:
+        type: string
+        description: Type of form 1099.
+        x-mappedTo: FORM1099TYPE
+      box:
+        type: string
+        description: Box value of form 1099.
+        x-mappedTo: FORM1099BOX
+  taxRate:
+    type: number
+    description: Tax rate for the purchasing document line item.
+    x-mappedTo: PERCENTVAL
+  tax:
+    type: string
+    description: Tax
+    x-mappedTo: TAXABSVAL
+  taxInTxnCurrency:
+    type: number
+    description: Transaction tax
+    x-mappedTo: TRX_TAXABSVAL
+  taxableAmount:
+    type: number
+    description: Taxable amount
+    x-mappedTo: TAXABLEAMOUNT
+  totalAmount:
+    type: number
+    description: Gross amount
+    x-mappedTo: LINETOTAL
+  totalAmountInTxnCurrency:
+    type: number
+    description: Transaction gross amount
+    x-mappedTo: TRX_LINETOTAL
+  discount:
+    type: number
+    description: Discount
+    x-mappedTo: DISCOUNT
+  taxOverride:
+    type: boolean
+    description: Tax override (only for Avalara tax)
+    x-mappedTo: TAXVALOVERRIDE
+    x-mappedToType: string
+    default: false
+  totalAmountConverted:
+    type: number
+    description: Total amount converted
+    x-mappedTo: TOTAL_AMOUNT_CONVERTED
+  totatAmountRemaining:
+    type: number
+    description: Total amount remaining
+    x-mappedTo: TOTAL_AMOUNT_REMAINING
+  quantityRemaining:
+    type: number
+    description: Quantity remaining
+    x-mappedTo: QTY_REMAINING
+  convertedPrice:
+    type: number
+    description: Price converted
+    x-mappedTo: PRICE_CONVERTED
+  conversionType:
+    type: string
+    description: Conversion type
+    x-mappedTo: CONVERSIONTYPE
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          location:
+            title: location
+            type: object
+            x-object: location
+            properties:
+              key:
+                type: string
+                description: Location Key
+                x-mappedTo: LOCATIONKEY
+                example: '22'
+              id:
+                type: string
+                description: Location ID
+                x-mappedTo: LOCATIONID
+                example: LOC-22
+              name:
+                type: string
+                description: Location name
+                readOnly: true
+                x-mappedTo: LOCATIONNAME
+                example: California
+  requestedDate:
+    type: string
+    description: Need by date
+    format: date
+    x-mappedTo: NEEDBYDATE
+  shipByDate:
+    type: string
+    description: Ship by date
+    format: date
+    x-mappedTo: SHIPBYDATE
+  canCancelAfterDate:
+    type: string
+    description: Cancel after date
+    format: date
+    x-mappedTo: CANCELAFTERDATE
+  doNotShipBeforeDate:
+    type: string
+    description: Do Not ship before date
+    format: date
+    x-mappedTo: DONOTSHIPBEFOREDATE
+  doNotShipAfterDate:
+    type: string
+    description: Do not ship after date
+    format: date
+    x-mappedTo: DONOTSHIPAFTERDATE
+  retainage:
+    type: object
+    title: retainage
+    properties:
+      percentage:
+        type: number
+        description: Retainage percentage
+        x-mappedTo: RETAINAGEPERCENTAGE
+        readOnly: true
+      baseAmountRetained:
+        type: number
+        description: Base amount retained
+        x-mappedTo: AMOUNTRETAINED
+        readOnly: true
+      txnAmountRetained:
+        type: number
+        description: Transaction amount retained
+        x-mappedTo: TRX_AMOUNTRETAINED
+        readOnly: true
+  revision:
+    type: object
+    properties:
+      unitQuantity:
+        type: number
+        description: Revised unit quantity
+        x-mappedTo: REVISEDUNITQTY
+      quantity:
+        type: number
+        description: Revised quantity
+        x-mappedTo: REVISEDQTY
+      unitValue:
+        type: string
+        description: Revised unit value
+        x-mappedTo: REVISEDUNITVALUE
+      value:
+        type: string
+        description: Revised value
+        x-mappedTo: REVISEDVALUE
+      valueInTxnCurrency:
+        type: number
+        description: Revised transaction currency
+        x-mappedTo: TRX_REVISEDVALUE
+      price:
+        type: number
+        description: Revised price
+        x-mappedTo: REVISEDPRICE
+      unitPrice:
+        type: number
+        description: Revised unit price
+        x-mappedTo: REVISEDUNITPRICE
+      priceInTxnCurrency:
+        type: number
+        description: Revised transaction price
+        x-mappedTo: TRX_REVISEDPRICE
+  draft:
+    type: object
+    properties:
+      unitQuantity:
+        type: number
+        description: Draft unit quantity change
+        x-mappedTo: DRAFTCHANGEUNITQTY
+      quantity:
+        type: number
+        description: Draft quantity change
+        x-mappedTo: DRAFTCHANGEQTY
+      price:
+        type: number
+        description: Draft change price
+        x-mappedTo: DRAFTCHANGEPRICE
+  posted:
+    type: object
+    properties:
+      quantity:
+        type: number
+        description: Posted quantity changes
+        x-mappedTo: POSTEDQTYCHANGES
+      price:
+        type: number
+        description: Posted change extended price
+        x-mappedTo: POSTEDCHANGEEXTPRICE
+      basePrice:
+        type: number
+        description: Posted change extended base price
+        x-mappedTo: POSTEDCHANGEEXTBASEPRICE
+  contacts:
+    type: object
+    title: contacts
+    properties:
+      deliverTo:
+        type: object
+        description: Deliver to contact
+        x-object: contact
+        x-mappedTo: DELIVERTO
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: DELIVERTOKEY
+            readOnly: true
+          id:
+            type: string
+            description: Identifier for the contact.
+            x-mappedTo: DELIVERTO.CONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+  deliveryDueDate:
+    type: string
+    description: Promised by date
+    format: date
+    x-mappedTo: PROMISEDDATE
+  orderConfirmationDate:
+    type: string
+    description: Date confirmed
+    format: date
+    x-mappedTo: DATECONFIRMED
+  shippedDate:
+    type: string
+    description: Date shipped to supplier
+    x-mappedTo: DATESHIPTOSUPPLIER
+  partialExempt:
+    type: boolean
+    description: Indicates whether the transaction is partially exempt.
+    x-mappedTo: PARTIALEXEMPT
+    x-mappedToType: string
+    default: false
+  priceToleranceVariance:
+    type: number
+    description: Price tolerance variance
+    x-mappedTo: PRICETOLERANCEVARIANCE
+  quantityToleranceVariance:
+    type: number
+    description: Quantity tolerance variance
+    x-mappedTo: QTYTOLERANCEVARIANCE
+  documentHeader:
+    type: object
+    description: Header lever details for the document line items.
+    x-mappedTo: podocument
+    x-object: purchasing-document
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the purchasing document.
+        x-mappedTo: DOCHDRNO
+      id:
+        type: string
+        description: ID for the purchasing document.
+        x-mappedTo: DOCHDRID
+      documentType:
+        type: string
+        description: Type of the purchasing document.
+        x-mappedTo: DOCPARID
+        x-useForDocType: true
+        readOnly: true
+      href:
+        type: string
+        description: URL for the purchasing document.
+        readOnly: true

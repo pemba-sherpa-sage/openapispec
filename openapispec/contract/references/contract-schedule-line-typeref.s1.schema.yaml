@@ -1,0 +1,67 @@
+type: object
+title: contract-schedule-line
+required:
+  - scheduledAmount
+properties:
+  key:
+    type: string
+    description: Schedule line system-assigned key.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '145'
+  id:
+    type: string
+    description: Schedule line unique identifier.
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example: '145'
+  scheduledOperationKey:
+    type: string
+    x-mappedTo: SCHOPKEY
+    description: Scheduled operation key for the associated offline operation.
+    example: '57665'
+    read-only: true
+  status:
+    type: string
+    description: Schedule line status.
+    x-mappedTo: STATE
+    readOnly: true
+    example: posted
+    enum:
+      - open
+      - terminated
+      - posted
+      - onHold
+    x-mappedToValues:
+      - Open
+      - Terminated
+      - Posted
+      - On Hold
+  scheduledAmount:
+    type: string
+    description: Schedule line scheduled amount.
+    x-mappedTo: AMOUNT
+    format: decimal-precision-2
+    example: '125.27'
+    nullable: false
+  scheduledBaseAmount:
+    type: string
+    description: Schedule line scheduled base amount.
+    x-mappedTo: BASEAMOUNT
+    format: decimal-precision-2
+    example: '137.52'
+  scheduledExchangeRate:
+    type: string
+    description: Schedule line scheduled exchange rate.
+    x-mappedTo: EXCHANGE_RATE
+    format: decimal-precision-12
+    example: '1.345'
+  isHistorical:
+    type: boolean
+    description: Schedule line historical flag indicating the line was added during initial implementation for historical purposes.
+    x-mappedTo: HISTORICAL
+    readOnly: true
+    example: false
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+examples: []

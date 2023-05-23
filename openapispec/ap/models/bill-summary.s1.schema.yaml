@@ -1,0 +1,94 @@
+title: bill-summary
+x-mappedTo: apbillbatch
+type: object
+description: Accounts Payable (AP) summaries are collections of the same type of transactions, grouped together for processing. 
+properties:
+  key:
+    type: string
+    description: System-assigned key for th AP bill summary.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Unique identifier for the AP bill summary.
+    readOnly: true
+    x-mappedTo: RECORDNO
+  name:
+    type: string
+    description: Name of the AP bill summary. This name is used to identify the summary throughout the Accounts Payable application. 
+    x-mappedTo: TITLE
+  createdBy:
+    type: string
+    enum:
+      - 'system'
+      - 'manual'
+    x-mappedToValues:
+      - 'Auto-Summary'
+      - 'Manual'
+    description: Specifies how the bill summary was created.
+    x-mappedTo: AUTOCREATED
+    default: 'manual'
+    readOnly: true
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  type:
+    type: string
+    description: The bill summary type.
+    x-mappedTo: RECORDTYPE
+    readOnly: true
+  total:
+    type: number
+    description: The bill summary total.
+    x-mappedTo: TOTAL
+    readOnly: true
+  parent:
+    type: object
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the parent bill summary.
+        x-mappedTo: PARENTKEY
+  preventGLPosting:
+    type: boolean
+    x-mappedToType: string
+    description: Specifies whether to allow posting to the general ledger (GL).
+    x-mappedTo: NOGL
+    default: false
+    readOnly: true
+  glAccount:
+    type: object
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account.
+        x-mappedTo: ACCOUNTNOKEY
+  postingDate:
+    type: string
+    format: date
+    description: The date that the items in the bill summary should post to the general ledger.
+    x-mappedTo: CREATED
+    ##  open:
+    #type: string
+    #enum:
+    #  - 'open'
+    #  - 'closed'
+    #x-mappedToValues:
+    #  - 'Open'
+    #  - 'Closed'
+    #description: Open/close
+    #x-mappedTo: OPEN
+    ##  systemgenerated:
+    #type: string
+    #enum:
+    #  - 'true'
+    #  - 'false'
+    #x-mappedToValues:
+    #  - 'true'
+    #  - 'false'
+    #description: System generated
+    #x-mappedTo: SYSTEMGENERATED
+    #default: 'false'
+    ##  userkey:
+    #type: integer
+    #description: User
+    #x-mappedTo: USERKEY

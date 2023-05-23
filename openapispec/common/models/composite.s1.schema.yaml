@@ -1,0 +1,46 @@
+title: composite
+description: Schema for describing a single request that will be included as part of a POST body sent to the composite request service.
+x-mappedTo: __custom__
+type: object
+properties:
+  method:
+    type: string
+    description: Operation for request.
+    x-mappedTo: method
+    nullable: false
+    example: POST
+    enum:
+      - GET
+      - POST
+      - PATCH
+      - DELETE
+  path:
+    type: string
+    description: Path to the request endpoint in the Intacct REST API.
+    nullable: false
+    x-mappedTo: path
+    pattern: '/^\/(objects|services)\/[a-z_][a-z_0-9.\-:]+(.*)?$/'
+    example: /objects/contact
+  headers:
+    type: object
+    description: Headers needed for this request.
+    x-mappedTo: headers
+    example:
+      Idempotency-Key: e9606bb2-6be1-4c9e-a2a7-134cd644a5ee
+  body:
+    type: object
+    description: Request body for POST or PATCH operations.
+    x-mappedTo: body
+    example: 
+      lastName: Doe
+      firstName: John
+      id: 'Doe, John'
+  resultReference:
+    type: string
+    description: Reference identifier for success results, used by other requests as input data.
+    x-mappedTo: resultReference
+    nullable: false
+    example: contactRef
+required:
+  - method
+  - path

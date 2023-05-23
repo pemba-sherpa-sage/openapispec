@@ -1,0 +1,48 @@
+type: object
+title: contract-billing-schedule
+x-mappedTo: contractbillingschedule
+description: Header information for contract billing schedule.
+properties:
+  href:
+    type: string
+    description: Contract billing schedule URL.
+    readOnly: true
+    example: /objects/contract-billing-schedule/145
+  status:
+    type: string
+    description: Schedule status.
+    x-mappedTo: STATE
+    readOnly: true
+    example: inProgress
+    enum:
+      - draft
+      - inProgress
+      - onHold
+      - completed
+      - terminated
+      - estimateRevalued
+    x-mappedToValues:
+      - Draft
+      - In progress
+      - On hold
+      - Completed
+      - Terminated
+      - Estimate revalued
+  billingScheduleLines:
+    type: array
+    description: Contract billing schedule lines.
+    x-object: contract-billing-schedule-line
+    x-mappedTo: SCHEDULEENTRY
+    items:
+      type: object
+      allOf:
+        - $ref: ./contract-billing-schedule-line.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-typeref.s1.schema.yaml
+  estimateRevaluationDate:
+    type: string
+    description: The date the Revalue estimation function was executed on the 'Project time' contract line.
+    x-mappedTo: COMPLETEDATE
+    readOnly: true
+    format: date
+    example: '2023-03-31'
+examples: []

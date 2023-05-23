@@ -1,0 +1,310 @@
+openapi: 3.0.0
+info:
+  title: cost-type
+  description: cost-type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Cost types
+    description: |-
+      Cost type is a standard dimension used to capture and categorize project cost details in Construction projects.
+
+      Each project typically has several cost types related to labor, materials, subcontracts, and so forth. You use the standard cost types in the catalog as templates for creating new cost types.
+
+      Each cost type is associated with a task, which in turn is associated with a project. A cost type record is uniquely identified by the standard cost type used to create it as well as the combination of project/task to which it applies.
+
+      Note: Cost type corresponds with category in the work breakdown structure in the construction industry.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/cost-type:
+    get:
+      summary: List cost types.
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each cost type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Cost Types
+      tags:
+        - Cost types
+      operationId: get-objects-cost-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of cost types
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of cost types:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/cost-type/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/cost-type/2
+                      - key: '3'
+                        id: '4'
+                        href: /objects/cost-type/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a cost type
+      description: Creates a new cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Cost Types
+      tags:
+        - Cost types
+      operationId: post-objects-cost-type
+      requestBody:
+        description: cost type
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/cost-type'
+            examples:
+              Create a cost type:
+                value:
+                  project:
+                    id: Project Expense 1
+                  task:
+                    id: ID1
+                  name: Costtype2
+                  description: standard task1
+                  accumulationType:
+                    id: '1'
+                  costUnitDescription: Hours
+                  glAccount:
+                    id: '5000'
+                  item:
+                    id: '1'
+                  planned:
+                    startDate: '2020-10-27'
+                    endDate: '2022-10-27'
+                  actual:
+                    startDate: '2020-10-27'
+                    endDate: '2022-10-27'
+                  root:
+                    id: '1'
+                  standardCostType:
+                    id: '2'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New cost type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New cost type created:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/cost-type/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/cost-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the cost type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a cost type
+      description: Returns detailed information for a specified standard cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Cost Types
+      tags:
+        - Cost types
+      operationId: get-objects-cost-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the cost type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/cost-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Cost type details:
+                  value:
+                    ia::result:
+                      key: '5941'
+                      project:
+                        key: '109'
+                        id: 22-001
+                        name: Wallula Heights Conference Center
+                        href: /objects/project/109
+                      task:
+                        key: '690'
+                        id: 2-050
+                        name: Demolition
+                        href: /objects/task/690
+                      id: EQ
+                      name: Equipment
+                      description: Equipment Group
+                      accumulationType:
+                        id: '3'
+                        key: '3'
+                        name: Equipment
+                        href: /objects/accumulation-type/3
+                      costUnitDescription: null
+                      status: active
+                      glAccount:
+                        key: '383'
+                        id: '5001.07'
+                        href: /objects/gl-account/383
+                      parent:
+                        key: null
+                        id: null
+                        name: null
+                      item:
+                        key: '317'
+                        id: Equipment
+                        name: Equipment
+                        href: /objects/item/317
+                      planned:
+                        startDate: null
+                        endDate: null
+                      actual:
+                        startDate: null
+                        endDate: null
+                      audit:
+                        createdDateTime: '2022-01-25T16:11:28Z'
+                        modifiedDateTime: '2022-01-25T16:11:28Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      root:
+                        key: '5941'
+                        id: EQ
+                        name: Equipment
+                        href: /objects/cost-type/5941
+                      standardCostType:
+                        key: '1'
+                        id: EQ
+                        name: Equipment
+                        href: /objects/cost-type/1
+                      href: /objects/cost-type/5941
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a cost type
+      description: Updates an existing cost type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Cost Types
+      tags:
+        - Cost types
+      operationId: patch-objects-cost-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/cost-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a cost type:
+                value:
+                  description: Updated cost type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated cost type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Cost type updated:
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/cost-type/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a cost type
+      description: Deletes a cost type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Cost Type
+      tags:
+        - Cost types
+      operationId: delete-objects-cost-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    cost-type:
+      $ref: ../models/cost-type.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

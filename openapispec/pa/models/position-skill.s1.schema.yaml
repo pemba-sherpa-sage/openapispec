@@ -1,0 +1,30 @@
+title: position-skill
+x-mappedTo: positionskill
+type: object
+description: List of positions and skills available to assign to employees.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the position-skill.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Name of the position skill.
+    x-mappedTo: NAME
+    example:
+  href:
+    type: string
+    description: URL for the position-skill.
+    readOnly: true
+    example: /objects/position-skill/23
+  description:
+    type: string
+    description: Description.
+    x-mappedTo: DESCRIPTION
+    example:
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

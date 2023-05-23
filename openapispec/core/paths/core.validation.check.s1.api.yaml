@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: core.validation.check
+  description: Expose entity validation functionality through API
+  version: '1.0'
+  contact:
+    name: Cristian Nicolae Nicorici
+    email: cristian.nicorici@sage.com
+tags:
+  - name: EntityValidation
+    description: REST API endpoint to perform validations on entities
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/core/validation/check:
+    post:
+      summary: Perform validation for create
+      operationId: post-validation-services
+      description: Validation endpoint for create or update
+      tags:
+        - EntityValidation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/core.validation-request.schema.s1.yaml
+            examples:
+              example-request:
+                value:
+                  object: 'vendor'
+                  method: 'POST'
+                  data:
+                    - id: '100'
+                      name: 'Vendor 100'
+                    - id: '101'
+                      name: 'Vendor 101'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Object validated
+                properties:
+                  'ia::result':
+                    $ref: ../../core/models/core.validation-response.schema.s1.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                vendor-example-response:
+                  value:
+                    'ia::result':
+                      object: 'vendor'
+                      method: 'POST'
+                      data:
+                        - id: '100'
+                          name: 'Vendor 100'
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

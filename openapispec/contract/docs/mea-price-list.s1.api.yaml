@@ -1,0 +1,409 @@
+openapi: 3.0.0
+info:
+  title: mea price list
+  description: MEA price list API
+  version: '1.0'
+  contact:
+    name: Niraj Kumar
+    email: niraj.kumar@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: MEA price lists
+    description: MEA price lists contain standalone selling prices for items sold in multiple-element arrangements. A company that provides multiple products and/or services to customers as part of a single arrangement needs to create one or more MEA price lists. A contract that contains multiple-element arrangements can be linked to an MEA price list.
+paths:
+  /objects/mea-price-list:
+    get:
+      summary: List MEA price lists
+      description: |
+        Returns up to 100 MEA price lists from the collection with a key, ID, and link for each list. This operation is mostly for use in testing; use the query service to find MEA price lists that meet specific criteria and to specify the properties that you want in the response.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: List Contract MEA Price Lists
+      tags:
+        - MEA price lists
+      operationId: get-objects-mea-price-list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of MEA price lists
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of MEA price lists:
+                  value:
+                    ia::result:
+                      - key: '30'
+                        id: CONMEA_FVPriceBand_Amount_USD
+                        href: /objects/mea-price-list/30
+                      - key: '31'
+                        id: CONMEA_FVPriceBand_Amount_EUR
+                        href: /objects/mea-price-list/31
+                      - key: '32'
+                        id: CONMEA_FVPriceBand_Amount_GBP
+                        href: /objects/mea-price-list/32
+                      - key: '33'
+                        id: CONMEA_FVPriceBand_Amount_INR
+                        href: /objects/mea-price-list/33
+                    ia::meta:
+                      totalCount: 4
+                      start: 1
+                      pageSize: 1
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an MEA price list
+      description: Creates a new MEA price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Add Contract MEA Price Lists
+      tags:
+        - MEA price lists
+      operationId: post-objects-mea-price-list
+      requestBody:
+        description: MEA price list to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/mea-price-list.s1.schema'
+                - $ref: '#/components/schemas/meaPriceListRequiredProperties'
+            examples:
+              Create an MEA price list:
+                value:
+                  status: active
+                  id: CONMEA_FVPriceBand_Amount_USD_1
+                  description: MEA NearestBoundary PriceBand Amount
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New mea price list
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New MEA price list created:
+                  value:
+                    ia::result:
+                      key: '39'
+                      id: CONMEA_FVPriceBand_Amount_USD_2
+                      name: CONMEA_FVPriceBand_Amount_USD_2
+                      href: /objects/mea-price-list/39
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/mea-price-list/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the MEA price list.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an MEA price list
+      description: Returns detailed information for a specified MEA price list.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business, Employee, Project Manager, Warehouse
+            permissions: View Contract MEA Price Lists
+      tags:
+        - MEA price lists
+      operationId: get-objects-mea-price-list-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: MEA price list
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/mea-price-list.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                MEA price list detail:
+                  value:
+                    ia::result:
+                      key: '12'
+                      id: CONMEA_FVPriceBand_Amount_USD
+                      status: active
+                      description: Contract MEA NearestBoundary PriceBand Amount
+                      audit:
+                        createdDateTime: null
+                        modifiedDateTime: null
+                        createdBy: null
+                        modifiedBy: null
+                      href: /objects/mea-price-list/12
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an MEA price list
+      description: Update an existing MEA price list by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Edit Contract MEA Price Lists
+      tags:
+        - MEA price lists
+      operationId: patch-objects-mea-price-list-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/mea-price-list.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            example:
+              Set MEA price list to active status:
+                value:
+                  status: active
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: MEA price list updated
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              example:
+                Update successful:
+                  value:
+                    ia::result:
+                      key: '38'
+                      id: CONMEA_FVPriceBand_Amount_USD
+                      href: /objects/mea-price-list/38
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an MEA price list
+      description: Deletes an MEA price list. You can delete a MEA price list if it has not been used by any contracts. Deleted price lists cannot be recovered. Alternatively, you can change the status to Inactive, which prevents it from being used but retains the price list for historical purposes.
+      x-documentationFlags:
+        subscription: Contract Core Billing or Contract Usage Billing
+        userPermissions:
+          - userType: Business
+            permissions: Delete Contract MEA Price Lists
+      tags:
+        - MEA price lists
+      operationId: delete-objects-mea-price-list-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    meaPriceList:
+      $ref: '#/components/schemas/mea-price-list.s1.schema'
+    meaPriceListRequiredProperties:
+      type: object
+      required:
+        - name
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    mea-price-list.s1.schema:
+      title: mea-price-list
+      type: object
+      x-mappedTo: contractmeapricelist
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the MEA price list. Used to identify the price list in URLs or JSON bodies for all operations on the price list.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '12'
+        id:
+          type: string
+          description: Unique name or ID for the MEA price list.
+          x-mappedTo: NAME
+          example: Subscription MEA price list
+        href:
+          type: string
+          readOnly: true
+          example: /objects/contract/12
+        description:
+          type: string
+          description: Description of the MEA price list.
+          x-mappedTo: DESCRIPTION
+          example: Fair value for high-volume customers
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

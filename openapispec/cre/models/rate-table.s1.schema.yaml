@@ -1,0 +1,608 @@
+title: rate-table
+x-mappedTo: ratetable
+type: object
+description: Header information for rate table.
+x-internal: false
+examples:
+  - key: '145'
+    id: 2021-LV2
+    name: 2021 Level 2
+    description: 2021 Level 2 Rate Table
+    location:
+      key: '1'
+      id: '1'
+      name: United States of America
+      href: /objects/location/1
+    audit:
+      createdDateTime: '2014-01-08T11:28:12Z'
+      modifiedDateTime: '2014-01-08T11:28:12Z'
+      createdBy: '1'
+      modifiedBy: '95'
+    status: active
+    timesheetLines:
+      - key: '12'
+        id: '12'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-timesheet-line/12
+        lineNumber: 1
+        description: Aug Costing Kit
+        startDate: '2021-08-03'
+        markupPercent: '8.250'
+        laborRate: '115.500'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        employeePosition:
+          key: '2'
+          id: COO
+          name: Chief Executive Officer
+          href: /objects/employee-position/2
+        laborClass:
+          key: '2'
+          id: LC-2
+          name: Labor class 2
+          href: /objects/labor-class/2
+        laborShift:
+          key: '2'
+          id: LS-2
+          name: Day shift
+          href: /objects/labor-shift/2
+        laborUnion:
+          key: '2'
+          id: LU-2
+          name: Labor union 2
+          href: /objects/labor-union/2
+        timeType:
+          key: '1'
+          id: Salaries At Root
+          name: Salaries At Root
+          href: /objects/time-type/1
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+    purchasingLines:
+      - key: '176'
+        id: '176'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-purchasing-line/176
+        lineNumber: 1
+        description: Aug Costing SOPA
+        startDate: '2021-08-03'
+        markupPercent: 15.9
+        unitPrice: '112.560'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+    accountsPayableLines:
+      - key: '397'
+        id: '397'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-credit-card-line/397
+        lineNumber: 1
+        description: Aug Service
+        startDate: '2021-08-01'
+        markupPercent: '25.5'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+    journalLines:
+      - key: '64'
+        id: '64'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-journal-line/64
+        lineNumber: 1
+        description: Aug John Smith
+        startDate: '2021-08-01'
+        markupPercent: '12.500'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+    creditCardLines:
+      - key: '145'
+        id: '145'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-credit-card-line/145
+        lineNumber: 1
+        description: Aug Costing SOPA
+        startDate: '2021-08-03'
+        markupPercent: '15.900'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+    employeeExpenseLines:
+      - key: '30'
+        id: '30'
+        rateTable:
+          key: '145'
+          id: 2021-LV2
+          name: 2021 Level 2
+          href: /objects/rate-table/145
+        href: /objects/rate-table-employee-expense-line/30
+        lineNumber: 1
+        description: Aug Manager
+        startDate: '2021-08-02'
+        markupPercent: '14.800'
+        accumulationType:
+          key: '2'
+          id: ACCT-2
+          href: /objects/accumulation-type/2
+        standardCostType:
+          key: '33'
+          id: CT-RT-0010
+          name: CT-RT-0010 MATERIAL
+          href: /objects/standard-cost-type/33
+        standardTask:
+          key: '3'
+          id: TSK-RT-0011
+          name: TSK-RT-0011 Name
+          href: /objects/standard-task/3
+        dimensions:
+          location:
+            key: '22'
+            id: LOC-22
+            name: California
+          department:
+            key: '11'
+            id: DEP-11
+            name: Sales and Marketing
+          employee:
+            key: '10'
+            id: '10'
+            name: 'Thomas, Glenn'
+            href: /objects/employee/10
+          project:
+            key: '2'
+            id: NET-XML30-2
+            name: Talcomp training
+            href: /objects/project/2
+          customer:
+            key: '13'
+            id: '113'
+            name: Jack In the Box
+            href: /objects/customer/13
+          vendor:
+            key: '357'
+            id: 1605212096809
+            name: GenLab
+            href: /objects/vendor/357
+          item:
+            key: '13'
+            id: Case 13
+            name: Platform pack
+            href: /objects/item/13
+          warehouse:
+            key: '6'
+            id: WH01
+            name: WH01
+            href: /objects/warehouse/6
+          class:
+            key: '731'
+            id: REST_CLS_001
+            name: Enterprises
+            href: /objects/class/731
+          task:
+            key: '2'
+            id: tet
+            name: Design
+            href: /objects/task/2
+        audit:
+          createdDateTime: '2014-01-08T11:28:12Z'
+          modifiedDateTime: '2014-01-08T11:28:12Z'
+          createdBy: '1'
+          modifiedBy: '95'
+properties:
+  key:
+    type: string
+    description: Rate table key
+    x-mappedTo: RECORDNO
+    x-mutable: false
+    example: '145'
+    readOnly: true
+  id:
+    type: string
+    description: Rate table id
+    x-mappedTo: RATETABLEID
+    x-mutable: false
+    example: 2021-LV2
+    maxLength: 20
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+    example: 2021 Level 2
+    maxLength: 200
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: 2021 Level 2 Rate Table
+    maxLength: 1000
+  location:
+    $ref: ../../common/references/locationref.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  timesheetLines:
+    type: array
+    x-object: rate-table-timesheet-line
+    x-mappedTo: RATETABLEENTRY_TS
+    items:
+      $ref: ./rate-table-timesheet-line.s1.schema.yaml
+  purchasingLines:
+    type: array
+    description: Rate table purchase order lines
+    x-object: rate-table-purchasing-line
+    x-mappedTo: RATETABLEENTRY_PO
+    items:
+      $ref: ./rate-table-purchasing-line.s1.schema.yaml
+  accountsPayableLines:
+    type: array
+    description: Rate table accounts payable lines
+    x-object: rate-table-accounts-payable-line
+    x-mappedTo: RATETABLEENTRY_AP
+    items:
+      $ref: ./rate-table-accounts-payable-line.s1.schema.yaml
+  journalLines:
+    type: array
+    description: Rate table general ledger lines
+    x-object: rate-table-journal-line
+    x-mappedTo: RATETABLEENTRY_GL
+    items:
+      $ref: ./rate-table-journal-line.s1.schema.yaml
+  creditCardLines:
+    type: array
+    description: Rate table credit card lines
+    x-object: rate-table-credit-card-line
+    x-mappedTo: RATETABLEENTRY_CC
+    items:
+      $ref: ./rate-table-credit-card-line.s1.schema.yaml
+  employeeExpenseLines:
+    type: array
+    description: Rate table employee expense lines
+    x-object: rate-table-employee-expense-line
+    x-mappedTo: RATETABLEENTRY_EE
+    items:
+      $ref: ./rate-table-employee-expense-line.s1.schema.yaml

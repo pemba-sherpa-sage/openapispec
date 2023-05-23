@@ -1,0 +1,307 @@
+openapi: 3.0.0
+info:
+  title: ap-adjustment
+  description: ap-adjustment API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+tags:
+  - name: AP adjustments
+    description: AP adjustments can be used to increase or decrease the amount you owe a vendor.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/ap-adjustment/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the AP adjustment.
+    get:
+      summary: Get an AP adjustment
+      description: Returns detailed information for a specified AP adjustment.
+      tags:
+        - AP adjustments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-adjustment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-adjustment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AP adjustment:
+                  value:
+                    'ia::result':
+                      key: '326'
+                      id: '326'
+                      adjustmentId: debit5
+                      state: posted
+                      vendor:
+                        id: '1604125688777'
+                      bill:
+                        id: billNum1
+                      description: desc8
+                      createdDate: '2021-05-05'
+                      postingDate: '2021-05-05'
+                      paymentInformation:
+                        totalSelected: 0
+                        totalPaid: 0
+                        txnTotalSelected: 0
+                        txnTotalPaid: 0
+                      currency:
+                        baseCurrency: USD
+                        txnCurrency: USD
+                      totalEntered: -100
+                      totalDue: -100
+                      txnTotalEntered: -100
+                      txnTotalDue: -100
+                      contacts:
+                        payTo:
+                          id: 1604125688777(V1604125688777)
+                          key: '647'
+                          href: /objects/contact/647
+                        returnTo:
+                          id: 1604125688777(V1604125688777)
+                          key: '647'
+                          href: /objects/contact/647
+                      batch:
+                        key: '176'
+                        id: '176'
+                        href: /objects/batch/176
+                      preventGLPosting: false
+                      lines:
+                        - id: '1586'
+                          key: '1586'
+                          glAccount:
+                            key: '172'
+                            id: '7120'
+                            href: /objects/account/172
+                          overriddenOffsetGLAccount:
+                            key: '61'
+                            id: '2025'
+                            href: /objects/account/61
+                          accountLabel:
+                            key: '9'
+                            id: Accounting Fees
+                            href: /objects/account-label/9
+                          baseAmount: -100
+                          txnAmount: -100
+                          department:
+                            key: '2'
+                            id: '1'
+                            href: /objects/department/2
+                          location:
+                            key: '3'
+                            id: '1'
+                            href: /objects/location/3
+                          description: desc8
+                          currency:
+                            exchangeRate: 1
+                          lineNumber: 1
+                          paymentInformation:
+                            totalPaid: 0
+                            txnTotalPaid: 0
+                            totalSelected: 0
+                            txnTotalSelected: 0
+                          isForm1099: false
+                          'nsp::TESTDATE': null
+                          'nsp::TESTTEXT': null
+                          'nsp::CST3': null
+                          href: /objects/ap-adjustment-item/1586
+                      href: /objects/ap-adjustment/326
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment-key
+    delete:
+      summary: Delete an AP adjustment
+      description: Deletes an AP adjustment. If an AP adjustment has not been applied to a bill, it can be deleted.
+      tags:
+        - AP adjustments
+      operationId: delete-objects-ap-adjustment-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP adjustment
+      operationId: patch-objects-ap-adjustment-key
+      description: Updates an AP adjustment by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP adjustments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-adjustment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    adjustmentType:
+                      readOnly: true
+                    state:
+                      readOnly: true
+            examples:
+              Update an AP adjustment:
+                value:
+                  description: desc8
+  /objects/ap-adjustment:
+    get:
+      summary: List AP adjustments
+      tags:
+        - AP adjustments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-adjustment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AP adjustments:
+                  value:
+                    'ia::result':
+                      - key: '186'
+                        id: '186'
+                        href: /objects/ap-adjustment/186
+                      - key: '187'
+                        id: '187'
+                        href: /objects/ap-adjustment/187
+                      - key: '319'
+                        id: '319'
+                        href: /objects/ap-adjustment/319
+                    'ia::meta':
+                      totalCount: 17
+                      start: 1
+                      pageSize: 100               
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment
+      description: Returns a collection with a key, ID, and link for each AP adjustment. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+    post:
+      summary: Create an AP adjustment
+      tags:
+        - AP adjustments
+      operationId: post-objects-ap-adjustment
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-adjustment
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AP adjustment:
+                  value:
+                    'ia::result':
+                      key: '327'
+                      id: '327'
+                      href: /objects/ap-adjustment/327
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      description: Creates a new AP adjustment.
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment'
+                - $ref: '#/components/schemas/ap-adjustmentRequiredProperties'
+            examples:
+              Create an AP adjustment:
+                value:
+                  adjustmentId: credit6
+                  state: posted
+                  vendor:
+                    id: '1604125688777'
+                  description: desc8
+                  bill:
+                    id: billNum1
+                  postingDate: '2021-01-23'
+                  createdDate: '2021-05-05'
+                  contacts:
+                    payTo:
+                      id: 1604125688777(V1604125688777)
+                    returnTo:
+                      id: 1604125688777(V1604125688777)
+                  summary:
+                    id: '176'
+                  currency:
+                    baseCurrency: USD
+                    txnCurrency: USD
+                  lines:
+                    - glAccount:
+                        id: '7120'
+                      accountLabel:
+                        id: Accounting Fees
+                      baseAmount: 100
+                      department:
+                        id: '1'
+                      location:
+                        id: '1'
+                      description: desc8
+                      isForm1099: false
+components:
+  schemas:
+    ap-adjustment:
+      $ref: ../models/ap-adjustment.s1.schema.yaml
+    ap-adjustmentRequiredProperties:
+      type: object
+      required:
+        - postingDate
+        - vendor
+        - lines
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

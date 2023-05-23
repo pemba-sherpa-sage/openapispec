@@ -1,0 +1,67 @@
+type: object
+title: contract-revenue-schedule
+x-mappedTo: contractrevenueschedulenxg
+description: Header information for contract revenue schedule.
+properties:
+  href:
+    type: string
+    description: Contract revenue schedule URL.
+    readOnly: true
+    example: /objects/contract-revenue-schedule/145
+  journal:
+    type: string
+    description: The journal association for this schedule (J1 or J2).
+    x-mappedTo: TYPE
+    readOnly: true
+    example: J1
+    enum:
+      - J1
+      - J2
+    x-mappedToValues:
+      - Revenue
+      - Revenue2
+  status:
+    type: string
+    description: Schedule status.
+    x-mappedTo: STATE
+    readOnly: true
+    example: inProgress
+    enum:
+      - draft
+      - inProgress
+      - onHold
+      - completed
+      - terminated
+      - pendingDelivery
+      - pendingDeliveryAll
+      - estimateRevalued
+      - renewalForecast
+    x-mappedToValues:
+      - Draft
+      - In progress
+      - On hold
+      - Completed
+      - Terminated
+      - Pending delivery
+      - Pending delivery of all items
+      - Estimate revalued
+      - Renewal forecast
+  estimateRevaluationDate:
+    type: string
+    description: The date the Revalue estimation function was executed on the 'Project time' contract line.
+    x-mappedTo: COMPLETEDATE
+    readOnly: true
+    format: date
+    example: '2023-03-31'
+  revenueScheduleLines:
+    type: array
+    description: Contract revenue schedule lines
+    x-object: contract-revenue-schedule-line
+    x-mappedTo: SCHEDULEENTRY
+    items:
+      type: object
+      allOf:
+        - $ref: ./contract-revenue-schedule-line.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-typeref.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-postable-typeref.s1.schema.yaml
+examples: []

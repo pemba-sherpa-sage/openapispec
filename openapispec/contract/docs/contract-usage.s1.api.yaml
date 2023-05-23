@@ -1,0 +1,652 @@
+openapi: 3.0.0
+info:
+  title: contract-usage
+  description: contract-usage API
+  version: '1.0'
+  contact:
+    name: Artur Mirzakhanyan
+    email: artur.mirzakhanyan@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract usage
+    description: A contract usage identifies usage of a quanity based item and is tied directly to a contract line.
+paths:
+  /objects/contract-usage:
+    get:
+      summary: List contract usage
+      description: Returns a collection with a key, ID, and link for each contract-usage.
+      tags:
+        - Contract usage
+      operationId: get-objects-contract-usage
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract usage objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of contract usage:
+                  value:
+                    ia::result:
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-usage/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-usage/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-usage/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-usage/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-usage/79
+                    ia::meta:
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                List of contract usage errors:
+                  value:
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Object named [contract-usage] is not supported in version [0]
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    post:
+      summary: Create contract usage
+      description: Create a new contract usage
+      tags:
+        - Contract usage
+      operationId: post-objects-contract-usage
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-usage.s1.schema'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response.schema'
+  /objects/contract-usage/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract usage.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a contract usage
+      description: Returns detailed information for a particular contract usage.
+      tags:
+        - Contract usage
+      operationId: get-objects-contract-usage-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract usage
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-usage.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Update a contract usage error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-usage/12
+                    ia::result:
+                      ia::error:
+                        code: invalidRequest
+                        message: Field [id] is a read-only field
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    patch:
+      summary: Update a contract usage
+      description: Updates an existing contract usage by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract usage
+      operationId: patch-objects-contract-usage-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract-usage.s1.schema'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract usage
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Update a contract usage:
+                  value:
+                    ia::result:
+                      key: '12'
+                      id: 2021-LV2
+                      href: /objects/contract-usage/12
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  ia::result:
+                    $ref: '#/components/schemas/error-response.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-extended.schema'
+              examples:
+                Update a contract usage error:
+                  value:
+                    key: '145'
+                    href: /objects/contract-usage/145
+                    ia::result:
+                      ia::error:
+                        code: notFound
+                        message: The requested resource [contract-usage] with key(s) [145] could not be found but may be available in the future
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+    delete:
+      summary: Delete contract usage
+      description: Delete a contract usage
+      tags:
+        - Contract usage
+      operationId: delete-objects-contract-usage-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response.schema'
+components:
+  schemas:
+    contract-usage:
+      $ref: '#/components/schemas/contract-usage.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    metadata-extended.schema:
+      title: metadata-extended
+      description: Meta data with partial success
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            totalSuccess:
+              type: integer
+              description: Total Success
+              x-mappedTo: null
+              readOnly: true
+              example: 2
+            totalError:
+              type: integer
+              description: Total Errors
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-usage.s1.schema:
+      title: contract-usage
+      x-mappedTo: CONTRACTUSAGE
+      type: object
+      description: Contract usage data including contract line and contract header information.
+      properties:
+        key:
+          type: string
+          description: Contract usage data Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '145'
+        id:
+          type: string
+          description: Contract usage data Id
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '145'
+        contract:
+          type: object
+          x-mappedTo: CONTRACT
+          x-object: contract
+          properties:
+            key:
+              type: string
+              x-mappedTo: CONTRACTKEY
+            id:
+              type: string
+              description: Contract
+              x-mappedTo: CONTRACTID
+            name:
+              type: string
+              description: Contract name
+              x-mappedTo: CONTRACTNAME
+            baseCurrency:
+              type: string
+              x-mappedTo: BASECURR
+            txnCurrency:
+              type: string
+              x-mappedTo: CURRENCY
+            beginDate:
+              type: string
+              x-mappedTo: CONTRACTBEGINDATE
+        customer:
+          type: object
+          x-mappedTo: CUSTOMER
+          x-object: customer
+          properties:
+            id:
+              type: string
+              description: Customer id
+              x-mappedTo: CUSTOMERID
+            key:
+              type: string
+              description: Customer key
+              x-mappedTo: CUSTOMERKEY
+            name:
+              type: string
+              description: Customer name
+              x-mappedTo: CUSTOMERNAME
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/413
+        multiEntityLocation:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Location key
+              x-mappedTo: CONTRACT.MELOCATIONKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/location/413
+        priceList:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Price list key
+              x-mappedTo: CONTRACT.PRCLSTKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/price-list/413
+        contractLine:
+          type: object
+          x-mappedTo: CONTRACTDETAIL
+          x-object: contract-line
+          properties:
+            key:
+              type: string
+              x-mappedTo: CONTRACTDETAILKEY
+            id:
+              type: string
+              description: Contract detail key
+              x-mappedTo: CONTRACTDETAILKEY
+            lineNumber:
+              type: string
+              description: Contract line number
+              x-mappedTo: CONTRACTLINENO
+        employee:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Employee key
+              x-mappedTo: CONTRACTDETAIL.EMPLOYEEDIMKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/employee/1
+        project:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Project key
+              x-mappedTo: CONTRACTDETAIL.PROJECTDIMKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/1
+        asset:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Asset key
+              x-mappedTo: CONTRACTDETAIL.ASSETDIMKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+        class:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Class key
+              x-mappedTo: CONTRACTDETAIL.CLASSDIMKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/1
+        department:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Department Key
+              readOnly: true
+              x-mappedTo: DEPARTMENTID
+            href:
+              type: string
+              readOnly: true
+              example: /objects/department/1
+        location:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: CONTRACTDETAIL.LOCATIONKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/location/413
+        usageDate:
+          type: string
+          description: Usage date
+          x-mappedTo: USAGEDATE
+          format: date
+          example: '2022-02-01'
+        quantity:
+          type: string
+          description: Usage quantity
+          x-mappedTo: QUANTITY
+          example: '1'
+        item:
+          type: object
+          x-mappedTo: ITEM
+          x-object: item
+          properties:
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMKEY
+            name:
+              type: string
+              description: Item name
+              x-mappedTo: ITEMNAME
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/413
+        manager:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Manager key
+              x-mappedTo: PROJECT.MANAGERKEY
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contact/413
+        documentId:
+          type: string
+          description: Document ID
+          readOnly: true
+          x-mappedTo: DOCID
+        revenueScheduleLine:
+          type: object
+          x-mappedTo: CONTRACTREVENUESCHEDULEENTRY
+          x-object: contract-revenue-schedule-line
+          properties:
+            key:
+              type: string
+              description: Revenue schedule entry key
+              x-mappedTo: REVENUESCHEDULEENTRYKEY
+            revenueScheduleKey:
+              type: string
+              x-mappedTo: REVENUESCHEDULEKEY
+            revenuePostingDate:
+              type: string
+              x-mappedTo: REVENUEPOSTINGDATE
+            revenueAmount:
+              type: string
+              x-mappedTo: REVENUEAMOUNT
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contract-revenue-schedule-line/1
+        revenueToScheduleLine:
+          type: object
+          properties:
+            key:
+              type: string
+              description: Revenue to schedule entry key
+              x-mappedTo: REVENUE2SCHEDULEENTRYKEY
+            revenueToScheduleKey:
+              type: string
+              x-mappedTo: REVENUE2SCHEDULEKEY
+            revenueToPostingDate:
+              type: string
+              x-mappedTo: REVENUE2POSTINGDATE
+            revenueToAmount:
+              type: string
+              x-mappedTo: REVENUE2AMOUNT
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contract-revenue-schedule-line/1
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'

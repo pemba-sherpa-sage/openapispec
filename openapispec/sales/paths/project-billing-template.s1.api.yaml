@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: project-billing-template
+  description: project billing template API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Billing templates
+    description: Billing template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-billing-template:
+    get:
+      summary: List billing templates
+      description: Returns a collection with a key, ID, and link for each billing template.
+      tags:
+        - Billing templates
+      operationId: get-objects-project-billing-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project-billing-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of billing templates: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project billing template
+      description: Creates a new project billing template.
+      tags:
+        - Project billing templates
+      operationId: post-objects-project-billing-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-billing-template'
+                - $ref: '#/components/schemas/project-billing-templateRequiredProperties'
+            examples:
+              Creates a project billing template: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project-billing-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-billing-template/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the billing template.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an billing template
+      description: Returns detailed information for a particular billing template.
+      tags:
+        - Billing templates
+      operationId: get-objects-project-billing-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project-billing-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-billing-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an billing template
+      description: Updates an existing billing template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Billing templates
+      operationId: patch-objects-project-billing-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-billing-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an billing template: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated project-billing-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated billing template: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an billing template
+      description: Deletes a/an billing template.
+      tags:
+        - Billing templates
+      operationId: delete-objects-project-billing-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-billing-template:
+      $ref: ../models/project-billing-template.s1.schema.yaml
+    project-billing-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

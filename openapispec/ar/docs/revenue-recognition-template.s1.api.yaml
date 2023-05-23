@@ -1,0 +1,503 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template
+  description: Revenue recognition template API
+  version: '1.0'
+  contact:
+    email: mahesh.yallure@sage.com
+    name: Mahesh Yallure
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Revenue recognition templates
+    description: Revenue recognition templates define how to amortize deferred revenue. Each template is associated with an Accounts Receivable label or Order Entry Item GL group.
+paths:
+  /objects/revenue-recognition-template/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        example: '1'
+        description: System-assigned key for the revenue recognition template.
+    get:
+      summary: Get a revenue recognition template
+      description: Returns detailed information for a specified revenue recognition template.
+      tags:
+        - Revenue recognition templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue recognition template
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/revenue-recognition-template.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a revenue recognition template:
+                  value:
+                    ia::result:
+                      key: '1'
+                      id: '1001'
+                      href: /objects/revenue-recognition-template/1
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-20T16:20:00Z'
+                        modifiedDateTime: '2022-04-20T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-shipmethod-key
+  /objects/revenue-recognition-template:
+    get:
+      summary: List revenue recognition templates
+      description: Returns a collection with a key, ID, and link for each revenue recognition template. This operation is mostly for use in testing. Use query to fnd objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List revenue recognition templates:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: '1001'
+                        href: /objects/revenue-recognition-template/1
+                      - key: '2'
+                        id: '1001.01'
+                        href: /objects/revenue-recognition-template/2
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-revenue-recognition-template
+components:
+  schemas:
+    revenue-recognition-template:
+      $ref: '#/components/schemas/revenue-recognition-template.s1.schema'
+    revenue-recognition-templateRequiredProperties:
+      type: object
+      required:
+        - id
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    revenue-recognition-template.s1.schema:
+      title: revenue-recognition-template
+      x-mappedTo: revrectemplate
+      type: object
+      description: Revenue recognition templates define how to amortize deferred revenue. Each template is associated with an Accounts Receivable label or Order Entry Item GL group.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for the revenue recognition template.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '1'
+        id:
+          type: string
+          description: Unique identifier for the revenue recognition template.
+          x-mappedTo: TEMPLATEID
+          x-mutable: false
+          example: '1001'
+        href:
+          type: string
+          description: URL for the revenue recognition template.
+          example: /objects/revenue-recognition-template/1
+          readOnly: true
+        description:
+          type: string
+          description: Description of the revenue recognition template.
+          x-mappedTo: DESCRIPTION
+          example: null
+        useStandard:
+          type: boolean
+          description: Indicates whether to use standard calendar amortization.
+          x-mappedTo: USESTANDARD
+          example: null
+          x-mappedToType: string
+          default: false
+        schedulePeriod:
+          type: string
+          description: The intervals at which Sage Intacct should schedule the journal entries to post.
+          x-mappedTo: SCHEDULEPERIOD
+          example: null
+          enum:
+            - daily
+            - monthly
+            - quarterly
+            - semiAnnually
+            - annually
+          x-mappedToValues:
+            - Daily
+            - Monthly
+            - Quarterly
+            - Semi-annually
+            - Annually
+        postingDay:
+          type: string
+          description: The day of the month the revenue should post.
+          x-mappedTo: POSTINGDAY
+          example: null
+          enum:
+            - '1'
+            - '2'
+            - '3'
+            - '4'
+            - '5'
+            - '6'
+            - '7'
+            - '8'
+            - '9'
+            - '10'
+            - '11'
+            - '12'
+            - '13'
+            - '14'
+            - '15'
+            - '16'
+            - '17'
+            - '18'
+            - '19'
+            - '20'
+            - '21'
+            - '22'
+            - '23'
+            - '24'
+            - '25'
+            - '26'
+            - '27'
+            - '28'
+            - '29'
+            - '30'
+            - '31'
+            - endOfPeriod
+            - daily
+          x-mappedToValues:
+            - '1'
+            - '2'
+            - '3'
+            - '4'
+            - '5'
+            - '6'
+            - '7'
+            - '8'
+            - '9'
+            - '10'
+            - '11'
+            - '12'
+            - '13'
+            - '14'
+            - '15'
+            - '16'
+            - '17'
+            - '18'
+            - '19'
+            - '20'
+            - '21'
+            - '22'
+            - '23'
+            - '24'
+            - '25'
+            - '26'
+            - '27'
+            - '28'
+            - '29'
+            - '30'
+            - '31'
+            - End Of Period
+            - Daily
+        recognitionTerm:
+          type: string
+          description: Recognition term.
+          x-mappedTo: RECOGNITIONTERM
+          example: null
+          enum:
+            - fixedPeriod
+            - contractTerm
+            - project
+          x-mappedToValues:
+            - Fixed Period
+            - Contract Term
+            - Project
+          default: fixedPeriod
+        resumeOption:
+          type: string
+          description: System resume option.
+          x-mappedTo: RESUMEOPTION
+          example: null
+          enum:
+            - catchUp
+            - walkforward
+          x-mappedToValues:
+            - Catch Up
+            - Walkforward
+          default: walkforward
+        totalPeriods:
+          type: string
+          description: Number of periods. If `fixedPeriod` is set for `recognitionTerm` Sage Intacct uses this value to generate the schedule.
+          x-mappedTo: TOTALPERIODS
+          example: null
+        recognitionMethod:
+          type: string
+          description: Recognition method.
+          x-mappedTo: RECMETHOD
+          example: null
+          enum:
+            - straightLine
+            - straightLine,prorateExactDays
+            - straightLine,percentAllocation
+            - straightLine,percentAllocation,endOfPeriod
+            - exactDaysPerPeriod,prorateDays
+            - exactDaysPerPeriod,prorateDays,endOfPeriod
+            - percentCompleted
+            - milestone
+            - custom
+          x-mappedToValues:
+            - Straight-line
+            - Straight-line, prorate exact days
+            - Straight-line, percent allocation
+            - Straight-line, percent allocation, end of period
+            - Exact days per period, prorate days
+            - Exact days per period, prorate days, end of period
+            - Percent Completed
+            - Milestone
+            - Custom
+        recognitionStartDate:
+          type: string
+          description: Recognition start date.
+          x-mappedTo: RECSTARTDATE
+          example: null
+          enum:
+            - transactionDate
+            - userSpecified
+          x-mappedToValues:
+            - Transaction Date
+            - User Specified
+        postingMethod:
+          type: string
+          description: Posting method.
+          x-mappedTo: POSTINGMETHOD
+          example: null
+          enum:
+            - automatic
+            - manual
+          x-mappedToValues:
+            - Automatic
+            - Manual
+          default: manual
+        latestVersion:
+          type: string
+          description: Latest version key.
+          x-mappedTo: LATESTVERSIONKEY
+          example: null
+        milestoneSource:
+          type: string
+          description: Percent or milestone source.
+          x-mappedTo: MILESTONESOURCE
+          example: null
+          enum:
+            - manual
+            - project
+          x-mappedToValues:
+            - Manual
+            - Project
+          default: manual
+        calculation:
+          type: object
+          properties:
+            source:
+              type: string
+              description: For a Percent completed template, select whether to calculate at the project or task level.
+              x-mappedTo: PACALCSOURCE
+              example: null
+              enum:
+                - project
+                - task
+              x-mappedToValues:
+                - Project
+                - Task
+              default: project
+            basedOn:
+              type: string
+              description: Method to use to calculate the completion percentage.
+              x-mappedTo: PACALCHOURS
+              example: null
+              enum:
+                - estimatedHours
+                - plannedHours
+                - budgetedHours
+                - budgetedCostFromGL
+                - budgetedCostFromSummary
+                - observed%Completed
+              x-mappedToValues:
+                - Estimated Hours
+                - Planned Hours
+                - Budgeted Hours
+                - Budgeted Cost from GL
+                - Budgeted Cost from Summary
+                - Observed % Completed
+              default: estimatedHours
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

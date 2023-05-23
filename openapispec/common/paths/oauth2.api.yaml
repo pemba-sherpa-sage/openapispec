@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: oauth2
+  description: Authorization API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+servers:
+  - url: 'https://dev01.intacct.com/users/anjali.israni/projects.nextgenapi/api/v0'
+    description: Development Server
+paths:
+  /oauth2/token:
+    post:
+      summary: Request access token
+      description: Requests an access token.
+      tags:
+        - oauth2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                title: New token
+                properties:
+                  token_type:
+                    type: string
+                    minLength: 1
+                    example: Bearer
+                  refresh_token:
+                    type: string
+                    minLength: 1
+                    example: eyJbhGciOiJIUzE1NiIxInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiI3ZDQxZDE4M2Q3NDVjOGY5OTZjOTk3MTE4MjNlMDE5OGVkNTU4Njk1IiwiY2xpZW50SWQiOiJkNGYyYjZiMzE4MTc0YjlhNjBhNy5JTlRBQ0NULmFwcC5zYWdlLmNvbSIsImNueUlkIjoiTWFyaW5hQ08yIn0.M0rM8huqlLib4FBFnSmjGLcu_HUr0UE_Q0ZGlYb0uXY
+                  access_token:
+                    type: string
+                    minLength: 1
+                    example: eyJbhGciOiJIUzE1NiIxInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiI5QkkwdkVhbTBtMEhMTXZNeGdwVU1rZ2ZiUVlzeXcuLiIsImVuZHBvaW50IjoiaHR0cHM6XC9cL2RldjA5LmludGFjY3QuY29tXC91c2Vyc1wvYW5qYWxpLmlzcmFuaVwvcHJvamVjdHMubmV4dGdlbl9nYXRld2F5XC9hcGlcL3YxXC9hcGlcLyIsImNsaWVudElkIjoiZDRmMmI2YjMxODE3NGI5YTYwYTcuSU5UQUNDVC5hcHAuc2FnZS5jb20iLCJjbnlJZCI6Ik1hcmluYUNPMiJ9.16h1Sdd0wnyj2woiCr6i-3kI-g9Uw9s3xa4_Og-AEPk
+                  expires_in:
+                    type: number
+                    example: 86400
+                required:
+                  - token_type
+                  - refresh_token
+                  - access_token
+                  - expires_in
+              examples:
+                Valid Token:
+                  value:
+                    token_type: Bearer
+                    refresh_token: eyJbhGciOiJIUzE1NiIxInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW4iOiI3ZDQxZDE4M2Q3NDVjOGY5OTZjOTk3MTE4MjNlMDE5OGVkNTU4Njk1IiwiY2xpZW50SWQiOiJkNGYyYjZiMzE4MTc0YjlhNjBhNy5JTlRBQ0NULmFwcC5zYWdlLmNvbSIsImNueUlkIjoiTWFyaW5hQ08yIn0.M0rM8huqlLib4FBFnSmjGLcu_HUr0UE_Q0ZGlYb0uXY
+                    access_token: eyJbhGciOiJIUzE1NiIxInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiI5QkkwdkVhbTBtMEhMTXZNeGdwVU1rZ2ZiUVlzeXcuLiIsImVuZHBvaW50IjoiaHR0cHM6XC9cL2RldjA5LmludGFjY3QuY29tXC91c2Vyc1wvYW5qYWxpLmlzcmFuaVwvcHJvamVjdHMubmV4dGdlbl9nYXRld2F5XC9hcGlcL3YxXC9hcGlcLyIsImNsaWVudElkIjoiZDRmMmI2YjMxODE3NGI5YTYwYTcuSU5UQUNDVC5hcHAuc2FnZS5jb20iLCJjbnlJZCI6Ik1hcmluYUNPMiJ9.16h1Sdd0wnyj2woiCr6i-3kI-g9Uw9s3xa4_Og-AEPk
+                    expires_in: 86400
+      operationId: post-oauth2-token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  minLength: 1
+                  example: password
+                username:
+                  type: string
+                  minLength: 1
+                  example: Admin@YourCompanyId
+                password:
+                  type: string
+                  example: WQiOiI5Qkkw
+                client_id:
+                  type: string
+                  minLength: 1
+                  example: d4f2b6b316174b9b60a7.SHARKS.app.sage.com
+                client_secret:
+                  type: string
+                  minLength: 1
+                  example: 0f4e52b76e77906255c34a800b5f177fce3f1ba9
+              required:
+                - grant_type
+                - username
+                - client_id
+                - client_secret
+            examples:
+              Grant Type - password:
+                value:
+                  grant_type: password
+                  username: Admin@YourCompanyId
+                  password: WQiOiI5Qkkw
+                  client_id:  d4f2b6b316174b9b60a7.SHARKS.app.sage.com
+                  client_secret: 0f4e52b76e77906255c34a800b5f177fce3f1ba9
+components:
+  schemas: {}
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        default: 'Bearer {{access_token}}'
+      description: Authorization Token Header
+tags:
+  - name: oauth2
+    description: Authentication API

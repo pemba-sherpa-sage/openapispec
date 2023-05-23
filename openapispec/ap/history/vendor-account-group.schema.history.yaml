@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - po/lists/vendglgroup/view
+    POST:
+      - po/lists/vendglgroup/create
+    PATCH:
+      - po/lists/vendglgroup/edit
+    DELETE:
+      - po/lists/vendglgroup/delete
+s1:
+  hash: '0'
+  type: rootObject

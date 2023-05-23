@@ -1,0 +1,303 @@
+openapi: 3.0.0
+info:
+  title: item-warehouse-inventory
+  description: item-warehouse-inventory API
+  version: '1.0'
+  contact:
+    email: mahesh.yallure@sage.com
+    name: Mahesh Yallure
+tags:
+  - name: Item warehouse information
+    description: Warehouse inventory information is used with Inventory and Stockable Kit items. Sage Intacct uses the information from these records in the Inventory Reorders report.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/item-warehouse-inventory/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the item warehouse inventory information.
+        example: '1'
+    get:
+      summary: Get item warehouse information
+      description: Returns detailed information for a specified item warehouse inventory.
+      tags:
+        - Item warehouse information
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the item-warehouse-inventory
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/item-warehouse-inventory'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get warehouse inventory information:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: '1'
+                      item:
+                        key: '9'
+                        id: Prnt_Paper
+                        href: /objects/item/9
+                      warehouse:
+                        key: '1'
+                        id: WH10001
+                        href: /objects/warehouse/1
+                      storageArea: bin
+                      inventoryCycle:
+                        key: '2'
+                        id: Daily Cycle
+                        href: /objects/inventory-cycle/2
+                      economicOrderQuantity: 10
+                      standardCost: '110'
+                      lastCost: '100'
+                      averageCost: '100'
+                      reorderMethod: economicQuantity
+                      reorderPoint: 121
+                      reorderQuantity: 10
+                      minOrderQuantity: 10
+                      maxOrderQuantity: 100
+                      maximumStock: 300
+                      minimumStock: 50
+                      lastSoldDate: '2022-04-08'
+                      lastReceivedDate: '2022-04-10'
+                      defaults:
+                        bin:
+                          key: '45'
+                          id: '45'
+                          href: /objects/bin/45
+                      warehouseCurrency:
+                        key: '3'
+                        id: LOC-USA-0778
+                        currency: USD
+                        href: /objects/location-entity/3
+                      safetyStock: 20
+                      replenishmentMethod: reorderPoint
+                      enableReplenishment: true
+                      onOrder: 100
+                      inTransit: 50
+                      onHand: 200
+                      onHold: 10
+                      reserved: 0
+                      allocated: 0
+                      unCommitted: 0
+                      href: /objects/item-warehouse-inventory/1
+                      audit:
+                        createdDateTime: '2014-01-08T11:28:12Z'
+                        modifiedDateTime: '2014-01-08T11:28:12Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-item-warehouse-inventory-key
+    delete:
+      summary: Delete item warehouse information
+      description: Deletes an item warehouse inventory information object. 
+      tags:
+        - Item warehouse information
+      operationId: delete-objects-item-warehouse-inventory-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update item warehouse information
+      operationId: patch-objects-item-warehouse-inventory-key
+      tags:
+        - Item warehouse information
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update item warehouse information:
+                  value:
+                    'ia::result':
+                      key: '41'
+                      id: '41'
+                      href: /objects/item-warehouse-inventory/41
+                    'ia::meta':
+                      totalCount: 1
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      description: Updates an existing item warehouse inventory information object by setting field values. Any fields not provided remain unchanged.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-warehouse-inventory'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: 41
+                    item:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  storageArea: Bin
+  /objects/item-warehouse-inventory:
+    get:
+      summary: List item warehouse information objects
+      description: Returns a collection with a key, ID, and link for each item warehouse inventory information object. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Item warehouse information
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of item-warehouse-inventory objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List item warehouse information objects:
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/item-warehouse-inventory/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/item-warehouse-inventory/2
+                    'ia::meta':
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-item-warehouse-inventory
+    post:
+      summary: Create an item warehouse information object
+      description: Creates a new item warehouse inventory information object.
+      tags:
+        - Item warehouse information
+      operationId: post-objects-item-warehouse-inventory
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New item warehouse info
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a new item warehouse information object:
+                  value:
+                    key: '1'
+                    id: '1'
+                    href: /objects/item-warehouse-inventory/1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-warehouse-inventory'
+                - $ref: '#/components/schemas/item-warehouse-inventoryRequiredProperties'
+            examples:
+              Create a new item warehouse information object:
+                value:
+                  id: '1'
+                  item:
+                    key: '9'
+                    id: Prnt_Paper
+                  warehouse:
+                    key: '1'
+                    id: WH10001
+                  storageArea: bin
+                  inventoryCycle:
+                    key: '2'
+                    id: Daily Cycle
+                  economicOrderQuantity: 10
+                  standardCost: '110'
+                  lastCost: '100'
+                  averageCost: '100'
+                  reorderMethod: economicQuantity
+                  reorderPoint: 121
+                  reorderQuantity: 10
+                  minOrderQuantity: 10
+                  maxOrderQuantity: 100
+                  maximumStock: 300
+                  minimumStock: 50
+                  lastSoldDate: '2022-04-08'
+                  lastReceivedDate: '2022-04-10'
+                  safetyStock: 20
+                  replenishmentMethod: reorderPoint
+                  enableReplenishment: true
+                  onOrder: 20
+                  inTransit: 20
+                  onHand: 20
+                  onHold: 20
+                  reserved: 20
+                  allocated: 20
+                  unCommitted: 20
+components:
+  schemas:
+    item-warehouse-inventory:
+      $ref: ../models/item-warehouse-inventory.s1.schema.yaml
+    item-warehouse-inventoryRequiredProperties:
+      type: object
+      required:
+        - item
+        - warehouse
+      example:
+        item:
+          key: '9'
+          id: Prnt_Paper
+        warehouse:
+          key: '1'
+          id: WH10001
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

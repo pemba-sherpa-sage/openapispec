@@ -1,0 +1,20 @@
+title: metadata-extended
+description: Meta data with partial success
+type: object
+allOf:
+  - $ref: ./metadata.schema.yaml
+  - type: object
+    properties:
+      totalSuccess:
+        type: integer
+        description: Total Success
+        x-mappedTo: null
+        readOnly: true
+        example: 2
+      totalError:
+        type: integer
+        description: Total Errors
+        x-mappedTo: null
+        readOnly: true
+        example: 1
+

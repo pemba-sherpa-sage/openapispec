@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: department-group
+  description: department-group API
+  version: '1.0'
+  contact:
+    name: Tatiana Golovina
+    email: tatiana.golovina@sage.com
+tags:
+  - name: Department groups
+    description: A department group is a specified set of departments, or a set of departments that meet certain criteria. You can use groups to filter or display information in multiple ways, for instance by showing data from only certain departments.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/department-group:
+    get:
+      summary: List department groups
+      description: |
+        Returns up to 100 department groups from the collection with a key, ID, and link for each group. This operation is mostly for use in testing; use the query service to find department groups that meet certain criteria and specify the properties that are returned.
+      tags:
+        - Department groups
+      operationId: get-objects-department-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of department groups
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of department groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/department-group/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the department group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a department group
+      description: Returns detailed information for a specified department group.
+      tags:
+        - Department groups
+      operationId: get-objects-department-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the department group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/department-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the department group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    department-group:
+      $ref: ../models/department-group.s1.schema.yaml
+    department-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

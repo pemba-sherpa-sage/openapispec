@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: core.allowed-operations.list
+  description: core.allowed-operations.list API
+  version: '1.0'
+  contact:
+    name: James Wang
+    email: james.wang@sage.com
+tags:
+  - name: Allowed Operations Service
+    description: Allowed Operations Service description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/core/allowed-operations/list:
+    post:
+      description: Get allowed operations by object keys.
+      summary: Returns allowed operations by object keys.
+      tags:
+        - Allowed Operations Service
+      operationId: get-allowed-operations-service
+      requestBody:
+        description: allowed operations request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/allowed-operations-request'
+            examples:
+              Vendor Allowed Operations Request:
+                value:
+                  object: vendor
+                  keys:
+                    - '1'
+                    - '6'
+                    - '65'
+                  operations:
+                    - canView
+                    - canEdit
+                    - canDelete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Allowed operations
+                properties:
+                  'ia::result':
+                    $ref: ../../core/models/core.allowed-operations-response.s1.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Vendor Allowed Operations Response:
+                  value:
+                    'ia::result':
+                        - key: '1'
+                          operations:
+                            - canView
+                        - key: '65'
+                          operations:
+                            - canView
+                    'ia::meta':
+                      totalCount: 2
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    allowed-operations-request:
+      $ref: ../../core/models/core.allowed-operations-request.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,48 @@
+title: folder
+x-mappedTo: supportingdocumentgrps
+type: object
+description: folder for attachments
+properties:
+  key:
+    type: string
+    description: Attachment Folders Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Attachment Folders ID
+    x-mappedTo: NAME
+    x-mutable: false
+    example: fld1
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+    example: Text files
+  parent:
+    type: object
+    description: Parent folder
+    x-object: folder
+    properties:
+      key:
+        type: string
+        x-mappedTo: GROUPRECORDKEY
+        example: '3'
+      id:
+        type: string
+        x-mappedTo: GROUPKEY
+        readOnly: true
+        example: fld3
+      href:
+        type: string
+        readOnly: true
+        example: /objects/folder/3
+  href:
+    type: string
+    readOnly: true
+    example: /objects/folder/1
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

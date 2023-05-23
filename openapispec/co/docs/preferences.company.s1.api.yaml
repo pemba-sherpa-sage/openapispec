@@ -1,0 +1,800 @@
+openapi: 3.0.0
+info:
+  title: preferences.company
+  description: preferences.company API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Company preferences
+    description: preferences.company description -- explain what it's for and how it's used.
+paths:
+  /services/preferences/company:
+    get:
+      summary: List company preferences
+      description: Returns detailed information for company preferences`.
+      tags:
+        - Company preferences
+      operationId: get-services-preferences.company
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the comapny preferences
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of companies: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    preferences.company:
+      $ref: '#/components/schemas/preferences.company.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    preferences.company.s1.schema:
+      title: company
+      x-mappedTo: company_info
+      type: object
+      description: Company setup information
+      properties:
+        id:
+          type: string
+          description: Company information ID
+          readOnly: true
+          x-mappedTo: TITLE
+          example: null
+        name:
+          type: string
+          description: Name
+          x-mappedTo: NAME
+          example: null
+        legalName:
+          type: string
+          description: Legal Name of company
+          x-mappedTo: LEGALNAME
+          example: null
+        legalAddress:
+          type: object
+          description: The legal address of the company.
+          properties:
+            addressLine1:
+              type: string
+              description: The first address line for shipping, billing, etc.
+              x-mappedTo: LEGALADDRESS1
+              example: 300 Park Avenue
+            addressLine2:
+              type: string
+              description: The second address line for shipping, billing, etc.
+              x-mappedTo: LEGALADDRESS2
+              example: Suite 1400
+            city:
+              type: string
+              description: City
+              x-mappedTo: LEGALCITY
+              example: San Jose
+            state:
+              type: string
+              description: State
+              x-mappedTo: LEGALSTATE
+              example: California
+            postCode:
+              type: string
+              description: Zip or Postal Code
+              x-mappedTo: LEGALZIPCODE
+              example: '95110'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: LEGALCOUNTRY
+              example: United States of America
+        companyAddress:
+          type: object
+          description: The legal address of the company.
+          properties:
+            addressLine1:
+              type: string
+              description: Address line 1
+              x-mappedTo: ADDRESS1
+              example: null
+            addressLine2:
+              type: string
+              description: Address line 2
+              x-mappedTo: ADDRESS2
+              example: null
+            city:
+              type: string
+              description: City
+              x-mappedTo: CITY
+              example: null
+            useISOCountryCodes:
+              type: boolean
+              description: Use ISO country codes
+              x-mappedTo: USEISOCOUNTRY
+              example: null
+              x-mappedToType: string
+              default: 'false'
+            country:
+              type: string
+              description: Country
+              x-mappedTo: COUNTRY
+              example: null
+              default: United States
+            state:
+              type: string
+              description: State or territory (US)
+              x-mappedTo: STATEFORUS
+              example: null
+            stateForNonUS:
+              type: string
+              description: State or territory (international)
+              x-mappedTo: STATEFORNONUS
+              example: null
+            postCode:
+              type: string
+              description: ZIP or postal code
+              x-mappedTo: ZIPCODE
+              example: null
+        adminUser:
+          type: object
+          x-mappedTo: userinfo
+          x-object: user
+          description: admin user info for company
+          properties:
+            key:
+              type: string
+              description: User
+              x-mappedTo: ADMIN_USER_KEY
+              example: null
+            id:
+              type: string
+              description: User
+              x-mappedTo: ADMIN_USER_ID
+              example: null
+            href:
+              type: string
+              readOnly: true
+              example: /objects/user/21
+        companyContact:
+          type: object
+          description: Company contact
+          properties:
+            name:
+              type: string
+              description: Name
+              x-mappedTo: CONTACTNAME
+              example: null
+            phone:
+              type: string
+              description: Phone
+              x-mappedTo: CONTACTPHONE
+              example: null
+            email:
+              type: string
+              description: Email address
+              x-mappedTo: CONTACTEMAIL
+              example: null
+            fax:
+              type: string
+              description: Fax
+              x-mappedTo: FAX
+              example: null
+        companyStructure:
+          type: string
+          description: Show company structure
+          x-mappedTo: COMPANYSTRUCTURE
+          example: null
+          default: Flat
+        slideInPermissions:
+          type: string
+          description: Slide-in permissions
+          x-mappedTo: SLIDEPERMS
+          example: null
+          default: Subordinate company (anonymous slide-in users)
+        permissionType:
+          type: string
+          description: Permission type
+          x-mappedTo: PERMTYPE
+          example: null
+          default: U
+        sessionTimeouts:
+          type: object
+          description: session timout specifications
+          properties:
+            hours:
+              type: integer
+              description: Hours
+              x-mappedTo: SESSIONTIMEOUTHR
+              example: null
+            minutes:
+              type: integer
+              description: Minutes
+              x-mappedTo: SESSIONTIMEOUTMIN
+              example: null
+            maxHours:
+              type: integer
+              description: Hours
+              x-mappedTo: MAXSESSIONTIMEOUT
+              example: null
+        scheduledJobs:
+          type: string
+          description: Scheduled jobs
+          x-mappedTo: SCHEDULEDJOBS
+          example: null
+        scheduledJobsExecutionOffset:
+          type: string
+          description: Scheduled jobs execution offset
+          x-mappedTo: SCHEDULEDJOBSEXECUTIONOFFSET
+          example: null
+          default: None
+        maxLoginAttempt:
+          type: integer
+          description: Maximum sign-in attempts
+          x-mappedTo: MAXLOGINATTEMPT
+          example: null
+        loginTimeouts:
+          type: object
+          description: Login time out specifications
+          properties:
+            hours:
+              type: integer
+              description: Hours
+              x-mappedTo: LOGINTIMEOUTHR
+              example: null
+            minutes:
+              type: integer
+              description: Minutes
+              x-mappedTo: LOGINTIMEOUTMIN
+              example: null
+            maxHours:
+              type: integer
+              description: Hours
+              x-mappedTo: MAXLOGINTIMEOUT
+              example: null
+        passwordSettings:
+          type: object
+          description: password specifications
+          properties:
+            requiredPasswordChangeFrequency:
+              type: string
+              description: Change duration
+              x-mappedTo: PWDCHANGEDURATION
+              example: null
+            enforceQuality:
+              type: string
+              description: Require users to follow password creation rules.
+              x-mappedTo: ENFORCEPWDQUALITY
+              example: null
+            enforceHistory:
+              type: string
+              description: Prevent reuse of previous passwords
+              x-mappedTo: ENFORCEPWDHISTORY
+              example: null
+            minLength:
+              type: integer
+              description: Characters
+              x-mappedTo: MINPASSWORDLENGTH
+              example: null
+              default: '5'
+            maxChangeAttempts:
+              type: integer
+              description: Maximum reset attempts
+              x-mappedTo: MAXCHANGEPASSATTEMPT
+              example: null
+              default: '5'
+        ipAddressFilter:
+          type: string
+          description: IP filter
+          x-mappedTo: IPADDRESSFILTER
+          example: null
+          default: None
+        timeZone:
+          type: string
+          description: Time zone
+          x-mappedTo: TIMEZONE
+          example: null
+          default: 0.00#GMT (Greenwich Mean Time Dublin, Edinburgh, London
+        dateFormat:
+          type: string
+          description: Date format
+          x-mappedTo: DATEFORMAT
+          example: null
+          default: MM/DD/YYYY
+        timeFormat:
+          type: string
+          description: Time format
+          x-mappedTo: TIMEFORMAT
+          example: null
+        decimalsSeparator:
+          type: string
+          description: Decimals separator.
+          enum:
+            - ','
+            - .
+            - _
+            - ' '
+            - companyDefault
+          x-mappedToValues:
+            - ','
+            - .
+            - _
+            - _SPACE_
+            - _CNY_
+          x-mappedTo: CURRENCYDECIMAL_SEP
+          default: .
+          example: .
+        thousandsSeparator:
+          type: string
+          description: Thousands separator.
+          enum:
+            - ','
+            - .
+            - _
+            - ' '
+            - companyDefault
+          x-mappedToValues:
+            - ','
+            - .
+            - _
+            - _SPACE_
+            - _CNY_
+          x-mappedTo: CURRENCYTHOUSAND_SEP
+          default: ','
+          example: ','
+        logoAndColors:
+          type: object
+          description: Logo and Color plus theme items
+          properties:
+            theme:
+              type: string
+              description: Theme
+              x-mappedTo: THEME
+              example: custom;007C99;
+            backgroundColor:
+              type: string
+              description: Background color
+              x-mappedTo: NAVBGCOLOR
+              example: null
+            textColor:
+              type: string
+              description: Text color
+              x-mappedTo: NAVFONTCOLOR
+              example: null
+            pushBrandingColorsToAllInstances:
+              type: boolean
+              description: Apply colors to all instances
+              x-mappedTo: PUSHBRANDINGCOLORS
+              example: null
+              x-mappedToType: string
+            brandingHeaderColor:
+              type: string
+              description: Header background color
+              x-mappedTo: BRANDING_HEADER_COLOR
+              example: null
+            applyLogoToAllInstances:
+              type: boolean
+              description: Apply logo to all instances
+              x-mappedTo: APPLYLOGOTOCHILDREN
+              example: null
+              x-mappedToType: string
+            brandingLogo:
+              type: string
+              description: Upload logo
+              x-mappedTo: BRANDING_LOGO
+              example: null
+        accounting:
+          type: object
+          description: Accounting fields from accounting tab in UI go here.
+          properties:
+            accountingPeriods:
+              type: string
+              description: Accounting periods
+              x-mappedTo: NONSTANDARDPERIODS
+              example: null
+            firstFiscalMonth:
+              type: string
+              description: First fiscal month
+              x-mappedTo: FIRSTMONTH
+              example: null
+            weekBeginsOn:
+              type: string
+              description: Week begins on
+              x-mappedTo: WEEKSTART
+              example: null
+            reportingMethod:
+              type: string
+              description: Reporting method
+              x-mappedTo: ACCRUAL
+              example: null
+            firstMonthTax:
+              type: string
+              description: first month tax
+              x-mappedTo: FIRSTMONTHTAX
+              example: null
+            baseCurrency:
+              type: string
+              description: Base currency
+              x-mappedTo: CURRENCY
+              example: null
+            primaryAccountNumberLength:
+              type: integer
+              description: Primary account no. length
+              x-mappedTo: PRIMACCTNOLEN
+              example: null
+            accountFieldSeparator:
+              type: string
+              description: Account field separator
+              x-mappedTo: ACCTNOSEPERATOR
+              example: null
+            subAccountNumberLength:
+              type: integer
+              description: Subaccount no. length
+              x-mappedTo: SUBACCTNOLEN
+              example: null
+            quickStartTemplate:
+              type: string
+              description: QuickStart template
+              x-mappedTo: INDUSTRYCODE
+              example: null
+            enableCustomCurrency:
+              type: boolean
+              description: Enable custom currency
+              x-mappedTo: ENABLECUSTOMCURRENCY
+              example: null
+              x-mappedToType: string
+        federalId:
+          type: string
+          description: Federal ID
+          x-mappedTo: FEDERALID
+          example: null
+        marketingText:
+          type: string
+          description: Marketing
+          x-mappedTo: MARKETING_TEXT
+          example: null
+        messageText:
+          type: string
+          description: Message
+          x-mappedTo: MESSAGE_TEXT
+          example: null
+        messageInfo:
+          type: string
+          description: Text entered here will print on the lower portion of the customer invoice
+          x-mappedTo: MESSAGEINFO
+          example: null
+        currencyCountryFormat:
+          type: string
+          description: Currency country format
+          x-mappedTo: OBJCURRENCYREC
+          example: null
+        ownerInfo:
+          type: string
+          description: Ownership info
+          x-mappedTo: OWNERINFO
+          example: null
+        reserveAmount:
+          type: number
+          description: Reserve amount
+          x-mappedTo: RESERVEAMT
+          example: null
+        layoutType:
+          type: string
+          description: Layout type
+          x-mappedTo: LAYOUTTYPE
+          example: null
+        useUTF8ForPDF:
+          type: string
+          description: PDF format
+          x-mappedTo: PDF_UTF8
+          example: null
+          default: F
+        attachmentSequenceFormat:
+          type: string
+          description: Attachment sequence type
+          x-mappedTo: SUPDOCSEQUENCE
+          example: null
+        isPlatformEnabled:
+          type: boolean
+          description: Is platform enabled
+          x-mappedTo: PLATFORMENABLED
+          example: null
+          x-mappedToType: string
+        menuName:
+          type: string
+          description: Menus
+          x-mappedTo: MENUNAME
+          example: null
+        isGlobalSearchEnabled:
+          type: boolean
+          description: Is global search enabled
+          x-mappedTo: GLOBALSEARCHENABLED
+          example: null
+          x-mappedToType: string
+        verbosityLevel:
+          type: string
+          description: Verbosity level
+          x-mappedTo: VERBOSITYLEVEL
+          example: null
+        disableNewFinancialWizard:
+          type: boolean
+          description: Disable new financial wizard
+          x-mappedTo: DISABLENEWFINWIN
+          example: null
+          x-mappedToType: string
+        singleSignOn:
+          type: object
+          description: single sign on fields
+          properties:
+            enableSingleSignOn:
+              type: boolean
+              description: Enable single sign-on
+              x-mappedTo: SSO_STATUS
+              example: null
+              x-mappedToType: string
+            issuerURL:
+              type: string
+              description: Issuer URL
+              x-mappedTo: SSO_ISSUER_URL
+              example: null
+            loginURL:
+              type: string
+              description: Login URL
+              x-mappedTo: SSO_LOGIN_URL
+              example: null
+            certificate:
+              type: string
+              description: Certificate
+              x-mappedTo: SSO_CERTIFICATE
+              example: null
+            identityProviderType:
+              type: string
+              description: Identity provider type
+              x-mappedTo: SSO_IMPL_TYPE
+              example: null
+            requestAuthenticationContentType:
+              type: string
+              description: Requested authentication content type
+              x-mappedTo: SSO_REQ_AUTH_CONTENT_TYPE
+              example: null
+              default: minimum
+        multiFactorAuthorization:
+          type: object
+          description: Fields for MFA
+          properties:
+            enableMFA:
+              type: boolean
+              description: Enable 2-step verification
+              x-mappedTo: MFA_IS_ENABLED
+              example: null
+              x-mappedToType: string
+            enableMFATrustedDevices:
+              type: boolean
+              description: Do not allow trusted devices
+              x-mappedTo: MFA_DISABLE_TRUSTED
+              example: null
+              x-mappedToType: string
+              default: 'false'
+            mfaUserMode:
+              type: string
+              description: null
+              x-mappedTo: MFA_USER_MODE
+              example: null
+            mfaTrustedLabel:
+              type: string
+              description: Disabling trusted devices will require all users to verify each login using an authenticator application.
+              x-mappedTo: MFA_TRUSTED_LABEL
+              example: null
+        taxId:
+          type: string
+          description: Tax ID
+          x-mappedTo: TAXID
+          example: null
+        levelOfServiceAlertThreshold:
+          type: number
+          description: API usage alert threshold
+          x-mappedTo: LOS_ALERT_THRESHOLD
+          example: null
+        externalAuthorizationMaxExpirationDays:
+          type: integer
+          description: external authorization maximum expiration days
+          x-mappedTo: ESP_MAX_EXP_DAY
+          example: null
+          default: '90'
+        disableEmailPoweredBy:
+          type: boolean
+          description: Is email powered by disabled
+          x-mappedTo: EMAILPOWEREDBYDISABLED
+          example: null
+          x-mappedToType: string
+        emailSenderDomainSettings:
+          type: object
+          description: domain settings for sending emails
+          properties:
+            GUID:
+              type: string
+              description: Email sender key
+              x-mappedTo: GUID
+              example: null
+            enforceDNSValidation:
+              type: boolean
+              description: Enforce DNS validation
+              x-mappedTo: EMAILSENDERVALIDATION
+              example: null
+              x-mappedToType: string
+              default: 'false'
+            emailSenderDomain:
+              type: string
+              description: Email sender domain
+              x-mappedTo: EMAILSENDERDOMAIN
+              example: null
+        multisharedViewsVersion:
+          type: string
+          description: Multishared views version
+          x-mappedTo: MVIEWS
+          example: null
+        logQueryData:
+          type: string
+          description: Log query data
+          x-mappedTo: LOGQUERYDATA
+          example: null
+        locale:
+          type: string
+          description: Language
+          x-mappedTo: LOCALE
+          example: null
+          default: en_US.UTF-8
+        operatingCountry:
+          type: string
+          description: Operating country
+          x-mappedTo: OPCOUNTRY
+          example: null
+          default: United States
+        addressCountryDefault:
+          type: string
+          description: Default country for addresses
+          x-mappedTo: ADDRESSCOUNTRYDEFAULT
+          example: null
+          default: United States
+        maskVendorBankDetails:
+          type: boolean
+          description: Vendor bank details in audit trail
+          x-mappedTo: VENDORBANKDETAILSMASKING
+          example: null
+          x-mappedToType: string
+          default: 'false'
+        singleEntityMigrationSettings:
+          type: object
+          description: single entity migration settings
+          properties:
+            entityId:
+              type: string
+              description: Entity ID
+              x-mappedTo: MEENTITYID
+              example: null
+            entityName:
+              type: string
+              description: Entity name
+              x-mappedTo: MEENTITYNAME
+              example: null
+        issueRecorder:
+          type: boolean
+          description: Issue recorder
+          x-mappedTo: ISSUE_RECORDER
+          example: null
+          x-mappedToType: string
+          default: 'false'
+        accountingPractice:
+          type: string
+          description: Accounting practice for funds
+          x-mappedTo: ACCOUNTINGPRACTICE
+          example: null
+          default: Net Asset Fund Accounting
+        blankSpace:
+          type: string
+          description: null
+          x-mappedTo: BLANKSPACE
+          example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

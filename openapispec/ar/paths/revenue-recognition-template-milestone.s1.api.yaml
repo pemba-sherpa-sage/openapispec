@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: revenue-recognition-template-milestone
+  description: revenue-recognition-template-milestone API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Revenue recognition template milestones
+    description: Milestone information for revenue recognition templates that have a recognition method of percent complete, milestone, or custom.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/revenue-recognition-template-milestone:
+    get:
+      summary: List revenue recognition template milestones
+      description: Returns a collection with a key, ID, and link for each revenue recognition template milestone. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Revenue recognition template milestones
+      operationId: get-objects-revenue-recognition-template-milestone
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of revenue-recognition-template-milestone objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List revenue recognition template milestones: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/revenue-recognition-template-milestone/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the revenue recognition template milestone.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a revenue recognition template milestone
+      description: Returns detailed information for a specified revenue recognition template milestone.
+      tags:
+        - Revenue recognition template milestones
+      operationId: get-objects-revenue-recognition-template-milestone-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the revenue-recognition-template-milestone
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/revenue-recognition-template-milestone'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a revenue recognition template milestone: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    revenue-recognition-template-milestone:
+      $ref: ../models/revenue-recognition-template-milestone.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

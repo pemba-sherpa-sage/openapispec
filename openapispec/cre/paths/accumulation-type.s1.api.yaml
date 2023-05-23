@@ -1,0 +1,241 @@
+openapi: 3.0.0
+info:
+  title: accumulation-type
+  description: accumulation-type API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Accumulation types
+    description: |-
+      Accumulation types let construction companies report on transaction costs across cost types.
+
+      An accumulation type is typically specified at the level of the standard cost type, but it can also be provided when creating an individual cost type.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/accumulation-type:
+    get:
+      summary: List accumulation types
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each accumulation type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Accumulation Types
+      tags:
+        - Accumulation types
+      operationId: get-objects-accumulation-type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of accumulation types
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of accumulation types: 
+                  value:
+                    'ia::result':
+                      - key: '1'
+                        id: '1'
+                        href: /objects/accumulation-type/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/accumulation-type/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/accumulation-type/3
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 50
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an accumulation type
+      description: Creates a new accumulation type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Accumulation Types
+      tags:
+        - Accumulation types
+      operationId: post-objects-accumulation-type
+      requestBody:
+        description: Accumulation type
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/accumulation-type'
+            examples:
+              Creates an accumulation type: 
+                value:
+                  name: construction
+                  status: active 
+                  costCategory: material
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New accumulation type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New accumulation type: 
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/accumulation-type/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/accumulation-type/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the accumulation type.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an accumulation type
+      description: Returns detailed information for a specified accumulation type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Accumulation Types
+      tags:
+        - Accumulation types
+      operationId: get-objects-accumulation-type-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the accumulation type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/accumulation-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the accumulation type: 
+                  value:
+                    ia::result:
+                      id: '1'
+                      key: '1'
+                      name: Labor
+                      status: active
+                      audit:
+                        createdDateTime: '2021-10-14T15:12:40Z'
+                        modifiedDateTime: '2021-10-14T15:12:40Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      costCategory: labor
+                      href: /objects/accumulation-type/1
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an accumulation type
+      description: Updates an existing accumulation type by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Accumulation Types
+      tags:
+        - Accumulation types
+      operationId: patch-objects-accumulation-type-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/accumulation-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates an accumulation type: 
+                value:
+                  costCategory: other
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated accumulation type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated accumulation type: 
+                  value:
+                    'ia::result':
+                      key: '40'
+                      id: '40'
+                      href: /objects/accumulation-type/40
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an accumulation type
+      description: Deletes an accumulation type.
+      x-documentationFlags:
+        subscription: Project Costing or Construction
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Accumulation Type
+      tags:
+        - Accumulation types
+      operationId: delete-objects-accumulation-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    accumulation-type:
+      $ref: ../models/accumulation-type.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

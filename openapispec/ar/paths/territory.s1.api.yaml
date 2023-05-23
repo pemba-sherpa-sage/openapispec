@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: territory
+  description: territory API
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca uricariu
+tags:
+  - name: Territories
+    description: |
+      Territories are optionally included in Customer records and are used with Accounts Receivable reports. They can be useful for filtering and categorizing data, assuming your company has multiple territories.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/territory/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '81'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the territory.
+    get:
+      summary: Get a territory
+      description: Returns detailed information for a specified territory.
+      tags:
+        - Territories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the territory
+                properties:
+                  'ia::result':
+                    $ref: ../models/territory.s1.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-customer-key
+    delete:
+      summary: Delete a territory
+      description: Deletes a territory.
+      tags:
+        - Territories
+      operationId: delete-objects-territory-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a territory
+      description: Updates an existing territory by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Territories
+      operationId: patch-objects-territory-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated territory
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/territory'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+  /objects/customer:
+    get:
+      summary: List territories
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each territory. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Territories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of territory objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-territory
+    post:
+      summary: Create a territory
+      description: Creates a new territory.
+      tags:
+        - Territories
+      operationId: post-objects-territory
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples: {}
+              schema:
+                type: object
+                title: New territory
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/territory'
+components:
+  schemas:
+    territory:
+      $ref: ../models/territory.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

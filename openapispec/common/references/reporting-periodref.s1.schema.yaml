@@ -1,0 +1,25 @@
+title: reporting-periodref
+type: object
+x-object: reporting-period
+x-mappedTo: reportingperiod
+properties:
+  key:
+    type: string
+    description: Reporting period key.
+    x-mappedTo: PERIODKEY
+    example: '79'
+  id:
+    type: string
+    description: Reporting period ID (case sensitive)
+    x-mappedTo: PERIODNAME
+    example: 'January 2021'
+  name:
+    type: string
+    description: Name of the reporting period.
+    x-mappedTo: PERIODNAME
+    example: 'Month Ended January 2021'
+  href:
+    type: string
+    description: URL for this reporting period.
+    readOnly: true
+    example: /objects/reporting-period/45

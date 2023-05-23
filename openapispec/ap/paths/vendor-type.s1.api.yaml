@@ -1,0 +1,225 @@
+openapi: 3.0.0
+info:
+  title: vendor-type
+  description: vendor-type API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Vendor types
+    description: |
+      Vendor types organize vendors into categories that are used for reporting.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/vendor-type/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        description: System-assigned key for the vendor type.
+        in: path
+        required: true
+        example: 4
+    get:
+      summary: Get a vendor type
+      description: Returns detailed information for a specified vendor type.
+      tags:
+        - Vendor types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the vendor-type
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor-type'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a vendor type:
+                  value:
+                    'ia::result':
+                      id: WholeSale
+                      parent:
+                        key: '7'
+                        id: WholeSaleDistributor
+                      status: active
+                      key: '14'
+                      audit:
+                        createdDateTime: '2021-06-29T06:52:46Z'
+                        modifiedDateTime: '2021-06-29T06:52:46Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      href: /objects/vendor-type/14
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendor-type-key
+    delete:
+      summary: Delete a vendor type
+      description: Deletes a vendor type.
+      tags:
+        - Vendor types
+      operationId: delete-objects-vendor-type-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a vendor type
+      operationId: patch-objects-vendor-type-key
+      description: Updates an existing vendor type by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Vendor types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated vendor-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a vendor type:
+                  value:
+                    'ia::result':
+                      key: '14'
+                      id: WholeSale
+                      href: /objects/vendor-type/14
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-type'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a vendor type:
+                value:
+                  status: inactive
+              Update a parent vendor type:
+                value:
+                  parent:
+                    id: Supplier
+                  status: inactive
+  /objects/vendor-type:
+    get:
+      summary: List vendor types
+      description: Returns a collection with a key, ID, and link for each vendor type. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Vendor types
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of vendor-type objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List vendor types:
+                  value:
+                    'ia::result':
+                      - key: '14'
+                        id: WholeSale
+                        href: /objects/vendor-type/14
+                      - key: '2'
+                        id: Supplier
+                        href: /objects/vendor-type/2
+                      - key: '4'
+                        id: VType-1099INT
+                        href: /objects/vendor-type/4
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-vendtype
+    post:
+      summary: Create a vendor type
+      description: Creates a new vendor type.
+      tags:
+        - Vendor types
+      operationId: post-objects-vendtype
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New vendor-type
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a vendor type:
+                  value:
+                    'ia::result':
+                      key: '14'
+                      id: WholeSale
+                      href: /objects/vendor-type/14
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/vendor-type'
+                - $ref: '#/components/schemas/vendor-typeRequiredProperties'
+            examples:
+              Create a vendor type:
+                value:
+                  id: WholeSale
+                  status: active
+components:
+  schemas:
+    vendor-type:
+      $ref: ../models/vendor-type.s1.schema.yaml
+    vendor-typeRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

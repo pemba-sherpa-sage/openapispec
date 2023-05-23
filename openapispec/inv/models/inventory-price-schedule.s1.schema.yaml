@@ -1,0 +1,48 @@
+title: inventory-price-schedule
+type: object
+description: Inventory price schedules are pricing groups that can be associated with price lists.
+x-mappedTo: priceschedule
+properties:
+  key:
+    type: string
+    description: System-assigned key for the inventory price schedule.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Name or other unique identifier for the inventory price schedule.
+    x-mappedTo: SCHEDULE
+    x-mutable: false
+  href:
+    type: string
+    description: URL for the inventory price schedule.
+    readOnly: true
+  description:
+    type: string
+    description: Meaningful description of the inventory price schedule.
+    x-mappedTo: DESCRIPTION
+  priceList:
+    type: object
+    description: Price list associated with the inventory price schedule.
+    x-object: inventory-price-list
+    x-mappedTo: pricelist
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the inventory price list.
+        x-mappedTo: PRICELISTID
+        readOnly: true
+      id:
+        type: string
+        description: Name or other unique identifier for the inventory price list. 
+        x-mappedTo: PRICELISTID 
+      href:
+        type: string
+        description: URL for the inventory price list.
+        readOnly: true
+  discountPercent:
+    type: string
+    description: Discount that will apply to assigned customers.
+    x-mappedTo: DISCOUNT
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

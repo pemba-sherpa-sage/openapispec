@@ -1,0 +1,114 @@
+title: <object>
+type: object
+x-mappedTo: <ENT object>
+properties:
+  key:
+    type: string
+    description: System-assigned unique key of the <objectEnglishName>.
+    example: 7149
+    x-mappedTo: <RECORDNO or RECORD#>
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the <objectEnglishName>.
+    <Note to devs, if VID is RECORDNO, mark this field as readOnly true else add the property x-mutable false which tells the framework that the VID can be created but not modified.>
+    example: Vend-00002
+    x-mappedTo: <VID for object>
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the <objectEnglishName>.
+    example: /objects/<object>/7149
+    readOnly: true
+  <sampleEnum>:
+    type: string
+    x-mappedTo: <ENT field>
+    description: |
+      <The enum property lists the values exposed by the API (seen by client) and x-mappedToValues are the values used by backend.>
+
+      <Use this format to describe the values in description field:>
+
+      ** Valid values **
+
+        - `active` <description>
+        - `inactive` <description>
+    example: inactive
+    enum:
+      - active
+      - inactive
+    default: inactive
+    x-mappedToValues:
+      - Active
+      - Inactive
+  <sampleDate>:
+    type: string
+    description: <Provide>
+    format: date
+    example: 2021-06-01
+    x-mappedTo: <ENT field>
+  <sampleDateTime>:
+    type: string
+    description: <Provide>
+    format: date-time
+    example: 2014-01-08T11:28:12Z
+    x-mappedTo: <ENT field>
+  <sampleBoolean>:
+    type: boolean <If backend is using strings for boolean, the x-mappedToType will make the conversion for backend>
+    description: <Provide>
+    example: true
+    default: false
+    x-mappedTo: <ENT field>
+    x-mappedToType: string
+  <sampleIntegerNotUsedInCalculations>:
+    type: integer
+    description: <Provide>
+    example: 7
+    x-mappedTo: <ENT field>
+  <sampleIntegerUsedInCalculations>:
+    type: integer
+    description: <Provide>
+    example: 75
+    x-mappedTo: <ENT field>
+    x-mappedToType: string
+  <sampleAmountUsedInCalculations>:
+    type: string
+    description: <Amount for the ....>
+    format: decimal-precision-2
+    example: 95.00
+    x-mappedTo: <ENT field>
+  <sampleReferenceToRelatedObject>:
+    type: object
+    description: <Reference to a/an .... >
+    x-object: <related object name>
+    x-mappedTo: <related ENT object name>
+    properties:
+      key:
+        type: string
+        x-mappedTo: <Related object KEY>
+        readOnly: true
+      id:
+        type: string
+        x-mappedTo: <Related object VID>
+      href:
+        type: string
+        description: URL of the related object.
+        readOnly: true
+  <sample>DelimiterToArray>:
+    type: array
+    x-delimiter: '#~#'
+    x-mappedTo: <ENT field>
+    items: {}
+  <sampleGroup>:
+    type: object <Group related fields for easy access>
+    description: <Provide>
+    properties:
+      <sampleFieldInGroup1>:
+        type: string
+        description: <Provide>
+        x-mappedTo: <ENT field>
+      <sampleFieldInGroup2>:
+        type: string
+        description: <Provide>
+        x-mappedTo: <ENT field>
+  <sampleReferenceToCommonObject>:
+    $ref: ./common/models/audit.s1.schema.yaml

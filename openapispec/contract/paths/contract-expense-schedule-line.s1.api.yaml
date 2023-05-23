@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-schedule-line
+  description: contract-expense-schedule-line API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Contract expense schedule lines
+    description: A contract expense schedule line represents a single expense for a contract line.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-expense-schedule-line:
+    get:
+      summary: List contract expense schedule lines
+      description: 'Returns a collection with a key, ID, and link for each contract-expense-schedule-line.'
+      tags:
+        - Contract expense schedule lines
+      operationId: get-objects-contract-expense-schedule-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract expense schedule line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of contract expense schedules:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: RT-00001
+                        href: /objects/contract-expense-schedule-line/84
+                      - key: '85'
+                        id: RT-00002
+                        href: /objects/contract-expense-schedule-line/85
+                      - key: '60'
+                        id: RT-00003
+                        href: /objects/contract-expense-schedule-line/60
+                      - key: '78'
+                        id: RT-00004
+                        href: /objects/contract-expense-schedule-line/78
+                      - key: '79'
+                        id: RT-00005
+                        href: /objects/contract-expense-schedule-line/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                List of contract expense schedule line errors:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [contract-expense-schedule-line] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  '/objects/contract-expense-schedule-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the contract expense schedule line.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '8241'
+    get:
+      summary: Get a contract expense schedule line
+      description: Returns detailed information for a particular contract expense schedule line.
+      tags:
+        - Contract expense schedule lines
+      operationId: get-objects-contract-expense-schedule-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract expense schedule line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-schedule-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  href:
+                    type: string
+                  'ia::result':
+                    $ref: ../../common/models/error-response.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-extended.schema.yaml
+              examples:
+                Update a contract expense schedule line error:
+                  value:
+                    key: '12'
+                    href: /objects/contract-expense-schedule-line/12
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Field [id] is a read-only field'
+                        supportId: YCbdS%7EYagQGDEvVbn0UIY1o-JKOAAAAAo
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    contract-expense-schedule-line:
+      type: object
+      allOf:
+        - $ref: ../models/contract-expense-schedule-line.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-typeref.s1.schema.yaml
+        - $ref: ../references/contract-schedule-line-postable-typeref.s1.schema.yaml

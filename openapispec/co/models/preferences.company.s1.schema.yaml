@@ -1,0 +1,668 @@
+title: company
+x-mappedTo: company_info
+type: object
+description: Company setup information
+properties:
+  id:
+    type: string
+    description: Company information ID
+    readOnly: true
+    x-mappedTo: TITLE
+    example: 
+  name:
+    type: string
+    description: Name
+    x-mappedTo: NAME
+    example:
+  legalName:
+    type: string
+    description: Legal Name of company
+    x-mappedTo: LEGALNAME
+    example: 
+  legalAddress:
+    type: object
+    description: The legal address of the company.
+    properties:
+      addressLine1:
+        type: string
+        description: The first address line for shipping, billing, etc.
+        x-mappedTo: LEGALADDRESS1
+        example: '300 Park Avenue'
+      addressLine2:
+        type: string
+        description: The second address line for shipping, billing, etc.
+        x-mappedTo: LEGALADDRESS2
+        example: Suite 1400
+      city:
+        type: string
+        description: City
+        x-mappedTo: LEGALCITY
+        example: San Jose
+      state:
+        type: string
+        description: State
+        x-mappedTo: LEGALSTATE
+        example: California
+      postCode:
+        type: string
+        description: Zip or Postal Code
+        x-mappedTo: LEGALZIPCODE
+        example: '95110'
+      country:
+        type: string
+        description: Country
+        x-mappedTo: LEGALCOUNTRY
+        example: United States of America
+#      isoCountryCode:
+#        type: string
+#        description: ISO country code. When ISO country codes are enabled in a company, both COUNTRY and ISOCOUNTRYCODE must be provided.
+#        x-mappedTo: LEGALADDRESS.COUNTRYCODE
+#        example: US
+  companyAddress:
+    type: object
+    description: The legal address of the company.
+    properties:
+      addressLine1:
+        type: string
+        description: Address line 1
+        x-mappedTo: ADDRESS1
+        example: 
+      addressLine2:
+        type: string
+        description: Address line 2
+        x-mappedTo: ADDRESS2
+        example: 
+      city:
+        type: string
+        description: City
+        x-mappedTo: CITY
+        example: 
+      useISOCountryCodes:
+        type: boolean
+        description: Use ISO country codes
+        x-mappedTo: USEISOCOUNTRY
+        example: 
+        x-mappedToType: string
+        default: 'false'
+      country:
+        type: string
+        description: Country
+        x-mappedTo: COUNTRY
+        example: 
+        default: 'United States'
+      state:
+        type: string
+        description: State or territory (US)
+        x-mappedTo: STATEFORUS
+        example: 
+      stateForNonUS:
+        type: string
+        description: State or territory (international)
+        x-mappedTo: STATEFORNONUS
+        example: 
+      postCode:
+        type: string
+        description: ZIP or postal code
+        x-mappedTo: ZIPCODE
+        example: 
+  adminUser:
+    type: object
+    x-mappedTo: userinfo
+    x-object: user
+    description: admin user info for company
+    properties:
+      key:
+        type: string
+        description: User
+        x-mappedTo: ADMIN_USER_KEY
+        example: 
+      id:
+        type: string
+        description: User
+        x-mappedTo: ADMIN_USER_ID
+        example: 
+      href:
+        type: string
+        readOnly: true
+        example: '/objects/user/21'
+  companyContact:
+    type: object
+    description: Company contact
+    properties:
+      name:
+        type: string
+        description: Name
+        x-mappedTo: CONTACTNAME
+        example: 
+      phone:
+        type: string
+        description: Phone
+        x-mappedTo: CONTACTPHONE
+        example: 
+      email:
+        type: string
+        description: Email address
+        x-mappedTo: CONTACTEMAIL
+        example: 
+      fax:
+        type: string
+        description: Fax
+        x-mappedTo: FAX
+        example: 
+  companyStructure:
+    type: string
+    description: Show company structure
+    x-mappedTo: COMPANYSTRUCTURE
+    example: 
+    default: 'Flat'
+  slideInPermissions:
+    type: string
+    description: Slide-in permissions
+    x-mappedTo: SLIDEPERMS
+    example: 
+    default: 'Subordinate company (anonymous slide-in users)'
+# probably should be converted to enum for official release.
+  permissionType:
+    type: string
+    description: Permission type
+    x-mappedTo: PERMTYPE
+    example: 
+    default: 'U'
+# probably should be converted to enum for official release.
+  sessionTimeouts:
+    type: object
+    description: session timout specifications
+    properties:
+      hours:
+        type: integer
+        description: Hours
+        x-mappedTo: SESSIONTIMEOUTHR
+        example: 
+      minutes:
+        type: integer
+        description: Minutes
+        x-mappedTo: SESSIONTIMEOUTMIN
+        example: 
+      maxHours:
+        type: integer
+        description: Hours
+        x-mappedTo: MAXSESSIONTIMEOUT
+        example: 
+  scheduledJobs:
+    type: string
+    description: Scheduled jobs
+    x-mappedTo: SCHEDULEDJOBS
+    example: 
+  scheduledJobsExecutionOffset:
+    type: string
+    description: Scheduled jobs execution offset
+    x-mappedTo: SCHEDULEDJOBSEXECUTIONOFFSET
+    example: 
+    default: None
+  maxLoginAttempt:
+    type: integer
+    description: Maximum sign-in attempts
+    x-mappedTo: MAXLOGINATTEMPT
+    example: 
+  loginTimeouts:
+    type: object
+    description: Login time out specifications
+    properties:
+      hours:
+        type: integer
+        description: Hours
+        x-mappedTo: LOGINTIMEOUTHR
+        example: 
+      minutes:
+        type: integer
+        description: Minutes
+        x-mappedTo: LOGINTIMEOUTMIN
+        example: 
+      maxHours:
+        type: integer
+        description: Hours
+        x-mappedTo: MAXLOGINTIMEOUT
+        example: 
+  passwordSettings:
+    type: object
+    description: password specifications
+    properties:
+      requiredPasswordChangeFrequency:
+        type: string
+        description: Change duration
+        x-mappedTo: PWDCHANGEDURATION
+        example: 
+      enforceQuality:
+        type: string
+        description: Require users to follow password creation rules.
+        x-mappedTo: ENFORCEPWDQUALITY
+        example: 
+      enforceHistory:
+        type: string
+        description: Prevent reuse of previous passwords
+        x-mappedTo: ENFORCEPWDHISTORY
+        example: 
+      minLength:
+        type: integer
+        description: Characters
+        x-mappedTo: MINPASSWORDLENGTH
+        example: 
+        default: '5'
+      maxChangeAttempts:
+        type: integer
+        description: Maximum reset attempts
+        x-mappedTo: MAXCHANGEPASSATTEMPT
+        example: 
+        default: '5'
+  ipAddressFilter:
+    type: string
+    description: IP filter
+    x-mappedTo: IPADDRESSFILTER
+    example: 
+    default: 'None'
+  timeZone:
+    type: string
+    description: Time zone
+    x-mappedTo: TIMEZONE
+    example: 
+    default: '0.00#GMT (Greenwich Mean Time Dublin, Edinburgh, London'
+  dateFormat:
+    type: string
+    description: Date format
+    x-mappedTo: DATEFORMAT
+    example: 
+    default: 'MM/DD/YYYY'
+  timeFormat:
+    type: string
+    description: Time format
+    x-mappedTo: TIMEFORMAT
+    example:
+  decimalsSeparator:
+    type: string
+    description: Decimals separator.
+    enum:
+      - ','
+      - '.'
+      - '_'
+      - ' '
+      - 'companyDefault'
+    x-mappedToValues:
+      - ','
+      - '.'
+      - '_'
+      - '_SPACE_'
+      - '_CNY_'
+    x-mappedTo: CURRENCYDECIMAL_SEP
+    default: '.'
+    example: '.'
+  thousandsSeparator:
+      type: string
+      description: Thousands separator.
+      enum:
+        - ','
+        - '.'
+        - '_'
+        - ' '
+        - 'companyDefault'
+      x-mappedToValues:
+        - ','
+        - '.'
+        - '_'
+        - '_SPACE_'
+        - '_CNY_'
+      x-mappedTo: CURRENCYTHOUSAND_SEP
+      default: ','
+      example: ','
+  logoAndColors:
+    type: object
+    description: Logo and Color plus theme items
+    properties:
+      theme:
+        type: string
+        description: Theme
+        x-mappedTo: THEME
+        example: 'custom;007C99;'
+      backgroundColor:
+        type: string
+        description: Background color
+        x-mappedTo: NAVBGCOLOR
+        example: 
+      textColor:
+        type: string
+        description: Text color
+        x-mappedTo: NAVFONTCOLOR
+        example: 
+      pushBrandingColorsToAllInstances:
+        type: boolean
+        description: Apply colors to all instances
+        x-mappedTo: PUSHBRANDINGCOLORS
+        example: 
+        x-mappedToType: string
+      brandingHeaderColor:
+        type: string
+        description: Header background color
+        x-mappedTo: BRANDING_HEADER_COLOR
+        example: 
+      applyLogoToAllInstances:
+        type: boolean
+        description: Apply logo to all instances
+        x-mappedTo: APPLYLOGOTOCHILDREN
+        example: 
+        x-mappedToType: string
+      brandingLogo:
+        type: string
+        description: Upload logo
+        x-mappedTo: BRANDING_LOGO
+        example: 
+  accounting:
+    type: object
+    description: Accounting fields from accounting tab in UI go here.
+    properties:
+      accountingPeriods:
+        type: string
+        description: Accounting periods
+        x-mappedTo: NONSTANDARDPERIODS
+        example: 
+      firstFiscalMonth:
+        type: string
+        description: First fiscal month
+        x-mappedTo: FIRSTMONTH
+        example: 
+      weekBeginsOn:
+        type: string
+        description: Week begins on
+        x-mappedTo: WEEKSTART
+        example: 
+      reportingMethod:
+        type: string
+        description: Reporting method
+        x-mappedTo: ACCRUAL
+        example: 
+      firstMonthTax:
+        type: string
+        description: first month tax
+        x-mappedTo: FIRSTMONTHTAX
+        example:
+      baseCurrency:
+        type: string
+        description: Base currency
+        x-mappedTo: CURRENCY
+        example: 
+      primaryAccountNumberLength:
+        type: integer
+        description: Primary account no. length
+        x-mappedTo: PRIMACCTNOLEN
+        example: 
+      accountFieldSeparator:
+        type: string
+        description: Account field separator
+        x-mappedTo: ACCTNOSEPERATOR
+        example: 
+      subAccountNumberLength:
+        type: integer
+        description: Subaccount no. length
+        x-mappedTo: SUBACCTNOLEN
+        example: 
+      quickStartTemplate:
+        type: string
+        description: QuickStart template
+        x-mappedTo: INDUSTRYCODE
+        example: 
+      enableCustomCurrency:
+        type: boolean
+        description: Enable custom currency
+        x-mappedTo: ENABLECUSTOMCURRENCY
+        example: 
+        x-mappedToType: string
+  federalId:
+    type: string
+    description: Federal ID
+    x-mappedTo: FEDERALID
+    example: 
+  marketingText:
+    type: string
+    description: Marketing
+    x-mappedTo: MARKETING_TEXT
+    example: 
+  messageText:
+    type: string
+    description: Message
+    x-mappedTo: MESSAGE_TEXT
+    example: 
+  messageInfo:
+    type: string
+    description: Text entered here will print on the lower portion of the customer invoice
+    x-mappedTo: MESSAGEINFO
+    example: 
+  currencyCountryFormat:
+    type: string
+    description: Currency country format
+    x-mappedTo: OBJCURRENCYREC
+    example: 
+  ownerInfo:
+    type: string
+    description: Ownership info
+    x-mappedTo: OWNERINFO
+    example: 
+  reserveAmount:
+    type: number
+    description: Reserve amount
+    x-mappedTo: RESERVEAMT
+    example: 
+  layoutType:
+    type: string
+    description: Layout type
+    x-mappedTo: LAYOUTTYPE
+    example: 
+  useUTF8ForPDF:
+    type: string
+    description: PDF format
+    x-mappedTo: PDF_UTF8
+    example: 
+    default: 'F'
+  attachmentSequenceFormat:
+    type: string
+    description: Attachment sequence type
+    x-mappedTo: SUPDOCSEQUENCE
+    example: 
+  isPlatformEnabled:
+    type: boolean
+    description: Is platform enabled
+    x-mappedTo: PLATFORMENABLED
+    example: 
+    x-mappedToType: string
+  menuName:
+    type: string
+    description: Menus
+    x-mappedTo: MENUNAME
+    example: 
+  isGlobalSearchEnabled:
+    type: boolean
+    description: Is global search enabled
+    x-mappedTo: GLOBALSEARCHENABLED
+    example: 
+    x-mappedToType: string
+  verbosityLevel:
+    type: string
+    description: Verbosity level
+    x-mappedTo: VERBOSITYLEVEL
+    example: 
+  disableNewFinancialWizard:
+    type: boolean
+    description: Disable new financial wizard
+    x-mappedTo: DISABLENEWFINWIN
+    example: 
+    x-mappedToType: string
+  singleSignOn:
+    type: object
+    description: single sign on fields
+    properties:
+      enableSingleSignOn:
+        type: boolean
+        description: Enable single sign-on
+        x-mappedTo: SSO_STATUS
+        example: 
+        x-mappedToType: string
+      issuerURL:
+        type: string
+        description: Issuer URL
+        x-mappedTo: SSO_ISSUER_URL
+        example: 
+      loginURL:
+        type: string
+        description: Login URL
+        x-mappedTo: SSO_LOGIN_URL
+        example: 
+      certificate:
+        type: string
+        description: Certificate
+        x-mappedTo: SSO_CERTIFICATE
+        example: 
+      identityProviderType:
+        type: string
+        description: Identity provider type
+        x-mappedTo: SSO_IMPL_TYPE
+        example: 
+      requestAuthenticationContentType:
+        type: string
+        description: Requested authentication content type
+        x-mappedTo: SSO_REQ_AUTH_CONTENT_TYPE
+        example: 
+        default: 'minimum'
+  multiFactorAuthorization:
+    type: object
+    description: Fields for MFA
+    properties:
+      enableMFA:
+        type: boolean
+        description: Enable 2-step verification
+        x-mappedTo: MFA_IS_ENABLED
+        example: 
+        x-mappedToType: string
+      enableMFATrustedDevices:
+        type: boolean
+        description: Do not allow trusted devices
+        x-mappedTo: MFA_DISABLE_TRUSTED
+        example: 
+        x-mappedToType: string
+        default: 'false'
+      mfaUserMode:
+        type: string
+        description: 
+        x-mappedTo: MFA_USER_MODE
+        example: 
+      mfaTrustedLabel:
+        type: string
+        description: Disabling trusted devices will require all users to verify each login using an authenticator application.
+        x-mappedTo: MFA_TRUSTED_LABEL
+        example: 
+  taxId:
+    type: string
+    description: Tax ID
+    x-mappedTo: TAXID
+    example: 
+  levelOfServiceAlertThreshold:
+    type: number
+    description: API usage alert threshold
+    x-mappedTo: LOS_ALERT_THRESHOLD
+    example: 
+  externalAuthorizationMaxExpirationDays:
+    type: integer
+    description: external authorization maximum expiration days
+    x-mappedTo: ESP_MAX_EXP_DAY
+    example: 
+    default: '90'
+  disableEmailPoweredBy:
+    type: boolean
+    description: Is email powered by disabled
+    x-mappedTo: EMAILPOWEREDBYDISABLED
+    example: 
+    x-mappedToType: string
+  emailSenderDomainSettings:
+    type: object
+    description: domain settings for sending emails
+    properties:
+      GUID:
+        type: string
+        description: Email sender key
+        x-mappedTo: GUID
+        example: 
+      enforceDNSValidation:
+        type: boolean
+        description: Enforce DNS validation
+        x-mappedTo: EMAILSENDERVALIDATION
+        example: 
+        x-mappedToType: string
+        default: 'false'
+      emailSenderDomain:
+        type: string
+        description: Email sender domain
+        x-mappedTo: EMAILSENDERDOMAIN
+        example: 
+  multisharedViewsVersion:
+    type: string
+    description: Multishared views version
+    x-mappedTo: MVIEWS
+    example: 
+  logQueryData:
+    type: string
+    description: Log query data
+    x-mappedTo: LOGQUERYDATA
+    example: 
+  locale:
+    type: string
+    description: Language
+    x-mappedTo: LOCALE
+    example: 
+    default: 'en_US.UTF-8'
+  operatingCountry:
+    type: string
+    description: Operating country
+    x-mappedTo: OPCOUNTRY
+    example: 
+    default: 'United States'
+  addressCountryDefault:
+    type: string
+    description: Default country for addresses
+    x-mappedTo: ADDRESSCOUNTRYDEFAULT
+    example: 
+    default: 'United States'
+  maskVendorBankDetails:
+    type: boolean
+    description: Vendor bank details in audit trail
+    x-mappedTo: VENDORBANKDETAILSMASKING
+    example: 
+    x-mappedToType: string
+    default: 'false'
+  singleEntityMigrationSettings:
+    type: object
+    description: single entity migration settings
+    properties:
+      entityId:
+        type: string
+        description: Entity ID
+        x-mappedTo: MEENTITYID
+        example: 
+      entityName:
+        type: string
+        description: Entity name
+        x-mappedTo: MEENTITYNAME
+        example: 
+  issueRecorder:
+    type: boolean
+    description: Issue recorder
+    x-mappedTo: ISSUE_RECORDER
+    example: 
+    x-mappedToType: string
+    default: 'false'
+  accountingPractice:
+    type: string
+    description: Accounting practice for funds
+    x-mappedTo: ACCOUNTINGPRACTICE
+    example: 
+    default: 'Net Asset Fund Accounting'
+  blankSpace:
+    type: string
+    description: 
+    x-mappedTo: BLANKSPACE
+    example: 

@@ -1,0 +1,215 @@
+openapi: 3.0.0
+info:
+  title: ap-account-label
+  description: ap-account-label API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: AP account labels
+    description: |
+      AP account labels give accounts more descriptive names that are displayed anywhere the accounts are referenced in the product and in reports. Account labels is an optional feature that must be turned on in Accounts Payable. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/ap-account-label/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the AP account label.
+    get:
+      summary: Get an AP account label
+      description: Returns detailed information for a specified AP account label.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-account-label
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ap-account-label'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AP account label:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: Equipment
+                      description: Equipment
+                      href: /objects/ap-account-label/1
+                      status: active
+                      glAccount:
+                        id: 1210--Equipment
+                      offsetGLAccount:
+                        id: 1215--EquipmentOffset
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-account-label-key
+    delete:
+      summary: Delete an AP account label
+      description: Deletes an AP account label.
+      tags:
+        - AP account labels
+      operationId: delete-objects-ap-account-label-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP account label
+      operationId: patch-objects-ap-account-label-key
+      description: Updates an existing AP account label by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-account-label
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-account-label'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an account label:
+                value:
+                  key: '1'
+                  id: null
+                  description: Equipment
+                  href: /objects/ap-account-label/1
+                  status: active
+                  glAccount:
+                    id: 1210--Equipment
+                  offsetGLAccount:
+                    id: 1215--EquipmentOffset
+  /objects/ap-account-label:
+    get:
+      summary: List AP account labels
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each label. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AP account labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-account-label objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AP account labels:
+                  value:
+                    'ia::result':
+                      - key: string
+                        id: string
+                        href: string
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-account-label
+    post:
+      summary: Create an AP account label
+      description: Creates a new AP account label.
+      tags:
+        - AP account labels
+      operationId: post-objects-ap-account-label
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-account-label
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-account-label'
+                - $ref: '#/components/schemas/ap-account-labelRequiredProperties'
+            examples:
+              Create an AP account label:
+                value:
+                  key: '1'
+                  id: Equipment
+                  description: Equipment
+                  href: /objects/ap-account-label/1
+                  status: active
+                  glAccount:
+                    id: 1210--Equipment
+                  offsetGLAccount:
+                    id: 1215--EquipmentOffset
+components:
+  schemas:
+    ap-account-label:
+      $ref: ../models/ap-account-label.s1.schema.yaml
+    ap-account-labelRequiredProperties:
+      type: object
+      required:
+        - id
+        - description
+      properties:
+        glAccount:
+          type: object
+          required:
+            - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

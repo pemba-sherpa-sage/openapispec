@@ -1,0 +1,250 @@
+openapi: 3.0.0
+info:
+  title: Project status
+  description: Project status API
+  version: '1.0'
+  contact:
+    name: Suresh Adiserla
+    email: suresh.adiserla@sage.com
+tags:
+  - name: Project statuses
+    description: Use Project status to group projects into categories for reporting (such as, consulting, internal, or training).
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/project-status:
+    get:
+      summary: List project statuses
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each project status. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: List Project Status
+      tags:
+         - Project statuses
+      operationId: get-objects-project-status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of project statuses
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of project statuses:
+                  value:
+                    'ia::result':
+                      - key: '100'
+                        id: In Progress
+                        href: /objects/project-status/100
+                      - key: '101'
+                        id: Completed
+                        href: /objects/project-status/101
+                      - key: '102'
+                        id: Started
+                        href: /objects/project-status/102
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 5
+                      next: 0
+                      previous: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a project status
+      description: Creates a new project status.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Add Project Status
+      tags:
+         - Project statuses
+      operationId: post-objects-project-status
+      requestBody:
+        description: project status
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-status'
+                - $ref: '#/components/schemas/project-statusRequiredProperties'
+            examples:
+              Creates a project status:
+                value:
+                  id: In Progress
+                  description: Current status
+                  disableTimeSheetEntry: false
+                  disableExpenseEntry: false
+                  disablePurchasingAPEntry: false
+                  disableGenerateInvoice: false
+                  status: active
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New project status
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New project status:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: In Progress
+                      href: /objects/project-status/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/project-status/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the project status.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a project-status
+      description: Returns detailed information for a specified project status.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Employee, Project Manager
+            permissions: View Project Status
+      tags:
+         - Project statuses
+      operationId: get-objects-project-status-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the project status
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/project-status'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Project status details:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: In Progress
+                      description: Current status
+                      disableTimeSheetEntry: false
+                      disableExpenseEntry: false
+                      disablePurchasingAPEntry: false
+                      disableGenerateInvoice: false
+                      status: active
+                      audit:
+                        createdDateTime: '2022-04-01T16:20:00Z'
+                        modifiedDateTime: '2022-04-01T16:20:00Z'
+                        createdBy: '1'
+                        modifiedBy: '95'
+                      href: /objects/project-status/1
+                    'ia::meta':
+                      totalCount: 3
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a project-status
+      description: Updates an existing project status by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Edit Project Status
+      tags:
+         - Project statuses
+      operationId: patch-objects-project-status-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/project-status'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a project status:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Project status updated
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated project status:
+                  value:
+                    'ia::result':
+                      key: '1'
+                      id: In Progress
+                      href: /objects/project-status/1
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a project-status
+      description: Deletes a project-status.
+      x-documentationFlags:
+        subscription: Projects Basic Project Tracking and General Ledger (enable the Projects dimension)
+        userPermissions:
+          - userType: Business, Project Manager
+            permissions: Delete Project Status
+      tags:
+         - Project statuses
+      operationId: delete-objects-project-status-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    project-status:
+      $ref: ../models/project-status.s1.schema.yaml
+    project-statusRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

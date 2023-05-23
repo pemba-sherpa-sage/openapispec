@@ -1,0 +1,35 @@
+title: item-tax-group
+x-mappedTo: itemtaxgroup
+type: object
+description: Item tax groups apply different tax schedules to various items.
+properties:
+  key:
+    type: string
+    description: Sytem-assigned key for the item tax group.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Name or other unique identifier for the item tax group.
+    x-mappedTo: NAME
+    x-mutable: false
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  taxSolution:
+    type: object
+    description: Different tax solutions are available for different countries, for example, Australia GST, South  Africa VAT, UK Vat.
+    x-object: tax-solution
+    x-mappedTo: TAXSOLUTION
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: Unique identifier for the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+      href:
+        type: string
+        description: URL for the tax solution.
+        readOnly: true

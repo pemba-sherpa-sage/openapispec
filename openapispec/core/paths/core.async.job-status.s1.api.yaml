@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: job-status
+  description: job-status API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Asynchronous job statuses
+    description: Asynchronous job status description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/services/core/async/job-status':
+    get:
+      description: Get an asynchonous job status
+      summary: Returns detailed information for a particular asynchronous job status.
+      tags:
+        - Asynchronous job statuses
+      parameters:
+        - $ref: '#/components/parameters/jobId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the async-job-status
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/job-status-response'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Job Status:
+                  value:
+                    'ia::result':
+                      jobId: NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE
+                      processingStatus: delivered
+                      queuedDateTime: '2021-03-09T09:25:27Z'
+                      startDateTime: '2021-03-09T09:25:33Z'
+                      endDateTime: '2021-03-09T09:26:04Z'
+                      href: /services/core/async/job-status?jobId=NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE
+                      deliveryStatus:
+                        - status: 429
+                          attemptedDateTime: '2021-03-09T09:25:36Z'
+                          scheduledRetryDateTime: '2021-03-09T10:32:16Z'
+                        - status: 200
+                          attemptedDateTime: '2021-03-09T09:26:31Z'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-services-async-job-status
+components:
+  schemas:
+    job-status-response:
+      $ref: ../models/core.async.job-status.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  parameters:
+    jobId:
+      name: jobId
+      description: Job Identifier
+      in: query
+      required: true
+      schema:
+        type: string
+        x-mappedTo: PACKAGEID
+        nullable: false
+        format: base64url
+        example: NjQ2NTc2MzAzMVl1U3gzSmNOcDgxRTFjYnpBN1JqSUFBQUFBUTE

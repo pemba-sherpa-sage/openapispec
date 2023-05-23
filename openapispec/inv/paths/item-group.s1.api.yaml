@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: item-group
+  description: item-group API
+  version: '1.0'
+  contact:
+    name: Basil Dzewu
+    email: basil.dzewu@sage.com
+tags:
+  - name: Item groups
+    description: Item group description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/item-group:
+    get:
+      summary: List item groups
+      description: Returns a collection with a key, ID, and link for each item group.
+      tags:
+        - Item groups
+      operationId: get-objects-item-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of item-group objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of item groups: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an item group
+      description: Creates a new item group.
+      tags:
+        - Item groups
+      operationId: post-objects-item-group
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-group'
+                - $ref: '#/components/schemas/item-groupRequiredProperties'
+            examples:
+              Creates a/an item group: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New item-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New item group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/item-group/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the item group.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an item group
+      description: Returns detailed information for a particular item group.
+      tags:
+        - Item groups
+      operationId: get-objects-item-group-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the item-group
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/item-group'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the item group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an item group
+      description: Updates an existing item group by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Item groups
+      operationId: patch-objects-item-group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/item-group'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an item group: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated item-group
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated item group: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an item group
+      description: Deletes a/an item group.
+      tags:
+        - Item groups
+      operationId: delete-objects-item-group-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    item-group:
+      $ref: ../models/item-group.s1.schema.yaml
+    item-groupRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

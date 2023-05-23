@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - po/activities/podocumentparams/view
+    POST:
+      - po/activities/podocumentparams/create
+    PATCH:
+      - po/activities/podocumentparams/edit
+    DELETE:
+      - po/activities/podocumentparams/delete
+s1:
+  hash: '0'
+  type: rootObject

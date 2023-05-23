@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  title: document-sequence-number
+  description: document-sequence-number API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Document sequence numbers
+    description: Document sequence number description -- explain what it's for and how it's used.
+paths:
+  /objects/document-sequence-number:
+    get:
+      summary: List document sequence numbers
+      description: Returns a collection with a key, ID, and link for each document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: get-objects-document-sequence-number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of document-sequence-number objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of document sequence numbers:
+                  value:
+                    ia::result:
+                      - key: '37'
+                        id: BOA_ACH_BatchNo
+                        href: /objects/document-sequence-number/37
+                      - key: '27'
+                        id: Purchase Order
+                        href: /objects/document-sequence-number/37
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an document sequence number
+      description: Creates a new document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: post-objects-document-sequence-number
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/document-sequence-number.s1.schema'
+                - $ref: '#/components/schemas/document-sequence-numberRequiredProperties'
+            examples:
+              Creates a/an document sequence number:
+                value:
+                  id: Vendor Invoice
+                  printTitle: Vendor Invoice
+                  type: Numeric
+                  startingNumber: 1
+                  nextNumber: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New document-sequence-number
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New document sequence number:
+                  value:
+                    ia::result:
+                      key: '107'
+                      id: Vendor Invoice
+                      href: /objects/document-sequence-number/107
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/document-sequence-number/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the document sequence number.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an document sequence number
+      description: Returns detailed information for a particular document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: get-objects-document-sequence-number-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the document-sequence-number
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/document-sequence-number.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the document sequence number:
+                  value:
+                    ia::result:
+                      key: '107'
+                      id: BOA_ACH_BatchNo
+                      printTitle: BOA_ACH_BatchNo
+                      fixedPrefix: BATCH
+                      fixedSuffix: null
+                      prefixSeparator: '*'
+                      suffixSeparator: '*'
+                      startingNumber: 1
+                      endingNumber: null
+                      nextNumber: 1
+                      whenModified: 02/22/2023 12:47:20
+                      fixedLength: null
+                      status: active
+                      type: Numeric
+                      sequenceCase: null
+                      startingSequence: null
+                      endingSequence: null
+                      nextSequence: null
+                      href: /objects/document-sequence-number/107
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an document sequence number
+      description: Updates an existing document sequence number by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Document sequence numbers
+      operationId: patch-objects-document-sequence-number-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/document-sequence-number.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an document sequence number:
+                value:
+                  prefixSeparator: '-'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated document-sequence-number
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated document sequence number:
+                  value:
+                    ia::result:
+                      key: '107'
+                      id: BOA_ACH_BatchNo
+                      href: /objects/document-sequence-number/107
+                    ia::meta:
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an document sequence number
+      description: Deletes a/an document sequence number.
+      tags:
+        - Document sequence numbers
+      operationId: delete-objects-document-sequence-number-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    document-sequence-number:
+      $ref: '#/components/schemas/document-sequence-number.s1.schema'
+    document-sequence-numberRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    document-sequence-number.s1.schema:
+      title: document-sequence-number
+      x-mappedTo: seqnum
+      type: object
+      description: Document sequencing
+      properties:
+        key:
+          type: string
+          description: Document sequence Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '61'
+        id:
+          type: string
+          description: Document sequence ID
+          x-mappedTo: TITLE
+          x-mutable: false
+          example: Vendors
+        printTitle:
+          type: string
+          description: Print title
+          x-mappedTo: PRINTTITLE
+          example: Vendors
+        type:
+          type: string
+          description: Type
+          x-mappedTo: TYPE
+          enum:
+            - numeric
+            - alpha
+          x-mappedToValues:
+            - Numeric
+            - Alpha
+          example: Numeric
+        fixedLength:
+          type: string
+          description: Fixed length, up to 16 characters (numbers sequence will be padded with zeros and alpha sequence will be padded with a's)
+          x-mappedTo: NUMBERLENGTH
+          example: '16'
+        fixedPrefix:
+          type: string
+          description: Fixed prefix
+          x-mappedTo: PREFIX
+          example: INV
+        prefixSeparator:
+          type: string
+          description: Prefix separator
+          x-mappedTo: SEPARATOR1
+          example: '-'
+        fixedSuffix:
+          type: string
+          description: Fixed suffix
+          x-mappedTo: SUFFIX
+          example: COMPANY
+        suffixSeparator:
+          type: string
+          description: Suffix separator
+          x-mappedTo: SEPARATOR2
+          example: '-'
+        startingNumber:
+          type: integer
+          description: Starting number
+          x-mappedTo: FROMNUMBER
+          example: 1
+        endingNumber:
+          type: integer
+          description: Ending number
+          x-mappedTo: TONUMBER
+          example: 100
+        nextNumber:
+          type: integer
+          description: Next number
+          x-mappedTo: NEXT
+          example: 1
+        startingSequence:
+          type: string
+          description: Starting sequence
+          x-mappedTo: FROMSEQ
+          example: A
+        endingSequence:
+          type: string
+          description: Ending sequence
+          x-mappedTo: TOSEQ
+          example: ZZZ
+        nextSequence:
+          type: string
+          description: Next sequence
+          x-mappedTo: NEXTSEQ
+          example: A
+        whenModified:
+          type: string
+          description: When updated
+          x-mappedTo: WHENUPDATED
+          example: 02/13/2023 11:34:32
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        href:
+          type: string
+          readOnly: true
+          description: URL of the document-sequence-number
+          example: /objects/document-sequence-number/61
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

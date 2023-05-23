@@ -1,0 +1,22 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/sotaxdetail/view
+      - so/lists/sotaxdetail/view
+    POST:
+      - ar/lists/sotaxdetail/create
+      - so/lists/sotaxdetail/create
+    PATCH:
+      - ar/lists/sotaxdetail/edit
+      - so/lists/sotaxdetail/edit
+    DELETE:
+      - ar/lists/sotaxdetail/delete
+      - so/lists/sotaxdetail/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

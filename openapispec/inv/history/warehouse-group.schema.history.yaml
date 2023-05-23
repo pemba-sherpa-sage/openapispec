@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - inv/lists/warehousegroup/view
+    POST:
+      - inv/lists/warehousegroup/create
+    PATCH:
+      - inv/lists/warehousegroup/edit
+    DELETE:
+      - inv/lists/warehousegroup/delete
+s1:
+  hash: '0'
+  type: rootObject

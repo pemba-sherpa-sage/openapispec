@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - atlas/lists/gcownershipstructure/view
+    POST:
+      - atlas/lists/gcownershipstructure/create
+    PATCH:
+      - atlas/lists/gcownershipstructure/edit
+    DELETE:
+      - atlas/lists/gcownershipstructure/delete
+s1:
+  hash: '0'
+  type: rootObject

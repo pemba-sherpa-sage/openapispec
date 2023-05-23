@@ -1,0 +1,238 @@
+openapi: 3.0.0
+info:
+  title: rate-table-timesheet-line
+  description: rate-table-timesheet-line API
+  version: '1.0'
+  contact:
+    name: Jim Reed
+    email: jim.reed@sage.com
+tags:
+  - name: Rate table timesheet lines
+    description: Rate table timesheet lines contain criteria for applying a default markup % or labor rate to matching timesheet transactions during invoicing.
+      Each line requires only 1 value be provided.  If the markup % is not provided it defaults to 0%.  The description and start date are optional.
+      Either a labor rate or markup % can be provided, but not both.  If labor rate is provided it will override the employee rate, otherwise the markup % will be applied.
+      Lines with the exact same values (excluding description and markup %) are considered duplicates and are not allowed.
+      If no value is given for a property then the line will match on any transaction, otherwise it will only match on transactions with that property.
+      Lines with the most matches will be used as the invoice default markup %.  If multiple lines have the same number of matches then the one with
+      the most recent start date will be used.  If multiple lines have the same number of matches and the same start date (or none at all) then the
+      line with the lowest line number will be used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/rate-table-timesheet-line:
+    get:
+      summary: List rate table timesheet lines
+      description: Returns a collection with a key, ID, and link for each rate table timesheet line.
+      tags:
+        - Rate table timesheet lines
+      operationId: get-objects-rate-table-timesheet-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of rate-table-timesheet-line objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of rate table timesheet lines:
+                  value:
+                    'ia::result':
+                      - key: '84'
+                        id: '84'
+                        href: /objects/rate-table-timesheet-line/84
+                      - key: '85'
+                        id: '85'
+                        href: /objects/rate-table-timesheet-line/85
+                      - key: '60'
+                        id: '60'
+                        href: /objects/rate-table-timesheet-line/60
+                      - key: '78'
+                        id: '78'
+                        href: /objects/rate-table-timesheet-line/78
+                      - key: '79'
+                        id: '79'
+                        href: /objects/rate-table-timesheet-line/79
+                    'ia::meta':
+                      totalCount: 5
+                      start: 1
+                      pageSize: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../references/error-response-nokeyref.s1.schema.yaml
+              examples:
+                List error:
+                  value:
+                    'ia::result':
+                      'ia::error':
+                        code: invalidRequest
+                        message: 'Object named [rate-table-timesheet-line] is not supported in version [0]'
+                        supportId: '-hOIM%7EYagYsDEpVbp0kVn1KUJ45gAAAAQ'
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+  '/objects/rate-table-timesheet-line/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the rate table timesheet line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a rate table timesheet line
+      description: Returns detailed information for a particular rate table timesheet line.
+      tags:
+        - Rate table timesheet lines
+      operationId: get-objects-rate-table-timesheet-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the rate-table-timesheet-line
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/rate-table-timesheet-line'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of rate table timesheet line:
+                  value:
+                    'ia::result':
+                      - key: '12'
+                        id: '12'
+                        rateTable:
+                          key: '145'
+                          id: 2021-LV2
+                          name: 2021 Level 2
+                          href: /objects/rate-table/145
+                        href: /objects/rate-table-timesheet-line/12
+                        lineNumber: 1
+                        description: Aug Costing Kit
+                        startDate: '2021-08-03'
+                        markupPercent: '8.250'
+                        laborRate: '115.500'
+                        accumulationType:
+                          key: '2'
+                          id: ACCT-2
+                          href: /objects/accumulation-type/2
+                        standardCostType:
+                          key: '33'
+                          id: CT-RT-0010
+                          name: CT-RT-0010 MATERIAL
+                          href: /objects/standard-cost-type/33
+                        standardTask:
+                          key: '3'
+                          id: TSK-RT-0011
+                          name: TSK-RT-0011 Name
+                          href: /objects/standard-task/3
+                        employeePosition:
+                          key: '2'
+                          id: COO
+                          name: Chief Executive Officer
+                          href: /objects/employee-position/2
+                        laborClass:
+                          key: '2'
+                          id: LC-2
+                          name: Labor class 2
+                          href: /objects/labor-class/2
+                        laborShift:
+                          key: '2'
+                          id: LS-2
+                          name: Day shift
+                          href: /objects/labor-shift/2
+                        laborUnion:
+                          key: '2'
+                          id: LU-2
+                          name: Labor union 2
+                          href: /objects/labor-union/2
+                        timeType:
+                          key: '1'
+                          id: Salaries At Root
+                          href: /objects/time-type/1
+                        dimensions:
+                          employee:
+                            key: '10'
+                            id: '10'
+                            name: 'Thomas, Glenn'
+                            href: /objects/employee/10
+                          project:
+                            key: '2'
+                            id: NET-XML30-2
+                            name: Talcomp training
+                            href: /objects/project/2
+                          customer:
+                            key: '13'
+                            id: '113'
+                            name: Jack In the Box
+                            href: /objects/customer/13
+                          vendor:
+                            key: '357'
+                            id: 1605212096809
+                            name: GenLab
+                            href: /objects/vendor/357
+                          item:
+                            key: '13'
+                            id: Case 13
+                            name: Platform pack
+                            href: /objects/item/13
+                          warehouse:
+                            key: '6'
+                            id: WH01
+                            name: WH01
+                            href: /objects/warehouse/6
+                          class:
+                            key: '731'
+                            id: REST_CLS_001
+                            name: Enterprises
+                            href: /objects/class/731
+                          task:
+                            key: '2'
+                            id: tet
+                            name: Design
+                            href: /objects/task/2
+                        audit:
+                          createdDateTime: '2014-01-08T11:28:12Z'
+                          modifiedDateTime: '2014-01-08T11:28:12Z'
+                          createdBy: '1'
+                          modifiedBy: '95'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../references/error-response-keyref.s1.schema.yaml
+              examples:
+                Get error:
+                  value:
+                    key: '145'
+                    href: /objects/rate-table-timesheet-line/145
+                    'ia::result':
+                      'ia::error':
+                        code: notFound
+                        message: 'The requested resource [rate-table-timesheet-line] with key(s) [145] could not be found but may be available in the future'
+                        supportId: PhOIM%7EYagW2DEpVbp0kVn1KUJ43wAAAAQ
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 0
+                      totalError: 1
+components:
+  schemas:
+    rate-table-timesheet-line:
+      $ref: ../models/rate-table-timesheet-line.s1.schema.yaml

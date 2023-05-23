@@ -1,0 +1,582 @@
+openapi: 3.0.0
+info:
+  title: employee
+  description: employee API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Employees
+    description: An employee is a resource that executes work for a company and is associated with a financial transaction such as a timesheet entry or expense transaction. If the employee is also a user in Sage Intacct (which is required if they will be entering Time & Expenses), the employee and user must be associated with the same Sage Intacct contact.
+paths:
+  /objects/employee:
+    get:
+      summary: List employees
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each employee. This operation is mostly for use in testing; use query to find employees that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Employees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of employee objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      - key: '32'
+                        id: '100'
+                        href: /objects/employee/32
+                      - key: '52'
+                        id: Emp2
+                        href: /objects/employee/52
+                      - key: '17'
+                        id: '16'
+                        href: /objects/employee/17
+                    ia::meta:
+                      totalCount: 20
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-employee
+    post:
+      summary: Create an employee
+      description: Creates a new employee. If the employee is also a user in Sage Intacct (which is required if they will be entering Time & Expenses), the employee and user must be associated with the same Sage Intacct contact.
+      tags:
+        - Employees
+      operationId: post-objects-employee
+      requestBody:
+        description: Employee to create
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee.s1.schema'
+                - $ref: '#/components/schemas/employeeRequiredProperties'
+            examples:
+              Create a new employee:
+                value:
+                  id: Emp2
+                  jobTitle: Sr Software Eng
+                  status: active
+                  startDate: '2021-04-01'
+                  birthDate: '1984-04-13'
+                  gender: male
+                  SSN: '078051120'
+                  defaultCurrency: USD
+                  manager:
+                    id: '1'
+                  location:
+                    id: '1'
+                  department:
+                    id: '1'
+                  class:
+                    id: Class_1
+                  primaryContact:
+                    id: Anglin, John W.
+                  employeeType:
+                    id: Full Time
+                  earningType:
+                    id: earningType
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New employee
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                New employee created:
+                  value:
+                    ia::result:
+                      key: '54'
+                      id: Emp3
+                      href: /objects/employee/52
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/employee/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the employee.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an employee
+      description: Returns detailed information for a specified employee.
+      tags:
+        - Employees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the employee
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/employee.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: '52'
+                      id: Emp2
+                      SSN: '078051120'
+                      jobTitle: Sr Software Eng
+                      location:
+                        id: '10'
+                        key: '15'
+                        name: Indianapolis
+                        href: /objects/location/15
+                      department:
+                        id: '10'
+                        key: '10'
+                        name: QA - II
+                        href: /objects/department/10
+                      manager:
+                        key: '11'
+                        id: '10'
+                        href: /objects/employee/11
+                      birthDate: '1984-04-14'
+                      startDate: '2021-05-01'
+                      status: active
+                      employeeType:
+                        id: Part Time
+                        name: Part Time
+                        key: '2'
+                        href: /objects/employee-type/2
+                      gender: female
+                      primaryContact:
+                        id: abc(C02)
+                        name: abc(C02)
+                        key: '205'
+                        href: /objects/contact/205
+                      defaultCurrency: MXN
+                      earningType:
+                        key: '2'
+                        id: earningType2
+                        name: earningType2
+                        href: /objects/earning-type/2
+                      class:
+                        id: Class_2
+                        name: Class 2
+                        key: '2'
+                        href: /objects/class/2
+                      nsp::ic_employees_users:
+                        key: null
+                        id: null
+                      nsp::employee1:
+                        key: null
+                        id: null
+                      nsp::remployee:
+                        key: null
+                        id: null
+                      href: /objects/employee/52
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-employee-key
+    patch:
+      summary: Update an employee
+      description: Updates an existing employee by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Employees
+      operationId: patch-objects-employee-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/employee.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update when an employee resigns:
+                value:
+                  status: inactive
+                  endDate: '2023-04-01'
+                  terminationType: voluntary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated employee
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Employee updated:
+                  value:
+                    ia::result:
+                      key: '52'
+                      id: Emp2
+                      href: /objects/employee/52
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an employee
+      description: Deletes an employee.
+      tags:
+        - Employees
+      operationId: delete-objects-employee-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    employee:
+      $ref: '#/components/schemas/employee.s1.schema'
+    employeeRequiredProperties:
+      type: object
+      required:
+        - id
+        - location
+        - primaryContact
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    employee.s1.schema:
+      title: employee
+      x-mappedTo: employee
+      type: object
+      description: Information about an employee.
+      properties:
+        key:
+          type: string
+          description: System-assigned unique key for the employee.
+          x-mappedTo: RECORDNO
+          readOnly: true
+          example: '3086'
+        id:
+          type: string
+          description: Unique ID of the employee.
+          x-mappedTo: EMPLOYEEID
+          x-mutable: false
+          example: jsmith
+        startDate:
+          type: string
+          format: date
+          example: '2014-01-08'
+          description: Employment start date.
+          x-mappedTo: STARTDATE
+        jobTitle:
+          type: string
+          description: Job title
+          x-mappedTo: TITLE
+          example: VP Sales
+        status:
+          type: string
+          description: Status
+          enum:
+            - active
+            - inactive
+          x-mappedToValues:
+            - active
+            - inactive
+          x-mappedTo: STATUS
+        birthDate:
+          type: string
+          description: Employee date of birth.
+          format: date
+          example: '2014-01-08'
+          x-mappedTo: BIRTHDATE
+        endDate:
+          type: string
+          description: Employment end date.
+          format: date
+          example: '2014-01-08'
+          x-mappedTo: ENDDATE
+        manager:
+          type: object
+          description: Manager of the employee.
+          x-object: employee
+          x-mappedTo: employee
+          properties:
+            key:
+              type: string
+              x-mappedTo: PARENTKEY
+            id:
+              type: string
+              x-mappedTo: SUPERVISORID
+            href:
+              type: string
+        gender:
+          type: string
+          description: Gender
+          x-mappedTo: GENDER
+          enum:
+            - female
+            - male
+          x-mappedToValues:
+            - female
+            - male
+        location:
+          type: object
+          description: Employee location. Required only when an employee is created at the top level in a multi-entity, multi-base-currency company.
+          x-object: location
+          x-mappedTo: location
+          properties:
+            key:
+              type: string
+              x-mappedTo: LOCATIONKEY
+            id:
+              type: string
+              x-mappedTo: LOCATIONID
+            name:
+              type: string
+              x-mappedTo: LOCATIONNAME
+            href:
+              type: string
+        department:
+          type: object
+          description: Department that the employee is associated with.
+          x-object: department
+          x-mappedTo: department
+          properties:
+            key:
+              type: string
+              x-mappedTo: DEPARTMENTKEY
+            id:
+              type: string
+              x-mappedTo: DEPARTMENTID
+            name:
+              type: string
+              x-mappedTo: DEPARTMENTTITLE
+            href:
+              type: string
+        class:
+          type: object
+          description: Class that the employee is associated with.
+          x-object: class
+          x-mappedTo: class
+          properties:
+            key:
+              type: string
+              x-mappedTo: CLASSKEY
+            id:
+              type: string
+              x-mappedTo: CLASSID
+            name:
+              type: string
+              x-mappedTo: CLASSNAME
+            href:
+              type: string
+        defaultCurrency:
+          type: string
+          description: Currency
+          x-mappedTo: CURRENCY
+        primaryContact:
+          type: object
+          description: The contact object that represents the employee.
+          x-object: contact
+          x-mappedTo: contact
+          properties:
+            key:
+              type: string
+              description: System-assigned unique key of the contact.
+              x-mappedTo: CONTACTKEY
+              example: '12345'
+            id:
+              type: string
+              x-mappedTo: PERSONALINFO.CONTACTNAME
+            name:
+              type: string
+              x-mappedTo: PERSONALINFO.CONTACTNAME
+            firstName:
+              type: string
+              x-mappedTo: PERSONALINFO.FIRSTNAME
+            lastName:
+              type: string
+              x-mappedTo: PERSONALINFO.LASTNAME
+            href:
+              type: string
+              description: Endpoint for the contact.
+              example: /objects/contact/12345
+        employeeType:
+          type: object
+          description: employeeType
+          x-object: employee-type
+          x-mappedTo: employeetype
+          properties:
+            key:
+              type: string
+              x-mappedTo: EMPTYPEKEY
+            id:
+              type: string
+              x-mappedTo: EMPLOYEETYPE
+            name:
+              type: string
+              x-mappedTo: EMPLOYEETYPE
+            href:
+              type: string
+        earningType:
+          type: object
+          description: earningType
+          x-object: earning-type
+          x-mappedTo: earningtype
+          properties:
+            key:
+              type: string
+              x-mappedTo: EARNINGTYPEKEY
+            id:
+              type: string
+              x-mappedTo: EARNINGTYPENAME
+            name:
+              type: string
+              x-mappedTo: EARNINGTYPENAME
+            href:
+              type: string
+        SSN:
+          type: string
+          description: Employee social security number. Do not include dashes.
+          example: '078051120'
+          x-mappedTo: SSN
+        terminationType:
+          type: string
+          enum:
+            - ''
+            - voluntary
+            - involuntary
+            - deceased
+            - disability
+            - retired
+          x-mappedToValues:
+            - ''
+            - voluntary
+            - involuntary
+            - deceased
+            - disability
+            - retired
+          description: Termination type
+          x-mappedTo: TERMINATIONTYPE
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,57 @@
+title: sandbox
+x-mappedTo: sandbox
+type: object
+description: List of the Sandboxes
+properties:
+  key:
+    type: string
+    description: Sandbox Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '10'
+  id:
+    type: string
+    description: Sandbox ID
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '10'
+  name:
+    type: string
+    description: Sandbox Name
+    x-mappedTo: NAME
+    example: 'Company_title-sandbox'
+  description:
+    type: string
+    description: Sandbox Description
+    x-mappedTo: DESCRIPTION
+    example: 'Sandbox description'
+  state:
+    type: string
+    description: Sandbox State
+    x-mappedTo: STATE
+    example: 'Pending'
+    enum:
+      - 'ready'
+      - 'inProgress'
+      - 'pending'
+      - 'failed'
+    x-mappedToValues:
+      - 'Ready'
+      - 'In Progress'
+      - 'Pending'
+      - 'Failed'
+    default: 'pending'
+  expirationDate:
+    type: string
+    description: Expiring
+    format: date
+    x-mappedTo: WHENEXPIRES
+    example: '2014-01-08'
+  lastRefreshedDate:
+    type: string
+    description: Last refresh
+    format: date
+    x-mappedTo: WHENREFRESHED
+    example: '2014-01-08'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

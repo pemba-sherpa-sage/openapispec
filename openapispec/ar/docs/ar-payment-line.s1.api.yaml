@@ -1,0 +1,863 @@
+openapi: 3.0.0
+info:
+  title: ar-payment-line
+  description: ar-payment-line API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AR payment lines
+    description: AR payment information, including invoices and the line items in those invoices.
+paths:
+  /objects/ar-payment-line:
+    get:
+      summary: List AR payment lines
+      description: Returns a collection with a key, ID, and link for each AR payment line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR payment lines
+      operationId: get-objects-ar-payment-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-payment-line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List AR payment lines:
+                  value:
+                    ia::result:
+                      - key: '7'
+                        id: '7'
+                        href: /objects/ar-payment-line/7
+                      - key: '13'
+                        id: '13'
+                        href: /objects/ar-payment-line/13
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: 101
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/ar-payment-line/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the AR payment line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR payment line
+      description: Returns detailed information for a specified AR payment line.
+      tags:
+        - AR payment lines
+      operationId: get-objects-ar-payment-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-payment-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ar-payment-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get an AR payment line:
+                  value:
+                    id: '7'
+                    key: '7'
+                    arPayment:
+                      key: '4'
+                      id: '4'
+                      href: /objects/ar-payment/4
+                    glAccount:
+                      key: '36'
+                      id: '1200'
+                      name: Accounts Receivable
+                      href: /objects/gl-account/36
+                    baseAmount: '0'
+                    txnAmount: '0.00'
+                    dimensions:
+                      department:
+                        key: null
+                        id: null
+                        name: null
+                      location:
+                        key: '1'
+                        id: '1'
+                        name: United States of America
+                        href: /objects/location/1
+                      project:
+                        key: null
+                        id: null
+                        name: null
+                      customer:
+                        key: '150'
+                        id: ADJ
+                        name: ADJ
+                        href: /objects/customer/150
+                      vendor:
+                        key: null
+                        id: null
+                        name: null
+                      employee:
+                        key: null
+                        id: null
+                        name: null
+                      item:
+                        key: null
+                        id: null
+                        name: null
+                      class:
+                        key: null
+                        id: null
+                        name: null
+                      nsp::rgldim43491134_10019:
+                        key: null
+                        id: null
+                    memo: null
+                    exchangeRate:
+                      date: null
+                      typeId: null
+                      rate: '1'
+                    txnCurrency: USD
+                    baseCurrency: USD
+                    lineNumber: 1
+                    baseTotalPaid: '0'
+                    txnTotalPaid: '0'
+                    baseTotalSelected: '0'
+                    txnTotalSelected: '0'
+                    recordType: rp
+                    offsetGLAccount:
+                      key: '9'
+                      href: /objects/gl-account/9
+                    audit:
+                      createdDateTime: '2022-04-21T12:34:02Z'
+                      modifiedDateTime: '2022-07-04T08:18:29Z'
+                      createdBy: '1'
+                      modifiedBy: '1'
+                    href: /objects/ar-payment-line/7
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-payment-line:
+      $ref: '#/components/schemas/ar-payment-line.s1.schema'
+    ar-payment-lineRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    dimensionref.s1.schema:
+      type: object
+      title: dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATION
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPARTMENTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENT
+              example: DEP-11
+            name:
+              type: string
+              description: Department Name
+              readOnly: true
+              x-mappedTo: DEPARTMENTTITLE
+              example: Sales and Marketing
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: '1605212096809'
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: Case 13
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        warehouse:
+          title: warehouse
+          type: object
+          x-object: warehouse
+          properties:
+            key:
+              type: string
+              description: Warehouse Key
+              x-mappedTo: WAREHOUSEDIMKEY
+              example: '6'
+            id:
+              type: string
+              description: Warehouse ID
+              x-mappedTo: WAREHOUSEID
+              example: WH01
+            name:
+              type: string
+              description: Warehouse Name
+              x-mappedTo: WAREHOUSENAME
+              readOnly: true
+              example: WH01
+            href:
+              type: string
+              readOnly: true
+              example: /objects/warehouse/6
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        costType:
+          title: costtype
+          type: object
+          x-object: cost-type
+          properties:
+            id:
+              type: string
+              description: Cost Type ID
+              x-mappedTo: COSTTYPEID
+              example: '2'
+            key:
+              type: string
+              description: Cost Type Key
+              x-mappedTo: COSTTYPEDIMKEY
+              example: '2'
+            name:
+              type: string
+              description: Cost Type Name
+              readOnly: true
+              x-mappedTo: COSTTYPENAME
+              example: Project Expense
+            href:
+              type: string
+              readOnly: true
+              example: /objects/cost-type/2
+        asset:
+          title: asset
+          type: object
+          x-object: asset
+          properties:
+            id:
+              type: string
+              description: Asset ID
+              x-mappedTo: ASSETID
+              example: A001
+            key:
+              type: string
+              description: Asset Key
+              x-mappedTo: ASSETDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Asset Name
+              readOnly: true
+              x-mappedTo: ASSETNAME
+              example: Laptop 1
+            href:
+              type: string
+              readOnly: true
+              example: /objects/asset/1
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    ar-payment-line.s1.schema:
+      title: ar-payment-line
+      x-mappedTo: arpymtentry
+      x-ownedBy: ar-payment
+      type: object
+      description: AR payment information, including invoices and the line items in those invoices.
+      properties:
+        id:
+          type: string
+          description: Identifier for the AR payment line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        key:
+          type: string
+          description: System-assigned key for the AR payment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '98545678'
+        href:
+          type: string
+          description: URL for the AR payment line item.
+          readOnly: true
+        baseAmount:
+          type: string
+          description: For multi-currency companies, the base amount of the item in the company's base currency.
+          x-mappedTo: AMOUNT
+          readOnly: true
+          example: '100.0'
+        txnAmount:
+          type: string
+          description: For payment involving multi-currency, the amount of the item in the currency for the invoice.
+          x-mappedTo: TRX_AMOUNT
+          format: decimal-precision-2
+          example: '100.0'
+        memo:
+          type: string
+          description: Memo or brief description of the AR payment line item.
+          x-mappedTo: ENTRYDESCRIPTION
+          example: Descreiption for line
+        baseCurrency:
+          type: string
+          description: Base currency of the company.
+          x-mappedTo: BASECURR
+          readOnly: true
+        txnCurrency:
+          type: string
+          description: Transaction Currency of the invoice
+          x-mappedTo: CURRENCY
+          readOnly: true
+        exchangeRate:
+          type: object
+          title: exchangeRate
+          description: Exchange rate details used to calculate the base amount.
+          properties:
+            date:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Exchange rate date used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_DATE
+              readOnly: true
+            rate:
+              type: string
+              description: Exchange rate used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCHANGE_RATE
+              readOnly: true
+              example: '1.0789'
+            typeId:
+              type: string
+              description: Exchange rate type used to calculate the base amount from the transaction amount.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              readOnly: true
+              example: '-1'
+        lineNumber:
+          type: number
+          description: Line number of the AR payment line item.
+          x-mappedTo: LINE_NO
+          readOnly: true
+          example: 1
+        baseTotalPaid:
+          type: string
+          description: Total amount paid for the line item.
+          x-mappedTo: TOTALPAID
+          readOnly: true
+          example: '100.0'
+        txnTotalPaid:
+          type: string
+          description: Transaction total paid for the line item.
+          x-mappedTo: TRX_TOTALPAID
+          readOnly: true
+          example: '100.0'
+        baseTotalSelected:
+          type: string
+          description: Total selected for the line item.
+          x-mappedTo: TOTALSELECTED
+          example: '100.0'
+        txnTotalSelected:
+          type: string
+          description: Total transaction selected for the line item.
+          x-mappedTo: TRX_TOTALSELECTED
+          example: '100.0'
+        recordType:
+          type: string
+          description: Record type of the line item.
+          x-mappedTo: RECORDTYPE
+          example: rp
+        accountLabel:
+          type: object
+          description: AR account label associated with the line item.
+          x-object: ar-account-label
+          x-mappedTo: acctlabel
+          title: accountLabel
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the AR account label.
+              x-mappedTo: ACCOUNTLABELKEY
+            id:
+              type: string
+              description: Identifier for the AR account label.
+              x-mappedTo: ACCOUNTLABEL
+            href:
+              type: string
+              description: URL for the AR account label.
+              readOnly: true
+        allocation:
+          type: object
+          description: Allocation information for the line item.
+          x-mappedTo: ALLOCATION
+          title: allocation
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: '1'
+            id:
+              type: integer
+              description: ID for the allocation.
+              x-mappedTo: ALLOCATIONKEY
+              example: 1
+            name:
+              type: string
+              description: Name of the allocation.
+              x-mappedTo: ALLOCATION
+              readOnly: true
+              example: Alloc1-WBS-US
+            href:
+              type: string
+              description: URL for the allocation.
+              readOnly: true
+        arPayment:
+          type: object
+          description: Header level details for the AR payment's line entries.
+          x-mappedTo: arpymt
+          x-object: ar-payment
+          properties:
+            key:
+              type: string
+              description: Parent record number (Payment Record Number)
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Parent record number (Payment Record Number)
+              readOnly: true
+              x-mappedTo: RECORDKEY
+              example: '98545678'
+            href:
+              type: string
+              description: URL for the AR payment.
+              readOnly: true
+        glAccount:
+          type: object
+          x-mappedTo: glaccount
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Account key
+              x-mappedTo: ACCOUNTKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Account number
+              x-mappedTo: ACCOUNTNO
+              example: '100'
+            name:
+              type: string
+              description: GL account title
+              x-mappedTo: ACCOUNTTITLE
+              example: Sales
+            href:
+              type: string
+              description: GL account URL
+              readOnly: true
+        offsetGLAccount:
+          type: object
+          x-mappedTo: prentryoffsetacct
+          x-object: gl-account
+          properties:
+            key:
+              type: string
+              description: Offset GL account key
+              x-mappedTo: PRENTRYOFFSETACCOUNTKEY
+              example: '98545678'
+            id:
+              type: string
+              description: Offset GL account number
+              x-mappedTo: PRENTRYOFFSETACCOUNTNO
+              example: '4000'
+            href:
+              type: string
+              description: Offset GL account URL
+              readOnly: true
+        dimensions:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/dimensionref.s1.schema'
+            - type: object
+              properties:
+                location:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+                  x-object: location
+                  x-mappedTo: location
+                  title: location
+                  properties:
+                    key:
+                      type: string
+                      x-mappedTo: LOCATIONKEY
+                      example: '1'
+                    id:
+                      type: string
+                      description: Location ID
+                      x-mappedTo: LOCATIONID
+                      example: US
+                    name:
+                      type: string
+                      description: Location name
+                      x-mappedTo: LOCATIONNAME
+                      example: United States
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/location/4
+                department:
+                  type: object
+                  description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+                  x-object: department
+                  x-mappedTo: department
+                  title: department
+                  properties:
+                    key:
+                      type: string
+                      x-mappedTo: DEPARTMENTKEY
+                      example: '98545678'
+                    id:
+                      type: string
+                      description: Department ID
+                      x-mappedTo: DEPARTMENTID
+                      example: ENG
+                    name:
+                      type: string
+                      description: Department name
+                      x-mappedTo: DEPARTMENTNAME
+                      example: Engineering
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/department/9
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

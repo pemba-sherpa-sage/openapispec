@@ -1,0 +1,100 @@
+title: document-sequence-number
+x-mappedTo: seqnum
+type: object
+description: Document sequencing
+properties:
+  key:
+    type: string
+    description: Document sequence Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: "61"
+  id:
+    type: string
+    description: Document sequence ID
+    x-mappedTo: TITLE
+    x-mutable: false
+    example: "Vendors"
+  printTitle:
+    type: string
+    description: Print title
+    x-mappedTo: PRINTTITLE
+    example: "Vendors"
+  type:
+    type: string
+    description: Type
+    x-mappedTo: TYPE
+    enum:
+      - numeric
+      - alpha
+    x-mappedToValues:
+      - Numeric
+      - Alpha
+    example: "Numeric"
+  fixedLength:
+    type: string
+    description: Fixed length, up to 16 characters (numbers sequence will be padded with zeros and alpha sequence will be padded with a's)
+    x-mappedTo: NUMBERLENGTH
+    example: "16"
+  fixedPrefix:
+    type: string
+    description: Fixed prefix
+    x-mappedTo: PREFIX
+    example: "INV"
+  prefixSeparator:
+    type: string
+    description: Prefix separator
+    x-mappedTo: SEPARATOR1
+    example: "-"
+  fixedSuffix:
+    type: string
+    description: Fixed suffix
+    x-mappedTo: SUFFIX
+    example: "COMPANY"
+  suffixSeparator:
+    type: string
+    description: Suffix separator
+    x-mappedTo: SEPARATOR2
+    example: "-"
+  startingNumber:
+    type: integer
+    description: Starting number
+    x-mappedTo: FROMNUMBER
+    example: 1
+  endingNumber:
+    type: integer
+    description: Ending number
+    x-mappedTo: TONUMBER
+    example: 100
+  nextNumber:
+    type: integer
+    description: Next number
+    x-mappedTo: NEXT
+    example: 1
+  startingSequence:
+    type: string
+    description: Starting sequence
+    x-mappedTo: FROMSEQ
+    example: "A"
+  endingSequence:
+    type: string
+    description: Ending sequence
+    x-mappedTo: TOSEQ
+    example: "ZZZ"
+  nextSequence:
+    type: string
+    description: Next sequence
+    x-mappedTo: NEXTSEQ
+    example: "A"
+  whenModified:
+    type: string
+    description: When updated
+    x-mappedTo: WHENUPDATED
+    example: "02/13/2023 11:34:32"
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  href:
+    type: string
+    readOnly: true
+    description: URL of the document-sequence-number
+    example: "/objects/document-sequence-number/61"

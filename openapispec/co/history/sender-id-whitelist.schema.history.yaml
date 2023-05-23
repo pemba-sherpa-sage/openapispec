@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/senderidwhitelist/view
+    POST:
+      - co/lists/senderidwhitelist/create
+    PATCH:
+      - co/lists/senderidwhitelist/edit
+    DELETE:
+      - co/lists/senderidwhitelist/delete
+s1:
+  hash: '0'
+  type: rootObject

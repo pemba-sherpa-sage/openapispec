@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: ar-tax-schedule
+  description: ar-tax-schedule API
+  version: '1.0'
+  contact:
+    name: Carolyn Philip
+    email: carolyn.philip@sage.com
+tags:
+  - name: Accounts Receivable tax schedules
+    description: |
+      A tax schedule identifies the tax details that are applied when the schedule is referenced by a tax schedule map. 
+      For example, a tax schedule named "Purchase Goods Standard Rate" could include one tax detail named "Purchase Goods Standard Rate". When this schedule is referenced, the tax detail is applied. See [Tax schedules&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-schedules.htm) for more information.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-tax-schedule:
+    get:
+      summary: List Accounts Receivable tax schedules
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each Accounts Receivable tax schedule. This operation is mostly for use in testing; use query to find objects that meet certain criteria and specify the properties that are returned.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Schedules
+      tags:
+        - Accounts Receivable tax schedules
+      operationId: get-objects-ar-tax-schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-tax-schedule objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List Accounts Receivable tax schedules:
+                  value:
+                    'ia::result':
+                      - key: '8'
+                        id: '8'
+                        href: /objects/ar-tax-schedule/8
+                      - key: '9'
+                        id: '9'
+                        href: /objects/ar-tax-schedule/9
+                      - key: '10'
+                        id: '10'
+                        href: /objects/ar-tax-schedule/10
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an Accounts Receivable tax schedule
+      description: Creates a new Accounts Receivable tax schedule.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Tax Schedules
+      tags:
+        - Accounts Receivable tax schedules
+      operationId: post-objects-ar-tax-schedule
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-tax-schedule'
+                - $ref: '#/components/schemas/ar-tax-scheduleRequiredProperties'
+            examples:
+              Create an Accounts Receivable tax schedule:
+                value:
+                  name: TaxSched-00002
+                  description: Tax for New York
+                  taxSolution:
+                    key: 10
+                  status: active
+                  lines:
+                    - taxDetail:
+                        id: NY State Sales Tax
+                      effectiveDate: '2022-02-26'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an Accounts Receivable tax schedule:
+                  value:
+                    'ia::result':
+                      key: '162'
+                      id: '162'
+                      href: /objects/ar-tax-schedule/162
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-tax-schedule/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Accounts Receivable tax schedule.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '162'
+    get:
+      summary: Get an Accounts Receivable tax schedule
+      description: Returns detailed information for a specified Accounts Receivable tax schedule.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View Tax Schedules
+      tags:
+        - Accounts Receivable tax schedules
+      operationId: get-objects-ar-tax-schedule-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-tax-schedule'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an Accounts Receivable tax schedule:
+                  value:
+                    'ia::result':
+                      id: '162'
+                      key: '162'
+                      name: TaxSched-00002
+                      description: Tax for New York
+                      status: active
+                      isSystemGenerated: false
+                      taxSolution:
+                        id: Avalara Tax
+                        key: '2'
+                        href: /objects/tax-solution/2
+                      lines:
+                        - taxSchedule:
+                            key: '162'
+                            id: '162'
+                            name: Tax New York
+                            href: /objects/ar-tax-schedule/162
+                          key: '44'
+                          id: '44'
+                          taxDetail:
+                            id: New York State Sales Tax
+                            key: '22'
+                            href: /objects/order-entry-tax-detail/22
+                          effectiveDate: '2022-02-03'
+                          href: /objects/ar-tax-schedule-detail/44
+                      href: /objects/ar-tax-schedule/162
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a Accounts Receivable tax schedule
+      description: Updates an existing Accounts Receivable tax schedule by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Tax Schedules
+      tags:
+        - Accounts Receivable tax schedules
+      operationId: patch-objects-ar-tax-schedule-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-tax-schedule'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                      example: '162'
+            examples:
+              Update a single value:
+                value:
+                  status: inactive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-tax-schedule
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '162'
+                      href: /objects/ar-tax-schedule/162
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an Accounts Receivable tax schedule
+      description: Deletes an Accounts Receivable tax schedule. Delete a tax schedule if it is no longer needed. Deleting a tax schedule removes it from the system so that it can't be recovered.
+      x-documentationFlags:
+        subscription: Accounts Receivable
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Tax Schedules
+      tags:
+        - Accounts Receivable tax schedules
+      operationId: delete-objects-ar-tax-schedule-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-tax-schedule:
+      $ref: ../models/ar-tax-schedule.s1.schema.yaml
+    ar-tax-scheduleRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

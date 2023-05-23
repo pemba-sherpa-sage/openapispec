@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: preferences.company
+  description: preferences.company API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+tags:
+  - name: Company preferences
+    description: preferences.company description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/preferences/company:
+    get:
+      summary: List company preferences
+      description: Returns detailed information for company preferences`.
+      tags:
+        - Company preferences
+      operationId: get-services-preferences.company
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the comapny preferences
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of companies: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    preferences.company:
+      $ref: ../models/preferences.company.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

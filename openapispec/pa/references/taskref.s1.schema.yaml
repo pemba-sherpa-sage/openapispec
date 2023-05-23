@@ -1,0 +1,20 @@
+title: taskref
+type: object
+x-object: task
+properties:
+  key:
+    type: string
+    description: Task key
+    x-mappedTo: TASKDIMKEY
+  id:
+    type: string
+    description: Task id
+    x-mappedTo: TASKID
+  name:
+    type: string
+    description: Task name
+    readOnly: true
+    x-mappedTo: TASKNAME
+  href:
+    type: string
+    readOnly: true

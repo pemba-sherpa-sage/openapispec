@@ -1,0 +1,12 @@
+title: id
+type: object
+properties:
+  name:
+    x-mappedTo: id.name
+    type: string
+  version:
+    x-mappedTo: id.version
+    type: string
+  type:
+    x-mappedTo: id.type
+    type: string

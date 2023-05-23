@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/supportingdocumentgrps/view
+      - mp/lists/supportingdocumentgrps/view
+    POST:
+      - co/lists/supportingdocumentgrps/create
+      - mp/lists/supportingdocumentgrps/create
+    PATCH:
+      - co/lists/supportingdocumentgrps/edit
+      - mp/lists/supportingdocumentgrps/edit
+    DELETE:
+      - co/lists/supportingdocumentgrps/delete
+      - mp/lists/supportingdocumentgrps/delete
+s1:
+  hash: '0'
+  type: rootObject

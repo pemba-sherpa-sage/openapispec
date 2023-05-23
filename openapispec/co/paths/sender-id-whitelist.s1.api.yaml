@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: sender-id-whitelist
+  description: sender-id-whitelist API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Sender id whitelists
+    description: Sender id whitelist description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/sender-id-whitelist:
+    get:
+      summary: List sender id whitelists
+      description: Returns a collection with a key, ID, and link for each sender id whitelist.
+      tags:
+        - Sender id whitelists
+      operationId: get-objects-sender-id-whitelist
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of sender-id-whitelist objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List sender id whitelists: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an sender id whitelist
+      description: Creates a new sender id whitelist.
+      tags:
+        - Sender id whitelists
+      operationId: post-objects-sender-id-whitelist
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/sender-id-whitelist'
+                - $ref: '#/components/schemas/sender-id-whitelistRequiredProperties'
+            examples:
+              Creates a/an sender id whitelist: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New sender-id-whitelist
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New sender id whitelist: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/sender-id-whitelist/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the sender id whitelist.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an sender id whitelist
+      description: Returns detailed information for a particular sender id whitelist.
+      tags:
+        - Sender id whitelists
+      operationId: get-objects-sender-id-whitelist-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the sender-id-whitelist
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/sender-id-whitelist'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the sender id whitelist: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an sender id whitelist
+      description: Updates an existing sender id whitelist by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Sender id whitelists
+      operationId: patch-objects-sender-id-whitelist-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/sender-id-whitelist'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an sender id whitelist: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated sender-id-whitelist
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated sender id whitelist: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an sender id whitelist
+      description: Deletes a/an sender id whitelist.
+      tags:
+        - Sender id whitelists
+      operationId: delete-objects-sender-id-whitelist-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    sender-id-whitelist:
+      $ref: ../models/sender-id-whitelist.s1.schema.yaml
+    sender-id-whitelistRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

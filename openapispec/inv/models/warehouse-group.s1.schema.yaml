@@ -1,0 +1,88 @@
+title: warehouse-group
+x-mappedTo: WAREHOUSEGROUP
+type: object
+description: A warehouse group categorizes warehouse dimension records, mainly for the purpose of structuring financial reporting.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the warehouse group.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: 
+  id:
+    type: string
+    description: Unique identifier for the warehouse group.
+    x-mappedTo: ID
+    example: 
+  name:
+    type: string
+    description: Name of the warehouse group.
+    x-mappedTo: NAME
+    example: 
+  description:
+    type: string
+    description: Description of the warehouse group.
+    x-mappedTo: DESCRIPTION
+    example:
+  href:
+    type: string
+    description: URL for the warehouse group.
+    readOnly: true
+    example: /objects/warehouse-group/1 
+  groupType:
+    type: string
+    description: Warehouse group type.
+    x-mappedTo: GROUPTYPE
+    example: 
+    enum:
+      - 'allMembers'
+      - 'specificMembers'
+    x-mappedToValues:
+      - 'ALL'
+      - 'SPECIFIC'
+    default: 'ALL'
+  memberFilter:
+    type: array
+    title: memberFilter
+    description: Filter for the warehouse group.
+    x-mappedTo: MEMBERFILTERS
+    items:
+      title: children
+      properties:
+        field:
+          type: string
+          description: Field to use to filter the group.
+          x-mappedTo: FIELD
+          example:
+        operator:
+          type: string
+          description: Operator to use to filter the group.
+          x-mappedTo: OPERATOR
+          example:
+        value:
+          type: string
+          description: Value to use to filter the group.
+          x-mappedTo: VALUE
+          example:
+  glAccountGroup:
+    type: object
+    description: General ledger (GL) account group associated with the warehouse group.
+    x-mappedTo: GLACCTGRP
+    x-object: gl-account-group
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the GL account group.
+        x-mappedTo: GLACCTGRP.RECORDNO
+      id:
+        type: string
+        description: Identifier for the GL account group.
+        x-mappedTo: DIMGRPCOMP
+        readOnly: true
+      href:
+        type: string
+        description: URL for the GL account group.
+        readOnly: true
+        example: /objects/gl-account-group/1
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

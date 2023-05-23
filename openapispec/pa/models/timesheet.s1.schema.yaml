@@ -1,0 +1,180 @@
+title: timesheet
+x-mappedTo: timesheet
+type: object
+description: Header information for timesheets.
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the timesheet.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: This value is same as the key value for this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    readOnly: true
+    description: Endpoint for the timesheet.
+    example: '/objects/timesheet/23'
+  beginDate:
+    type: string
+    format: date
+    description: Begin date of the work period.
+    x-mappedTo: BEGINDATE
+    example: '2023-01-01'
+    nullable: false
+  endDate:
+    type: string
+    format: date
+    description: End date.
+    x-mappedTo: ENDDATE
+    example: '2023-12-31'
+    readOnly: true
+  postingDate:
+    type: string
+    format: date
+    description: GL posting date.
+    x-mappedTo: GLPOSTDATE
+    example: '2023-01-01'
+  state:
+    type: string
+    description: State.
+    x-mappedTo: STATE
+    example: 'submitted'
+    default: 'draft'
+    enum:
+      - 'submitted'
+      - 'approved'
+      - 'partiallyApproved'
+      - 'declined'
+      - 'draft'
+      - 'partiallyDeclined'
+      - 'saved'
+    x-mappedToValues:
+      - 'Submitted'
+      - 'Approved'
+      - 'Partially Approved'
+      - 'Declined'
+      - 'Draft'
+      - 'Partially Declined'
+      - 'Saved'
+  unitOfMeasure:
+    type: string
+    description: Unit of measure.
+    x-mappedTo: UOM
+    readOnly: true
+    example: 'Hours'
+  hoursInDay:
+    type: number
+    description: Hours in a day.
+    x-mappedTo: HOURSINDAY
+    readOnly: true
+    example: 8
+  description:
+    type: string
+    description: Timesheet description.
+    x-mappedTo: DESCRIPTION
+    example: 'Week of 2023-01-01'
+  calculationMethod:
+    type: string
+    description: Calculation method.
+    x-mappedTo: METHOD
+    example: 'hourly'
+    readOnly: true
+    enum:
+      - 'hourly'
+      - 'salary'
+    x-mappedToValues:
+      - 'Hourly'
+      - 'Salary'
+  postActualLaborCost:
+    type: boolean
+    description: Post actual labor cost.
+    x-mappedTo: ACTUALCOST
+    example: false
+    readOnly: true
+  employee:
+    type: object
+    description: The employee who did the work.
+    x-mappedTo: employee
+    x-object: employee
+    properties:
+      key:
+        type: string
+        description: Employee key.
+        x-mappedTo: EMPLOYEEKEY
+        example: '973'
+      id:
+        type: string
+        description: Employee ID.
+        x-mappedTo: EMPLOYEEID
+        example: 'E-001'
+        readOnly: true
+      primaryContact:
+        type: object
+        description: The employee who did the work.
+        x-mappedTo: employee_contact
+        x-object: contact
+        properties:
+          key:
+            type: string
+            x-mappedTo: CONTACTKEY
+          name:
+            type: string
+            description: Employee Name.
+            readOnly: true
+            x-mappedTo: EMPLOYEENAME
+            example: 'John Smith'
+          firstName:
+            type: string
+            description: Employee First Name.
+            x-mappedTo: EMPLOYEEFIRSTNAME
+            readOnly: true
+            example: 'John'
+          lastName:
+            type: string
+            description: Employee Last Name.
+            x-mappedTo: EMPLOYEELASTNAME
+            readOnly: true
+            example: 'Smith'
+          href:
+            type: string
+            example: '/objects/contact/973'
+            readOnly: true
+      href:
+        type: string
+        example: '/objects/employee/973'
+        readOnly: true
+  attachment:
+    type: object
+    description: Supporting document.
+    x-object: attachment
+    x-mappedTo: attachment
+    properties:
+      key:
+        type: string
+        x-mappedTo: SUPDOCKEY
+        description: Supporting document key.
+        example: '8420'
+      id:
+        type: string
+        x-mappedTo: SUPDOCID
+        description: Supporting document ID.
+        example: 'Attach-01'
+        readOnly: true
+      href:
+        type: string
+        readOnly: true
+  lines:
+    type: array
+    description: Time entries
+    x-mappedTo: TIMESHEETITEMS
+    x-object: timesheet-line
+    items:
+      $ref: timesheet-line.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

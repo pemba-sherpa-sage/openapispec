@@ -1,0 +1,275 @@
+title: ar-payment-line
+x-mappedTo: arpymtentry
+x-ownedBy: ar-payment
+type: object
+description: AR payment information, including invoices and the line items in those invoices.
+properties:
+  id:
+    type: string
+    description: Identifier for the AR payment line item. This value is the same as `key` for this object and can be ignored. Use `key` for all references to this object.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '98545678'
+  key:
+    type: string
+    description: System-assigned key for the AR payment line item. 
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '98545678'
+  href:
+    type: string
+    description: URL for the AR payment line item.
+    readOnly: true
+  baseAmount:
+    type: string
+    description: For multi-currency companies, the base amount of the item in the company's base currency.
+    x-mappedTo: AMOUNT
+    readOnly: true
+    example: '100.0'
+  txnAmount:
+    type: string
+    description: For payment involving multi-currency, the amount of the item in the currency for the invoice. 
+    x-mappedTo: TRX_AMOUNT
+    format: decimal-precision-2
+    example: '100.0'
+  memo:
+    type: string
+    description: Memo or brief description of the AR payment line item.
+    x-mappedTo: ENTRYDESCRIPTION
+    example: 'Descreiption for line'
+  baseCurrency:
+    type: string
+    description: Base currency of the company.
+    x-mappedTo: BASECURR
+    readOnly: true
+  txnCurrency:
+    type: string
+    description: Transaction Currency of the invoice
+    x-mappedTo: CURRENCY
+    readOnly: true
+  exchangeRate:
+    type: object
+    title: exchangeRate
+    description: Exchange rate details used to calculate the base amount.
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Exchange rate date used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCH_RATE_DATE
+        readOnly: true
+      rate:
+        type: string
+        description: Exchange rate used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCHANGE_RATE
+        readOnly: true
+        example: '1.0789'
+      typeId:
+        type: string
+        description: Exchange rate type used to calculate the base amount from the transaction amount.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+        readOnly: true
+        example: '-1'
+  lineNumber:
+    type: number
+    description: Line number of the AR payment line item.
+    x-mappedTo: LINE_NO
+    readOnly: true
+    example: 1
+  baseTotalPaid:
+    type: string
+    description: Total amount paid for the line item.
+    x-mappedTo: TOTALPAID
+    readOnly: true
+    example: '100.0'
+  txnTotalPaid:
+    type: string
+    description: Transaction total paid for the line item.
+    x-mappedTo: TRX_TOTALPAID
+    readOnly: true
+    example: '100.0'
+  baseTotalSelected:
+    type: string
+    description: Total selected for the line item.
+    x-mappedTo: TOTALSELECTED
+    example: '100.0'
+  txnTotalSelected:
+    type: string
+    description: Total transaction selected for the line item.
+    x-mappedTo: TRX_TOTALSELECTED
+    example: '100.0'
+  recordType:
+    type: string
+    description: Record type of the line item.
+    x-mappedTo: RECORDTYPE
+    example: 'rp'
+  accountLabel:
+    type: object
+    description: AR account label associated with the line item.
+    x-object: ar-account-label
+    x-mappedTo: acctlabel
+    title: accountLabel
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the AR account label.
+        x-mappedTo: ACCOUNTLABELKEY
+      id:
+        type: string
+        description: Identifier for the AR account label.
+        x-mappedTo: ACCOUNTLABEL
+      href:
+        type: string
+        description: URL for the AR account label.
+        readOnly: true
+  allocation:
+    type: object
+    description: Allocation information for the line item.
+    #x-object: allocation
+    x-mappedTo: ALLOCATION
+    title: allocation
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: '1'
+      id:
+        type: integer
+        description: ID for the allocation.
+        x-mappedTo: ALLOCATIONKEY
+        example: 1
+      name:
+        type: string
+        description: Name of the allocation.
+        x-mappedTo: ALLOCATION
+        readOnly: true
+        example: 'Alloc1-WBS-US'
+      href:
+        type: string
+        description: URL for the allocation.
+        readOnly: true
+  arPayment:
+    type: object
+    description: Header level details for the AR payment's line entries. 
+    x-mappedTo: arpymt
+    x-object: ar-payment
+    properties:
+      key:
+        type: string
+        description: Parent record number (Payment Record Number)
+        readOnly : true
+        x-mappedTo: RECORDKEY
+        example: '98545678'
+      id:
+        type: string
+        description: Parent record number (Payment Record Number)
+        readOnly: true
+        x-mappedTo: RECORDKEY
+        example: '98545678'
+      href:
+        type: string
+        description: URL for the AR payment.
+        readOnly: true
+  glAccount:
+    type: object
+    x-mappedTo: glaccount
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: Account key
+        x-mappedTo: ACCOUNTKEY
+        example: '98545678'
+      id:
+        type: string
+        description: Account number
+        x-mappedTo: ACCOUNTNO
+        example: '100'
+      name:
+        type: string
+        description: GL account title
+        x-mappedTo: ACCOUNTTITLE
+        example: 'Sales'
+      href:
+        type: string
+        description: GL account URL
+        readOnly: true
+  offsetGLAccount:
+    type: object
+    x-mappedTo: prentryoffsetacct
+    x-object: gl-account
+    properties:
+      key:
+        type: string
+        description: Offset GL account key
+        x-mappedTo: PRENTRYOFFSETACCOUNTKEY
+        example: '98545678'
+      id:
+        type: string
+        description: Offset GL account number
+        x-mappedTo: PRENTRYOFFSETACCOUNTNO
+        example: '4000'
+      href:
+        type: string
+        description: Offset GL account URL
+        readOnly: true
+  dimensions:
+    type: object
+    allOf:
+      - $ref: ../../common/references/dimensionref.s1.schema.yaml
+      - type: object
+        properties:
+          location:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of locations to reflect how your company is organized.
+            x-object: location
+            x-mappedTo: location
+            title: location
+            properties:
+              key:
+                type: string
+                x-mappedTo: LOCATIONKEY
+                example: '1'
+              id:
+                type: string
+                description: Location ID
+                x-mappedTo: LOCATIONID
+                example: 'US'
+              name:
+                type: string
+                description: Location name
+                x-mappedTo: LOCATIONNAME
+                example: 'United States'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/location/4'
+          department:
+            type: object
+            description: Standard Sage Intacct dimension that allows you to create a hierarchy of departments to reflect how your company is organized.
+            x-object: department
+            x-mappedTo: department
+            title: department
+            properties:
+              key:
+                type: string
+                x-mappedTo: DEPARTMENTKEY
+                example: '98545678'
+              id:
+                type: string
+                description: Department ID
+                x-mappedTo: DEPARTMENTID
+                example: 'ENG'
+              name:
+                type: string
+                description: Department name
+                x-mappedTo: DEPARTMENTNAME
+                example: 'Engineering'
+              href:
+                type: string
+                readOnly: true
+                example: '/objects/department/9'
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

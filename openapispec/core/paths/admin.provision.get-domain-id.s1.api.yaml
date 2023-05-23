@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: admin.provision.get-domain-id
+  description: provisioning API
+  version: '1.0-internal'
+  contact:
+    name: Valer Crisan
+    email: valer.crisan@sage.com
+tags:
+  - name: admin.provision.get-domain-id
+    description: provision routines for domain services
+paths:
+  /services/admin/provision/get-domain-id:
+    post:
+      summary: Get the current id (version) of a domain
+      description: Get the current id (version) of a domain
+      tags:
+        - admin.provision.get-domain-id
+      operationId: post-services-admin-provision-get-domain-id
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin.provision.get-domain-id-req'
+            examples:
+              example-1:
+                value:
+                  domain: ia-ds-fa
+                  sandbox: ia
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/admin.provision.get-domain-id-resp'
+              examples:
+                example-1:
+                  value:
+                    ia:result:
+                      id: 'v0.0.24'
+                    ia:meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    admin.provision.get-domain-id-req:
+      description: get-domain-id request
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        domain:
+          type: string
+          description: Domain for which to fetch the id
+          x-mappedTo: domain
+        sandbox:
+          type: string
+          description: Sandbox/namespace in which the caller operates
+          x-mappedTo: sandbox
+    admin.provision.get-domain-id-resp:
+      description: get-domain-id response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        id:
+          type: string
+          description: The domain's current id (version)
+          x-mappedTo: id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

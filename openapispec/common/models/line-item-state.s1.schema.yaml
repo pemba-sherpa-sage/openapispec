@@ -1,0 +1,23 @@
+title: line-item-state
+type: string
+enum:
+  - 'submitted'
+  - 'approved'
+  - 'draft'
+  - 'partiallyApproved'
+  - 'declined'
+  - 'draft'
+  - 'partiallyDeclined'
+  - 'saved'
+x-mappedToValues:
+  - 'S'
+  - 'A'
+  - 'D'
+  - 'X'
+  - 'R'
+  - 'I'
+  - 'E'
+  - 'V'
+description: State for all line items
+x-mappedTo: STATE
+example: draft

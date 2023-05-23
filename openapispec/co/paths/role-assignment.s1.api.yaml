@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: role-assignment
+  description: role-assignment API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Role assignments
+    description: Role assignment description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/role-assignment:
+    get:
+      summary: List role assignments
+      description: Returns a collection with a key, ID, and link for each role assignment.
+      tags:
+        - Role assignments
+      operationId: get-objects-role-assignment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of role-assignment objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of role assignments: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/role-assignment/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the role assignment.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an role assignment
+      description: Returns detailed information for a particular role assignment.
+      tags:
+        - Role assignments
+      operationId: get-objects-role-assignment-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the role-assignment
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/role-assignment'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the role assignment: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    role-assignment:
+      $ref: ../models/role-assignment.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

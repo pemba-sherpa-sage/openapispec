@@ -1,0 +1,9 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/services/mesetup/view
+    PATCH:
+      - co/services/mesetup/edit
+s1:
+  hash: '0'
+  type: preference

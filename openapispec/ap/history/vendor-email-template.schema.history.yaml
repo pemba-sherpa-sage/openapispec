@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/emailtemplate/view
+    POST:
+      - co/lists/emailtemplate/create
+    PATCH:
+      - co/lists/emailtemplate/edit
+    DELETE:
+      - co/lists/emailtemplate/delete
+s1:
+  hash: '0'
+  type: ownedObject

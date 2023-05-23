@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/seqnum/view
+    POST:
+      - co/lists/seqnum/create
+    PATCH:
+      - co/lists/seqnum/edit
+    DELETE:
+      - co/lists/seqnum/delete
+s1:
+  hash: '0'
+  type: rootObject

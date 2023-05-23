@@ -1,0 +1,291 @@
+title: project-change-order
+type: object
+x-mappedTo: projectchangeorder
+properties:
+  key:
+    type: string
+    description: System-assigned key of the project change order
+    example: '5'
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier of the project change order
+    example: PCO-BTI-1
+    x-mappedTo: PROJECTCHANGEORDERID
+    x-mutable: false
+  href:
+    type: string
+    description: URL of the project change order
+    example: /objects/project-change-order/5
+    readOnly: true
+  project:
+      type: object
+      description: Reference to a project
+      x-object: project
+      x-mappedTo: project
+      properties:
+        key:
+          type: string
+          description: Project key
+          example: '1'
+          x-mappedTo: PROJECTKEY
+          readOnly: true
+        id:
+          type: string
+          description: Project id
+          example: DIM-BTI
+          x-mappedTo: PROJECTID
+        name:
+          type: string
+          description: Project name
+          example: Dimensions - Berkeley Technology Inc
+          x-mappedTo: PROJECTNAME
+          readOnly: true
+        href:
+          type: string
+          description: URL of the project
+          example: /objects/project/1
+          readOnly: true
+  location:
+      type: object
+      description: Reference to a location
+      x-object: location
+      x-mappedTo: location
+      properties:
+        key:
+          type: integer
+          description: Location key
+          example: '1'
+          x-mappedTo: LOCATIONKEY
+          readOnly: true
+        id:
+          type: integer
+          description: Location id
+          example: 1
+          x-mappedTo: LOCATIONID
+          readOnly: true
+        name:
+          type: string
+          description: Location name
+          example: United States of America
+          x-mappedTo: LOCATIONNAME
+          readOnly: true
+        href:
+          type: string
+          description: URL of the location
+          example: /objects/location/1
+          readOnly: true         
+  projectChangeOrderDate:
+    type: string
+    format: date
+    description: Project change order date
+    example: 2021-10-15
+    x-mappedTo: PROJECTCHANGEORDERDATE
+  state:
+    type: string
+    x-mappedTo: PROJECTCHANGEORDERSTATE
+    description: Project change order state
+    example: draft
+    enum:
+      - draft
+      - posted
+    default: draft
+    x-mappedToValues:
+      - Draft
+      - Posted
+  changeRequestStatus:
+    type: object
+    description: Reference to a change request status
+    # x-object: change-request-status
+    properties:
+      key:
+        type: string
+        example: '1'
+        x-mappedTo: CHANGEREQUESTSTATUSKEY
+        readOnly: true
+      id:
+        type: string
+        example: Pending
+        x-mappedTo: CHANGEREQUESTSTATUSNAME
+      href:
+        type: string
+        description: URL of the change request status
+        example: /objects/change-request-status/1
+        readOnly: true
+  description:
+    type: string
+    description: Describes the project change order
+    example: Change order 1 for NW Food Warehouse
+    x-mappedTo: DESCRIPTION
+  projectContract:
+    type: object
+    description: Reference to a project contract
+    x-object: project-contract
+    properties:
+      key:
+        type: string
+        example: '1'
+        x-mappedTo: PROJECTCONTRACTKEY
+        readOnly: true
+      id:
+        type: string
+        example: Pending
+        x-mappedTo: PROJECTCONTRACTID
+      name:
+        type: string
+        example: Pending
+        x-mappedTo: PROJECTCONTRACTNAME      
+      href:
+        type: string
+        description: URL of the project contract
+        example: /objects/project-contract/1
+        readOnly: true
+  projectContractLine:
+    type: object
+    description: Reference to a project contract line
+    x-object: project-contract-line
+    properties:
+      key:
+        type: string
+        example: '1'
+        x-mappedTo: PROJECTCONTRACTLINEKEY
+        readOnly: true
+      id:
+        type: string
+        example: Pending
+        x-mappedTo: PROJECTCONTRACTLINEID
+      name:
+        type: string
+        example: Pending
+        x-mappedTo: PROJECTCONTRACTLINENAME      
+      href:
+        type: string
+        description: URL of the project contract line
+        example: /objects/project-contract-line/1
+        readOnly: true              
+  priceEffectiveDate:
+    type: string
+    format: date
+    description: Price effective date
+    example: 2021-9-15
+    x-mappedTo: PRICEEFFECTIVEDATE
+  totalCost:
+    type: string
+    format: decimal-precision-2    
+    description: Total cost
+    example: 1575.25
+    readOnly: true
+    x-mappedTo: TOTALCOST
+  totalPrice:
+    type: string
+    format: decimal-precision-2    
+    description: Total price
+    example: 1575.25
+    readOnly: true
+    x-mappedTo: TOTALPRICE
+  sendToContact:
+    type: object
+    description: Reference to a contact
+    x-object: contact
+    x-mappedTo: SENDTO
+    properties:
+      key:
+        type: string
+        example: '4'
+        readOnly: true
+        x-mappedTo: SENDTOKEY
+      id:
+        type: string
+        example: Chandler
+        x-mappedTo: SENDTO
+      href:
+        type: string
+        description: URL of the contact
+        example: /objects/contact/4
+        readOnly: true
+  item:
+    type: object
+    description: Reference to an item 
+    x-object: item
+    x-mappedTo: ITEM
+    properties:
+      key:
+        type: string
+        readOnly: true
+        example: '21'
+        x-mappedTo: ITEMKEY
+      id:
+        type: string
+        x-mappedTo: ITEMID
+      name:
+        type: string
+        readOnly: true
+        example: Maintenance
+        x-mappedTo: ITEMNAME       
+      href:
+        type: string
+        description: URL of the contact
+        example: /object/item/4
+        readOnly: true        
+  customer:
+    type: object
+    description: Reference to a customer
+    x-object: customer
+    x-mappedTo: customer
+    properties:
+      key:
+        type: string
+        description: Customer Key
+        example: '14'
+        readOnly: true
+        x-mappedTo: CUSTOMERKEY
+      id:
+        type: string
+        description: Customer ID
+        example: BTI
+        readOnly: true
+        x-mappedTo: CUSTOMERID
+      name:
+        type: string
+        description: Customer Name
+        example: Berkeley Technologies Inc
+        readOnly: true
+        x-mappedTo: CUSTOMERNAME
+      href:
+        type: string
+        description: URL of the customer
+        example: /objects/customer/14
+        readOnly: true
+  scope:
+    type: string
+    description: Scope
+    example: Design
+    x-mappedTo: SCOPE
+  inclusions:
+    type: string
+    description: Inclusions
+    example: Original plan
+    x-mappedTo: INCLUSIONS
+  exclusions:
+    type: string
+    description: Exclusions
+    example: Hardware accessories
+    x-mappedTo: EXCLUSIONS
+  terms:
+    type: string
+    description: Terms
+    example: Standard terms and conditions
+    x-mappedTo: TERMS
+  schedule:
+    $ref: ../../common/models/schedule-calendar.s1.schema.yaml
+  internalReference:
+    $ref: ../../common/models/internal-document.s1.schema.yaml
+  externalReference:
+    $ref: ../../common/models/external-document.s1.schema.yaml
+  attachment:
+    $ref: ../references/attachmentref.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

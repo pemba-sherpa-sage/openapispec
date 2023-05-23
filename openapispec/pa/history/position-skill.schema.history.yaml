@@ -1,0 +1,13 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/positionskill/view
+    POST:
+      - pa/lists/positionskill/create
+    PATCH:
+      - pa/lists/positionskill/edit
+    DELETE:
+      - pa/lists/positionskill/delete
+s1:
+  hash: '0'
+  type: rootObject

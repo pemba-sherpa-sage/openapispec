@@ -1,0 +1,79 @@
+title: role-policy-assignment
+x-mappedTo: rolepolicyassignment
+type: object
+description: List of permissions assigned to the roles for standard objects.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the role-policy-assignment.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  id:
+    type: string
+    description: Role policy assignment ID.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '23'
+  href:
+    type: string
+    description: URL for the role-policy-assignment.
+    readOnly: true
+    example: /objects/role-policy-assignment/23
+  role:
+    type: object
+    x-mappedTo: roles
+    x-object: role
+    properties:
+      key:
+        type: string
+        description: Role key.
+        x-mappedTo: ROLEKEY
+        example: '10'
+      id:
+        type: string
+        description: Role id.
+        x-mappedTo: ROLEID
+        example: '10'
+      href:
+        type: string
+        description: URL for the roles.
+        readOnly: true
+        example: /objects/roles/10
+  module:
+    type: string
+    description: Module.
+    x-mappedTo: MODULE
+    example: ap
+  accessRights:
+    type: string
+    description: Policy value.
+    x-mappedTo: RIGHTS
+    example: readonly|edit
+  policy:
+    type: object
+    #x-mappedTo: iapolicy
+    #x-object: iapolicy
+    properties:
+      key:
+        type: string
+        description: Policy key.
+        x-mappedTo: POLICYKEY
+        example: '24'
+      id:
+        type: string
+        description: Policy id.
+        x-mappedTo: POLICYID
+        example: '24'
+      name:
+        type: string
+        description: Policy name.
+        x-mappedTo: POLICYNAME
+        example: Account Groups
+      href:
+        type: string
+        description: URL for the policy.
+        readOnly: true
+        example: /objects/policy/24
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

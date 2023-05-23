@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - pa/lists/sodocument/view
+      - so/lists/sodocument/view
+    POST:
+      - pa/lists/sodocument/create
+      - so/activities/sodocument/create
+      - so/lists/sodocument/create
+    PATCH:
+      - pa/lists/sodocument/edit
+      - so/lists/sodocument/edit
+    DELETE:
+      - pa/lists/sodocument/delete
+      - so/lists/sodocument/delete
+s1:
+  hash: '0'
+  type: ownedDocTypeObject

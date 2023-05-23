@@ -1,0 +1,39 @@
+fields:
+    id:
+        uiType: sequence
+        uiLabel: 'Record number'
+    name:
+        uiType: text
+        uiLabel: 'Schedule ID'
+    status:
+        uiType: enum
+        uiLabel: Status
+        enumsLabels:
+            -
+                label: Active
+                value: active
+            -
+                label: Inactive
+                value: inactive
+    description:
+        uiType: multitext
+        uiLabel: Description
+    isSystemGenerated:
+        uiType: enum
+        uiLabel: 'System generated field'
+        enumsLabels:
+            -
+                label: 'true'
+                value: true
+            -
+                label: 'false'
+                value: false
+refs:
+    taxSolution:
+        fields:
+            key:
+                uiType: sequence
+                uiLabel: 'Tax solution Record Number'
+            id:
+                uiType: ptr
+                uiLabel: 'Tax solution'

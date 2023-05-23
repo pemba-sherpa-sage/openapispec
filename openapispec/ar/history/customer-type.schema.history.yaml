@@ -1,0 +1,17 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ar/lists/custtype/view
+      - pa/lists/custtype/view
+    POST:
+      - ar/lists/custtype/create
+      - pa/lists/custtype/create
+    PATCH:
+      - ar/lists/custtype/edit
+      - pa/lists/custtype/edit
+    DELETE:
+      - ar/lists/custtype/delete
+      - pa/lists/custtype/delete
+s1:
+  hash: '0'
+  type: rootObject

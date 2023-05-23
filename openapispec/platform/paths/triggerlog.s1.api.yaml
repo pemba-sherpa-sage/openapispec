@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: triggerlog
+  description: triggerlogs API
+  version: '1.0'
+  contact:
+    email: razvan.nour@sage.com
+    name: Razvan Nour
+tags:
+  - name: Triggerlog
+    description: Triggerlogs -- log system used for tracking the execution of triggers.
+servers:
+  - url: 'http://localhost:3000/v0'
+paths:
+  /objects/triggerlog/{key}:
+    parameters:
+      - schema:
+          type: string
+          example: '111'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the triggerlog.
+    get:
+      summary: Get a triggerlog
+      description: Returns detailed information for a particular triggerlog.
+      operationId: get-objects-triggerlog-key
+      tags:
+        - Triggerlog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the triggerlog
+                properties:
+                  ia::result:
+                    $ref: ../models/triggerlog.s1.schema.yaml
+                  ia::meta:
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                example-1:
+                  value:
+                    ia::result:
+                      key: "2"
+                      id: "10287"
+                      objectDefinitionId: "10135"
+                      objectDefinitionName: "calendartest2"
+                      triggerName: "testPostman"
+                      type: "updateFieldValue"
+                      onWhatAction: "afterCreate"
+                      runType: "online"
+                      context: "ui"
+                      audit:
+                        createdDateTime: '2021-10-07T00:00:00Z'
+                        modifiedDateTime: '2021-10-07T00:00:00Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      status: "failed"
+                      condition: null
+                      message: "testPostman: Formula for new value is null"
+                      href: "/objects/triggerlog/2"
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a triggerlog
+      description: Deletes a triggerlog.
+      tags:
+        - Triggerlog
+      operationId: delete-objects-triggerlog-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../../common/models/error-response.schema.yaml
+
+  /objects/triggerlog:
+    get:
+      summary: List triggerlogs
+      description: Returns a collection with a key, Trigger ID, and link for each triggerlog.
+      operationId: get-objects-triggerlog
+      tags:
+        - Triggerlog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of triggerlog objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                example:
+                  value:
+                    ia::result:
+                      - key: "2"
+                        id: "10287"
+                        href: "/objects/triggerlog/2"
+                      - key: "3"
+                        id: "10287"
+                        href: "/objects/triggerlog/3"
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    triggerlog:
+      $ref: ../models/triggerlog.s1.schema.yaml
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

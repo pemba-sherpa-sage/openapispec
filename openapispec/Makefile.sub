@@ -1,0 +1,15 @@
+# Makefile
+
+ifndef SANDBOX
+	# SANDBOX is the parent of /app
+	SANDBOX = ../../../..
+endif
+
+ifndef TOOLSLOC
+	TOOLSLOC = $(SANDBOX)/app/tools
+endif
+
+all: convert_to_json
+
+convert_to_json:
+	@make -f ../Makefile javaconvert OAS_TARGET=$(PWD)/../../../build/components

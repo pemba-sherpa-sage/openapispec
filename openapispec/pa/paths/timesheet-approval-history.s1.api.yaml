@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: timesheet-approval-history
+  description: timesheet-approval-history API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+tags:
+  - name: Timesheet approval histories
+    description: Timesheet approval history description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/timesheet-approval-history:
+    get:
+      summary: List timesheet approval histories
+      description: Returns a collection with a key, ID, and link for each timesheet approval history.
+      tags:
+        - Timesheet approval histories
+      operationId: get-objects-timesheet-approval-history
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of timesheet-approval-history objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List of timesheet approval histories: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an timesheet approval history
+      description: Creates a new timesheet approval history.
+      tags:
+        - Timesheet approval histories
+      operationId: post-objects-timesheet-approval-history
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/timesheet-approval-history'
+                - $ref: '#/components/schemas/timesheet-approval-historyRequiredProperties'
+            examples:
+              Creates a/an timesheet approval history: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New timesheet-approval-history
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New timesheet approval history: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/timesheet-approval-history/{key}':
+    parameters:
+      - name: key
+        description: system-assigned unique key for the timesheet approval history.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an timesheet approval history
+      description: Returns detailed information for a particular timesheet approval history.
+      tags:
+        - Timesheet approval histories
+      operationId: get-objects-timesheet-approval-history-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the timesheet-approval-history
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/timesheet-approval-history'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Details of the timesheet approval history: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an timesheet approval history
+      description: Updates an existing timesheet approval history by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Timesheet approval histories
+      operationId: patch-objects-timesheet-approval-history-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/timesheet-approval-history'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an timesheet approval history: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated timesheet-approval-history
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated timesheet approval history: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an timesheet approval history
+      description: Deletes a/an timesheet approval history.
+      tags:
+        - Timesheet approval histories
+      operationId: delete-objects-timesheet-approval-history-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    timesheet-approval-history:
+      $ref: ../models/timesheet-approval-history.s1.schema.yaml
+    timesheet-approval-historyRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

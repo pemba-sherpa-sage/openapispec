@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: iodl.file.info
+  description: IODL Info service
+  version: 1.0-internal
+  contact:
+    name: Richard Pavlicek
+    email: richard.pavlicek@sage.com
+tags:
+  - name: iodl.file.info
+    description: IODL Service Information
+paths:
+  /services/iodl/file/info:
+    post:
+      summary: IODL Service Information
+      description: IODL Service Information
+      tags:
+        - iodl.file.info
+      operationId: post-iodl-file-info
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iodl.file.info-request'
+      responses:
+        '200':
+          description: Executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iodl.file.info-response'
+              examples:
+                example-1:
+                  value: null
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    iodl.file.info-request:
+      description: IODL Info request
+      type: object
+      x-mappedTo: __custom__
+    iodl.file.info-response:
+      description: IODL Info response
+      type: object
+      x-mappedTo: __custom__
+      properties:
+        version:
+          x-mappedTo: version
+          type: string
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

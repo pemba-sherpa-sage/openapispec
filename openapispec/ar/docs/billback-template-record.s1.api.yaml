@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: billback-template-record
+  description: billback-template-record API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Billback template records
+    description: Billback template record description -- explain what it's for and how it's used.
+paths:
+  /objects/billback-template-record:
+    get:
+      summary: List billback template records
+      description: Returns a collection with a key, ID, and link for each billback template record.
+      tags:
+        - Billback template records
+      operationId: get-objects-billback-template-record
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of billback-template-record objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List of billback template records: {}
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    billback-template-record:
+      $ref: '#/components/schemas/billback-template-record.s1.schema'
+    billback-template-recordRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    billback-template-record.s1.schema:
+      title: billback-template-record
+      x-mappedTo: bbtemplaterecs
+      type: object
+      description: Billback Template Record
+      properties:
+        bill:
+          type: object
+          x-object: bill
+          x-mappedTo: apbill
+          title: invoice
+          properties:
+            key:
+              type: string
+              x-mappedTo: BILLKEY
+              readOnly: true
+            href:
+              type: string
+              readOnly: true
+        template:
+          type: object
+          x-object: billback-template
+          x-mappedTo: billbacktemplate
+          title: template
+          properties:
+            key:
+              type: string
+              x-mappedTo: TEMPLATEKEY
+              readOnly: true
+            href:
+              type: string
+              readOnly: true
+      x-internal: true
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

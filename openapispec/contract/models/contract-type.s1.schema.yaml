@@ -1,0 +1,46 @@
+title: contract-type
+type: object
+x-mappedTo: contracttype
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the contract type. Used to identify the contract type in URLs or JSON bodies for all operations on the contract type.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '12'
+  id:
+    type: string
+    description: Contract type name
+    x-mappedTo: Name
+    readOnly: true
+    x-mutable: false
+    example: Services
+  href:
+    type: string
+    description: URL of the contract type.
+    readOnly: true
+    example: /objects/contract-type/12
+  parent:
+    type: object
+    x-mappedTo: contracttype
+    properties:
+      key:
+        type: string
+        description: Key of parent contract type.
+        x-mappedTo: RECORDNO
+        readOnly: true
+        example: '11'
+      id:
+        type: string
+        description: ID of parent contract type.
+        x-mappedTo: NAME
+        example: API
+      href:
+        type: string
+        readOnly: true
+        description: URL of parent contract type.
+        example: /objects/contract-type/1
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

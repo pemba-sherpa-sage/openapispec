@@ -1,0 +1,83 @@
+title: billback-template-line
+x-mappedTo: bbtemplateitem
+x-ownedBy: billback-template
+type: object
+description: Billback template lines
+properties:
+  key:
+    type: string
+    description: Record key
+    readOnly: true
+    x-mappedTo: RECORD#
+  id:
+    type: string
+    description: BillBack Template Line Item ID
+    readOnly: true
+    x-mappedTo: RECORD#
+  lineNumber:
+    type: string
+    description: Line No
+    x-mappedTo: LINE_NO
+    readOnly: true
+  memo:
+    type: string
+    description: Memo
+    x-mappedTo: MEMO
+  invoiceGLAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: invglaccount
+    title: invoiceAccount
+    properties:
+      key:
+        type: string
+        x-mappedTo: INVACCOUNTKEY
+      id:
+        type: string
+        x-mappedTo: INVGLACCOUNTNO
+      name:
+        type: string
+        x-mappedTo: INVGLACCOUNTTITLE
+  billGLAccount:
+    type: object
+    x-object: gl-account
+    x-mappedTo: billglaccount
+    title: billAccount
+    properties:
+      key:
+        type: string
+        x-mappedTo: BILLACCOUNTKEY
+      id:
+        type: string
+        x-mappedTo: BILLGLACCOUNTNO
+      name:
+        type: string
+        x-mappedTo: BILLGLACCOUNTTITLE
+  department:
+    type: object
+    x-object: department
+    x-mappedTo: dept
+    properties:
+      key:
+        type: string
+        x-mappedTo: DEPARTMENT
+      id:
+        type: string
+        x-mappedTo: DEPARTMENTID
+      name:
+        type: string
+        x-mappedTo: DEPARTMENTNAME
+  billbackTemplate:
+    title: billbackTemplateRef
+    type: object
+    x-mappedTo: billbacktemplate
+    x-object: billback-template
+    properties:
+      id:
+        type: string
+        x-mappedTo: RECORDKEY
+        readOnly: true
+      key:
+        type: string
+        x-mappedTo: RECORDKEY
+        readOnly: true

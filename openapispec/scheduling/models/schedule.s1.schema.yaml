@@ -1,0 +1,108 @@
+title: schedule
+x-mappedTo: schedule
+type: object
+description: List of scheduled tasks for jobs (recurring transactions, reports, sync with Salesforce, DDS jobs, rev rec schedules, etc.).
+properties:
+  key:
+    type: string
+    description: Schedule RECORD number
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Schedule ID
+    x-mappedTo: NAME
+    x-mutable: false
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  executionType:
+    type: string
+    description: Execution Type
+    x-mappedTo: EXECTYPE
+    enum:
+      - 'automatic'
+      - 'manual'
+      - 'immediate'
+    x-mappedToValues:
+      - 'Automatic'
+      - 'Manual'
+      - 'Immediate'
+  startDate:
+    type: string
+    description: Begin Date
+    x-mappedTo: STARTDATE
+    format: date
+  endDate:
+    type: string
+    description: Expiration date
+    x-mappedTo: ENDDATE
+    format: date
+  repeatBy:
+    type: string
+    description: Repeat by period
+    x-mappedTo: REPEATBY
+    enum:
+      - 'none'
+      - 'day'
+      - 'week'
+      - 'month'
+      - 'year'
+      - 'endOfMonth'
+    x-mappedToValues:
+      - 'None'
+      - 'Day'
+      - 'Week'
+      - 'Month'
+      - 'Year'
+      - 'EndOfMonth'
+  repeatDate:
+    type: integer
+    description: Repeat date
+    x-mappedTo: REPEATDATE
+  repeatInterval:
+    type: integer
+    description: Repeat interval
+    x-mappedTo: REPEATINTERVAL
+  repeatCount:
+    type: integer
+    description: Repeat count
+    x-mappedTo: REPEATCOUNT
+  nextExecutionDate:
+    type: string
+    description: Next execution date
+    x-mappedTo: NEXTEXECDATE
+    format: date
+  lastExecutionDate:
+    type: string
+    description: Last execution date
+    x-mappedTo: LASTEXECDATE
+    format: date
+  dueDate:
+    type: string
+    description: Due date
+    x-mappedTo: DUEDATE
+    format: date
+  executionCount:
+    type: integer
+    description: Execution count
+    x-mappedTo: EXECCOUNT
+  cronID:
+    type: string
+    description: Cron ID
+    x-mappedTo: CRONID
+  startOn:
+    type: integer
+    description: Start on
+    x-mappedTo: STARTON
+  endOn:
+    type: integer
+    description: End on
+    x-mappedTo: ENDON
+  userinfo:
+    type: string
+    description: Created by
+    x-mappedTo: USERNO
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml

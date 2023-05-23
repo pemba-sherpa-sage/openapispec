@@ -1,0 +1,10 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - so/lists/billingschedule/view
+    POST:
+    PATCH:
+    DELETE:
+s1:
+  hash: '0'
+  type: rootObject

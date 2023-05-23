@@ -1,0 +1,492 @@
+openapi: 3.0.0
+info:
+  title: ap-adjustment-line
+  description: ap-adjustment-line API
+  version: '1.0'
+  contact:
+    email: atul.sadhu@sage.com
+    name: Atul Sadhu
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: AP adjustment lines
+    description: Line items in an AP adjustment represent transactions captured in that adjustment.
+paths:
+  /objects/ap-adjustment-line/{key}:
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the AP adjustment line.
+    get:
+      summary: Get an AP adjustment line
+      description: Returns detailed information for a specified AP adjustment line.
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ap-adjustment-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/ap-adjustment-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment-line-key
+    delete:
+      summary: Delete an AP adjustment line
+      description: Deletes an AP adjustment line.
+      tags:
+        - AP adjustment lines
+      operationId: delete-objects-ap-adjustment-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AP adjustment line
+      operationId: patch-objects-ap-adjustment-line-key
+      description: Updates an existing AP adjustment line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ap-adjustment-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+        '400':
+          $ref: '#/components/responses/400error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment-line.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples: {}
+  /objects/ap-adjustment-line:
+    get:
+      summary: List AP adjustment lines
+      tags:
+        - AP adjustment lines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ap-adjustment-line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      operationId: get-objects-ap-adjustment-line
+      description: Returns a collection with a key, ID, and link for each AP adjustment line. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+    post:
+      summary: Create an AP adjustment line
+      tags:
+        - AP adjustment lines
+      operationId: post-objects-ap-adjustment-line
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ap-adjustment-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+      description: Creates a new AP adjustment line.
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ap-adjustment-line.s1.schema'
+                - $ref: '#/components/schemas/ap-adjustment-lineRequiredProperties'
+            examples: {}
+components:
+  schemas:
+    ap-adjustment-line:
+      $ref: '#/components/schemas/ap-adjustment-line.s1.schema'
+    ap-adjustment-lineRequiredProperties:
+      type: object
+      properties:
+        apAdjustment:
+          required:
+            - key
+      required:
+        - id
+        - name
+    line-item-state.s1.schema:
+      title: line-item-state
+      type: string
+      enum:
+        - submitted
+        - approved
+        - draft
+        - partiallyApproved
+        - declined
+        - draft
+        - partiallyDeclined
+        - saved
+      x-mappedToValues:
+        - S
+        - A
+        - D
+        - X
+        - R
+        - I
+        - E
+        - V
+      description: State for all line items
+      x-mappedTo: STATE
+      example: draft
+    gl-accountref.s1.schema:
+      title: accountref
+      type: object
+      x-object: gl-account
+      properties:
+        key:
+          type: string
+          description: GL Account Key
+          x-mappedTo: ACCOUNTKEY
+          example: '144'
+        id:
+          type: string
+          description: GL Account ID
+          x-mappedTo: ACCOUNTNO
+          example: '1112'
+        name:
+          type: string
+          description: GL Account Title
+          x-mappedTo: ACCOUNTTITLE
+          example: Employee Advances
+        href:
+          type: string
+          readOnly: true
+          example: /objects/gl-account/144
+    ap-adjustment-line.s1.schema:
+      title: ap-adjustment-line
+      x-mappedTo: apadjustmentitem
+      x-ownedBy: ap-adjustment
+      type: object
+      description: Line items in an AP adjustment represent transactions captured in that adjustment.
+      properties:
+        id:
+          type: string
+          description: Identifier for the AP adjustment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        key:
+          type: string
+          description: System-assigned key for the AP adjustment line item.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        baseAmount:
+          type: number
+          description: For multi-currency companies, Sage Intacct calculates the base amount by applying the exchange rate from the header to the transaction amount.
+          x-mappedTo: AMOUNT
+        txnAmount:
+          type: number
+          description: Amount for the AP adjustment line item in the transaction currency.
+          x-mappedTo: TRX_AMOUNT
+        description:
+          type: string
+          description: Memo or notes about the AP adjustment line item.
+          x-mappedTo: ENTRYDESCRIPTION
+        lineNumber:
+          type: integer
+          description: Line number
+          x-mappedTo: LINE_NO
+          readOnly: true
+        isForm1099:
+          type: boolean
+          description: If set to `true`, the line item amount is added to the vendor Form 1099.
+          x-mappedTo: FORM1099
+          x-mappedToType: string
+        adjustmentType:
+          type: string
+          description: Adjustment type for the line item.
+          x-mappedTo: RECORDTYPE
+        state:
+          $ref: '#/components/schemas/line-item-state.s1.schema'
+        glAccount:
+          $ref: '#/components/schemas/gl-accountref.s1.schema'
+        overriddenOffsetGLAccount:
+          type: object
+          description: The general ledger account where the system posts offsets.
+          allOf:
+            - $ref: '#/components/schemas/gl-accountref.s1.schema'
+            - type: object
+              properties:
+                key:
+                  type: string
+                  description: System-assigned key for the GL account.
+                  x-mappedTo: OFFSETACCOUNTKEY
+                id:
+                  type: string
+                  description: Identifier for the GL account.
+                  x-mappedTo: OFFSETGLACCOUNTNO
+        accountLabel:
+          type: object
+          description: Label for the associated AP account.
+          x-object: ap-account-label
+          x-mappedTo: accountlabel
+          title: accountLabel
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the account label.
+              x-mappedTo: ACCOUNTLABELKEY
+            id:
+              type: string
+              description: Identifier for the account label.
+              x-mappedTo: ACCOUNTLABEL
+            href:
+              type: string
+              description: URL for the account label.
+              readOnly: true
+        department:
+          type: object
+          description: Department associated with the AP adjustment line item.
+          x-object: department
+          x-mappedTo: department
+          title: department
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the department.
+              x-mappedTo: DEPT#
+            id:
+              type: string
+              description: Identifier for the department.
+              x-mappedTo: DEPARTMENTID
+            href:
+              type: string
+              description: URL for the department.
+              readOnly: true
+        location:
+          type: object
+          description: Location associated with the AP adjustment line item.
+          x-object: location
+          x-mappedTo: location
+          title: location
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the location.
+              x-mappedTo: LOCATION#
+            id:
+              type: string
+              description: Identifier for the location.
+              x-mappedTo: LOCATIONID
+            href:
+              type: string
+              description: URL for the location.
+              readOnly: true
+        currency:
+          type: object
+          description: Currency details for multi-currency companies.
+          title: currency
+          properties:
+            baseCurrency:
+              type: integer
+              description: Base currency for the line item.
+              x-mappedTo: BASECURR
+              readOnly: true
+            txnCurrency:
+              type: integer
+              description: Currency for the transaction.
+              x-mappedTo: CURRENCY
+              readOnly: true
+            exchangeRateDate:
+              type: string
+              format: date
+              example: '2021-01-23'
+              description: Date used to calculate the exchange rate.
+              x-mappedTo: EXCH_RATE_DATE
+              readOnly: true
+            exchangeRate:
+              type: number
+              description: Exchange rate used.
+              x-mappedTo: EXCHANGE_RATE
+              readOnly: true
+            exchangeRateTypeId:
+              type: string
+              description: Exchange rate type.
+              x-mappedTo: EXCH_RATE_TYPE_ID
+              readOnly: true
+        paymentInformation:
+          type: object
+          description: Payment information for the AP adjustment line item.
+          title: paymentInformation
+          properties:
+            totalPaid:
+              type: number
+              description: Total paid for the line item.
+              x-mappedTo: TOTALPAID
+              readOnly: true
+            txnTotalPaid:
+              type: number
+              description: Transaction total paid for the line item.
+              x-mappedTo: TRX_TOTALPAID
+              readOnly: true
+            totalSelected:
+              type: number
+              description: Total selected for the line item.
+              x-mappedTo: TOTALSELECTED
+              readOnly: true
+            txnTotalSelected:
+              type: number
+              description: Total transaction selected for the line item.
+              x-mappedTo: TRX_TOTALSELECTED
+              readOnly: true
+        apAdjustment:
+          title: ap-adjustmentref
+          description: Header level details for the AP adjustment's line items.
+          type: object
+          x-mappedTo: apadjustment
+          x-object: ap-adjustment
+          properties:
+            id:
+              type: string
+              description: Identifier for the AP adjustment.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+            key:
+              type: string
+              description: System-assigned key for the AP adjustment.
+              x-mappedTo: RECORDKEY
+              readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

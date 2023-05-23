@@ -1,0 +1,284 @@
+openapi: 3.0.0
+info:
+  title: bill-summary
+  description: bill-summary API
+  version: '1.0'
+  contact:
+    name: Tim Miller
+    email: tim.miller@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Bill summaries
+    description: Accounts Payable (AP) summaries are collections of the same type of transactions, grouped together for processing.
+paths:
+  /objects/bill-summary:
+    get:
+      summary: List bill summaries
+      description: Returns up to 100 object references from the collection with a key, ID, and link for each bill summary. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Bill summaries
+      operationId: get-objects-bill-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of bill-summary objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                List bill summaries:
+                  value:
+                    ia::result:
+                      - key: '94'
+                        id: '94'
+                        href: /objects/bill-summary/94
+                      - key: '96'
+                        id: '96'
+                        href: /objects/bill-summary/96
+                    ia::meta:
+                      totalCount: 2
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/bill-summary/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the bill summary.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a bill summary
+      description: Returns detailed information for a specified bill summary.
+      tags:
+        - Bill summaries
+      operationId: get-objects-bill-summary-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the bill-summary
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/bill-summary.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Get a bill summary:
+                  value:
+                    ia::result:
+                      key: '98'
+                      id: '98'
+                      name: August 2001 Bills
+                      postingDate: '2001-08-31'
+                      status: active
+                      type: pi
+                      total: 47789.94
+                      parent:
+                        key: null
+                      preventGLPosting: null
+                      glAccount:
+                        key: null
+                      createdBy: manual
+                      href: /objects/bill-summary/98
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    bill-summary:
+      $ref: '#/components/schemas/bill-summary.s1.schema'
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    status.s1.schema:
+      title: status
+      type: string
+      enum:
+        - active
+        - inactive
+      x-mappedToValues:
+        - active
+        - inactive
+      description: Object status.
+      default: active
+      x-mappedTo: STATUS
+      example: active
+    bill-summary.s1.schema:
+      title: bill-summary
+      x-mappedTo: apbillbatch
+      type: object
+      description: Accounts Payable (AP) summaries are collections of the same type of transactions, grouped together for processing.
+      properties:
+        key:
+          type: string
+          description: System-assigned key for th AP bill summary.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        id:
+          type: string
+          description: Unique identifier for the AP bill summary.
+          readOnly: true
+          x-mappedTo: RECORDNO
+        name:
+          type: string
+          description: Name of the AP bill summary. This name is used to identify the summary throughout the Accounts Payable application.
+          x-mappedTo: TITLE
+        createdBy:
+          type: string
+          enum:
+            - system
+            - manual
+          x-mappedToValues:
+            - Auto-Summary
+            - Manual
+          description: Specifies how the bill summary was created.
+          x-mappedTo: AUTOCREATED
+          default: manual
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/status.s1.schema'
+        type:
+          type: string
+          description: The bill summary type.
+          x-mappedTo: RECORDTYPE
+          readOnly: true
+        total:
+          type: number
+          description: The bill summary total.
+          x-mappedTo: TOTAL
+          readOnly: true
+        parent:
+          type: object
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the parent bill summary.
+              x-mappedTo: PARENTKEY
+        preventGLPosting:
+          type: boolean
+          x-mappedToType: string
+          description: Specifies whether to allow posting to the general ledger (GL).
+          x-mappedTo: NOGL
+          default: false
+          readOnly: true
+        glAccount:
+          type: object
+          properties:
+            key:
+              type: string
+              description: System-assigned key for the GL account.
+              x-mappedTo: ACCOUNTNOKEY
+        postingDate:
+          type: string
+          format: date
+          description: The date that the items in the bill summary should post to the general ledger.
+          x-mappedTo: CREATED
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

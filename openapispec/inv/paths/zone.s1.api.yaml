@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  title: zone
+  description: zone API
+  version: '1.0'
+  contact:
+    email: senthil.kumar@sage.com
+    name: Senthil Kumar
+tags:
+  - name: Zones
+    description: A zone is one of four optional attributes (zone, aisle, row, and bin face) you can assign to a bin to make it easier to find in the warehouse.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/zone:
+    get:
+      summary: List zones
+      description: |
+        Returns up to 100 object references from the collection with a key, ID, and link for each zone. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Zones
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Zones
+      operationId: get-objects-zone
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of zone objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List zones:
+                  value:
+                    'ia::result':
+                      - key: '546'
+                        id: RZ1A
+                        href: /objects/zone/546
+                      - key: '547'
+                        id: RZ2A
+                        href: /objects/zone/547
+                      - key: '548'
+                        id: RZ3A
+                        href: /objects/zone/548
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: 2
+                      previous: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a zone
+      description: Creates a new zone.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Add Zones
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Zones
+      operationId: post-objects-zone
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/zone'
+                - $ref: '#/components/schemas/zoneRequiredProperties'
+            examples:
+              Create a zone:
+                value:
+                  id: Z2
+                  description: Refrigeration zone 2
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New zone
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a zone:
+                  value:
+                    'ia::result':
+                      key: '546'
+                      id: RZ2
+                      href: /objects/zone/546
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/zone/{key}':
+    parameters:
+      - schema:
+          type: string
+          example: '564'
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the zone.
+    get:
+      summary: Get a zone
+      description: Returns detailed information for a specified zone.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business, CRM, Employee, Warehouse
+            permissions: List, View Zones
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Zones
+      operationId: get-objects-zone-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the zone
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/zone'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a zone:
+                  value:
+                    'ia::result':
+                      key: '564'
+                      id: RZ2
+                      description: Refrigeration zone 2
+                      audit:
+                        createdDateTime: '2021-05-07T01:15:23Z'
+                        modifiedDateTime: '2021-05-07T01:15:23Z'
+                        createdBy: '13'
+                        modifiedBy: '13'
+                      href: /objects/zone/564
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a zone
+      description: Updates an existing zone by setting field values. Any fields not provided remain unchanged.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Edit Zones
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Zones
+      operationId: patch-objects-zone-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/zone'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  description: Refrigeration zone 2A
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated zone
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      key: '564'
+                      id: RZ2
+                      href: /objects/zone/564
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a zone
+      description: Deletes a zone. You can delete a zone if it is not being used and you no longer need it. Deleted zones cannot be recovered.
+      x-documentationFlags:
+        subscription: Inventory Control
+        userPermissions:
+          - userType: Business
+            permissions: List, View, Delete Zones
+        configuration: Advanced workflows is enabled.
+      tags:
+        - Zones
+      operationId: delete-objects-zone-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    zone:
+      $ref: ../models/zone.s1.schema.yaml
+    zoneRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

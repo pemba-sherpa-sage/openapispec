@@ -1,0 +1,122 @@
+title: email-template
+x-mappedTo: emailtemplate
+type: object
+description: Listing of the templates for sending out any electronic order entry transaction with the person who created it. (Legacy)
+properties:
+  key:
+    type: string
+    description: Email Template Key
+    readOnly: true
+    x-mappedTo: RECORDNO
+  id:
+    type: string
+    description: Email Template ID
+    readOnly: true
+    x-mappedTo: RECORDNO
+  href:
+    type: string
+    description: URL of the email-template.
+    readOnly: true
+  status:
+    $ref: ../../common/models/dimension-status.s1.schema.yaml
+  name:
+    type: string
+    description: name for the email template.
+    x-mappedTo: EMAILTEMPLATENAME
+  description:
+    type: string
+    description: Description
+    x-mappedTo: DESCRIPTION
+  email:
+    type: object
+    title: email
+    properties:
+      replyTo:
+        type: string
+        description: Enter an email address you want the recipient to reply to. This corresponds to the From email address the user sees in the Print/Email dialog box when they send an email from a transaction.
+        x-mappedTo: FROMADDRESS
+      to:
+        type: string
+        description: To The recipients of the email. You can enter one or more merge fields in each field. 
+        x-mappedTo: TOADDRESS
+      cc:
+        type: string
+        description: Carbon Copy the recipients of the email. You can enter one or more merge fields in each field.
+        x-mappedTo: CCADDRESS
+      bcc:
+        type: string
+        description: Blind Carbon Copy the recipients of the email. You can enter one or more merge fields in each field. 
+        x-mappedTo: BCCADDRESS
+  subject:
+    type: string
+    description: Subject  Enter a combination of text and merge fields as desired to create an informative subject line. This field is required
+    x-mappedTo: SUBJECT
+  body:
+    type: string
+    description: Message  Enter a combination of text, merge fields, and HTML markup as desired to create and customize your message. This field is required.
+    x-mappedTo: BODY
+  logo:
+    type: object
+    title: logo
+    properties:
+      isLogoIncluded:
+        type: boolean
+        x-mappedToType: string
+        description: Include logo Select this checkbox to include the logo image file identified on the Company Information page in the email template.
+        x-mappedTo: INCLUDE_LOGO
+      verticalPosition:
+        type: string
+        enum:
+          - 'top'
+          - 'bottom'
+        x-mappedToValues:
+          - 'Top'
+          - 'Bottom'
+        description: Vertical logo position  Select whether the logo should appear at the top or bottom of the email.
+        x-mappedTo: VERTICAL_LOGO_POSITION
+        default: 'bottom'
+      horizontalPosition:
+        type: string
+        enum:
+          - 'left'
+          - 'right'
+        x-mappedToValues:
+          - 'Left'
+          - 'Right'
+        description: Horizontal logo position  Select whether the logo should appear on the left or right side of the email.
+        x-mappedTo: HORIZONTAL_LOGO_POSITION
+        default: 'left'
+  includeTxnAttachments:
+    type: boolean
+    x-mappedToType: string
+    description: Select this checkbox to include documents attached to the transaction, such as receipts, in the email you send from a transaction. Attachments are emailed in the format in which they were attached to the transaction. For example, if you attached a TXT file, the file is sent as a TXT file.
+    x-mappedTo: INCLUDE_ATTACHMENTS
+  includeProjectInvoiceTxnAttachments:
+    type: boolean
+    x-mappedToType: string
+    description: Select this checkbox to include all source document attachments linked to a project invoice when emailing the invoice. Attachments are emailed in the format in which they were attached to the transaction. For example, if you attached a TXT file, the file is sent as a TXT file.
+    x-mappedTo: INCLUDE_SRC_ATTACHMENTS
+  templateType:
+    type: string
+    enum:
+      - 'arInvoice'
+      - 'arStatement'
+      - 'Contract'
+      - 'orderEntryTxn'
+      - 'purchasingTxn'
+    x-mappedToValues:
+      - 'arinvoice'
+      - 'arstatement'
+      - 'contract'
+      - 'sodocument'
+      - 'podocument'
+    description: Application
+    x-mappedTo: OBJNAME
+    default: 'arInvoice'
+  useSendersPreferredDateFormat:
+    type: boolean
+    x-mappedToType: string
+    description: Display dates in the user preference setting
+    x-mappedTo: USERPREFDATEFORMAT
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

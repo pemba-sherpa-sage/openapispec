@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: ar-term
+  description: ar-term API
+  version: '1.0'
+  contact:
+    name: Divya Hiremath
+    email: divya.hiremath@sage.com
+tags:
+  - name: AR terms
+    description: Accounts Receivable (AR) terms are the rules a company establishes for extending credit to customers. AR terms can be associated with AR transactions and with customers. 
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-term:
+    get:
+      summary: List AR terms
+      description: Returns a collection with a key, ID, and link for each AR term. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR terms
+      operationId: get-objects-ar-term
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-term objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List AR terms: 
+                  value:
+                      'ia::result':
+                        - key: '5'
+                          id: N15
+                          href: /objects/ar-term/5
+                        - key: '8'
+                          id: N30
+                          href: /objects/ar-term/8
+                        - key: '9'
+                          id: NET15
+                          href: /objects/ar-term/9
+                      'ia::meta':
+                        totalCount: 3
+                        start: 1
+                        pageSize: 100
+                
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR term
+      description: Creates a new AR term.
+      tags:
+        - AR terms
+      operationId: post-objects-ar-term
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-term'
+                - $ref: '#/components/schemas/ar-termRequiredProperties'
+            examples:
+              Create an AR term:
+               value:
+                    'ia::result':
+                      key: '29'
+                      id: arterm3
+                      href: /objects/ar-term/29
+                    'ia::meta':
+                      totalCount: 1
+              
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-term
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create an AR term: {}
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-term/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the AR term.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR term
+      description: Returns detailed information for a specified AR term.
+      tags:
+        - AR terms
+      operationId: get-objects-ar-term-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-term
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-term'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get an AR term: 
+                  value:
+                    'ia::result':
+                      id: arterm5
+                      description: desc5
+                      status: active
+                      key: '24'
+                      audit:
+                        modifiedDateTime: '2021-04-30T20:37:48Z'
+                        createdDateTime: '2021-04-30T20:37:48Z'
+                        modifiedBy: '1'
+                        createdBy: '1'
+                      due:
+                        days: 2
+                        from: of5thMonthFromBillDate
+                      discount:
+                        days: 1
+                        from: of3rdMonthFromBillDate
+                        amount: 10
+                        unit: amount
+                        graceDays: 15
+                        calculateOn: billTotal
+                      penalty:
+                        cycle: quarterly
+                        amount: 101
+                        unit: amount
+                        graceDays: 16
+                      href: /objects/ar-term/24
+                    'ia::meta':
+                      totalCount: 1
+                
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR term
+      description: Updates an existing AR term by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR terms
+      operationId: patch-objects-ar-term-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-term'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update an AR term: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-term
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Updated AR term: 
+                  value:
+                      'ia::result':
+                        key: '26'
+                        id: arterm1
+                        href: /objects/ar-term/26
+                      'ia::meta':
+                        totalCount: 1
+                
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR term
+      description: Deletes an AR term.
+      tags:
+        - AR terms
+      operationId: delete-objects-ar-term-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-term:
+      $ref: ../models/ar-term.s1.schema.yaml
+    ar-termRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+

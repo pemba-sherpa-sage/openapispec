@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Export Service
+  description: Export Service
+  version: '1.0'
+  contact:
+    email: anca.uricariu@sage.com
+    name: Anca Uricariu
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /services/export:
+    post:
+      summary: Export an object
+      operationId: post-services-export
+      description: Export a set of objects for filtered data.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.ms-word: { }
+            application/vnd.ms-excel: { }
+            application/pdf: { }
+            text/xml: { }
+        '400':
+          $ref: '#/components/responses/400error'
+      tags:
+        - Export
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/export.s1.schema.yaml
+            examples:
+              Export vendor:
+                value:
+                  fileType: pdf
+                  query:
+                    object: vendor
+                    fields:
+                      - id
+                      - name
+                      - status
+                      - key
+                    filters:
+                      - $eq:
+                          status: active
+                      - $eq:
+                          billingType: openItem
+                    filterExpression: 1 and 2
+                    orderBy:
+                      - id: asc
+components:
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml
+  securitySchemes: {}
+  schemas:
+    export:
+      $ref: ../models/export.s1.schema.yaml
+tags:
+  - name: Export
+    description: export data in different formats

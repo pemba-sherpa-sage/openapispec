@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: tax-solution
+  description: tax-solution API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Tax solutions
+    description: A tax solution provides the underlying mechanism (tax engine) for capturing and reporting taxes. A tax solution also includes information about the GL accounts for input and output taxes as well as the start date of the first tax submission period. (AU, GB, ZA only)
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/tax-solution:
+    get:
+      summary: List tax solutions
+      description: Returns up to 100 tax solutions from the collection with a key, ID, and link for each solution. This operation is mostly for use in testing; use the query service to find tax solutions that meet certain criteria and specify the properties that are returned.
+      tags:
+        - Tax solutions
+      operationId: get-objects-tax-solution
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of tax-solution objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples: 
+                List tax solutions:
+                  value:
+                    'ia::result':
+                      - key: '265'
+                        id: Oregon
+                        href: /objects/tax-solution/265
+                      - key: '263'
+                        id: Alaska
+                        href: /objects/tax-solution/263
+                      - key: '264'
+                        id: Montana
+                        href: /objects/tax-solution/264
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a tax solution
+      description: Creates a new tax solution.
+      tags:
+        - Tax solutions
+      operationId: post-objects-tax-solution
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tax-solution'
+                - $ref: '#/components/schemas/tax-solutionRequiredProperties'
+            examples: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the tax solution
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                New tax solution created:
+                  value:
+                    'ia::result':
+                      key: '13'
+                      id: Oregon
+                      href: /objects/tax-solution/13
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/tax-solution/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the tax solution.
+        in: path
+        required: true
+        example: '43'
+        schema:
+          type: string
+    get:
+      summary: Get a tax solution
+      description: Returns detailed information for a specified tax solution.
+      tags:
+        - Tax solutions
+      operationId: get-objects-tax-solution-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the tax-solution
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/tax-solution'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a tax solution
+      description: Updates an existing tax-solution by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Tax solutions
+      operationId: patch-objects-tax-solution-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/tax-solution'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated tax-solution
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Tax solution updated:
+                  value:
+                    'ia::result':
+                      key: '312'
+                      id: Delaware
+                      href: /objects/tax-solution/312
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a tax solution
+      description: Deletes a tax-solution.
+      tags:
+        - Tax solutions
+      operationId: delete-objects-tax-solution-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    tax-solution:
+      $ref: ../models/tax-solution.s1.schema.yaml
+    tax-solutionRequiredProperties:
+      type: object
+      required:
+        - id
+        - status
+        - taxSolutionType
+        - taxCalculationMethod
+        - taxSubmissionStartDate
+      properties:
+        purchaseGLAccount:
+          required:
+            - id
+        salesGLAccount:
+          required:
+            - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

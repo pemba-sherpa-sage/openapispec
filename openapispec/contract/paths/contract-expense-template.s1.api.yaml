@@ -1,0 +1,220 @@
+openapi: 3.0.0
+info:
+  title: contract-expense-template
+  description: contract-expense-template API
+  version: '1.0'
+  contact:
+    name: Vyshnavi Janakiram
+    email: vyshnavi.janakiram@sage.com
+tags:
+  - name: Contract expense templates
+    description: Contract expense template description -- explain what it's for and how it's used.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/contract-expense-template:
+    get:
+      summary: List Contract expense templates
+      description: Returns a collection with a key, ID, and link for each Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: get-objects-contract-expense-template
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract-expense-template objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '2'
+                        id: 'EXPSTRAIGHTLINE_AUTO'
+                        href: '/objects/contract-expense-template/2'
+                    'ia::meta':
+                      totalCount: 1
+                      start: 1
+                      pageSize: 100
+                      next: null
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an Contract expense template
+      description: Creates a new Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: post-objects-contract-expense-template
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense-template'
+                - $ref: '#/components/schemas/contract-expense-templateRequiredProperties'
+            examples:
+              Example-1:
+                value:
+                  id: 'EXPSTRAIGHTLINE_MAN1'
+                  description: 'test'
+                  amortizationMethod: 'straightLine'
+                  defaultPostingType: 'manual'
+                  amortizationSchedulePeriod: 'monthly'
+                  postingDay: '1'
+                  status: 'inactive'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract-expense-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '26'
+                        id: 'EXPSTRAIGHTLINE_MAN1'
+                        href: '/objects/contract-expense-template/26'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/contract-expense-template/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the Contract expense template.
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
+    get:
+      summary: Get a/an Contract expense template
+      description: Returns detailed information for a particular Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: get-objects-contract-expense-template-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-expense-template
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/contract-expense-template'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '26'
+                        id: 'EXPSTRAIGHTLINE_MAN1'
+                        description: 'test'
+                        defaultPostingType: 'manual'
+                        amoritizationSchedulePeriod: 'monthly'
+                        postingDay: '1'
+                        amoritizationMethod: 'straightLine'
+                        status: 'active'
+                        audit:
+                          modifiedDateTime: '2022-05-24T07:17:05Z'
+                          createdDateTime: '2022-05-24T07:11:39Z'
+                          createdBy: '1'
+                          modifiedBy: '1'
+                        href: '/objects/contract-expense-template/26'
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an Contract expense template
+      description: Updates an existing Contract expense template by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract expense templates
+      operationId: patch-objects-contract-expense-template-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-expense-template'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Example-1:
+                value:
+                  status: 'active'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract-expense-template
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Example-1:
+                  value:
+                    'ia::result':
+                      - key: '26'
+                        id: 'EXPSTRAIGHTLINE_MAN1'
+                        href: '/objects/contract-expense-template/26'
+                    'ia::meta':
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an Contract expense template
+      description: Deletes a/an Contract expense template.
+      tags:
+        - Contract expense templates
+      operationId: delete-objects-contract-expense-template-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-expense-template:
+      $ref: ../models/contract-expense-template.s1.schema.yaml
+    contract-expense-templateRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

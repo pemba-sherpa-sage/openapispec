@@ -1,0 +1,129 @@
+title: contact
+type: object
+x-object: contact
+x-mappedTo: contact
+properties:
+  key:
+    type: string
+    description: Contact Key
+    readOnly: true
+    x-mappedTo: $$key
+    example: '21'
+  id:
+    type: string
+    description: Contact ID
+    x-mappedTo: $$prefix.CONTACTNAME
+    example: 3-Alice
+  href:
+    type: string
+    readOnly: true
+    example: '/objects/contact/21'
+  lastName:
+    type: string
+    description: Last Name
+    x-mappedTo: $$prefix.LASTNAME
+    example: Cooper
+  firstName:
+    type: string
+    description: First Name
+    x-mappedTo: $$prefix.FIRSTNAME
+    example: Alice
+  middleName:
+    type: string
+    description: Middle Name
+    x-mappedTo: $$prefix.INITIAL
+    example: Mary
+  prefix:
+    type: string
+    description: Prefix
+    x-mappedTo: $$prefix.PREFIX
+    example: Miss
+  printAs:
+    type: string
+    description: Print As
+    x-mappedTo: $$prefix.PRINTAS
+    example: Alice.Cooper
+  email1:
+    type: string
+    description: Primary Email
+    x-mappedTo: $$prefix.EMAIL1
+    example: alice@example.com
+  email2:
+    type: string
+    description: Secondary Email
+    x-mappedTo: $$prefix.EMAIL2
+    example: cooper@example.com
+  phone1:
+    type: string
+    description: Primary Phone
+    x-mappedTo: $$prefix.PHONE1
+    example: '14085551212'
+  phone2:
+    type: string
+    description: Secondary Phone
+    x-mappedTo: $$prefix.PHONE2
+    example: '14085559876'
+  mobile:
+    type: string
+    description: Mobile
+    x-mappedTo: $$prefix.CELLPHONE
+    example: '14085554420'
+  pager:
+    type: string
+    description: Pager
+    x-mappedTo: $$prefix.PAGER
+    example: '14085559987'
+  fax:
+    type: string
+    description: Fax
+    x-mappedTo: $$prefix.FAX
+    example: '14085555309'
+  URL1:
+    type: string
+    description: Primary URL
+    x-mappedTo: $$prefix.URL1
+    example: https://alice.example.com
+  URL2:
+    type: string
+    description: Secondary URL
+    x-mappedTo: $$prefix.URL2
+    example: https://cooper.example.com
+  companyName:
+    type: string
+    description: Company Name
+    x-mappedTo: $$prefix.COMPANYNAME
+    example: AlcoSoft Inc
+  mailingAddress:
+    type: object
+    description: Mailing Address
+    properties:
+      addressLine1:
+        type: string
+        description: Addess 1
+        x-mappedTo: $$prefix.MAILADDRESS.ADDRESS1
+        example: 300 Park Avenue
+      addressLine2:
+        type: string
+        description: Addess 2
+        x-mappedTo: $$prefix.MAILADDRESS.ADDRESS2
+        example: Suite 1400
+      city:
+        type: string
+        description: City
+        x-mappedTo: $$prefix.MAILADDRESS.CITY
+        example: San Jose
+      state:
+        type: string
+        description: State
+        x-mappedTo: $$prefix.MAILADDRESS.STATE
+        example: California
+      postCode:
+        type: string
+        description: Zip or Postal Code
+        x-mappedTo: $$prefix.MAILADDRESS.ZIP
+        example: '95110'
+      country:
+        type: string
+        description: Country
+        x-mappedTo: $$prefix.MAILADDRESS.COUNTRY
+        example: United States of America

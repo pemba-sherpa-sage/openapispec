@@ -1,0 +1,74 @@
+title: billing-template
+x-mappedTo: contractbillingtemplate
+type: object
+description: A billing template defines the rules to use to invoice the flat or fixed amount of a contract line item.
+properties:
+  key:
+    type: string
+    description: System-assigned key for the contract billing template.
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  id:
+    type: string
+    description: Name or other unique identifier for the billing template.
+    x-mappedTo: NAME
+    x-mutable: false
+    example: 12P_BeginningPeriod
+  href:
+    type: string
+    description: URL for the billing template.
+    readOnly: true
+  description:
+    type: string
+    description: Description of the billing template.
+    x-mappedTo: DESCRIPTION
+    example: 12P Beginning Period
+  method:
+    type: string
+    description: Template type
+    x-mappedTo: METHOD
+    example: 'predefinedPercentages'
+    enum:
+      - 'predefinedPercentages'
+      - 'projectPercentComplete'
+      - 'taskPercentComplete'
+    x-mappedToValues:
+      - 'Predefined percentages'
+      - 'Project percent complete'
+      - 'Task percent complete'
+    default: 'predefinedPercentages'
+  source:
+    type: string
+    description: Specifies the data source to use to determine the percentage of completeness for the project or task.
+    x-mappedTo: SOURCE
+    example: 'estimatedHours'
+    enum:
+      - 'estimatedHours'
+      - 'observedPercentCompleted'
+      - 'budgetedHours'
+      - 'plannedHours'
+    x-mappedToValues:
+      - 'Estimated hours'
+      - 'Observed % completed'
+      - 'Budgeted hours'
+      - 'Planned hours'
+    default: 'estimatedHours'
+  isStepBilling:
+    type: boolean
+    description: Indicates whether to define billing thresholds to determine the percentage of the flat/fixed amount to invoice.
+    x-mappedTo: STEPTEMPLATE
+    x-mappedToType: string
+    default: false
+    example: false
+  templateEntries:
+    type: array
+    x-mappedTo: TEMPLATEENTRY
+    description: Contract billing template details.
+    x-object: billing-template-entry
+    items:
+      $ref: billing-template-entry.s1.schema.yaml
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

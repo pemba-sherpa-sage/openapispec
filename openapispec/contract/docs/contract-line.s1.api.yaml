@@ -1,0 +1,1411 @@
+openapi: 3.0.0
+info:
+  title: contract-line
+  description: contract-line API
+  version: '1.0'
+  contact:
+    name: Anjali Israni
+    email: anjali.israni@sage.com
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Contract lines
+    description: A contract line is a header containing multiple schedule lines and is tied directly to a contract line.
+paths:
+  /objects/contract-line:
+    get:
+      summary: List contract lines
+      description: Returns a collection with a key, ID, and link for each contract line.
+      tags:
+        - Contract lines
+      operationId: get-objects-contract-line
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of contract line objects
+                properties:
+                  ia::result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata-pages.schema'
+              examples:
+                Example-1:
+                  value:
+                    ia::result:
+                      - key: '1'
+                        id: '1'
+                        href: /objects/contract-line/1
+                      - key: '2'
+                        id: '2'
+                        href: /objects/contract-line/2
+                      - key: '3'
+                        id: '3'
+                        href: /objects/contract-line/3
+                    ia::meta:
+                      totalCount: 215
+                      start: 1
+                      pageSize: 3
+                      next: 4
+                      previous: null
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a/an contract line
+      description: Creates a new contract line.
+      tags:
+        - Contract lines
+      operationId: post-objects-contract-line
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-line.s1.schema'
+                - $ref: '#/components/schemas/contract-lineRequiredProperties'
+            examples:
+              Creates a/an contract line: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New contract line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Example-1:
+                  value:
+                    contract:
+                      id: API_TEST
+                    item:
+                      id: API3.0
+                    dimensions:
+                      location:
+                        id: '1'
+                    startDate: '2022-01-01'
+                    endDate: '2022-12-31'
+                    billing:
+                      quantity: 12
+                      rate: 12
+                      multiplier: 1
+                      discount: 0
+                      method: fixedPrice
+                      amountFrequency: includeWithEveryInvoice
+                      frequency: monthly
+                      flatFixedAmount: 144
+                      baseFlatFixedAmount: 144
+                      totalFlatFixedAmount: 1728
+                      totalBaseFlatFixedAmount: 1728
+                    recurring: false
+                    lineType: sale
+                    revenue:
+                      journal1:
+                        revemnueTemplate:
+                          id: STRAIGHTLINE_MANUAL
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                      journal2:
+                        revemnueTemplate:
+                          id: STRAIGHTLINE_MANUAL
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                    glPostingDate: '2022-01-01'
+        '400':
+          $ref: '#/components/responses/400error'
+  /objects/contract-line/{key}:
+    parameters:
+      - name: key
+        description: System-assigned key for the contract line.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a/an contract line
+      description: Returns detailed information for a particular contract line.
+      tags:
+        - Contract lines
+      operationId: get-objects-contract-line-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the contract-line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/contract-line.s1.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Details of the contract line:
+                  value:
+                    ia::result:
+                      key: '325'
+                      id: '325'
+                      contract:
+                        key: '196'
+                        id: API_TEST
+                        href: /objects/contract/196
+                      currency:
+                        txnCurrency: USD
+                        baseCurrency: USD
+                        exchangeRateDate: '2022-01-01'
+                        exchangeRate: 1
+                      state: inProgress
+                      lineNo: '1'
+                      period: null
+                      startDate: '2022-01-01'
+                      endDate: '2022-12-31'
+                      cancellationDate: null
+                      item:
+                        key: '318'
+                        id: API3.0
+                        name: API Usage
+                        href: /objects/item/318
+                      itemDescription: API 3.0 support for create/update/delete/read/read by query requests. Billed based on the API usage
+                      deferralStatus: deferRevenueUntilItemIsDelivered
+                      billing:
+                        quantity: 12
+                        rate: 12
+                        multiplier: 1
+                        discount: 0
+                        billingTemplate:
+                          key: null
+                          id: null
+                        startDate: '2022-01-01'
+                        endDate: '2022-12-31'
+                        method: fixedPrice
+                        amountFrequency: includeWithEveryInvoice
+                        frequency: monthly
+                        flatFixedAmount: 144
+                        baseFlatFixedAmount: 144
+                        totalFlatFixedAmount: 1728
+                        totalBaseFlatFixedAmount: 1728
+                        resetUsageQty: ''
+                        usageQtyRecurs: null
+                        holdDate: null
+                        resumeDate: '2022-01-01'
+                        memo: null
+                        durationInPeriods: 12
+                        proratePartialPeriods: false
+                        quantityType: ''
+                        committedQtyEndAction: ''
+                        committedQtyExcess: ''
+                      contacts:
+                        billTo:
+                          key: '2074'
+                          href: /objects/contact/2074
+                        shipTo:
+                          key: '2074'
+                          href: /objects/contact/2074
+                      billToSource: contractValue
+                      shipToSource: contractValue
+                      renewal:
+                        renew: false
+                        billingTemplate:
+                          key: null
+                          id: null
+                      recurring: false
+                      lineType: sale
+                      revenue:
+                        journal1:
+                          revemnueTemplate:
+                            key: '5'
+                            id: STRAIGHTLINE_MANUAL
+                            href: /objects/revenue-template/5
+                          startDate: '2022-01-01'
+                          endDate: '2022-12-31'
+                          journalSymbol: LEGACYREVREC
+                        journal2:
+                          revemnueTemplate:
+                            key: null
+                            id: null
+                          startDate: '2022-01-01'
+                          endDate: '2022-12-31'
+                          journalSymbol: ASC606REVREC
+                        totalQuantity: null
+                        holdDate: '2022-01-01'
+                        resumeDate: null
+                        holdMemo: null
+                      dimensions:
+                        location:
+                          key: '1'
+                          id: '1'
+                          name: United States of America
+                          href: /objects/location/1
+                        department:
+                          key: '9'
+                          id: '11'
+                          href: /objects/department/9
+                        task:
+                          key: null
+                          name: null
+                          id: null
+                        project:
+                          key: null
+                          id: null
+                          name: null
+                        customer:
+                          key: '841'
+                          id: CUS-RT-0602
+                          name: Customer-Root-0602
+                          href: /objects/customer/841
+                        vendor:
+                          key: '48'
+                          id: '202'
+                          name: Pac Bell
+                          href: /objects/vendor/48
+                        employee:
+                          key: '1'
+                          id: '1'
+                          name: Reser
+                          href: /objects/employee/1
+                        class:
+                          key: '6'
+                          id: '4'
+                          name: Professional Services
+                          href: /objects/class/6
+                      audit:
+                        createdDateTime: '2022-05-05T09:08:56Z'
+                        modifiedDateTime: '2022-05-06T09:06:43Z'
+                        createdBy: '1'
+                        modifiedBy: '1'
+                      changeType: ''
+                      mrr: false
+                      priceCalculationMemo: null
+                      deliveryStatus: delivered
+                      deliveryDate: '2022-01-01'
+                      glPostingDate: '2022-01-01'
+                      expenseHoldDate: null
+                      expenseResumeDate: null
+                      postMemo: null
+                      href: /objects/contract-line/325
+                    ia::meta:
+                      totalCount: 1
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a/an contract line
+      description: Updates an existing contract line by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Contract lines
+      operationId: patch-objects-contract-line-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/contract-line.s1.schema'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Updates a/an contract line:
+                value:
+                  endDate: '2022-11-30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated contract line
+                properties:
+                  ia::result:
+                    $ref: '#/components/schemas/object-reference.schema'
+                  ia::meta:
+                    $ref: '#/components/schemas/metadata.schema'
+              examples:
+                Updated contract line: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a/an contract line
+      description: Deletes a/an contract line.
+      tags:
+        - Contract lines
+      operationId: delete-objects-contract-line-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    contract-line:
+      $ref: '#/components/schemas/contract-line.s1.schema'
+    contract-lineRequiredProperties:
+      type: object
+      required:
+        - id
+    object-reference.schema:
+      title: object-reference
+      type: object
+      description: Reference Object definition
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        href:
+          type: string
+          readOnly: true
+    metadata.schema:
+      title: metadata
+      description: Meta data for response
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total Count
+          readOnly: true
+          example: 3
+    metadata-pages.schema:
+      title: metadata-pages
+      description: Meta data for collection response
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/metadata.schema'
+        - type: object
+          properties:
+            start:
+              type: integer
+              description: Start Element Number
+              x-mappedTo: null
+              readOnly: true
+              example: 1
+            pageSize:
+              type: integer
+              description: Page Size
+              x-mappedTo: null
+              readOnly: true
+              example: 100
+            next:
+              type: integer
+              description: Next Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: 101
+            previous:
+              type: integer
+              description: Previous Element Number
+              x-mappedTo: null
+              readOnly: true
+              nullable: true
+              example: null
+    error-response.schema:
+      title: error-response
+      type: object
+      description: Error response
+      properties:
+        ia::error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalidRequest
+            message:
+              type: string
+              example: Malformed URL
+            supportId:
+              type: string
+              example: sQrM9%7EYdh5oDEWVb80mrn9xuHjoAAAABBQ
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: TODO
+                  message:
+                    type: string
+                    example: TODO
+                  correction:
+                    type: string
+                    example: TODO
+    contract-dimensionref.s1.schema:
+      type: object
+      title: contract dimensions
+      properties:
+        location:
+          title: location
+          type: object
+          x-object: location
+          properties:
+            key:
+              type: string
+              description: Location Key
+              x-mappedTo: LOCATIONKEY
+              example: '22'
+            id:
+              type: string
+              description: Location
+              x-mappedTo: LOCATIONID
+              example: LOC-22
+            name:
+              type: string
+              description: Location Name
+              readOnly: true
+              x-mappedTo: LOCATIONNAME
+              example: California
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/731
+        department:
+          title: department
+          type: object
+          x-object: department
+          properties:
+            key:
+              type: string
+              description: Department Key
+              x-mappedTo: DEPTKEY
+              example: '11'
+            id:
+              type: string
+              description: Department
+              x-mappedTo: DEPARTMENTID
+              example: DEP-11
+            href:
+              type: string
+              readOnly: true
+              example: /objects/department/731
+        class:
+          title: class
+          type: object
+          x-object: class
+          properties:
+            key:
+              type: string
+              description: Class Key
+              x-mappedTo: CLASSDIMKEY
+              example: '731'
+            id:
+              type: string
+              description: Class ID
+              x-mappedTo: CLASSID
+              example: REST_CLS_001
+            name:
+              type: string
+              description: Class Name
+              readOnly: true
+              x-mappedTo: CLASSNAME
+              example: Enterprises
+            href:
+              type: string
+              readOnly: true
+              example: /objects/class/731
+        task:
+          title: task
+          type: object
+          x-object: task
+          properties:
+            id:
+              type: string
+              description: Task ID
+              x-mappedTo: TASKID
+              example: '1'
+            key:
+              type: string
+              description: Task Key
+              x-mappedTo: TASKDIMKEY
+              example: '1'
+            name:
+              type: string
+              description: Task Name
+              readOnly: true
+              x-mappedTo: TASKNAME
+              example: Project Task
+            href:
+              type: string
+              readOnly: true
+              example: /objects/task/1
+        vendor:
+          title: vendor
+          type: object
+          x-object: vendor
+          properties:
+            key:
+              type: string
+              description: Vendor Key
+              x-mappedTo: VENDORDIMKEY
+              example: '357'
+            id:
+              type: string
+              description: Vendor ID
+              x-mappedTo: VENDORID
+              example: 1605212096809
+            name:
+              type: string
+              description: Vendor Name
+              readOnly: true
+              x-mappedTo: VENDORNAME
+              example: GenLab
+            href:
+              type: string
+              readOnly: true
+              example: /objects/vendor/357
+        customer:
+          title: customer
+          type: object
+          x-object: customer
+          properties:
+            key:
+              type: string
+              description: Customer Key
+              x-mappedTo: CUSTOMERDIMKEY
+              example: '13'
+            id:
+              type: string
+              description: Customer ID
+              x-mappedTo: CUSTOMERID
+              example: CUST-13
+            name:
+              type: string
+              description: Customer Name
+              readOnly: true
+              x-mappedTo: CUSTOMERNAME
+              example: Jack In the Box
+            href:
+              type: string
+              readOnly: true
+              example: /objects/customer/13
+        project:
+          title: project
+          type: object
+          x-object: project
+          properties:
+            key:
+              type: string
+              description: Project Key
+              x-mappedTo: PROJECTDIMKEY
+              example: '2'
+            id:
+              type: string
+              description: Project ID
+              x-mappedTo: PROJECTID
+              example: NET-XML30-2
+            name:
+              type: string
+              description: Project Name
+              readOnly: true
+              x-mappedTo: PROJECTNAME
+              example: Talcomp training
+            href:
+              type: string
+              readOnly: true
+              example: /objects/project/2
+        employee:
+          title: employee
+          type: object
+          x-object: employee
+          properties:
+            key:
+              type: string
+              description: Employee Key
+              x-mappedTo: EMPLOYEEDIMKEY
+              example: '10'
+            id:
+              type: string
+              description: Employee ID
+              x-mappedTo: EMPLOYEEID
+              example: EMP-10
+            name:
+              type: string
+              description: Employee Name
+              readOnly: true
+              x-mappedTo: EMPLOYEENAME
+              example: Thomas, Glenn
+            href:
+              type: string
+              example: /objects/employee/10
+              readOnly: true
+      x-tags:
+        - reference
+    audit.s1.schema:
+      type: object
+      title: audit
+      properties:
+        createdDateTime:
+          description: Time of the submission
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENCREATED
+          readOnly: true
+        modifiedDateTime:
+          description: Time of the modification
+          type: string
+          format: date-time
+          example: '2022-04-20T16:20:00Z'
+          x-mappedTo: WHENMODIFIED
+          readOnly: true
+        createdBy:
+          description: User who created this
+          type: string
+          example: '1'
+          x-mappedTo: CREATEDBY
+          readOnly: true
+        modifiedBy:
+          description: User who modified this
+          type: string
+          example: '95'
+          x-mappedTo: MODIFIEDBY
+          readOnly: true
+      readOnly: true
+    contract-line.s1.schema:
+      title: contract-line
+      x-mappedTo: contractdetail
+      type: object
+      description: Information for contract lines.
+      properties:
+        key:
+          type: string
+          description: Contract line Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        id:
+          type: string
+          description: Contract line Key
+          readOnly: true
+          x-mappedTo: RECORDNO
+          example: '1'
+        href:
+          type: string
+          description: URL of the contract detail.
+          readOnly: true
+          example: /objects/contract-line/1
+        state:
+          type: string
+          description: State
+          x-mappedTo: STATE
+          enum:
+            - draft
+            - inProgress
+            - renewalOnly
+            - cancelled
+            - notRenewed
+            - completed
+            - revalued
+            - closed
+            - renewalForecast
+          x-mappedToValues:
+            - Draft
+            - In progress
+            - Renewal only
+            - Cancelled
+            - Not renewed
+            - Completed
+            - Revalued
+            - Closed
+            - Renewal forecast
+          example: completed
+        lineNo:
+          type: string
+          description: Line number
+          x-mappedTo: LINENO
+          example: '1'
+        period:
+          type: string
+          description: Period
+          x-mappedTo: PERIOD
+          default: '0'
+          example: '2'
+        startDate:
+          type: string
+          format: date
+          description: Line start
+          x-mappedTo: BEGINDATE
+          example: '2022-01-01'
+        endDate:
+          type: string
+          format: date
+          description: Line end
+          x-mappedTo: ENDDATE
+          example: '2022-04-30'
+        cancellationDate:
+          type: string
+          format: date
+          description: Cancel date
+          x-mappedTo: CANCELDATE
+          example: '2022-03-30'
+        changeType:
+          type: string
+          description: Change type
+          x-mappedTo: DBBCATEGORY
+          enum:
+            - newMRR
+            - addOnMRR
+            - renewalUpgrade
+            - renewalDowngrade
+            - churnMRR
+            - downgrade
+          x-mappedToValues:
+            - New MRR
+            - Add on MRR
+            - Renewal upgrade
+            - Renewal downgrade
+            - Churn MRR
+            - Downgrade
+          example: newMRR
+        isMRR:
+          type: boolean
+          description: MRR
+          x-mappedTo: MRR
+          x-mappedToType: string
+          example: false
+        itemDescription:
+          type: string
+          description: Item description
+          x-mappedTo: ITEMDESC
+          example: API usage
+        priceListDetails:
+          type: string
+          description: Displays information on how Sage Intacct determined the suggested price
+          x-mappedTo: PRICECALCMEMO
+          readOnly: true
+          example: 'Flat Amount: 0, Billing Preference: One-time, Price Type: Tiered'
+        deliveryStatus:
+          type: string
+          description: Delivery status
+          x-mappedTo: DELIVERYSTATUS
+          enum:
+            - delivered
+            - undelivered
+          x-mappedToValues:
+            - Delivered
+            - Undelivered
+          default: delivered
+          example: undelivered
+        deliveryDate:
+          type: string
+          format: date
+          description: Delivery date
+          x-mappedTo: DELIVERYDATE
+          example: '2022-04-30'
+        postingDate:
+          type: string
+          format: date
+          description: GL posting date
+          x-mappedTo: GLPOSTINGDATE
+          example: '2022-01-01'
+        lineType:
+          type: string
+          description: Line type
+          x-mappedTo: LINETYPE
+          enum:
+            - sale
+            - discount
+            - debook
+          x-mappedToValues:
+            - Sale
+            - Discount
+            - Debook
+          default: sale
+          example: sale
+        memo:
+          type: string
+          description: Post Memo
+          x-mappedTo: POSTMEMO
+          example: POSTING LINE
+        shipToSource:
+          type: string
+          description: Specifies where the ship-to contact information should come from
+          x-mappedTo: SHIPTOSOURCE
+          enum:
+            - contractValue
+            - userSpecifiedValue
+          x-mappedToValues:
+            - Contract value
+            - User-specified value
+          default: contractValue
+          example: contractValue
+        billToSource:
+          type: string
+          description: Specifies where the bill-to contact information should come from
+          x-mappedTo: BILLTOSOURCE
+          enum:
+            - contractValue
+            - userSpecifiedValue
+          x-mappedToValues:
+            - Contract value
+            - User-specified value
+          default: contractValue
+          example: contractValue
+        deferralStatus:
+          type: string
+          description: Revenue recognition deferral status
+          x-mappedTo: DEFERRALSTATUS
+          enum:
+            - deferRevenueUntilItemIsDelivered
+            - deferRevenueUntilAllItemsAreDelivered
+          x-mappedToValues:
+            - Defer revenue until item is delivered
+            - Defer revenue until all items are delivered
+          default: deferRevenueUntilItemIsDelivered
+          example: deferRevenueUntilItemIsDelivered
+        isRecurring:
+          type: boolean
+          description: Recurring
+          x-mappedTo: RECURRING
+          x-mappedToType: string
+          example: false
+        currency:
+          title: currency
+          type: object
+          properties:
+            exchangeRateDate:
+              type: string
+              format: date
+              description: Exchange rate date
+              x-mappedTo: EXCH_RATE_DATE
+              example: '2022-01-01'
+            exchangeRate:
+              type: string
+              description: Exchange rate
+              x-mappedTo: EXCHANGE_RATE
+              format: decimal-precision-12
+              example: '1.345'
+            baseCurrency:
+              type: string
+              description: Base currency
+              x-mappedTo: BASECURR
+              example: USD
+            txnCurrency:
+              type: string
+              description: Transaction currency
+              x-mappedTo: CURRENCY
+              example: USD
+        billing:
+          type: object
+          title: Billing
+          properties:
+            amountFrequency:
+              type: string
+              description: Flat/fixed amount frequency
+              x-mappedTo: BILLINGOPTIONS
+              enum:
+                - oneTime
+                - useBillingTemplate
+                - includeWithEveryInvoice
+              x-mappedToValues:
+                - One-time
+                - Use billing template
+                - Include with every invoice
+              default: useBillingTemplate
+              example: oneTime
+            template:
+              type: object
+              x-object: billing-template
+              properties:
+                key:
+                  type: string
+                  description: Key
+                  x-mappedTo: BILLINGTEMPLATEKEY
+                  readOnly: true
+                  example: 12
+                id:
+                  type: string
+                  description: Contract Billing Template ID
+                  x-mappedTo: BILLINGTEMPLATENAME
+                  example: 12P_BeginingPeriod
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/billing-template/12
+            schedule:
+              type: object
+              description: contract billing schedule
+              x-object: contract-billing-schedule
+              x-mappedTo: contractbillingschedule
+              title: contract-billing-schedule
+              properties:
+                key:
+                  type: string
+                  description: Billing Schedule Key
+                  x-mappedTo: BILLINGSCHEDULEKEY
+                  readOnly: true
+                  example: '12'
+                id:
+                  type: string
+                  description: Unique identifier of the contract billing schedule.
+                  x-mappedTo: BILLINGSCHEDULEKEY
+                  example: '12'
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contract-billing-schedule/12
+            method:
+              type: string
+              description: Billing method
+              x-mappedTo: BILLINGMETHOD
+              enum:
+                - fixedPrice
+                - quantityBased
+                - projectT&M
+                - projectTime
+                - projectMaterials
+              x-mappedToValues:
+                - Fixed price
+                - Quantity based
+                - Project T&M
+                - Project time
+                - Project materials
+              default: fixedPrice
+              example: fixedPrice
+            resetUsageQuantity:
+              type: string
+              description: Reset usage quantity
+              x-mappedTo: USAGEQTYRESETPERIOD
+              enum:
+                - afterEachRenewal
+                - afterEachInvoice
+              x-mappedToValues:
+                - After each renewal
+                - After each invoice
+              example: afterEachRenewal
+            isUsageQuantityRecurring:
+              type: boolean
+              description: Usage quantity recurs
+              x-mappedTo: USAGEQTYRECUR
+              x-mappedToType: string
+              example: false
+            committedQuantityEndAction:
+              type: string
+              description: On contract line end date
+              x-mappedTo: COMMITTEDUSAGEENDACTION
+              enum:
+                - billUnusedQuantity
+                - cancelUnusedQuantity
+                - doNothing
+              x-mappedToValues:
+                - Bill unused quantity
+                - Cancel unused quantity
+                - Do nothing
+              example: billUnusedQuantity
+            committedQuantityExcess:
+              type: string
+              description: If usage exceeds the committed quantity
+              x-mappedTo: COMMITTEDUSAGEEXCESS
+              enum:
+                - billOverage
+                - doNotAllowOverage
+                - doNothing
+              x-mappedToValues:
+                - Bill overage
+                - Don’t allow overage
+                - Do nothing
+              example: billOverage
+            quantityType:
+              type: string
+              description: Quantity type
+              x-mappedTo: USAGELINETYPE
+              enum:
+                - variable
+                - committed
+              x-mappedToValues:
+                - Variable
+                - Committed
+              example: variable
+            durationInPeriods:
+              type: string
+              description: Duration (in periods)
+              x-mappedTo: FLATAMOUNT_MULTIPLIER
+              example: '3'
+            proratePartialPeriods:
+              type: boolean
+              description: Prorate partial periods?
+              x-mappedTo: PRORATEBILLINGPERIOD
+              x-mappedToType: string
+              example: false
+            frequency:
+              type: string
+              description: Billing frequency
+              x-mappedTo: BILLINGFREQUENCY
+              enum:
+                - monthly
+                - quarterly
+                - annually
+              x-mappedToValues:
+                - Monthly
+                - Quarterly
+                - Annually
+              example: monthly
+            startDate:
+              type: string
+              format: date
+              description: Billing start
+              x-mappedTo: BILLINGSTARTDATE
+              example: '2022-01-01'
+            endDate:
+              type: string
+              format: date
+              description: Billing end
+              x-mappedTo: BILLINGENDDATE
+              example: '2022-04-30'
+            holdDate:
+              type: string
+              format: date
+              description: Hold date
+              x-mappedTo: BILLINGHOLDDATE
+              example: '2022-04-01'
+            resumeDate:
+              type: string
+              format: date
+              description: Resume date
+              x-mappedTo: BILLINGRESUMEDATE
+              example: '2022-04-10'
+            memo:
+              type: string
+              description: Memo
+              x-mappedTo: BILLINGMEMO
+              example: Cash customer
+            quantity:
+              type: string
+              description: Quantity
+              x-mappedTo: QUANTITY
+              example: '8'
+            rate:
+              type: string
+              description: Rate
+              x-mappedTo: PRICE
+              example: '100'
+            multiplier:
+              type: string
+              description: Multiplier
+              x-mappedTo: MULTIPLIER
+              example: '1'
+            discount:
+              type: string
+              description: Discount
+              x-mappedTo: DISCOUNTPERCENT
+              example: '10'
+            flatFixedAmount:
+              type: string
+              description: Flat/fixed amount
+              x-mappedTo: FLATAMOUNT
+              example: '100'
+            baseFlatFixedAmount:
+              type: string
+              description: Base flat/fixed amount
+              x-mappedTo: BASEFLATAMOUNT
+              example: '100'
+            totalFlatFixedAmount:
+              type: string
+              description: Total flat/fixed amount
+              x-mappedTo: TOTALFLATAMOUNT
+              example: '100'
+            totalBaseFlatFixedAmount:
+              type: string
+              description: Total base flat/fixed amount
+              x-mappedTo: TOTALBASEFLATAMOUNT
+              example: '100'
+        expense:
+          type: object
+          title: Expense
+          properties:
+            holdDate:
+              type: string
+              format: date
+              description: Hold date
+              x-mappedTo: EXPENSEHOLDDATE
+              example: '2022-04-01'
+            resumeDate:
+              type: string
+              format: date
+              description: Resume date
+              x-mappedTo: EXPENSERESUMEDATE
+              example: '2022-04-01'
+            memo:
+              type: string
+              description: Memo
+              x-mappedTo: EXPENSEMEMO
+              example: Cash customer
+        revenue:
+          type: object
+          title: Revenue
+          properties:
+            journal1:
+              type: object
+              title: Revenue Type
+              properties:
+                journalSymbol:
+                  type: string
+                  description: GL journal symbol
+                  x-mappedTo: REVENUEJOURNAL
+                  example: LEGACYREVREC
+                revenueTemplate:
+                  type: object
+                  x-object: revenue-template
+                  properties:
+                    key:
+                      type: string
+                      description: Key
+                      x-mappedTo: REVENUETEMPLATEKEY
+                      readOnly: true
+                      key: '13'
+                    id:
+                      type: string
+                      description: Contract Revenue Template ID
+                      x-mappedTo: REVENUETEMPLATENAME
+                      example: STRAIGHTLINE_MANUAL
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/revenue-template/13
+                revenueSchedule:
+                  type: object
+                  description: contract
+                  x-object: contract-revenue-schedule
+                  x-mappedTo: contractrevenueschedule
+                  title: contract
+                  properties:
+                    key:
+                      type: string
+                      description: Revenue Schedule
+                      x-mappedTo: REVENUESCHEDULEKEY
+                      readOnly: true
+                      example: '14'
+                    id:
+                      type: string
+                      description: Contract revenue schedule unique identifier.
+                      x-mappedTo: REVENUESCHEDULEKEY
+                      readOnly: true
+                      example: '145'
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/contract-revenue-schedule/14
+                startDate:
+                  type: string
+                  format: date
+                  description: Revenue 1 start date
+                  x-mappedTo: REVENUESTARTDATE
+                  eample: '2022-04-01'
+                endDate:
+                  type: string
+                  format: date
+                  description: Revenue 1 end date
+                  x-mappedTo: REVENUEENDDATE
+                  eample: '2022-04-30'
+            journal2:
+              type: object
+              title: Revenue Type
+              properties:
+                journalSymbol:
+                  type: string
+                  description: GL journal symbol
+                  x-mappedTo: REVENUE2JOURNAL
+                  example: ASC606REVREC
+                revenueTemplate:
+                  type: object
+                  x-object: revenue-template
+                  properties:
+                    key:
+                      type: string
+                      description: Key
+                      x-mappedTo: REVENUE2TEMPLATEKEY
+                      readOnly: true
+                      example: '15'
+                    id:
+                      type: string
+                      description: Contract Revenue Template ID
+                      x-mappedTo: REVENUE2TEMPLATENAME
+                      example: STRAIGHTLINE_MANUAL
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/revenue-template/15
+                revenueSchedule:
+                  type: object
+                  description: contract
+                  x-object: contract-revenue-schedule
+                  x-mappedTo: contractrevenueschedule
+                  title: contract
+                  properties:
+                    key:
+                      type: string
+                      description: Revenue Schedule
+                      x-mappedTo: REVENUESCHEDULEKEY
+                      readOnly: true
+                      example: '16'
+                    href:
+                      type: string
+                      readOnly: true
+                      example: /objects/contract-revenue-schedule/16
+                startDate:
+                  type: string
+                  format: date
+                  description: Revenue 1 start date
+                  x-mappedTo: REVENUESTARTDATE
+                  eample: '2018-04-01'
+                endDate:
+                  type: string
+                  format: date
+                  description: Revenue 1 end date
+                  x-mappedTo: REVENUEENDDATE
+                  eample: '2022-04-30'
+            totalQuantity:
+              type: string
+              description: Total revenue quantity
+              x-mappedTo: REVENUETOTALQUANTITY
+              example: '30'
+            resumeDate:
+              type: string
+              format: date
+              description: Resume date
+              x-mappedTo: REVENUERESUMEDATE
+              eample: '2022-04-10'
+            holdDate:
+              type: string
+              format: date
+              description: Hold date
+              x-mappedTo: REVENUEHOLDDATE
+              eample: '2022-04-02'
+            memo:
+              type: string
+              description: Memo
+              x-mappedTo: REVENUEMEMO
+              example: Cash customer
+        renewal:
+          type: object
+          title: renewal
+          properties:
+            renew:
+              type: boolean
+              description: Renew
+              x-mappedTo: RENEWAL
+              x-mappedToType: string
+              eample: false
+            billingTemplate:
+              type: object
+              x-object: billing-template
+              properties:
+                key:
+                  type: string
+                  description: Key
+                  x-mappedTo: RENEWALBILLINGTEMPLATEKEY
+                  readOnly: true
+                  example: '17'
+                id:
+                  type: string
+                  description: Contract revenue template ID
+                  readOnly: true
+                  x-mappedTo: RENEWALBILLINGTEMPLATENAME
+                  example: 12P_BeginingPeriod
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/billing-template/17
+        contacts:
+          type: object
+          title: contacts
+          properties:
+            shipTo:
+              type: object
+              title: shipTo
+              x-object: contact
+              x-mappedTo: contact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: SHIPTOKEY
+                  example: '1472'
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/1472
+            billTo:
+              type: object
+              title: billTo
+              x-object: contact
+              x-mappedTo: contact
+              properties:
+                key:
+                  type: string
+                  x-mappedTo: BILLTOKEY
+                  example: '1472'
+                href:
+                  type: string
+                  readOnly: true
+                  example: /objects/contact/1472
+        contract:
+          type: object
+          description: contract
+          x-object: contract
+          x-mappedTo: contract
+          title: contract
+          properties:
+            key:
+              type: string
+              description: Contract unique key
+              x-mappedTo: CONTRACTKEY
+              readOnly: true
+              example: '249'
+            id:
+              type: string
+              description: Contract unique identifier
+              x-mappedTo: CONTRACTID
+              example: CON-0045
+            href:
+              type: string
+              readOnly: true
+              example: /objects/contract/249
+        item:
+          title: item
+          type: object
+          x-object: item
+          properties:
+            key:
+              type: string
+              description: Item Key
+              x-mappedTo: ITEMKEY
+              example: '13'
+            id:
+              type: string
+              description: Item ID
+              x-mappedTo: ITEMID
+              example: API3.0
+            name:
+              type: string
+              description: Item Name
+              readOnly: true
+              x-mappedTo: ITEMNAME
+              example: Platform pack
+            href:
+              type: string
+              readOnly: true
+              example: /objects/item/13
+        dimensions:
+          $ref: '#/components/schemas/contract-dimensionref.s1.schema'
+        audit:
+          $ref: '#/components/schemas/audit.s1.schema'
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error-response.schema'

@@ -1,0 +1,7 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - co/lists/departmentgroup/view
+s1:
+  hash: '0'
+  type: rootObject

@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: purchasing-txn-definition
+  description: purchasing-txn-definition API
+  version: '1.0'
+  contact:
+    name: Dylan Holt
+    email: dylan.holt@sage.com
+tags:
+  - name: Purchasing transaction definitions
+    description: A purchasing transaction can be a purchase requisition, purchase order, receipt, vendor invoice, or adjustment.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/purchasing-txn-definition:
+    get:
+      summary: List purchasing transaction definitions
+      description: Returns a collection with a key, ID, and link for each purchasing transaction definition. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - Purchasing transaction definitions
+      operationId: get-objects-purchasing-txn-definition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of purchasing-txn-definition objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List purchasing transaction definitions: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create a purchasing transaction definition
+      description: Creates a new purchasing transaction definition.
+      tags:
+        - Purchasing transaction definitions
+      operationId: post-objects-purchasing-txn-definition
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-txn-definition'
+                - $ref: '#/components/schemas/purchasing-txn-definitionRequiredProperties'
+            examples:
+              Create a purchasing transaction definition: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              examples: { }
+              schema:
+                type: object
+                title: New customer
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/purchasing-txn-definition/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the purchasing transaction definition.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a purchasing transaction definition
+      description: Returns detailed information for a specified purchasing transaction definition.
+      tags:
+        - Purchasing transaction definitions
+      operationId: get-objects-purchasing-txn-definition-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the purchasing-txn-definition
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/purchasing-txn-definition'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a purchasing transaction definition: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update a purchasing transaction definition
+      description: Updates an existing purchasing transaction definition by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - Purchasing transaction definitions
+      operationId: patch-objects-purchasing-txn-definition-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/purchasing-txn-definition'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+            examples:
+              Update a purchasing transaction definition: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated purchasing-txn-definition
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a purchasing transaction definition: {}
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete a purchasing transaction definition
+      description: Deletes a purchasing transaction definition.
+      tags:
+        - Purchasing transaction definitions
+      operationId: delete-objects-purchasing-txn-definition-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    purchasing-txn-definition:
+      $ref: ../models/purchasing-txn-definition.s1.schema.yaml
+    purchasing-txn-definitionRequiredProperties:
+      type: object
+      required:
+        - id
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -1,0 +1,852 @@
+title: preferences.user
+x-mappedTo: userpref
+type: object
+description: Service to get and update user preferences.
+properties:
+  key:
+    description: Key to identify user.
+    type: string
+    readOnly: true
+    x-mappedTo: RECORDNO
+    example: '1'
+  contact:
+    description: Contact for the user.
+    type: object
+    title: contact
+    properties:
+      href:
+        type: string
+        readOnly: true
+        description: URL for the contact.
+      lastName:
+        type: string
+        readOnly: true
+        description: Last name
+        x-mappedTo: USERINFO.CONTACT.LASTNAME
+        example: Kincaid
+      firstName:
+        type: string
+        readOnly: true
+        description: First name
+        x-mappedTo: USERINFO.CONTACT.FIRSTNAME
+        example: Reuben
+      email1:
+        type: string
+        readOnly: true
+        description: Primary email
+        x-mappedTo: USERINFO.CONTACT.EMAIL1
+        example: reuben@mycompany.com
+      phone1:
+        type: string
+        readOnly: true
+        description: Primary phone
+        x-mappedTo: USERINFO.CONTACT.PHONE1
+        example: 4151231234
+      signature:
+        type: string
+        description: Signature to be added to emails sent by this user.
+        x-mappedTo: USERINFO.EMAILSIGNATURE
+        example: Thank you, Reuben Kincaid
+      mailingAddress:
+        type: object
+        description: The mailing address of the contact.
+        readOnly: true
+        properties:
+          addressLine1:
+            type: string
+            description: The first address line for shipping, billing, etc.
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.ADDRESS1
+            example: '300 Park Avenue'
+          addressLine2:
+            type: string
+            description: The second address line for shipping, billing, etc.
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.ADDRESS2
+            example: Suite 1400
+          city:
+            type: string
+            description: City
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.CITY
+            example: San Jose
+          state:
+            type: string
+            description: State
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.STATE
+            example: California
+          postCode:
+            type: string
+            description: Zip or Postal Code
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.ZIP
+            example: 95110
+          country:
+            type: string
+            description: Country
+            readOnly: true
+            x-mappedTo: USERINFO.CONTACT.MAILADDRESS.COUNTRY
+            example: United States of America
+  securityPreferences:
+    title: securityPreferences
+    type: object
+    properties:
+      sessionTimeoutInSeconds:
+        type: integer
+        description: The amount of time that the user can be in Intacct while actively using it. The maximum amount of time is limited by the maximum number of hours set for the entire organization, which is 12 hours or less.
+        x-mappedTo: SESSIONTIMEOUT
+        example: 3600
+      inactivityTimeoutInSeconds:
+        type: integer
+        description: The amount of time a user session can remain inactive (when it is not being used) before the user is signed out. The maximum amount of time is limited by the maximum number of inactivity hours set for the entire organization, which is 6 hours or less.
+        x-mappedTo:  LOGINTIMEOUT
+        example: 3600
+  emailNotifications:
+    type: object
+    title: emailNotifications
+    properties:
+      paymentRequestsForApproval:
+        type: object
+        title: paymentRequestsForApproval
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: |-
+              Enable payment request approval notifications.
+
+              * `true` - The user is notified when there are payment requests for approval.
+              * `false` - The user is not notified about payment request approvals.
+            x-mappedTo: ENABLEEMAIL_ACTIVATED
+            default: false
+            example: false
+          frequency:
+            type: string
+            description: |-
+              Individual or grouped payment request notifications:
+
+              * `individual` - One email for each payment request for approval. 
+              * `consolidated` - Group related request notifications into one email.
+            enum:
+              - 'individual'
+              - 'consolidated'
+            x-mappedToValues:
+              - 'Individual'
+              - 'Consolidated'
+            x-mappedTo: ENABLEEMAIL
+            example: 'individual'
+          minimumAmount:
+            type: integer
+            description: Minimum amount for payment request notifications, so that the user isn't notified for low-value requests.
+            x-mappedTo: AMOUNTFOREMAIL
+            example: 1000
+      approvedPayments:
+        type: object
+        title: approvedPayments
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: |-
+              Enable approved payment notifications.
+
+              * `true` - The user is notified when payments are approved.
+              * `false` - The user is not notified about approved payments.
+            x-mappedTo: NOTIFYSUBMITTER_ACTIVATED
+            default: false
+            example: false
+          frequency:
+            type: string
+            description: |-
+              Individual or grouped notifications:
+
+              * `individual` - One email each time a payment is approved. 
+              * `consolidated` - Group related payment notifications into one email.
+            enum:
+              - 'individual'
+              - 'consolidated'
+            x-mappedToValues:
+              - 'Individual'
+              - 'Consolidated'
+            x-mappedTo: NOTIFYSUBMITTER
+            default: 'individual'
+            example: 'individual'
+      purchasingRequestsForApproval:
+        type: object
+        title: purchasingRequestsForApproval
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: |-
+              Enable purchasing request approval notifications.
+
+              * `true` - The user is notified when there are purchasing requests for approval.
+              * `false` - The user is not notified about purchasing request approvals.
+            x-mappedTo: PURENABLEEMAIL
+            default: false
+            example: false
+          minimumAmount:
+            type: integer
+            description: Minimum amount for purchase request notifications.
+            x-mappedTo: PURAMOUNTFOREMAIL
+            example: 1000
+      journalEntryRequestsForApproval:
+        type: object
+        title: journalEntryRequestsForApproval
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: |-
+              Enable journal entry approval notifications.
+
+              * `true` - The user is notified when there are requests to approve journal entries.
+              * `false` - The user is not notified about journal entry approval requests.
+            x-mappedTo: GLBATCHENABLEEMAIL
+            default: true
+            example: true
+      billRequestsForApproval:
+        type: object
+        title: billRequestsForApproval
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: Send the user an email when a bill is created in Accounts Payable that requires their approval.
+              Enable bill approval notifications.
+
+              * `true` - The user is notified when bills are created in Accounts Payable that requires their approval.
+              * `false` - The user is not notified about payment request approvals.
+            x-mappedTo: BILLENABLEEMAIL
+            default: false
+            example: false
+          minimumAmount:
+            type: integer
+            description: Minimum amount for bill request notifications.
+            x-mappedTo: BILLAMOUNTFOREMAIL
+            example: 100
+      offlineReports:
+        type: object
+        title: offlineReports
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: Send the user an email when a stored report has been processed and is ready.
+            x-mappedTo: OFFLINEEMAIL
+            default: false
+            example: false
+      checklists:
+        type: object
+        title: checklists
+        properties:
+          enableNotification:
+            type: boolean
+            x-mappedToType: string
+            description: |-
+              Send the user an email:
+
+              * When an assignment is assigned to you.
+              * As a reminder for pending assignments.
+              * If you are the checklist owner and the status of an assignment has changed.
+            x-mappedTo: CHECKLISTNOTIF
+            default: true
+            example: true
+      recurringTxnFailures:
+        type: object
+        title: recurringTxnFailures
+        properties:
+          enableNotifications:
+            type: boolean
+            x-mappedToType: string
+            description: Send the user an email when something goes wrong with a regularly scheduled transaction. This includes all recurring transactions.
+            x-mappedTo: RECURTXNFAILEMAIL
+            default: false
+            example: false
+  onScreenAlerts:
+    type: object
+    title: onScreenAlerts
+    properties:
+      enableWarnOnUnsavedChanges:
+        type: boolean
+        x-mappedToType: string
+        description: Display a message when the user makes changes and then attempts to navigate away from the window without saving the changes.
+        x-mappedTo: WARNONCHANGES
+        default: true
+        example: true
+      enableWarnOnDelete:
+        type: boolean
+        x-mappedToType: string
+        description: Display a precautionary alert when the user attempt to delete a record.
+        x-mappedTo: WARNONDELETE
+        default: true
+        example: true
+      enableFormValidationMessagesOnSeparatePage:
+        type: boolean
+        x-mappedToType: string
+        description: Display alerts in a separate page, rather than at the top of the current page.
+        x-mappedTo: DISABLEFORMVALIDATION
+        default: false
+        example: false
+  personalizeAppearance:
+    type: object
+    title: personalizeAppearance
+    properties:
+      startPage:
+        type: string
+        description: |-
+          The application to be displayed when the user signs in to the system. Valid values are any of these Intacct applications or the ID of an add-on or custom page.
+
+          * `home` - Use the default dashboard defined by the administrator.
+          * `dash` - Display a dashboard. When this option is used, you must also provide a `startDashboard` value.
+          * `reportcenter` - Display the Report 
+          * `ap` - Accounts Payable
+          * `ar` - Accounts Receivable
+          * `budg` - Budgets
+          * `cm` - Cash Management
+          * `cn` - Contracts
+          * `co` - Company
+          * `cs` - Consolidations
+          * `ee` - Time and Expenses
+          * `gl` - General Ledger
+          * `inv` - Inventory Control
+          * `pa` - Projects
+          * `po` - Purchasing
+          * `so` - Order Entry
+          
+        x-mappedTo: STARTPAGE
+        example: dash
+      startDashboard:
+        type: string
+        description: The ID of the dashboard to be displayed when `startPage` is set to `Dashboard`.
+        x-mappedTo: STARTDASHBOARD
+        example: '8'
+      entityColorLevel:
+        type: string
+        description: |-
+          Color scheme: 
+
+          * `company` - Use the company colors defined by the administrator.
+          * `user` - The user can select colors to override those set by the administrator.
+        enum:
+          - 'company'
+          - 'user'
+        x-mappedToValues:
+          - 'company'
+          - 'user'
+        x-mappedTo: ENTITY_COLOR_LEVEL
+        example: 'company'
+  personalizeMenu:
+    type: object
+    title: personalizeMenu
+    properties:
+      menuNavigation:
+        type: string
+        description: Whether the user must click or hover to expand navigation menus.
+        enum:
+          - 'click'
+          - 'hover'
+        x-mappedToValues:
+          - 'click'
+          - 'hover'
+        x-mappedTo: MENU_NAVIGATION
+        example: click
+      menuOrder:
+        type: string
+        description: |-
+          Allow user to change menu order:
+
+          * `company` - Use the menu order defined by the administrator.
+          * `user` - The user can select a menu order to override the order set by the administrator.
+        enum:
+          - 'company'
+          - 'user'
+        x-mappedToValues:
+          - 'company'
+          - 'user'
+        x-mappedTo: MENUORDER
+        example: 'company'
+  pagePreferences:
+    type: object
+    title: pagePreferences
+    properties:
+      recordsPerPage:
+        type: integer
+        description: The number of lines to display in pages that provide lists of records. 
+        x-mappedTo: LISTCOUNT
+        default: 20
+        example: 20
+      itemsPerPopUpPage:
+        type: integer
+        description: The number of lines to display in pop-up selection pages when there are more items than the drop-down list displays.
+        x-mappedTo: PICKCOUNT
+        default: 15
+        example: 15
+      itemsPerDropDownList:
+        type: string
+        description: The number of list items to display in drop-down menu lists. More items can increase page load times.
+        enum:
+          - '250'
+          - '500'
+          - '1000'
+          - '2500'
+          - '5000'
+        x-mappedToValues:
+          - '250'
+          - '500'
+          - '1000'
+          - '2500'
+          - '5000'
+        x-mappedTo: SHOWPICKCOUNT
+        default: '1000'
+        example: '5000'
+      recordsPerTransactionPage:
+        type: string
+        description: The number of transaction rows visible per page. The user must click to view succeeding set of rows. 
+        enum:
+          - '10'
+          - '20'
+          - '30'
+          - '40'
+          - '50'
+          - '60'
+          - '70'
+          - '80'
+          - '90'
+          - '100'
+          - 'max'
+        x-mappedToValues:
+          - '10'
+          - '20'
+          - '30'
+          - '40'
+          - '50'
+          - '60'
+          - '70'
+          - '80'
+          - '90'
+          - '100'
+          - 'Max'
+        x-mappedTo: GRID_PAGE_SIZE
+        default: '30'
+        example: '30'
+      enableTypeAheadSuggestions:
+        type: boolean
+        x-mappedToType: string
+        description: Display type-ahead suggestions as the user types.
+        x-mappedTo: TYPEAHEAD
+        default: false
+        example: false
+      newTransactionRowCount:
+        type: integer
+        description: The number of rows displayed when adding a new transaction on multi-line edit pages.
+        x-mappedTo: ROWCOUNT
+        default: 2
+        example: 3
+  personalizePlatform:
+    type: object
+    title: personalizePlatform
+    properties:
+      actionUILayout:
+        type: object
+        title: actionUILayout
+        properties:
+          useForCustomPages:
+            type: boolean
+            x-mappedToType: string
+            description: Update pages that have been created or customized using Platform or Customization Services to Action UI.
+            x-mappedTo: PT_LAYOUTTYPE
+            default: false
+            example: false
+          useForDeveloperPages:
+            type: boolean
+            x-mappedToType: string
+            description: Use Platform and Customization Services in Action UI.
+            x-mappedTo: PT_OWNEDLAYOUTTYPE
+            default: false
+            example: false
+      scriptComponent:
+        type: object
+        title: scriptComponent
+        properties:
+          theme:
+            type: string
+            description: Script component theme. This setting enables all script component text editing areas to utilize the CodeMirror(r) library for an enhanced script editing experience when adding a custom script to a page.
+            enum:
+              - 'lightMode'
+              - 'darkMode'
+            x-mappedToValues:
+              - 'Light mode'
+              - 'Dark mode'
+            x-mappedTo: SCRIPT_COMPONENT_THEME
+            example: 'lightMode'
+          debug:
+            type: string
+            description: Enable the autogeneration of debug file names for page scripts.
+
+              * `on` - Debug file names are automatically generated for page scripts.
+              * `off` - Debug file names are not generated.
+            enum:
+              - 'off'
+              - 'on'
+            x-mappedToValues:
+              - 'Off'
+              - 'On'
+            x-mappedTo: SCRIPT_COMPONENT_DEBUG
+            example: 'off'
+  generalPreferences:
+     type: object
+     title: generalPreferences
+     properties:
+      language:
+        type: string
+        description: Language and locale for the user.
+        enum:
+          - 'none'
+          - 'en_AU.UTF-8'
+          - 'en_GB.UTF-8'
+          - 'en_ZA.UTF-8'
+          - 'en_US.UTF-8'
+        x-mappedTo: LOCALE
+        default: ''
+        example: 'en_US.UTF-8'
+      timeZone:
+        type: string
+        description: Time zone in which the company or user resides.
+        enum:
+          - 'GMT (Greenwich Mean Time) Dublin, Edinburgh, London'
+          - 'GMT+00:00 Western Europe Time'
+          - 'GMT+01:00 Western Europe Summer Time'
+          - 'GMT+01:00 British Summer Time'
+          - 'GMT+01:00 Irish Summer Time'
+          - 'GMT+01:00 Central Europe Time'
+          - 'GMT+01:00 Berlin, Stockholm, Rome, Bern, Brussels'
+          - 'GMT+01:00 Lisbon, Warsaw'
+          - 'GMT+01:00 Paris, Madrid'
+          - 'GMT+01:00 Prague'
+          - 'GMT+02:00 Central Europe Summer Time'
+          - 'GMT+02:00 Eastern Europe Time'
+          - 'GMT+02:00 Athens, Helsinki, Istanbul'
+          - 'GMT+02:00 Cairo'
+          - 'GMT+02:00 Harare, Pretoria'
+          - 'GMT+02:00 Israel'
+          - 'GMT+03:00 Eastern Europe Summer Time'
+          - 'GMT+03:00 Baghdad, Kuwait, Nairobi, Riyadh'
+          - 'GMT+03:00 Moscow, St. Petersburg, Volgograd'
+          - 'GMT+03:30 Tehran'
+          - 'GMT+04:00 Moscow Summer Time'
+          - 'GMT+04:00 Abu Dhabi, Muscat, Tbilisi, Kazan'
+          - 'GMT+04:30 Kabul'
+          - 'GMT+05:00 Islamabad, Karachi, Sverdlovsk, Tashkent'
+          - 'GMT+05:30 Bombay, Calcutta, Madras, New Delhi'
+          - 'GMT+06:00 Almaty, Dhaka'
+          - 'GMT+07:00 Bangkok, Jakarta, Hanoi'
+          - 'GMT+08:00 Beijing, Chongqing, Urumqi'
+          - 'GMT+08:00 Hong Kong SAR, Perth, Singapore, Taipei'
+          - 'GMT+08:00 (Australian) Western Standard Time'
+          - 'GMT+09:00 Tokyo, Osaka, Sapporo, Seoul, Yakutsk'
+          - 'GMT+09:30 (Australian) Central Standard Time'
+          - 'GMT+10:30 (Australian) Central Daylight Time'
+          - 'GMT+09:30 Adelaide'
+          - 'GMT+09:30 Darwin'
+          - 'GMT+10:00 Brisbane, Melbourne, Sydney'
+          - 'GMT+10:00 Guam, Port Moresby'
+          - 'GMT+10:00 Vladivostok'
+          - 'GMT+10:00 (Australian) Eastern Standard Time'
+          - 'GMT+11:00  (Australian) Eastern Daylight Time'
+          - 'GMT+12:00 Fiji Islands, Marshall Islands'
+          - 'GMT+12:00 Kamchatka'
+          - 'GMT+12:00 Magadan, Solomon Islands, New Caledonia'
+          - 'GMT+12:00 Wellington, Auckland'
+          - 'GMT-01:00 Azores, Cape Verde Island'
+          - 'GMT-03:00 Brasilia'
+          - 'GMT-03:00 Buenos Aires, Georgetown'
+          - 'GMT-03:30 Newfoundland Standard Time'
+          - 'GMT-02:30 Newfoundland Daylight Time'
+          - 'GMT-04:00 Atlantic Standard Time'
+          - 'GMT-03:00 Atlantic Daylight Time'
+          - 'GMT-04:00 Caracas, La Paz'
+          - 'GMT-05:00 Bogota, Lima'
+          - 'GMT-05:00 Eastern Standard Time'
+          - 'GMT-04:00 Eastern Daylight Saving Time'
+          - 'GMT-05:00 Indiana (East)'
+          - 'GMT-06:00 Central Standard Time'
+          - 'GMT-05:00 Central Daylight Saving Time'
+          - 'GMT-06:00 Mexico City, Tegucigalpa'
+          - 'GMT-06:00 Saskatchewan'
+          - 'GMT-07:00 Arizona'
+          - 'GMT-07:00 Mountain Standard Time'
+          - 'GMT-06:00 Mountain Daylight Saving Time'
+          - 'GMT-08:00 Pacific Standard Time'
+          - 'GMT-07:00 Pacific Daylight Saving Time'
+          - 'GMT-09:00 Alaska Standard Time'
+          - 'GMT-08:00 Alaska Standard Daylight Saving Time'
+          - 'GMT-10:00 Hawaii'
+          - 'GMT-11:00 Midway Island, Samoa'
+          - 'GMT-12:00 Eniwetok, Kwajalein'
+        x-mappedToValues:
+          - 'GMT (Greenwich Mean Time) Dublin, Edinburgh, London'
+          - 'GMT+00:00 Western Europe Time'
+          - 'GMT+01:00 Western Europe Summer Time'
+          - 'GMT+01:00 British Summer Time'
+          - 'GMT+01:00 Irish Summer Time'
+          - 'GMT+01:00 Central Europe Time'
+          - 'GMT+01:00 Berlin, Stockholm, Rome, Bern, Brussels'
+          - 'GMT+01:00 Lisbon, Warsaw'
+          - 'GMT+01:00 Paris, Madrid'
+          - 'GMT+01:00 Prague'
+          - 'GMT+02:00 Central Europe Summer Time'
+          - 'GMT+02:00 Eastern Europe Time'
+          - 'GMT+02:00 Athens, Helsinki, Istanbul'
+          - 'GMT+02:00 Cairo'
+          - 'GMT+02:00 Harare, Pretoria'
+          - 'GMT+02:00 Israel'
+          - 'GMT+03:00 Eastern Europe Summer Time'
+          - 'GMT+03:00 Baghdad, Kuwait, Nairobi, Riyadh'
+          - 'GMT+03:00 Moscow, St. Petersburg, Volgograd'
+          - 'GMT+03:30 Tehran'
+          - 'GMT+04:00 Moscow Summer Time'
+          - 'GMT+04:00 Abu Dhabi, Muscat, Tbilisi, Kazan'
+          - 'GMT+04:30 Kabul'
+          - 'GMT+05:00 Islamabad, Karachi, Sverdlovsk, Tashkent'
+          - 'GMT+05:30 Bombay, Calcutta, Madras, New Delhi'
+          - 'GMT+06:00 Almaty, Dhaka'
+          - 'GMT+07:00 Bangkok, Jakarta, Hanoi'
+          - 'GMT+08:00 Beijing, Chongqing, Urumqi'
+          - 'GMT+08:00 Hong Kong SAR, Perth, Singapore, Taipei'
+          - 'GMT+08:00 (Australian) Western Standard Time'
+          - 'GMT+09:00 Tokyo, Osaka, Sapporo, Seoul, Yakutsk'
+          - 'GMT+09:30 (Australian) Central Standard Time'
+          - 'GMT+10:30 (Australian) Central Daylight Time'
+          - 'GMT+09:30 Adelaide'
+          - 'GMT+09:30 Darwin'
+          - 'GMT+10:00 Brisbane, Melbourne, Sydney'
+          - 'GMT+10:00 Guam, Port Moresby'
+          - 'GMT+10:00 Vladivostok'
+          - 'GMT+10:00 (Australian) Eastern Standard Time'
+          - 'GMT+11:00  (Australian) Eastern Daylight Time'
+          - 'GMT+12:00 Fiji Islands, Marshall Islands'
+          - 'GMT+12:00 Kamchatka'
+          - 'GMT+12:00 Magadan, Solomon Islands, New Caledonia'
+          - 'GMT+12:00 Wellington, Auckland'
+          - 'GMT-01:00 Azores, Cape Verde Island'
+          - 'GMT-03:00 Brasilia'
+          - 'GMT-03:00 Buenos Aires, Georgetown'
+          - 'GMT-03:30 Newfoundland Standard Time'
+          - 'GMT-02:30 Newfoundland Daylight Time'
+          - 'GMT-04:00 Atlantic Standard Time'
+          - 'GMT-03:00 Atlantic Daylight Time'
+          - 'GMT-04:00 Caracas, La Paz'
+          - 'GMT-05:00 Bogota, Lima'
+          - 'GMT-05:00 Eastern Standard Time'
+          - 'GMT-04:00 Eastern Daylight Saving Time'
+          - 'GMT-05:00 Indiana (East)'
+          - 'GMT-06:00 Central Standard Time'
+          - 'GMT-05:00 Central Daylight Saving Time'
+          - 'GMT-06:00 Mexico City, Tegucigalpa'
+          - 'GMT-06:00 Saskatchewan'
+          - 'GMT-07:00 Arizona'
+          - 'GMT-07:00 Mountain Standard Time'
+          - 'GMT-06:00 Mountain Daylight Saving Time'
+          - 'GMT-08:00 Pacific Standard Time'
+          - 'GMT-07:00 Pacific Daylight Saving Time'
+          - 'GMT-09:00 Alaska Standard Time'
+          - 'GMT-08:00 Alaska Standard Daylight Saving Time'
+          - 'GMT-10:00 Hawaii'
+          - 'GMT-11:00 Midway Island, Samoa'
+          - 'GMT-12:00 Eniwetok, Kwajalein'
+        x-mappedTo: TIMEZONE
+        default: ''
+        example: 'GMT+02:00 Eastern Europe Time'
+      timeFormat:
+        type: string
+        description: Time format, 12 or 24 hours.
+        enum:
+          - 'HH24:MI:SS'
+          - 'HH12:MI:SSAM'
+        x-mappedToValues:
+          - 'HH24:MI:SS'
+          - 'HH12:MI:SS AM/PM'
+        x-mappedTo: TIMEFORMAT
+        default: ''
+        example: 'HH12:MI:SSAM'
+      dateFormat:
+        type: string
+        description: Date format used throughout Intacct to _display_ dates. Dates can be entered in other formats.
+        enum:
+          - 'MM/DD/YYYY'
+          - 'MM/DD/YY'
+          - 'MM.DD.YY'
+          - 'MM.DD.YYYY'
+          - 'MM-DD-YY'
+          - 'MM-DD-YYYY'
+          - 'MM DD YY'
+          - 'MM DD YYYY'
+          - 'DD/MM/YY'
+          - 'DD/MM/YYYY'
+          - 'DD.MM.YY'
+          - 'DD.MM.YYYY'
+          - 'DD-MM-YY'
+          - 'DD-MM-YYYY'
+          - 'DD MM YY'
+          - 'DD MM YYYY'
+          - 'YY/MM/DD'
+          - 'YYYY/MM/DD'
+          - 'YY.MM.DD'
+          - 'YYYY.MM.DD'
+          - 'YY-MM-DD'
+          - 'YYYY-MM-DD'
+          - 'YY MM DD'
+          - 'YYYY MM DD'
+        x-mappedToValues:
+          - 'MM/DD/YYYY'
+          - 'MM/DD/YY'
+          - 'MM.DD.YY'
+          - 'MM.DD.YYYY'
+          - 'MM-DD-YY'
+          - 'MM-DD-YYYY'
+          - 'MM DD YY'
+          - 'MM DD YYYY'
+          - 'DD/MM/YY'
+          - 'DD/MM/YYYY'
+          - 'DD.MM.YY'
+          - 'DD.MM.YYYY'
+          - 'DD-MM-YY'
+          - 'DD-MM-YYYY'
+          - 'DD MM YY'
+          - 'DD MM YYYY'
+          - 'YY/MM/DD'
+          - 'YYYY/MM/DD'
+          - 'YY.MM.DD'
+          - 'YYYY.MM.DD'
+          - 'YY-MM-DD'
+          - 'YYYY-MM-DD'
+          - 'YY MM DD'
+          - 'YYYY MM DD'
+        x-mappedTo: DATEFORMAT
+        example: 'MM/DD/YYYY'
+      decimalsSeparator:
+        type: string
+        description: Decimals separator.
+        enum:
+          - ','
+          - '.'
+          - '_'
+          - ' '
+          - 'companyDefault'
+        x-mappedToValues:
+          - ','
+          - '.'
+          - '_'
+          - '_SPACE_'
+          - '_CNY_'
+        x-mappedTo: CURRENCYDECIMAL_SEP
+        default: '.'
+        example: '.'
+      thousandsSeparator:
+        type: string
+        description: Thousands separator.
+        enum:
+          - ','
+          - '.'
+          - '_'
+          - ' '
+          - 'companyDefault'
+        x-mappedToValues:
+          - ','
+          - '.'
+          - '_'
+          - '_SPACE_'
+          - '_CNY_'
+        x-mappedTo: CURRENCYTHOUSAND_SEP
+        default: ','
+        example: ','
+      autoInsertDecimalPoint:
+        type: boolean
+        x-mappedToType: string
+        description: Automatically insert a decimal point in numbers.
+        x-mappedTo: AUTOINSERTDECIMAL
+        default: false
+        example: false
+      defaultAttachmentFolder:
+        type: string
+        description: Default attachment folder
+        x-mappedTo: USERSUPDOCGRP
+        example: Saved documents
+  approvalDelegation:
+     type: object
+     title: approvalDelegation
+     description: |-
+      Delegate approval responsibilities when the user is unavailable to approve transactions. This does not apply to users who are part of a user group that is designated as the approver, because all other members of the group receive notifications and can approve submissions.
+     properties:
+      enableForPurchasing:
+        type: boolean
+        x-mappedToType: string
+        description: Send approvals to `purchasingDelegate`.
+        x-mappedTo: DELEGATE_APPROVAL
+        default: false
+        example: false
+      purchasingDelegate:
+        type: string
+        description: User ID for delegated purchasing approvals.
+        x-mappedTo: DELEGATE
+        example: 'intacct'
+      enableForJournalEntryTransactions:
+        type: boolean
+        x-mappedToType: string
+        description: Send approvals to `journalEntryDelegate`.
+        x-mappedTo: GLDELEGATEAPPROVAL
+        default: false
+        example: false
+      journalEntryDelegate:
+        type: string
+        description: User ID for delegated journal entry transaction approvals.
+        x-mappedTo: GLDELEGATE
+        example: 'intacct'
+      delegateApprovals:
+        type: string
+        description: Delegate approvals
+        x-mappedTo: DELEGATE_APPROVALS
+        example: 'Delegate Purchasing approvals'
+      delegateName:
+        type: string
+        description: User ID of the approver who assumes responsibility for approving transactions while the user is out-of-office.
+        x-mappedTo: DELEGATE_NAME
+        example: 'intacct'
+      enableDelegateForUnknown:
+        type: boolean
+        x-mappedToType: string
+        description: Send approvals to `delegateName` when the user is out-of-office.
+        x-mappedTo: ENABLE_DELEGATE
+        default: false
+        example: false
+  moduleName:
+    type: string
+    description: Module name in menu grid
+    x-mappedTo: MODULENAME
+    example: 'Company'
+  moduleId:
+    type: string
+    description: Module id for module name in menu grid
+    x-mappedTo: MODULEID
+    example: '1.CO'
+  inheritDateFromSourceTxn:
+    type: object
+    title: inheritDateFromSourceTxn
+    properties:
+      inheritForOrderEntryTxns:
+        type: boolean
+        x-mappedToType: string
+        description: Use the date from source transaction for Order Entry transactions.
+        x-mappedTo: SODATE_CONVERSION_OPTION
+        default: false
+        example: false
+      inheritForPurchaseOrderTxns:
+        type: boolean
+        x-mappedToType: string
+        description: Use the date from source transaction for Purchasing transactions.
+        x-mappedTo: PODATE_CONVERSION_OPTION
+        default: false
+        example: false

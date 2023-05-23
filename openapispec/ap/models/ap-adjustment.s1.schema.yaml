@@ -1,0 +1,248 @@
+title: ap-adjustment
+x-mappedTo: apadjustment
+type: object
+description: AP adjustments can be used to increase or decrease the amount you owe a vendor. 
+properties:
+  key:
+    type: string
+    description: System-assigned key for the AP adjustment.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  id:
+    type: string
+    description: Unique identifier for the AP adjustment.
+    x-mappedTo: RECORDNO
+    readOnly: true
+  adjustmentId:
+    type: string
+    description: Adjustment number to track the AP adjustment.
+    x-mappedTo: RECORDID
+  action:
+    type: string
+    description: The action state of the AP adjustment. The default action state is `submit`.
+    x-mappedTo: ACTION
+    enum:
+      - draft
+      - submit
+    x-mappedToValues:
+      - Draft
+      - Submit
+  state:
+    $ref: ../../common/models/state.s1.schema.yaml
+  vendor:
+    type: object
+    description: Vendor associated with the AP adjustment.
+    x-object: vendor
+    x-mappedTo: vendor
+    title: vendor
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the vendor.
+        x-mappedTo: VENDORID
+  bill:
+    type: object
+    description: Bill associated with the AP adjustment.
+    x-object: bill
+    x-mappedTo: apbill
+    title: bill
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the bill.
+        x-mappedTo: DOCNUMBER
+  description:
+    type: string
+    description: Description of the AP adjustment.
+    x-mappedTo: DESCRIPTION
+  postingDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Posted date of the AP adjustment.
+    x-mappedTo: WHENPOSTED
+  totalEntered:
+    type: number
+    description: Total amount of the AP adjustment.
+    x-mappedTo: TOTALENTERED
+    readOnly: true
+  totalDue:
+    type: number
+    description: Total amount due.
+    x-mappedTo: TOTALDUE
+    readOnly: true
+  txnTotalEntered:
+    type: number
+    description: Total transaction amount.
+    x-mappedTo: TRX_TOTALENTERED
+    readOnly: true
+  txnTotalDue:
+    type: number
+    description: Total transaction amount due.
+    x-mappedTo: TRX_TOTALDUE
+    readOnly: true
+  createdDate:
+    type: string
+    format: date
+    example: '2021-01-23'
+    description: Date the AP adjustment was created.
+    x-mappedTo: WHENCREATED
+    #  isTaxInclusive:
+    #    type: boolean
+    #    description: Inclusive taxes
+    #    x-mappedTo: INCLUSIVETAX
+    #    x-mappedToType: string
+    # batch should be summary, ugh.
+  summary:
+    type: object
+    description: AP summary the adjustment is part of. Summaries are collections of transactions grouped together for processing. 
+    x-object: ap-adjustment-summary
+    x-mappedTo: apadjustmentbatch
+    title: ap-adjustment-summary
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the AP summary.
+        x-mappedTo: PRBATCHKEY
+      id:
+        type: string
+        description: Unique identifier for the AP summary.
+        x-mappedTo: PRBATCHKEY
+      href:
+        type: string
+        description: URL for the AP summary.
+        readOnly: true
+  taxSolution:
+    type: object
+    description: Tax solution to use to calculate and capture taxes on this transaction.
+    x-object: tax-solution
+    x-mappedTo: taxsolution
+    title: term
+    properties:
+      key:
+        type: string
+        description: System-assigned key for the tax solution.
+        x-mappedTo: TAXSOLUTIONKEY
+      id:
+        type: string
+        description: Unique idnetifier for the tax solution.
+        x-mappedTo: TAXSOLUTIONID
+      href:
+        type: string
+        description: URL for the tax solution.
+        readOnly: true
+  currency:
+    type: object
+    description: The currency for this adjustment.
+    title: currency
+    properties:
+      baseCurrency:
+        type: string
+        description: Base currency of your company.
+        x-mappedTo: BASECURR
+      txnCurrency:
+        type: string
+        description: Currency to use for this transaction.
+        x-mappedTo: CURRENCY
+      exchangeRateDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Date for the exchange rate. The default is today, but the default is overridden when a date is provided.
+        x-mappedTo: EXCH_RATE_DATE
+      exchangeRate:
+        type: number
+        description: Exchange rate for the transaction. Override the default by providing a rate. 
+        x-mappedTo: EXCHANGE_RATE
+      exchangeRateTypeId:
+        type: string
+        description: Exchange rate type, which can be a custom type if your company is configured for them.
+        x-mappedTo: EXCH_RATE_TYPE_ID
+  contacts:
+    type: object
+    description: Contacts for this AP adjustment.
+    title: contacts
+    properties:
+      payTo:
+        type: object
+        description: The vendor contact to be paid.
+        title: payTo
+        x-object: contact
+        x-mappedTo: paytocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact.
+            x-mappedTo: BILLTOPAYTOKEY
+          id:
+            type: string
+            description: Unique identifier for the contact.
+            x-mappedTo: BILLTOPAYTOCONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+      returnTo:
+        type: object
+        description: The vendor contact for return of the purchase.
+        title: returnTo
+        x-object: contact
+        x-mappedTo: returntocontact
+        properties:
+          key:
+            type: string
+            description: System-assigned key for the contact. 
+            x-mappedTo: SHIPTORETURNTOKEY
+          id:
+            type: string
+            description: Unique identifier for the contact.
+            x-mappedTo: SHIPTORETURNTOCONTACTNAME
+          href:
+            type: string
+            description: URL for the contact.
+            readOnly: true
+  paymentInformation:
+    type: object
+    description: Payment information for the AP adjustment.
+    title: paymentInformation
+    properties:
+      paidDate:
+        type: string
+        format: date
+        example: '2021-01-23'
+        description: Date the AP adjustment was paid.
+        x-mappedTo: WHENPAID
+        readOnly: true
+      totalPaid:
+        type: number
+        description: Total paid for the AP adjustment.
+        x-mappedTo: TOTALPAID
+        readOnly: true
+      totalSelected:
+        type: number
+        description: Total selected for the AP adjustment.
+        x-mappedTo: TOTALSELECTED
+        readOnly: true
+      txnTotalSelected:
+        type: number
+        description: Total transaction selected.
+        x-mappedTo: TRX_TOTALSELECTED
+        readOnly: true
+      txnTotalPaid:
+        type: number
+        description: Transaction total paid.
+        x-mappedTo: TRX_TOTALPAID
+        readOnly: true
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml
+  lines:
+    type: array
+    x-mappedTo: ITEMS
+    x-object: ap-adjustment-line
+    items:
+      $ref: ap-adjustment-line.s1.schema.yaml
+x-mapings:
+  audit:
+    createdDateTime:
+      type: string
+      x-mappedTo: AUWHENCREATED

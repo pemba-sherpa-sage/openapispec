@@ -1,0 +1,553 @@
+openapi: 3.0.0
+info:
+  title: ar-invoice
+  description: ar-invoice API
+  version: '1.0'
+  contact:
+    name: Ganapati Mogri
+    email: ganapati.mogri@sage.com
+tags:
+  - name: AR invoices
+    description: An AR invoice object represents an invoice sent to a customer for goods or services provided.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /objects/ar-invoice:
+    get:
+      summary: List an AR invoice
+      description: |
+       Returns a collection with a key, ID, and link for each AR invoice. This operation is mostly for use in testing; use query to find objects that meet certain criteria and to specify properties that are returned.
+      tags:
+        - AR invoices
+      operationId: get-objects-ar-invoice
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: List of ar-invoice objects
+                properties:
+                  'ia::result':
+                    type: array
+                    items:
+                      $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata-pages.schema.yaml
+              examples:
+                List invoices:
+                  value:
+                    'ia::result':
+                      - key: "498"
+                        id: "498"
+                        href: "/objects/ar-invoice/498"
+                      - key: "501"
+                        id: "501"
+                        href: "/objects/ar-invoice/501"
+                      - key: "978"
+                        id: "978"
+                        href: "/objects/ar-invoice/978"
+                    'ia::meta':
+                      totalCount: 3
+                      start: 1
+                      pageSize: 100
+        '400':
+          $ref: '#/components/responses/400error'
+    post:
+      summary: Create an AR invoice
+      description: Creates a new AR invoice.
+      tags:
+        - AR invoices
+      operationId: post-objects-ar-invoice
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-invoice'
+                - $ref: '#/components/schemas/ar-invoiceRequiredProperties'
+            examples:
+              Create a invoice:
+                value:
+                  invoiceNumber: "NG-Inline-7"
+                  customer:
+                    id: "1"
+                  custMessageId": "HELLO"
+                  referenceNumber: "test-ref1"
+                  description: "Create succesful!!!! via NextgenAPI"
+                  orderEntry:
+                    documentId: "Hello"
+                  term:
+                    id: "N15"
+                  invoiceDate: "2022-12-06"
+                  dueDate: "2022-12-31"
+                  currency:
+                    txnCurrency: "MXN"
+                    exchangeRate:
+                      date: "2022-12-06"
+                      typeId: "Intacct Daily Rate"
+                      rate: "0.05112"
+                  contacts:
+                    payTo:
+                      id: "Power Aerospace Materials(C1)"
+                    returnTo:
+                      id: "Power Aerospace Materials(C1)"
+                  lines:
+                    - txnAmount: "100.40"
+                      glAccount:
+                        id: "5004"
+                      accountLabel:
+                        id: "ACCt_LEBAL"
+                      dimensions:
+                        department:
+                          id: "SA"
+                        location:
+                          id: "North America"
+                        customer":
+                          id: "1"
+                      memo": "hello line 1:nxt gen test"
+                    - txnAmount: "-10"
+                      glAccount:
+                        id: "5004"
+                      accountLabel:
+                        id: "ACCt_LEBAL"
+                      dimensions:
+                        department:
+                          id: "SA"
+                        location:
+                          id: "North America"
+                        customer:
+                          id: "1"
+                      memo": "hello line 1:nxt gen test"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: New ar-invoice
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Create a invoice:
+                  value:
+                    'ia::result':
+                      id: "2091"
+                      key: "2091"
+                      href: "/objects/ar-invoice/2091"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+  '/objects/ar-invoice/{key}':
+    parameters:
+      - name: key
+        description: System-assigned key for the ar-invoice.
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get an AR invoice
+      description: Returns detailed information for a specified AR invoice.
+      tags:
+        - AR invoices
+      operationId: get-objects-ar-invoice-key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Details of the ar-invoice
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/ar-invoice'
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Get a invoice:
+                  value:
+                    'ia::result':
+                      id: "2091"
+                      key: "2091"
+                      recordType: "ri"
+                      invoiceNumber: "newInv10"
+                      state: "posted"
+                      customer:
+                        id: "1"
+                        key: "1"
+                        name: "Power Aerospace Materials"
+                        emailOption: false
+                        customerDue: "20106.8"
+                        deliveryOptions: "print"
+                        href: "/objects/customer/1"
+                      custMessageId: "HELLO"
+                      custMessage: "Hello!!! This is your first message"
+                      referenceNumber: "test-ref1"
+                      description: "Create succesful!!!! via NextgenAPI"
+                      orderEntry:
+                        documentId: "Hello"
+                      term:
+                        id: "N15"
+                        key: "1"
+                        href: "/objects/ar-term/1"
+                      invoiceDate: "2022-12-06"
+                      audit:
+                        createdDateTime: "2022-12-06T00:00:00Z"
+                        modifiedDateTime: "2023-04-18T16:59:05Z"
+                        createdBy: "1"
+                        modifiedBy: "1"
+                      discountCutOffDate: "2022-12-13"
+                      dueDate: "2022-12-31"
+                      paymentInformation:
+                        fullyPaidDate: null
+                        totalBaseAmountSelectedForPayment: "0"
+                        totalBaseAmountPaid: "0"
+                        totalTxnAmountSelectedForPayment: "0"
+                        totalTxnAmountPaid: "0"
+                      currency:
+                        baseCurrency: "USD"
+                        txnCurrency: "MXN"
+                        exchangeRate:
+                          date: "2022-12-06"
+                          typeId: "Intacct Daily Rate"
+                          rate: ".05112"
+                      totalBaseAmount: "4.62"
+                      totalBaseAmountDue: "4.62"
+                      totalTxnAmount: "90.4"
+                      totalTxnAmountDue: "90.4"
+                      contacts:
+                        payTo:
+                          id: "Power Aerospace Materials(C1)"
+                          key: "725"
+                          href: "/objects/contact/725"
+                        returnTo:
+                          id: "Power Aerospace Materials(C1)"
+                          key: "725"
+                          href: "/objects/contact/725"
+                      moduleKey: "4.AR"
+                      recurringSchedule:
+                        key: null
+                      isSystemGeneratedDocument: false
+                      billbackTemplate:
+                        id: null
+                        key: null
+                      dueInDays: "108"
+                      attachment:
+                        id: null
+                        key: null
+                      dunningCount: 0
+                      nsp::URTEXT: null
+                      lines:
+                        - id: "4338"
+                          key: "4338"
+                          invoice:
+                            id: "2091"
+                            key: "2091"
+                            href: "/objects/ar-invoice/2091"
+                          glAccount:
+                            key: "218"
+                            id: "5004"
+                            name: "Commissions Paid"
+                            href: "/objects/gl-account/218"
+                          overriddenOffsetGLAccount:
+                            key: "36"
+                            id: "1200"
+                            name: "Accounts Receivable"
+                            href: "/objects/gl-account/36"
+                          accountLabel:
+                            name: "Commissions Paid"
+                            key: null
+                            id: null
+                          createdDate: "2022-12-06"
+                          baseAmount: "5.13"
+                          txnAmount: "100.40"
+                          dimensions:
+                            department:
+                              key: "31"
+                              id: "SA"
+                              name: "Sales"
+                              href: "/objects/department/31"
+                            location:
+                              key: "10"
+                              id: "North America"
+                              name: "North America"
+                              href: "/objects/location/10"
+                            nsp::rgldim43491134_10018":
+                              key: null
+                              id: null
+                            project:
+                              key: null
+                              id: null
+                              name: null
+                            customer:
+                              key: "1"
+                              id: "1"
+                              name: "Power Aerospace Materials"
+                              href: "/objects/customer/1"
+                            vendor:
+                              key: null
+                              id: null
+                              name: null
+                            employee:
+                              key: null
+                              id: null
+                              name: null
+                            item:
+                              key: null
+                              id: null
+                              name: null
+                            class:
+                              key: null
+                              id: null
+                              name: null
+                            baseLocation:
+                              name: "North America"
+                              key: "10"
+                              href: "/objects/location/10"
+                          memo: "hello line 1:nxt gen test"
+                          currency:
+                            exchangeRate:
+                              date: "12/06/2022"
+                              typeId: "-1"
+                              rate: ".05112"
+                            txnCurrency: "MXN"
+                            baseCurrency: "USD"
+                          allocation:
+                            id: null
+                            key: null
+                            name: null
+                          lineNumber: 1
+                          paymentInformation:
+                            totalBaseAmountPaid: ".51"
+                            totalTxnAmountPaid: "10"
+                            totalBaseAmountSelectedForPayment: "0"
+                            totalTxnAmountSelectedForPayment: "0"
+                          isSubtotal: ""
+                          audit:
+                            createdDateTime: "2023-04-18T16:54:13Z"
+                            modifiedDateTime: "2023-04-18T16:59:05Z"
+                            createdBy: "1"
+                            modifiedBy: "1"
+                          href: "/objects/ar-invoice-line/4338"
+                        - id: "4340"
+                          key: "4340"
+                          invoice:
+                            id: "2091"
+                            key: "2091"
+                            href: "/objects/ar-invoice/2091"
+                          glAccount:
+                            key: "218"
+                            id: "5004"
+                            name: "Commissions Paid"
+                            href: "/objects/gl-account/218"
+                          overriddenOffsetGLAccount:
+                            key: "36"
+                            id: "1200"
+                            name: "Accounts Receivable"
+                            href: "/objects/gl-account/36"
+                          accountLabel:
+                            name: "Commissions Paid"
+                            key: null
+                            id: null
+                          createdDate: "2022-12-06"
+                          baseAmount: "-.51"
+                          txnAmount: "-10.00"
+                          dimensions:
+                            department:
+                              key: "31"
+                              id: "SA"
+                              name: "Sales"
+                              href: "/objects/department/31"
+                            location:
+                              key: "10"
+                              id: "North America"
+                              name: "North America"
+                              href: "/objects/location/10"
+                            nsp::rgldim43491134_10018:
+                              key: null
+                              id: null
+                            project:
+                              key: null
+                              id: null
+                              name: null
+                            customer:
+                              key: "1"
+                              id: "1"
+                              name: "Power Aerospace Materials"
+                              href: "/objects/customer/1"
+                            vendor:
+                              key: null
+                              id: null
+                              name: null
+                            employee:
+                              key: null
+                              id: null
+                              name: null
+                            item:
+                              key: null
+                              id: null
+                              name: null
+                            class:
+                              key: null
+                              id: null
+                              name: null
+                          baseLocation:
+                            name: "North America"
+                            key: "10"
+                            href: "/objects/location/10"
+                          memo: "hello line 1:nxt gen test"
+                          currency:
+                            exchangeRate:
+                              date: "12/06/2022"
+                              typeId: "-1"
+                              rate: ".05112"
+                            txnCurrency: "MXN"
+                            baseCurrency: "USD"
+                          allocation:
+                            id: null
+                            key: null
+                            name: null
+                          lineNumber: 2
+                          paymentInformation:
+                            totalBaseAmountPaid: "-.51"
+                            totalTxnAmountPaid: "-10"
+                            totalBaseAmountSelectedForPayment: "0"
+                            totalTxnAmountSelectedForPayment: "0"
+                          isSubtotal: ""
+                          audit:
+                            createdDateTime: "2023-04-18T16:54:13Z"
+                            modifiedDateTime: "2023-04-18T16:59:05Z"
+                            createdBy: "1"
+                            modifiedBy: "1"
+                          href: "/objects/ar-invoice-line/4340"
+                      href: "/objects/ar-invoice/2091"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    patch:
+      summary: Update an AR invoice
+      description: Updates an existing AR invoice by setting field values. Any fields not provided remain unchanged.
+      tags:
+        - AR invoices
+      operationId: patch-objects-ar-invoice-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ar-invoice'
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    invoiceDate:
+                      readOnly: true
+                    custMessageId:
+                      readOnly: true
+                    currency:
+                      properties:
+                        txnCurrency:
+                          readOnly: true
+                        exchangeRate:
+                          properties:
+                            rate:
+                              readOnly: true
+                            date:
+                              readOnly: true
+                            typeId:
+                              readOnly: true
+                    contacts:
+                      properties:
+                        payTo:
+                          properties:
+                            id:
+                              readOnly: true
+                        returnTo:
+                          properties:
+                            id:
+                              readOnly: true
+                    customer:
+                      properties:
+                        id:
+                          readOnly: true
+                        deliveryOptions:
+                          readOnly: true
+                    invoiceSummary:
+                      properties:
+                        id:
+                          readOnly: true
+            examples:
+              Update a single value:
+                value:
+                  invoiceNumber: newInv10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Updated ar-invoice
+                properties:
+                  'ia::result':
+                    $ref: ../../common/models/object-reference.schema.yaml
+                  'ia::meta':
+                    $ref: ../../common/models/metadata.schema.yaml
+              examples:
+                Update a single value:
+                  value:
+                    'ia::result':
+                      id: "2091"
+                      key: "2091"
+                      href: "/objects/ar-invoice/2091"
+                    'ia::meta':
+                      totalCount: 1
+                      totalSuccess: 1
+                      totalError: 0
+        '400':
+          $ref: '#/components/responses/400error'
+    delete:
+      summary: Delete an AR invoice
+      description: Deletes an AR invoice.
+      tags:
+        - AR invoices
+      operationId: delete-objects-ar-invoice-key
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/400error'
+components:
+  schemas:
+    ar-invoice:
+      $ref: ../models/ar-invoice.s1.schema.yaml
+    ar-invoiceRequiredProperties:
+      type: object
+      required:
+        - invoiceDate
+        - dueDate
+        - currency
+        - customer
+        - lines
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

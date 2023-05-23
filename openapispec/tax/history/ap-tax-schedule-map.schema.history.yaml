@@ -1,0 +1,18 @@
+ia::definition:
+  methodPermissions:
+    GET:
+      - ap/lists/aptaxschedmap/view
+    POST:
+      - ap/lists/aptaxschedmap/create
+    PATCH:
+      - ap/lists/aptaxschedmap/edit
+    DELETE:
+      - ap/lists/aptaxschedmap/delete
+s1:
+  hash: '0'
+  type: rootObject
+  systemViews:
+    systemfw1:
+      revision: s1
+      hash: '0'
+  uiMetadataHash: '0'

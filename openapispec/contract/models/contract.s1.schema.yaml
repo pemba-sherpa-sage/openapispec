@@ -1,0 +1,469 @@
+type: object
+title: contract
+x-mappedTo: contract
+properties:
+  key:
+    type: string
+    description: System-assigned unique key for the contract.
+    x-mappedTo: RECORDNO
+    readOnly: true
+    example: '12'
+  id:
+    type: string
+    description: Unique ID for the contract. 
+    x-mappedTo: CONTRACTID
+    x-mutable: false
+    example: CON-0045-1
+  href:
+    type: string
+    description: Endpoint for the contract.
+    readOnly: true
+    example: /objects/contract/12
+  name:
+    type: string
+    description: Contract name
+    x-mappedTo: NAME
+    example: ACME Widgets - Service
+  parent:
+    type: object
+    description: Original contract that a renewal contract was copied from.
+    x-object: contract
+    x-mappedTo: contract
+    properties:
+      key:
+        type: string
+        description: Key of parent contract.
+        x-mappedTo: PARENTKEY
+        example: '59'
+      id:
+        type: string
+        description: ID of parent contract.
+        x-mappedTo: PARENTID
+        example: CON-0045
+      href:
+        type: string
+        readOnly: true
+        description: Endpoint of parent contract.
+        example: /objects/contract/249
+  description:
+    type: string
+    description: Description of the contract.
+    x-mappedTo: DESCRIPTION
+    example:
+  status:
+    $ref: ../../common/models/status.s1.schema.yaml
+  state:
+    x-mappedTo: STATE
+    description: |-
+      State of the contract. Use `draft` when creating a contract that is not ready to post to the general ledger.
+      
+      * draft: The contract was saved as a preliminary version. A draft contract has no effect on the General Ledger.
+      * inProgress: The contract was posted and is considered in effect. A contract keeps this state until it is renewed, ends without being renewed, or is canceled.
+      * canceled: All contract schedules (revenue, expense, and billing) were canceled for all contract lines associated with this contract.
+      * notRenewed: The contract completed its term, but it was not renewed. Only applicable if `termType` = `termed`.
+      * renewed: The contract was renewed. Only applicable if `termType` = `termed`.
+    type: string
+    default: inProgress
+    enum:
+      - draft
+      - inProgress
+      - renewed
+      - canceled
+      - notRenewed
+    x-mappedToValues:
+      - Draft
+      - In progress
+      - Renewed
+      - Cancelled
+      - Not renewed
+    example: inProgress
+  startDate:
+    x-mappedTo: BEGINDATE
+    description: |-
+      Contract start date.  The start date cannot be changed after a contract line has been posted to the contract.
+
+      For evergreen contracts the start date determines the start day of each recurring billing period. The contract line billing frequency (Monthly, Quarterly, or Annually) determines the length of each recurring billing period.
+    type: string
+    format: date
+    example: '2023-01-01'
+  endDate:
+    x-mappedTo: ENDDATE
+    description: Contract end date. The end date drives the renewal process. Required when `termType` = `termed`. 
+    type: string
+    format: date
+    example: '2024-01-01'
+  contacts:
+    type: object
+    description: Contract contacts
+    properties:
+      shipTo:
+        type: object
+        description: Contact to ship to. Leave blank to use customer's default.
+        x-object: contact
+        x-mappedTo: contact
+        properties:
+          key:
+            type: string
+            x-mappedTo: SHIPTOKEY
+            example: 1482
+          id:
+            type: string
+            x-mappedTo: SHIPTOCONTACTNAME
+            example: Gruppen (Estate Europe) Services ABCUS-RT-0010
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/1482
+      billTo:
+        type: object
+        description: Contact to bill to. Leave blank to use customer's default.
+        x-object: contact
+        x-mappedTo: contact
+        properties:
+          key:
+            type: string
+            x-mappedTo: BILLTOKEY
+            example: '1482'
+          id:
+            type: string
+            x-mappedTo: BILLTOCONTACTNAME
+            example: Gruppen (Estate Europe) Services ABCUS-RT-0010
+          href:
+            type: string
+            readOnly: true
+            example: /objects/contact/1482
+  customer:
+    type: object
+    description: Customer that the contract is associated with. The customer cannot be changed after a contract line has been posted to the contract.
+    x-object: customer
+    x-mappedTo: customer
+    properties:
+      key:
+        type: string
+        description: Customer Key
+        x-mappedTo: CUSTOMERKEY
+        example: '250'
+      id:
+        type: string
+        description: Customer ID
+        x-mappedTo: CUSTOMERID
+        example: CUS-RT-0011
+      name:
+        type: string
+        description: Customer Name
+        readOnly: true
+        x-mappedTo: CUSTOMERNAME
+        example: Ability Software
+      href:
+        type: string
+        readOnly: true
+        example: /objects/customer/250
+  cancellationDate:
+    type: string
+    description: The effective date for the contract cancellation.
+    x-mappedTo: CANCELDATE
+    format: date
+    example: '2023-03-03'
+  billingFrequency:
+    type: string
+    description: Billing frequency
+    x-mappedTo: BILLINGFREQUENCY
+    enum:
+      - monthly
+      - quarterly
+      - annually
+    x-mappedToValues:
+      - Monthly
+      - Quarterly
+      - Annually
+    example: monthly
+  paymentTerm:
+    type: object
+    x-object: ar-term
+    x-mappedTo: arterm
+    description: AR payment term for this contract.
+    properties:
+      key:
+        type: string
+        x-mappedTo: TERMKEY
+        readOnly: true
+      name:
+        type: string
+        x-mappedTo: TERMNAME
+      href:
+        type: string
+        readOnly: true
+  termType:
+    type: string
+    description: |-
+      Contract term type:
+
+      * `termed` - a traditional payment term such as Net 30
+      * `evergreen` - perpetual contract
+    x-mappedTo: TERMTYPE
+    default: termed
+    enum:
+      - termed
+      - evergreen
+    x-mappedToValues:
+      - Termed
+      - Evergreen
+    example: termed
+  renewTermLength:
+    type: integer
+    description: How frequently the contract is renewed, counted in `renewTermPeriod`s (days, months, or years). Only applicable if `termType` = `termed`.
+    x-mappedTo: RENEWTERMLENGTH
+    example: 12
+  renewTermPeriod:
+    type: string
+    description: Renewal term period. Only applicable if `termType` = `termed`.
+    x-mappedTo: RENEWTERMPERIOD
+    default: months
+    enum:
+      - years
+      - months
+      - days
+    x-mappedToValues:
+      - Years
+      - Months
+      - Days
+    example: months
+  billingPriceList:
+    type: object
+    x-object: billing-price-list
+    x-mappedTo: contractmpricelist
+    description: Billing price used for all contract lines.
+    properties:
+      key:
+        type: string
+        description: Billing price list key
+        x-mappedTo: PRCLSTKEY
+        readOnly: true
+        example: '12'
+      name:
+        type: string
+        x-mappedTo: PRCLIST
+        example: SoftwarePackageP
+      href:
+        type: string
+        readOnly: true
+        example: /objects/billing-price-list/1
+  meaPriceList:
+    type: object
+    x-object: mea-price-list
+    x-mappedTo: contractmeapricelist
+    description: MEA price list. Only applicable if `termType` = `termed` and the company is subscribed to Contract Advanced Revenue Recognition.
+    properties:
+      key:
+        type: string
+        description: MEA price list key
+        x-mappedTo: MEAPRCLSTKEY
+        readOnly: true
+        example: '12'
+      name:
+        type: string
+        x-mappedTo: MEAPRCLIST
+        example: Services MEA Price List
+      href:
+        type: string
+        readOnly: true
+        example: /objects/mea-price-list/12
+  billingHold:
+    type: boolean
+    description: Billing hold
+    x-mappedTo: BILLINGHOLD
+    x-mappedToType: string
+    default: false
+  revenueHold:
+    type: boolean
+    description: Revenue hold
+    x-mappedTo: REVENUEHOLD
+    x-mappedToType: string
+    default: false
+  cashReceiptHold:
+    type: boolean
+    description: Hold for cash receipt
+    x-mappedTo: CRHOLD
+    x-mappedToType: string
+    default: false
+  expenseHold:
+    type: boolean
+    description: Expense hold
+    x-mappedTo: EXPENSEHOLD
+    x-mappedToType: string
+    default: false
+  currency:
+    description: Currencies used in the contract. Required if company is configured for multi-currency.
+    type: object
+    properties:
+      exchangeRateType:
+        type: string
+        description: Exchange rate type. Leave blank to use Intacct Daily Rate. The exchange rate type cannot be changed after a contract line is posted to the contract.
+        x-mappedTo: EXCHRATETYPE
+      baseCurrency:
+        type: string
+        description: Base currency. Defaults to the base currency associated with the selected location/entity.
+        x-mappedTo: BASECURR
+      txnCurrency:
+        type: string
+        description: Transaction currency. Defaults to the transaction currency associated with the selected customer. All contract lines have the same transaction currency. The transaction currency cannot be changed after a contract line is posted to the contract.
+        x-mappedTo: CURRENCY
+  location:
+    type: object
+    description: Location or entity associated with the contract. This field is required in a multi-entity environment. Contract lines are restricted to the specified location or entity or to a child of the location or entity.
+    allOf:
+      - $ref: ../../common/references/locationref.s1.schema.yaml
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Location ID
+            x-mappedTo: LOCATIONID
+            example: US
+  department:
+    type: object
+    description: Department associated with the contract.
+    allOf:
+      - $ref: ../../common/references/departmentref.s1.schema.yaml
+      - type: object
+        properties:
+          key:
+            type: string
+            description: Department key
+            x-mappedTo: DEPTKEY
+          id:
+            type: string
+            description: Department ID
+            x-mappedTo: DEPARTMENTID
+          name:
+            type: string
+            description: Department name
+            readOnly: true
+            x-mappedTo: DEPARTMENTNAME
+  renewalTemplate:
+    type: string
+    description: Renewal template. Only used if `renewal` is `true`.
+    x-mappedTo: RENEWALMACRO
+    example: 12 months with notifications
+  renewed:
+    type: object
+    x-object: contract
+    x-mappedTo: contract
+    description: The previous contract for which this contract is the renewal.
+    properties:
+      key:
+        type: string
+        description: Unique key of the previous contract.
+        x-mappedTo: RENEWEDCONTRACTKEY
+        readOnly: true
+        example: '12'
+      id:
+        type: string
+        description: ID of the previous contract.
+        x-mappedTo: RENEWEDCONTRACTID
+        x-mutable: false
+        example: CON-0045-2
+      href:
+        type: string
+        readOnly: true
+        example: /objects/contact/12
+  renewal:
+    type: boolean
+    description: Whether the contract is enabled for renewal. Only applicable if `termType` = `termed`.
+    x-mappedTo: RENEWAL
+    x-mappedToType: string
+    default: false
+  billInAdvanceLength:
+    type: integer
+    description: Number of `billInAdvancePeriod` units (months or days) before the contract start date to bill the customer. Overrides bill-in-advance settings on the customer.
+    x-mappedTo: ADVBILLBY
+    example: 1
+  billInAdvancePeriod:
+    type: string
+    description: Bill in advance time units. Must be set to `days` or `months` if using bill in advance.
+    x-mappedTo: ADVBILLBYTYPE
+    default: none
+    enum:
+      - none
+      - days
+      - months
+    x-mappedToValues:
+      - ''
+      - days
+      - months
+    example: months
+  renewalBillInAdvanceLength:
+    type: integer
+    description: Number of `renewalBillInAdvancePeriod` units (months or days) before the renewal date to bill the customer. Overrides bill-in-advance settings on the customer.
+    x-mappedTo: RENEWALADVBILLBY
+    example: 2
+  renewalBillInAdvancePeriod:
+    type: string
+    description: Renewal bill in advance time units. Must be set to `days` or `months` if using bill in advance for renewals.
+    x-mappedTo: RENEWALADVBILLBYTYPE
+    default: none
+    enum:
+      - none
+      - days
+      - months
+    x-mappedToValues:
+      - ''
+      - days
+      - months
+    example: days
+  contractType:
+    type: object
+    x-object: contract-type
+    x-mappedTo: contracttype
+    description: |
+      [Contract type](/openapi/contract/contract-type/tag/Contract-types/)
+    properties:
+      key:
+        type: string
+        x-mappedTo: CONTRACTTYPEKEY
+        readOnly: true
+        example: 1
+      name:
+        type: string
+        x-mappedTo: CONTRACTTYPE
+        example: service
+      href:
+        type: string
+        readOnly: true
+        example: /objects/contract-type/2
+  deferEstimatedTimeBasedRevenueBy:
+    type: string
+    description: |-
+      Specifies how Intacct should combine the timesheet hours associated with a Time & Materials project:
+
+      * `project`: All hours billed from timesheets associated with the project will be used to determine actual revenue for the contract line. There can only be one In progress Project time contract line in the contract linked to a particular project.
+      * `projectAndItem`: All hours billed from timesheets associated with a particular item and with a particular project will be combined and used to determine the actual revenue for the contract line. Each project/item combination on each Project time contract line within a contract must be unique.
+      * `projectAndTask`: All hours billed from timesheets associated with a particular task and with a particular project will be combined and used to determine the actual revenue for the contract line. Each project/task combination on each Project time contract line within a contract must be unique.
+
+       Only applicable if `termType` = `termed` and "Enable deferred revenue for Time & Materials projects" is turned on for the company.
+
+    default: none
+    enum:
+      - none
+      - project
+      - projectAndItem
+      - projectAndTask
+    x-mappedToValues:
+      - ''
+      - project
+      - Project and Item
+      - Project and Task
+    x-mappedTo: TIMESHEETAGGREGATION
+    example: projectAndTask
+  total:
+    type: number
+    description: The total flat/fixed amount value of the contract (does not include usage).
+    x-mappedTo: SUMMARYTOTAL
+    example: 2300
+  billed:
+    type: number
+    description: The total amount invoiced from the contract. 
+    x-mappedTo: SUMMARYBILLED
+    example: 1000
+  audit:
+    $ref: ../../common/models/audit.s1.schema.yaml

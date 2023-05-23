@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: vendor-contact
+  description: vendor-contact API
+  version: '1.0'
+  contact:
+    email: anjali.israni@sage.com
+    name: Anjali Israni
+tags:
+  - name: Vendor contacts
+    description: Contact information for a vendor.
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/objects/vendor-contact/{key}':
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
+        description: System-assigned key for the vendor contact.
+    options:
+      summary: Get a vendor contact
+      description: Returns detailed information for a specified vendor contact.
+      tags:
+        - Vendor contacts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'ia::result':
+                    $ref: '#/components/schemas/vendor-contact'
+components:
+  schemas:
+    vendor-contact:
+      $ref: ../models/vendor-contact.s1.schema.yaml
+    vendor-contactRequiredProperties:
+      type: object
+      properties:
+        contact:
+          required:
+            - id
+        vendor:
+          required:
+            - id
+      required:
+        - name
+  responses:
+    400error:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../common/models/error-response.schema.yaml

@@ -20,6 +20,7 @@ jobs:
       - name: Get the Branch Name
         run: |
           echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+          echo echo "PR branach name: $ {{ github.head_ref }}"
       - name: Install Node
         uses: actions/setup-node@v1
         with:

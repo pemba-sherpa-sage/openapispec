@@ -28,8 +28,8 @@ jobs:
         run: npm install -g @redocly/cli@latest
       - name: Show Changed Files
         run: |
-          changedDir=$(git diff --name-only --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
-          echo ${changedDir}
+          changedDirs=$(git diff --name-only --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
+          echo ${changedDirs}
           oasDir="app/source/openapispec"
           uniqueDirectories=()
           for changedDir in $changedDirs

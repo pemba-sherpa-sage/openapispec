@@ -53,7 +53,7 @@ jobs:
                   echo "layout: default" >> ${oasDir}/main/${name}.md
                   echo "title: ${name}" >> ${oasDir}/main/${name}.md
                   echo "---" >> ${oasDir}/main/${name}.md
-                  echo "{% include _include/main/${name}.html %}" >> ${oasDir}/main/${name}.md
+                  echo "{% include _includes/main/${name}.html %}" >> ${oasDir}/main/${name}.md
                   ls ${oasDir}/main/
                   uniqueDirectories+=("$parentDir")
               fi
@@ -70,7 +70,9 @@ jobs:
           ls
           echo "---------"
           ls app/source/openapispec/main
-          cp -a app/source/openapispec/main/*.html hyde/_include/main/
+          mkdir -p hyde/_includes/main/
+          mkdir -p hyde/docs/
+          cp -a app/source/openapispec/main/*.html hyde/_includes/main/
           cp -a app/source/openapispec/main/*.md hyde/docs/
           cd hyde
           git add .

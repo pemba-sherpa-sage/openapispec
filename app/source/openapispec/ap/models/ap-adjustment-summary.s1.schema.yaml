@@ -10,7 +10,7 @@ properties:
     x-mappedTo: RECORDNO
   id:
     type: string
-    description: Identifier for the AP adjustment summary.
+    description: Identifier for the AP adjustment summary. teste
     readOnly: true
     x-mappedTo: RECORDNO
   name:

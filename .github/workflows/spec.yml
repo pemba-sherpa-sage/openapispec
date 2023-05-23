@@ -30,7 +30,8 @@ jobs:
         run: git fetch origin main        
       - name: Show Changed Files
         run: |
-          changedDirs=$(git diff --name-only origin/main $GITHUB_HEAD_REF --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
+          git fetch origin pull/${{ github.event.pull_request.number }}/merge
+          changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
           #changedDirs=("ap" "co")
           echo ${changedDirs}
           oasDir="app/source/openapispec"

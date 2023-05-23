@@ -37,6 +37,11 @@ jobs:
           echo ${changedDirs}
           oasDir="app/source/openapispec"
           uniqueDirectories=()
+          
+          echo "----" > ${{github.head_ref}}.md
+          echo "layout: page" >> ${{github.head_ref}}.md
+          echo "---" >> ${{github.head_ref}}.md
+          
           for changedDir in $changedDirs
           do
               parentDir=$(dirname "app/source/openapispec/${changedDir}")
@@ -52,6 +57,7 @@ jobs:
                   echo "title: ${name}" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "---" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "{% include _includes/${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
+                  echo "<a href=\"{% link docs/${{github.head_ref}}/${name}.md %}\">${name}</a>" >> ${{github.head_ref}}.md
                   uniqueDirectories+=("$parentDir")
               fi
           done

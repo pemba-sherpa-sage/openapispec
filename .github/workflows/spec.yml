@@ -52,7 +52,6 @@ jobs:
                   echo "title: ${name}" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "---" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "{% include _includes/${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  ls ${oasDir}/main/
                   uniqueDirectories+=("$parentDir")
               fi
           done
@@ -67,11 +66,10 @@ jobs:
           git config --global user.email pemba.sherpa@github.com
           ls
           echo "---------"
-          ls app/source/openapispec/${{github.head_ref}}
           mkdir -p hyde/_includes/${{github.head_ref}}/
-          mkdir -p hyde/docs/
+          mkdir -p hyde/docs/${{github.head_ref}}/
           cp -a app/source/openapispec/${{github.head_ref}}/*.html hyde/_includes/${{github.head_ref}}/
-          cp -a app/source/openapispec/${{github.head_ref}}/*.md hyde/docs/
+          cp -a app/source/openapispec/${{github.head_ref}}/*.md hyde/docs/${{github.head_ref}}/
           cd hyde
           git add .
           git commit -m "Add changes"

@@ -72,8 +72,8 @@ jobs:
           git config --global user.email pemba.sherpa@github.com
           ls
           echo "---------"
-          mkdir -p hyde/_includes/${{github.head_ref}}/
-          mkdir -p hyde/docs/${{github.head_ref}}/
+          mkdir -p hyde/_includes/${{github.head_ref}}/ && rm -rf hyde/_includes/${{github.head_ref}}/*
+          mkdir -p hyde/docs/${{github.head_ref}}/ && rm -rf hyde/docs/${{github.head_ref}}/*
           cp -a app/source/openapispec/${{github.head_ref}}/*.html hyde/_includes/${{github.head_ref}}/
           cp -a app/source/openapispec/${{github.head_ref}}/*.md hyde/docs/${{github.head_ref}}/
           cd hyde

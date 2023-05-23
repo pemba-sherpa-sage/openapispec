@@ -5,7 +5,7 @@ x-mappedTo: artaxschedmap
 properties:
   key:
     type: string
-    description: System-assigned key for the AR tax schedule map.
+    description: System-assigned key for the AR tax schedule map. test
     example: '7149'
     x-mappedTo: RECORDNO
     readOnly: true

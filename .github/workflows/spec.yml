@@ -40,6 +40,7 @@ jobs:
           mkdir -p ${oasDir}/${{github.head_ref}}
           echo "----" > ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
           echo "layout: page" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
+          echo "title: ${{github.head_ref}}" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
           echo "---" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
           
           for changedDir in $changedDirs
@@ -56,7 +57,7 @@ jobs:
                   echo "layout: default" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "title: ${name}" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "---" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "{% include _includes/${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
+                  echo "{% include ${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "<a href={% link docs/${{github.head_ref}}/${name}.md %}>${name}</a>" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
                   uniqueDirectories+=("$parentDir")
               fi

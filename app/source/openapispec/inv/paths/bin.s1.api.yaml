@@ -5,7 +5,7 @@ info:
   version: '1.0'
   contact:
     email: senthil.kumar@sage.com
-    name: Senthil Kumar
+    name: Senthil Kumar test
 tags:
   - name: Bins
     description: A bin identifies a specific location within a warehouse where items are or can be stored. Bins make it easier to find items during transaction processing.

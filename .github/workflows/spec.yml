@@ -58,7 +58,7 @@ jobs:
                   echo "title: ${name}" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "---" >> ${oasDir}/${{github.head_ref}}/${name}.md
                   echo "{% include ${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "<a href=\"{% link docs/${{github.head_ref}}/${name}.md %}\">${name}</a>" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
+                  echo "<a href=\"{{site.baseurl}}{% link docs/${{github.head_ref}}/${name}.md %}\">${name}</a><br/>" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
                   uniqueDirectories+=("$parentDir")
               fi
           done

@@ -22,7 +22,6 @@ jobs:
         shell: bash
         run: |
           BRANCH_NAME=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")
-          echo "BRANCH_NAME_FRIENDLY=$(echo "${BRANCH_NAME}")" >> GITHUB_ENV
           echo "BRANCH_NAME_ENCODED=$(echo "${BRANCH_NAME}" | tr '%' '_')" >> $GITHUB_ENV
       - name: Install Node
         uses: actions/setup-node@v1
@@ -42,7 +41,7 @@ jobs:
           mkdir -p ${oasDir}/${{env.BRANCH_NAME_ENCODED}}
           echo "---" > ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
           echo "layout: page" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
-          echo "title: ${{env.BRANCH_NAME_FRIENDLY}}" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
+          echo "title: ${{github.head_ref}}" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
           echo "---" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
           
           for changedDir in $changedDirs

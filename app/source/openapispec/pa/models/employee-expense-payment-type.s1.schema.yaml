@@ -5,7 +5,7 @@ description: User-defined Employee expense payment type that is applied to the l
 properties:
   key:
     type: string
-    description: Employee expense payment type key. 
+    description: Employee expense payment type key. test
     readOnly: true
     x-mappedTo: RECORDNO
     example: '10'

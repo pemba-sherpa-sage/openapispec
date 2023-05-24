@@ -5,7 +5,7 @@ description: User-defined Employee expense type that is applied to the line item
 properties:
   key:
     type: string
-    description: Employee expense type record number.
+    description: Employee expense type record number. test
     readOnly: true
     x-mappedTo: RECORDNO
     example: '47'

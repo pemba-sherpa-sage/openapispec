@@ -1,8 +1,6 @@
 name: Create URL Link for Static HTML Page
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     types: [opened, reopened, synchronize]
     paths:
@@ -18,8 +16,6 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Get the Branch Name (PR)
-        if: github.event_name == 'pull_request'
-        shell: bash
         run: |
           BRANCH_NAME=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")
           echo "BRANCH_NAME_ENCODED=$(echo "${BRANCH_NAME}" | tr '%' '_')" >> $GITHUB_ENV
@@ -29,13 +25,10 @@ jobs:
           node-version: '12.x'
       - name: Install recocly/cli
         run: npm install -g @redocly/cli@latest
-#     #  - name: Fetch Branch
-#         run: git fetch origin main        
-      - name: Show Changed Files Now
+      - name: Show Changed Files on the PR
         run: |
           git fetch origin pull/${{ github.event.pull_request.number }}/merge
           changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
-          echo ${changedDirs}
           oasDir="app/source/openapispec"
           uniqueDirectories=()
           mkdir -p ${oasDir}/${{env.BRANCH_NAME_ENCODED}}
@@ -72,8 +65,6 @@ jobs:
       - run: |
           git config --global user.name pemba sherpa
           git config --global user.email pemba.sherpa@github.com
-          ls
-          echo "---------"
           mkdir -p hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/ && rm -rf hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/*
           mkdir -p hyde/docs/${{env.BRANCH_NAME_ENCODED}}/ && rm -rf hyde/docs/${{env.BRANCH_NAME_ENCODED}}/*
           cp -a app/source/openapispec/${{env.BRANCH_NAME_ENCODED}}/*.html hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/

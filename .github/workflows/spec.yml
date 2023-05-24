@@ -17,19 +17,19 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Get the Branch Name
+      - name: Get the Branch Name (PR)
+        if: github.event_name == 'pull_request'
+        shell: bash
         run: |
-          echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-          echo "PR branach name: ${{github.head_ref}}"
-          echo "Pr#: ${{github.event.pull_request.number}}"
+          echo "BRANCH_NAME_ENCODED=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")" >> $GITHUB_ENV
       - name: Install Node
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
       - name: Install recocly/cli
         run: npm install -g @redocly/cli@latest
-      - name: Fetch Branch
-        run: git fetch origin main        
+#       - name: Fetch Branch
+#         run: git fetch origin main        
       - name: Show Changed Files
         run: |
           git fetch origin pull/${{ github.event.pull_request.number }}/merge
@@ -37,11 +37,11 @@ jobs:
           echo ${changedDirs}
           oasDir="app/source/openapispec"
           uniqueDirectories=()
-          mkdir -p ${oasDir}/${{github.head_ref}}
-          echo "---" > ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
-          echo "layout: page" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
-          echo "title: ${{github.head_ref}}" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
-          echo "---" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
+          mkdir -p ${oasDir}/${{env.BRANCH_NAME_ENCODED}}
+          echo "---" > ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
+          echo "layout: page" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
+          echo "title: ${{env.BRANCH_NAME_ENCODED}}" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
+          echo "---" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
           
           for changedDir in $changedDirs
           do
@@ -51,14 +51,14 @@ jobs:
                   name=$(basename "$parentDir")
                   redocly bundle ${parentDir}/paths/*.yaml --output "${parentDir}/docs"
                   redocly join ${parentDir}/docs/*.yaml --output "${parentDir}/docs/${name}.openapi.yaml" --without-x-tag-groups
-                  redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${oasDir}/${{github.head_ref}}/${name}.html"
+                  redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.html"
                   echo "Creating markdown files for each openapi spec"
-                  echo "---" > ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "layout: default" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "title: ${name}" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "---" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "{% include ${{github.head_ref}}/${name}.html %}" >> ${oasDir}/${{github.head_ref}}/${name}.md
-                  echo "<a href=\"{{site.baseurl}}{% link docs/${{github.head_ref}}/${name}.md %}\">${name}</a><br/>" >> ${oasDir}/${{github.head_ref}}/${{github.head_ref}}.md
+                  echo "---" > ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
+                  echo "layout: default" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
+                  echo "title: ${name}" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
+                  echo "---" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
+                  echo "{% include ${{env.BRANCH_NAME_ENCODED}}/${name}.html %}" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
+                  echo "<a href=\"{{site.baseurl}}{% link docs/${{env.BRANCH_NAME_ENCODED}}/${name}.md %}\">${name}</a><br/>" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${{env.BRANCH_NAME_ENCODED}}.md
                   uniqueDirectories+=("$parentDir")
               fi
           done
@@ -73,10 +73,10 @@ jobs:
           git config --global user.email pemba.sherpa@github.com
           ls
           echo "---------"
-          mkdir -p hyde/_includes/${{github.head_ref}}/ && rm -rf hyde/_includes/${{github.head_ref}}/*
-          mkdir -p hyde/docs/${{github.head_ref}}/ && rm -rf hyde/docs/${{github.head_ref}}/*
-          cp -a app/source/openapispec/${{github.head_ref}}/*.html hyde/_includes/${{github.head_ref}}/
-          cp -a app/source/openapispec/${{github.head_ref}}/*.md hyde/docs/${{github.head_ref}}/
+          mkdir -p hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/ && rm -rf hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/*
+          mkdir -p hyde/docs/${{env.BRANCH_NAME_ENCODED}}/ && rm -rf hyde/docs/${{env.BRANCH_NAME_ENCODED}}/*
+          cp -a app/source/openapispec/${{env.BRANCH_NAME_ENCODED}}/*.html hyde/_includes/${{env.BRANCH_NAME_ENCODED}}/
+          cp -a app/source/openapispec/${{env.BRANCH_NAME_ENCODED}}/*.md hyde/docs/${{env.BRANCH_NAME_ENCODED}}/
           cd hyde
           git add .
           git commit -m "Add changes"

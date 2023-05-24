@@ -21,7 +21,8 @@ jobs:
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
-          echo "BRANCH_NAME_ENCODED=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")" >> $GITHUB_ENV
+          echo "BRANCH_NAME=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")" >> $GITHUB_ENV
+          echo "BRANCH_NAME_ENCODED=$(echo ${{env.BRANCH_NAME}} | sed 's/%/_/g')" >> GITHUB_ENV
       - name: Install Node
         uses: actions/setup-node@v1
         with:

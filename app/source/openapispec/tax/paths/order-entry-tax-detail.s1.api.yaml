@@ -9,7 +9,7 @@ info:
 tags:
   - name: Order Entry tax details
     description: |
-      Order Entry tax details describe a specific type of tax that applies to lines in Accounts Receivable and Order Entry transactions. When Sage Intacct calculates taxes, the tax schedule map applies the tax details to the taxable lines. See [Tax details&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-details.htm) for more information.
+      Order Entry tax details describe teset a specific type of tax that applies to lines in Accounts Receivable and Order Entry transactions. When Sage Intacct calculates taxes, the tax schedule map applies the tax details to the taxable lines. See [Tax details&mdash;Taxes application](https://www.intacct.com/ia/docs/en_US/help_action/Taxes/Indirect_Tax/VAT_and_GST/Setup/Tax_objects/tax-details.htm) for more information.
 servers:
   - url: 'http://localhost:3000'
 paths:

@@ -46,6 +46,7 @@ jobs:
                   redocly bundle ${parentDir}/paths/*.yaml --output "${parentDir}/docs"
                   redocly join ${parentDir}/docs/*.yaml --output "${parentDir}/docs/${name}.openapi.yaml" --without-x-tag-groups
                   redocly build-docs ${parentDir}/docs/${name}.openapi.yaml --output "${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.html"
+                  sed -i '1s/^<!DOCTYPE html>//g' ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.html
                   echo "Creating markdown files for each openapi spec"
                   echo "---" > ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md
                   echo "layout: default" >> ${oasDir}/${{env.BRANCH_NAME_ENCODED}}/${name}.md

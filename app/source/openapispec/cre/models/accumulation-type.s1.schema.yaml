@@ -5,7 +5,7 @@ description: Accumulation Type
 properties:
   key:
     type: string
-    description: System-assigned unique key for the accumulation type. Used to identify the accumulation type in URLs or JSON bodies for all operations on the accumulation type.
+    description: System-assigned unique x key for the accumulation type. Used to identify the accumulation type in URLs or JSON bodies for all operations on the accumulation type.
     readOnly: true
     example: '1'
     x-mappedTo: RECORDNO

@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           BRANCH_NAME=$(python3 -c "from urllib.parse import quote_plus; print(quote_plus(\"${{ github.head_ref }}\"))")
-          echo "BRANCH_NAME_FRIENDLY=$(echo "${BRANCH_NAME}")" >> GITHUB_ENV
+          echo "BRANCH_NAME_FRIENDLY=$(echo "${BRANCH_NAME}")" >> $GITHUB_ENV
           echo "BRANCH_NAME_ENCODED=$(echo "${BRANCH_NAME}" | tr '%' '_')" >> $GITHUB_ENV
       - name: Install Node
         uses: actions/setup-node@v1

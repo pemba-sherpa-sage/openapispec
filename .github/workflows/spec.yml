@@ -32,7 +32,7 @@ jobs:
         run: npm install -g @redocly/cli@latest
 #     #  - name: Fetch Branch
 #         run: git fetch origin main        
-      - name: Show Changed Files
+      - name: Show Changed Files Now
         run: |
           git fetch origin pull/${{ github.event.pull_request.number }}/merge
           changedDirs=$(git diff --name-only HEAD^ ${{ github.sha }} --relative=app/source/openapispec/ | xargs -I{} dirname {} | grep -v '^.$' | sort | uniq)     
